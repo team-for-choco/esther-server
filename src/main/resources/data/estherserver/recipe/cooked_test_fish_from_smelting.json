@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": "estherserver:test_fish",
+  "result": {
+    "id": "estherserver:cooked_test_fish"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

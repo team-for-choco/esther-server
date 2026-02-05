@@ -1,0 +1,7 @@
+{
+  "itemGroup.estherserver": "Esther Server",
+  "block.estherserver.example_block": "예제 블록",
+  "item.estherserver.example_item": "예제 아이템",
+  "item.estherserver.test_fish": "테스트 생선",
+  "item.estherserver.cooked_test_fish": "구운 테스트 생선"
+}
