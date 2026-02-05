@@ -34,10 +34,16 @@ mc/
 ### Git 브랜치
 - **main 브랜치에 직접 커밋/머지 금지**
 - 모든 새 작업은 **새 브랜치**에서 진행
-- 브랜치 네이밍: `feature/CHOCO-{번호}`
-- 번호는 JIRA 이슈 번호와 매칭 (수동 관리)
-- 예시: `feature/CHOCO-1`, `feature/CHOCO-2`
 - 작업 완료 후 **PR을 통해서만 main에 머지**
+
+#### 브랜치 네이밍
+| 유형 | 패턴 | 용도 | 예시 |
+|------|------|------|------|
+| 기능 | `feature/CHOCO-{번호}` | 새 기능 개발 (JIRA 연동) | `feature/CHOCO-1` |
+| 버그수정 | `fix/{설명}` | 버그 수정 | `fix/config-null-error` |
+| 문서 | `docs/{설명}` | 문서 작업 | `docs/update-readme` |
+| 유지보수 | `chore/{설명}` | 설정, 의존성, 정리 등 | `chore/update-gradle` |
+| 논의/기획 | `draft/{설명}` | 다음 작업 논의, 기획 | `draft/plan-custom-items` |
 
 ### 코드 작성
 - 모든 모드 코드는 **Kotlin**으로 작성
