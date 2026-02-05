@@ -43,9 +43,33 @@ mc/
 - 패키지명: `com.juyoung.estherserver.*`
 
 ### 문서화
-- 모든 작업은 `docs/TASK-XXX-제목.md` 형식으로 기록
-- 작업 번호는 순차적으로 증가 (001, 002, 003...)
-- 문서에 JIRA 이슈 번호 포함 (해당 시)
+- **작업 시작 시 문서부터 생성** (코드 작성 전)
+- 파일명: `docs/YYYYMMDD_작업명.md` (예: `20260205_git_setup.md`)
+- JIRA 이슈 번호가 있으면 문서에 포함
+
+#### 문서 템플릿
+```markdown
+# 제목
+
+## 작업 개요
+TBD
+
+## 작업 전 요청사항
+TBD
+
+## 작업 진행 중 결정된 사항등, 작업관련 주요 정보
+TBD
+
+## 작업 체크리스트
+TBD
+```
+
+#### 작업 흐름
+1. JIRA 이슈 번호 확인
+2. 브랜치 생성: `feature/CHOCO-{번호}`
+3. **문서 생성**: `docs/YYYYMMDD_작업명.md`
+4. 작업 진행 (문서 업데이트하며 진행)
+5. 커밋 & PR
 
 ### 빌드
 ```bash
@@ -55,10 +79,10 @@ mc/
 ```
 
 ## 작업 기록
-| Task | 제목 | 상태 |
-|------|------|------|
-| [TASK-001](docs/TASK-001-project-setup.md) | NeoForge Kotlin 모드 프로젝트 초기 설정 | 완료 |
-| [TASK-002](docs/TASK-002-git-setup.md) | Git 저장소 연결 | 완료 |
+| 날짜 | 문서 | JIRA | 제목 | 상태 |
+|------|------|------|------|------|
+| 2026-02-05 | [TASK-001](docs/TASK-001-project-setup.md) | - | 프로젝트 초기 설정 | 완료 |
+| 2026-02-05 | [TASK-002](docs/TASK-002-git-setup.md) | - | Git 저장소 연결 | 완료 |
 
 ## 참고
 - [NeoForge 공식 문서](https://docs.neoforged.net/)
