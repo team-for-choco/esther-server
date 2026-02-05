@@ -81,8 +81,8 @@ TBD
 ## 작업 기록
 | 날짜 | 문서 | JIRA | 제목 | 상태 |
 |------|------|------|------|------|
-| 2026-02-05 | [TASK-001](docs/TASK-001-project-setup.md) | - | 프로젝트 초기 설정 | 완료 |
-| 2026-02-05 | [TASK-002](docs/TASK-002-git-setup.md) | - | Git 저장소 연결 | 완료 |
+| 2026-02-05 | [20260205_project_setup.md](docs/20260205_project_setup.md) | - | 프로젝트 초기 설정 | 완료 |
+| 2026-02-05 | [20260205_git_setup.md](docs/20260205_git_setup.md) | - | Git 저장소 연결 | 완료 |
 
 ## 참고
 - [NeoForge 공식 문서](https://docs.neoforged.net/)

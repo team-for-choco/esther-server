@@ -1,14 +1,22 @@
-# TASK-001: NeoForge Kotlin 모드 프로젝트 초기 설정
+# NeoForge Kotlin 모드 프로젝트 초기 설정
 
-## 작업 정보
+## 작업 개요
+
+Minecraft 모드 개발을 위한 NeoForge + Kotlin 프로젝트 환경 구축
+
 - **상태**: 완료
 - **작성일**: 2026-02-05
 - **작성자**: juyoung
 
-## 목표
-Minecraft 모드 개발을 위한 NeoForge + Kotlin 프로젝트 환경 구축
+## 작업 전 요청사항
 
-## 결정 사항
+- Minecraft 모드 제작 환경 세팅
+- 최신 안정 버전 사용
+- Kotlin 언어 사용
+
+## 작업 진행 중 결정된 사항등, 작업관련 주요 정보
+
+### 버전 선택
 
 | 항목 | 선택 | 이유 |
 |------|------|------|
@@ -17,7 +25,7 @@ Minecraft 모드 개발을 위한 NeoForge + Kotlin 프로젝트 환경 구축
 | 언어 | Kotlin | Java보다 간결, null 안전성 |
 | KFF 버전 | 5.7.0 | 1.21.4 호환 |
 
-## 프로젝트 정보
+### 프로젝트 정보
 
 | 항목 | 값 |
 |------|-----|
@@ -27,7 +35,7 @@ Minecraft 모드 개발을 위한 NeoForge + Kotlin 프로젝트 환경 구축
 | Author | `juyoung` |
 | License | All Rights Reserved |
 
-## 버전 정보
+### 버전 정보
 
 ```properties
 minecraft_version=1.21.4
@@ -36,7 +44,7 @@ kff_version=5.7.0
 java_version=21
 ```
 
-## 프로젝트 구조
+### 프로젝트 구조
 
 ```
 mc/
@@ -56,48 +64,17 @@ mc/
 └── docs/                         # 문서
 ```
 
-## 작업 내역
+## 작업 체크리스트
 
-1. **템플릿 클론**
-   - NeoForgeKotlinMDKs/MDK-1.21-ModDevGradle 클론
-
-2. **버전 설정 시도**
-   - 최초 1.21.11 시도 → 베타 버전 빌드 오류 발생
-   - 1.21.4 안정 버전으로 변경
-
-3. **gradle.properties 수정**
-   - Minecraft/NeoForge/KFF 버전 설정
-   - 모드 ID, 이름, 작성자 정보 입력
-
-4. **소스 코드 마이그레이션**
-   - 패키지명 변경: `com.example.examplemod` → `com.juyoung.estherserver`
-   - 클래스명 변경: `ExampleMod` → `EstherServerMod`
-   - Mixin 클래스 업데이트
-
-5. **API 호환성 수정**
-   - `Config.kt`의 `BuiltInRegistries.ITEM` API 변경 대응
-
-6. **빌드 확인**
-   - `./gradlew build` 성공
-   - 출력: `build/libs/estherserver-1.0.0.jar` (16KB)
-
-## 유용한 명령어
-
-```bash
-./gradlew runClient    # 클라이언트 실행
-./gradlew runServer    # 서버 실행
-./gradlew build        # JAR 빌드
-./gradlew clean        # 빌드 정리
-```
+- [x] 템플릿 클론 (NeoForgeKotlinMDKs/MDK-1.21-ModDevGradle)
+- [x] 버전 설정 (1.21.11 시도 → 1.21.4로 변경)
+- [x] gradle.properties 수정
+- [x] 소스 코드 마이그레이션 (`com.example.examplemod` → `com.juyoung.estherserver`)
+- [x] API 호환성 수정 (`Config.kt`의 `BuiltInRegistries.ITEM` API)
+- [x] 빌드 확인 (`./gradlew build` 성공)
 
 ## 참고 자료
 
 - [NeoForge 공식 문서](https://docs.neoforged.net/)
 - [Kotlin for Forge GitHub](https://github.com/thedarkcolour/KotlinForForge)
 - [NeoForge Kotlin MDK](https://github.com/NeoForgeKotlinMDKs)
-
-## 다음 단계
-
-- [ ] 모드 기능 정의
-- [ ] 커스텀 아이템/블록 추가
-- [ ] 테스트 실행
