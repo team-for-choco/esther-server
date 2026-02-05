@@ -27,3 +27,6 @@ repo
 
 # Kotlin
 .kotlin
+
+# macOS
+.DS_Store

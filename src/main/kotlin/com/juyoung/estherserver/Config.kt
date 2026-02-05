@@ -1,4 +1,4 @@
-package com.example.examplemod
+package com.juyoung.estherserver
 
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
@@ -9,9 +9,7 @@ import net.neoforged.fml.event.config.ModConfigEvent
 import net.neoforged.neoforge.common.ModConfigSpec
 import java.util.stream.Collectors
 
-// An example config class. This is not required, but it's a good idea to have one to keep your config organized.
-// Demonstrates how to use Neo's config APIs
-@EventBusSubscriber(modid = ExampleMod.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = EstherServerMod.MODID, bus = EventBusSubscriber.Bus.MOD)
 object Config {
     private val BUILDER: ModConfigSpec.Builder = ModConfigSpec.Builder()
 
@@ -25,7 +23,6 @@ object Config {
         BUILDER.comment("What you want the introduction message to be for the magic number")
             .define("magicNumberIntroduction", "The magic number is... ")
 
-    // a list of strings that are treated as resource locations for items
     private val ITEM_STRINGS: ModConfigSpec.ConfigValue<List<String>> =
         BUILDER.comment("A list of items to log on common setup.").defineListAllowEmpty(
             "items",
@@ -50,11 +47,10 @@ object Config {
         magicNumber = MAGIC_NUMBER.get()
         magicNumberIntroduction = MAGIC_NUMBER_INTRODUCTION.get()
 
-        // convert the list of strings into a set of items
-        items = ITEM_STRINGS.get().stream().map { itemName: String? ->
-            BuiltInRegistries.ITEM[ResourceLocation.parse(
-                itemName
-            )]
-        }.collect(Collectors.toSet())
+        items = ITEM_STRINGS.get().stream()
+            .map { itemName: String? -> ResourceLocation.parse(itemName) }
+            .filter { BuiltInRegistries.ITEM.containsKey(it) }
+            .map { BuiltInRegistries.ITEM.getValue(it) }
+            .collect(Collectors.toSet())
     }
 }
