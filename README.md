@@ -1,39 +1,71 @@
-# Kotlin MDK
+# Esther Server
 
-This is a fork of NeoForge's MDK that is configured to use Kotlin. The following modifications have been made:
-- Port existing Java code to Kotlin
-- Adjust necessary resources for running on Kotlin (i.e. depend on KFF)
-- Added an example Mixin to emphasize that Mixins should only be written in Java
+Minecraft 서버용 모드 프로젝트
 
-> [!NOTE]
-> The Kotlin experience is not very good in Eclipse. The original MDK may be made to work with Eclipse as well,
-> but if you want to use Kotlin, the best choice is IntelliJ IDEA with the Minecraft Development Plugin.
+## 프로젝트 정보
 
----
+| 항목 | 내용 |
+|------|------|
+| 모드 ID | `estherserver` |
+| Minecraft | 1.21.4 |
+| NeoForge | 21.4.156 |
+| 언어 | Kotlin |
+| 작성자 | juyoung |
 
-Original README:
+## 시작하기
 
-Installation information
-=======
+### 요구사항
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+- Java 21 이상
+- IntelliJ IDEA (권장)
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+### 빌드
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+```bash
+./gradlew build
+```
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+빌드 결과물: `build/libs/estherserver-<version>.jar`
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+### 실행
+
+```bash
+# 클라이언트 실행
+./gradlew runClient
+
+# 서버 실행
+./gradlew runServer
+```
+
+## 프로젝트 구조
+
+```
+src/main/
+├── kotlin/com/juyoung/estherserver/   # Kotlin 소스 코드
+├── java/com/juyoung/estherserver/mixin/  # Mixin (Java)
+├── resources/assets/estherserver/     # 리소스 파일
+└── templates/                         # 메타데이터 템플릿
+```
+
+## 개발 가이드
+
+### Kotlin vs Java
+
+- 일반 모드 코드: **Kotlin** 사용
+- Mixin: **Java** 사용 (필수)
+
+> Mixin은 바이트코드 수준에서 동작하므로 Kotlin 컴파일러와 호환성 문제가 있습니다.
+
+### 문서
+
+모든 작업은 `docs/` 폴더에 기록됩니다.
+
+## 참고 자료
+
+- [NeoForge 공식 문서](https://docs.neoforged.net/)
+- [Kotlin for Forge](https://github.com/thedarkcolour/KotlinForForge)
+- [NeoForge Discord](https://discord.neoforged.net/)
+
+## 라이선스
+
+All Rights Reserved

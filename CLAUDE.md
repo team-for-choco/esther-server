@@ -51,6 +51,7 @@ mc/
 | Task | 제목 | 상태 |
 |------|------|------|
 | [TASK-001](docs/TASK-001-project-setup.md) | NeoForge Kotlin 모드 프로젝트 초기 설정 | 완료 |
+| [TASK-002](docs/TASK-002-git-setup.md) | Git 저장소 연결 | 완료 |
 
 ## 참고
 - [NeoForge 공식 문서](https://docs.neoforged.net/)
