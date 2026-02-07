@@ -113,6 +113,7 @@ TBD
 | 2026-02-05 | [20260205_project_setup.md](docs/20260205_project_setup.md) | - | 프로젝트 초기 설정 | 완료 |
 | 2026-02-05 | [20260205_git_setup.md](docs/20260205_git_setup.md) | - | Git 저장소 연결 | 완료 |
 | 2026-02-05 | [20260205_plan_server_features.md](docs/20260205_plan_server_features.md) | - | 서버 기능 기획 | 완료 |
+| 2026-02-06 | [20260206_custom_fish.md](docs/20260206_custom_fish.md) | CHOCO-74 | 커스텀 생선 구현 | 완료 |
 
 ## 참고
 - [NeoForge 공식 문서](https://docs.neoforged.net/)
