@@ -117,6 +117,11 @@ TBD
 | 2026-02-06 | [20260206_custom_fish.md](docs/20260206_custom_fish.md) | CHOCO-74 | 커스텀 생선 구현 | 완료 |
 | 2026-02-07 | [20260207_custom_crop.md](docs/20260207_custom_crop.md) | CHOCO-75 | 커스텀 작물 구현 | 완료 |
 
+## 알려진 이슈
+| GitHub | 관련 JIRA | 제목 | 상태 |
+|--------|-----------|------|------|
+| [#3](https://github.com/team-for-choco/esther-server/issues/3) | CHOCO-74 | add_test_fish 루트 모디파이어 1.21.4 호환성 수정 | 미해결 |
+
 ## 참고
 - [NeoForge 공식 문서](https://docs.neoforged.net/)
 - [Kotlin for Forge](https://github.com/thedarkcolour/KotlinForForge)
