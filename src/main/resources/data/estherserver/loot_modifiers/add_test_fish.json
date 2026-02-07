@@ -7,7 +7,7 @@
     },
     {
       "condition": "neoforge:loot_table_id",
-      "loot_table_id": "minecraft:gameplay/fishing/fish"
+      "loot_table_id": "minecraft:gameplay/fishing"
     }
   ],
   "item": "estherserver:test_fish"

@@ -10,9 +10,14 @@ GitHub Issue #3: `add_test_fish` 글로벌 루트 모디파이어의 `loot_table
 - `minecraft:loot_table_id` → `neoforge:loot_table_id`로 변경 필요
 
 ## 작업 진행 중 결정된 사항등, 작업관련 주요 정보
+- 1차 수정: `minecraft:loot_table_id` → `neoforge:loot_table_id` (네임스페이스 수정)
+- 2차 수정: `minecraft:gameplay/fishing/fish` → `minecraft:gameplay/fishing` (루트 테이블 경로 수정)
+  - 원인: 글로벌 루트 모디파이어의 `loot_table_id` 조건은 **최상위 루트 테이블**과 매칭됨
+  - `minecraft:gameplay/fishing/fish`는 내부 서브 테이블이라 조건에 매칭되지 않음
+  - 실제 낚시 시 호출되는 최상위 테이블은 `minecraft:gameplay/fishing`
 - 수정 대상 파일 2개:
-  1. `src/main/resources/data/estherserver/loot_modifiers/add_test_fish.json` (9행)
-  2. `src/test/kotlin/com/juyoung/estherserver/CustomFishTest.kt` (144행)
+  1. `src/main/resources/data/estherserver/loot_modifiers/add_test_fish.json`
+  2. `src/test/kotlin/com/juyoung/estherserver/CustomFishTest.kt`
 
 ## 작업 체크리스트
 - [x] 브랜치 생성: `fix/loot-modifier-condition-type`
