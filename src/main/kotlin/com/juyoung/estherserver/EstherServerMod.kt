@@ -74,8 +74,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         )
 
         // Custom crop - Test Crop
-        val TEST_CROP: DeferredBlock<Block> = BLOCKS.register("test_crop",
-            Supplier { TestCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)) })
+        val TEST_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("test_crop",
+            { properties -> TestCropBlock(properties) },
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT))
 
         val TEST_SEEDS: DeferredItem<Item> = ITEMS.register("test_seeds",
             Supplier { BlockItem(TEST_CROP.get(), Item.Properties().useItemDescriptionPrefix()) })
