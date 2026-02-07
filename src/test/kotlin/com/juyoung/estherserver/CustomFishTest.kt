@@ -20,7 +20,7 @@ class CustomFishTest {
     private fun loadJsonResource(path: String): JsonObject {
         val stream = javaClass.classLoader.getResourceAsStream(path)
             ?: throw AssertionError("Resource not found: $path")
-        return InputStreamReader(stream).use { reader ->
+        return InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8).use { reader ->
             gson.fromJson(reader, JsonObject::class.java)
         }
     }
