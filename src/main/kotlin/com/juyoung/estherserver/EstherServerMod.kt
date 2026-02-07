@@ -128,7 +128,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = [Dist.CLIENT])
     object ClientModEvents {
         @SubscribeEvent
-        @JvmStatic
         fun onClientSetup(event: FMLClientSetupEvent) {
             LOGGER.info("Esther Server client setup")
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().user.name)
