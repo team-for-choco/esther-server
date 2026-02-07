@@ -13,8 +13,10 @@ import net.minecraft.world.item.CreativeModeTabs
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
+import net.minecraft.world.level.material.PushReaction
 import com.juyoung.estherserver.block.TestCropBlock
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
@@ -76,7 +78,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         // Custom crop - Test Crop
         val TEST_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("test_crop",
             { properties -> TestCropBlock(properties) },
-            BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT))
+            BlockBehaviour.Properties.of()
+                .noCollission()
+                .randomTicks()
+                .instabreak()
+                .sound(SoundType.CROP)
+                .pushReaction(PushReaction.DESTROY))
 
         val TEST_SEEDS: DeferredItem<Item> = ITEMS.registerItem("test_seeds") { properties ->
             BlockItem(TEST_CROP.get(), properties.useItemDescriptionPrefix())
