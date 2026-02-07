@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": "estherserver:test_harvest",
+  "result": {
+    "id": "estherserver:cooked_test_harvest"
+  },
+  "experience": 0.35,
+  "cookingtime": 100
+}
