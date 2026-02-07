@@ -45,6 +45,19 @@ mc/
 | 유지보수 | `chore/{설명}` | 설정, 의존성, 정리 등 | `chore/update-gradle` |
 | 논의/기획 | `draft/{설명}` | 다음 작업 논의, 기획 | `draft/plan-custom-items` |
 
+#### 커밋 메시지
+- **한글로 작성**
+- JIRA 이슈 번호가 있으면 본문에 포함
+- 예시:
+  ```
+  feat: 커스텀 생선 아이템 추가
+
+  - 테스트 생선, 구운 테스트 생선 아이템 등록
+  - 낚시 루트테이블 연동
+
+  CHOCO-74
+  ```
+
 ### 코드 작성
 - 모든 모드 코드는 **Kotlin**으로 작성
 - **Mixin**은 반드시 **Java**로 작성 (Kotlin 컴파일러 호환성 문제)
@@ -88,12 +101,20 @@ TBD
 ./gradlew runServer    # 서버 실행
 ```
 
+### 실행 제한
+- **`runClient`, `runServer` 등 게임 실행 명령은 절대 직접 실행하지 않는다**
+- 빌드(`./gradlew build`)까지만 허용, 실행은 사용자가 직접 수행
+- 오류 분석이 필요한 경우 사용자가 제공한 로그를 기반으로 진행
+- 테스트 디바이스에서 로그를 `docs/data/`에 넣어 git push → 이쪽에서 git pull하여 분석
+- 분석이 완료된 로그 파일은 삭제하여 저장소를 깨끗하게 유지
+
 ## 작업 기록
 | 날짜 | 문서 | JIRA | 제목 | 상태 |
 |------|------|------|------|------|
 | 2026-02-05 | [20260205_project_setup.md](docs/20260205_project_setup.md) | - | 프로젝트 초기 설정 | 완료 |
 | 2026-02-05 | [20260205_git_setup.md](docs/20260205_git_setup.md) | - | Git 저장소 연결 | 완료 |
 | 2026-02-05 | [20260205_plan_server_features.md](docs/20260205_plan_server_features.md) | - | 서버 기능 기획 | 완료 |
+| 2026-02-06 | [20260206_custom_fish.md](docs/20260206_custom_fish.md) | CHOCO-74 | 커스텀 생선 구현 | 완료 |
 
 ## 참고
 - [NeoForge 공식 문서](https://docs.neoforged.net/)

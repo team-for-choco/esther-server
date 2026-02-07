@@ -120,6 +120,11 @@ dependencies {
     // Since Kotlin is its own JVM language with its own standard library, a custom language loader needs to be used, i.e. KFF
     implementation("thedarkcolour:kotlinforforge-neoforge:$kff_version")
 
+    // Test dependencies
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("com.google.code.gson:gson:2.10.1")
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
@@ -188,6 +193,19 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Allow tests to access main resources
+sourceSets {
+    test {
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.

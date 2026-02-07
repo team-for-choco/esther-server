@@ -31,6 +31,7 @@ import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.DeferredRegister
+import com.juyoung.estherserver.loot.ModLootModifiers
 import java.util.function.Consumer
 import java.util.function.Supplier
 
@@ -59,6 +60,18 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             )
         )
 
+        // Custom fish - Test Fish
+        val TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem("test_fish", Item.Properties())
+
+        val COOKED_TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "cooked_test_fish", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(6)
+                    .saturationModifier(0.8f)
+                    .build()
+            )
+        )
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -68,6 +81,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     .icon { EXAMPLE_ITEM.get().defaultInstance }
                     .displayItems { parameters: ItemDisplayParameters?, output: CreativeModeTab.Output ->
                         output.accept(EXAMPLE_ITEM.get())
+                        output.accept(TEST_FISH.get())
+                        output.accept(COOKED_TEST_FISH.get())
                     }.build()
             })
     }
@@ -78,6 +93,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         BLOCKS.register(modEventBus)
         ITEMS.register(modEventBus)
         CREATIVE_MODE_TABS.register(modEventBus)
+        ModLootModifiers.LOOT_MODIFIERS.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         modEventBus.addListener(::addCreative)
@@ -112,7 +128,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = [Dist.CLIENT])
     object ClientModEvents {
         @SubscribeEvent
-        @JvmStatic
         fun onClientSetup(event: FMLClientSetupEvent) {
             LOGGER.info("Esther Server client setup")
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().user.name)
