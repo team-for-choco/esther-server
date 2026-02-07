@@ -20,4 +20,9 @@ GitHub Issue #3: `add_test_fish` 글로벌 루트 모디파이어의 `loot_table
 - [x] JSON 수정: `minecraft:loot_table_id` → `neoforge:loot_table_id`
 - [x] 테스트 수정: 동일 변경
 - [x] 빌드 확인
-- [ ] 커밋 & PR 생성
+- [x] 커밋 & PR 생성: https://github.com/team-for-choco/esther-server/pull/5
+
+## 인게임 테스트
+- [ ] 낚시 시 테스트 생선이 드롭되는지 확인
+- [ ] 블록 파괴 시 테스트 생선이 드롭되지 않는지 확인
+- [ ] 테스트 생선 드롭 확률이 적절한지 확인 (90%)
