@@ -141,7 +141,7 @@ class CustomFishTest {
 
             val hasLootTableCondition = conditions.any { condition ->
                 val obj = condition.asJsonObject
-                obj.get("condition")?.asString == "minecraft:loot_table_id" &&
+                obj.get("condition")?.asString == "neoforge:loot_table_id" &&
                     obj.get("loot_table_id")?.asString == "minecraft:gameplay/fishing/fish"
             }
 
