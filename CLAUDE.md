@@ -106,7 +106,7 @@ TBD
 - 빌드(`./gradlew build`)까지만 허용, 실행은 사용자가 직접 수행
 - 오류 분석이 필요한 경우 사용자가 제공한 로그를 기반으로 진행
 - 테스트 디바이스에서 로그를 `docs/data/`에 넣어 git push → 이쪽에서 git pull하여 분석
-- 분석이 완료된 로그 파일은 삭제하여 저장소를 깨끗하게 유지
+- 분석이 완료된 로그 파일은 삭제하여 저장소를 깨끗하게 유지 (단, `docs/data/` 폴더 자체는 유지 — `.gitkeep` 파일 보존)
 
 ## 작업 기록
 | 날짜 | 문서 | JIRA | 제목 | 상태 |
@@ -115,6 +115,12 @@ TBD
 | 2026-02-05 | [20260205_git_setup.md](docs/20260205_git_setup.md) | - | Git 저장소 연결 | 완료 |
 | 2026-02-05 | [20260205_plan_server_features.md](docs/20260205_plan_server_features.md) | - | 서버 기능 기획 | 완료 |
 | 2026-02-06 | [20260206_custom_fish.md](docs/20260206_custom_fish.md) | CHOCO-74 | 커스텀 생선 구현 | 완료 |
+| 2026-02-07 | [20260207_custom_crop.md](docs/20260207_custom_crop.md) | CHOCO-75 | 커스텀 작물 구현 | 완료 |
+
+## 알려진 이슈
+| GitHub | 관련 JIRA | 제목 | 상태 |
+|--------|-----------|------|------|
+| [#3](https://github.com/team-for-choco/esther-server/issues/3) | CHOCO-74 | add_test_fish 루트 모디파이어 1.21.4 호환성 수정 | 미해결 |
 
 ## 참고
 - [NeoForge 공식 문서](https://docs.neoforged.net/)

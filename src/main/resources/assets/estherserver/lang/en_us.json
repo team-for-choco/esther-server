@@ -1,7 +1,11 @@
 {
   "itemGroup.estherserver": "Esther Server",
   "block.estherserver.example_block": "Example Block",
+  "block.estherserver.test_crop": "Test Crop",
   "item.estherserver.example_item": "Example Item",
   "item.estherserver.test_fish": "Test Fish",
-  "item.estherserver.cooked_test_fish": "Cooked Test Fish"
+  "item.estherserver.cooked_test_fish": "Cooked Test Fish",
+  "item.estherserver.test_seeds": "Test Seeds",
+  "item.estherserver.test_harvest": "Test Harvest",
+  "item.estherserver.cooked_test_harvest": "Cooked Test Harvest"
 }

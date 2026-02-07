@@ -1,7 +1,11 @@
 {
   "itemGroup.estherserver": "Esther Server",
   "block.estherserver.example_block": "예제 블록",
+  "block.estherserver.test_crop": "테스트 작물",
   "item.estherserver.example_item": "예제 아이템",
   "item.estherserver.test_fish": "테스트 생선",
-  "item.estherserver.cooked_test_fish": "구운 테스트 생선"
+  "item.estherserver.cooked_test_fish": "구운 테스트 생선",
+  "item.estherserver.test_seeds": "테스트 씨앗",
+  "item.estherserver.test_harvest": "테스트 수확물",
+  "item.estherserver.cooked_test_harvest": "구운 테스트 수확물"
 }

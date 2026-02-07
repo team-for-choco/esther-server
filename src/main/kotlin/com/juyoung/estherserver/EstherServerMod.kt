@@ -13,8 +13,11 @@ import net.minecraft.world.item.CreativeModeTabs
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
+import net.minecraft.world.level.material.PushReaction
+import com.juyoung.estherserver.block.TestCropBlock
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.bus.api.SubscribeEvent
@@ -72,6 +75,38 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             )
         )
 
+        // Custom crop - Test Crop
+        val TEST_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("test_crop",
+            { properties -> TestCropBlock(properties) },
+            BlockBehaviour.Properties.of()
+                .noCollission()
+                .randomTicks()
+                .instabreak()
+                .sound(SoundType.CROP)
+                .pushReaction(PushReaction.DESTROY))
+
+        val TEST_SEEDS: DeferredItem<Item> = ITEMS.registerItem("test_seeds") { properties ->
+            BlockItem(TEST_CROP.get(), properties.useItemDescriptionPrefix())
+        }
+
+        val TEST_HARVEST: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "test_harvest", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(2)
+                    .saturationModifier(0.3f)
+                    .build()
+            )
+        )
+
+        val COOKED_TEST_HARVEST: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "cooked_test_harvest", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(6)
+                    .saturationModifier(0.6f)
+                    .build()
+            )
+        )
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -83,6 +118,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(EXAMPLE_ITEM.get())
                         output.accept(TEST_FISH.get())
                         output.accept(COOKED_TEST_FISH.get())
+                        output.accept(TEST_SEEDS.get())
+                        output.accept(TEST_HARVEST.get())
+                        output.accept(COOKED_TEST_HARVEST.get())
                     }.build()
             })
     }
