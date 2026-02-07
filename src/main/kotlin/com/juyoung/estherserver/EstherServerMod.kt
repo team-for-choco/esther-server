@@ -78,8 +78,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             { properties -> TestCropBlock(properties) },
             BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT))
 
-        val TEST_SEEDS: DeferredItem<Item> = ITEMS.register("test_seeds",
-            Supplier { BlockItem(TEST_CROP.get(), Item.Properties().useItemDescriptionPrefix()) })
+        val TEST_SEEDS: DeferredItem<Item> = ITEMS.registerItem("test_seeds") { properties ->
+            BlockItem(TEST_CROP.get(), properties.useItemDescriptionPrefix())
+        }
 
         val TEST_HARVEST: DeferredItem<Item> = ITEMS.registerSimpleItem(
             "test_harvest", Item.Properties().food(
