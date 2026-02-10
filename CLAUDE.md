@@ -140,6 +140,7 @@ TBD
 | 2026-02-06 | [20260206_custom_fish.md](docs/20260206_custom_fish.md) | CHOCO-74 | 커스텀 생선 구현 | 완료 |
 | 2026-02-07 | [20260207_custom_crop.md](docs/20260207_custom_crop.md) | CHOCO-75 | 커스텀 작물 구현 | 완료 |
 | 2026-02-07 | [20260207_fix_loot_modifier.md](docs/20260207_fix_loot_modifier.md) | #3 | 루트 모디파이어 조건 타입 수정 | 완료 |
+| 2026-02-10 | [20260210_replace_loot_modifier.md](docs/20260210_replace_loot_modifier.md) | CHOCO-76 | 루트 모디파이어 replace 방식 구현 | 진행중 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.

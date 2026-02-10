@@ -1,5 +1,5 @@
 {
-  "type": "estherserver:add_item",
+  "type": "estherserver:replace_item",
   "conditions": [
     {
       "condition": "minecraft:random_chance",
