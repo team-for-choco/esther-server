@@ -210,10 +210,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     private fun onItemTooltip(event: ItemTooltipEvent) {
         val quality = event.itemStack.get(ModDataComponents.ITEM_QUALITY.get()) ?: return
 
-        if (quality != ItemQuality.COMMON && event.toolTip.isNotEmpty()) {
-            event.toolTip[0] = event.toolTip[0].copy().withStyle(quality.color)
+        if (event.toolTip.isNotEmpty()) {
+            if (quality != ItemQuality.COMMON) {
+                event.toolTip[0] = event.toolTip[0].copy().withStyle(quality.color)
+            }
+            event.toolTip.add(1, Component.translatable(quality.translationKey).withStyle(quality.color))
         }
-
-        event.toolTip.add(1, Component.translatable(quality.translationKey).withStyle(quality.color))
     }
 }
