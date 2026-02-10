@@ -7,5 +7,9 @@
   "item.estherserver.cooked_test_fish": "Cooked Test Fish",
   "item.estherserver.test_seeds": "Test Seeds",
   "item.estherserver.test_harvest": "Test Harvest",
-  "item.estherserver.cooked_test_harvest": "Cooked Test Harvest"
+  "item.estherserver.cooked_test_harvest": "Cooked Test Harvest",
+  "block.estherserver.test_ore": "Test Ore",
+  "block.estherserver.deepslate_test_ore": "Deepslate Test Ore",
+  "item.estherserver.test_ore_raw": "Raw Test Ore",
+  "item.estherserver.test_ore_ingot": "Test Ore Ingot"
 }

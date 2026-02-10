@@ -107,6 +107,29 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             )
         )
 
+        // Custom ore - Test Ore
+        val TEST_ORE: DeferredBlock<Block> = BLOCKS.registerSimpleBlock(
+            "test_ore",
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.STONE)
+                .requiresCorrectToolForDrops()
+                .strength(3.0f, 3.0f)
+        )
+        val TEST_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("test_ore", TEST_ORE)
+
+        val DEEPSLATE_TEST_ORE: DeferredBlock<Block> = BLOCKS.registerSimpleBlock(
+            "deepslate_test_ore",
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.DEEPSLATE)
+                .requiresCorrectToolForDrops()
+                .strength(4.5f, 3.0f)
+                .sound(SoundType.DEEPSLATE)
+        )
+        val DEEPSLATE_TEST_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_test_ore", DEEPSLATE_TEST_ORE)
+
+        val TEST_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_raw", Item.Properties())
+        val TEST_ORE_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_ingot", Item.Properties())
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -121,6 +144,10 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(TEST_SEEDS.get())
                         output.accept(TEST_HARVEST.get())
                         output.accept(COOKED_TEST_HARVEST.get())
+                        output.accept(TEST_ORE.get())
+                        output.accept(DEEPSLATE_TEST_ORE.get())
+                        output.accept(TEST_ORE_RAW.get())
+                        output.accept(TEST_ORE_INGOT.get())
                     }.build()
             })
     }

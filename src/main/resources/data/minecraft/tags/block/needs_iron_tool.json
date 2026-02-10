@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "estherserver:test_ore",
+    "estherserver:deepslate_test_ore"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "estherserver:block/deepslate_test_ore"
+    }
+  }
+}
