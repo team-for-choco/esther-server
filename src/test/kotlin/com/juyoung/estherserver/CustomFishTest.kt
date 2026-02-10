@@ -128,7 +128,7 @@ class CustomFishTest {
         fun addTestFishModifierIsValid() {
             val modifier = loadJsonResource("data/estherserver/loot_modifiers/add_test_fish.json")
 
-            assertEquals("estherserver:add_item", modifier.get("type").asString)
+            assertEquals("estherserver:replace_item", modifier.get("type").asString)
             assertEquals("estherserver:test_fish", modifier.get("item").asString)
             assertTrue(modifier.has("conditions"), "conditions 필드가 있어야 함")
         }

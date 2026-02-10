@@ -12,4 +12,5 @@ object ModLootModifiers {
         DeferredRegister.create(NeoForgeRegistries.GLOBAL_LOOT_MODIFIER_SERIALIZERS, EstherServerMod.MODID)
 
     val ADD_ITEM = LOOT_MODIFIERS.register("add_item", Supplier { AddItemLootModifier.CODEC })
+    val REPLACE_ITEM = LOOT_MODIFIERS.register("replace_item", Supplier { ReplaceItemLootModifier.CODEC })
 }

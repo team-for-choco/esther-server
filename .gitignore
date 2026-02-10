@@ -30,3 +30,6 @@ repo
 
 # macOS
 .DS_Store
+
+# generated files
+*.pdf
