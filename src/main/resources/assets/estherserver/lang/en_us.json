@@ -11,5 +11,8 @@
   "block.estherserver.test_ore": "Test Ore",
   "block.estherserver.deepslate_test_ore": "Deepslate Test Ore",
   "item.estherserver.test_ore_raw": "Raw Test Ore",
-  "item.estherserver.test_ore_ingot": "Test Ore Ingot"
+  "item.estherserver.test_ore_ingot": "Test Ore Ingot",
+  "quality.estherserver.common": "Common",
+  "quality.estherserver.fine": "Fine",
+  "quality.estherserver.rare": "Rare"
 }

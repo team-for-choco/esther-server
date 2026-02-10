@@ -35,6 +35,10 @@ import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.loot.ModLootModifiers
+import com.juyoung.estherserver.quality.ItemQuality
+import com.juyoung.estherserver.quality.ModDataComponents
+import net.neoforged.fml.loading.FMLEnvironment
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
 import java.util.function.Consumer
 import java.util.function.Supplier
 
@@ -159,8 +163,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ITEMS.register(modEventBus)
         CREATIVE_MODE_TABS.register(modEventBus)
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus)
+        ModDataComponents.DATA_COMPONENTS.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            NeoForge.EVENT_BUS.addListener(::onItemTooltip)
+        }
         modEventBus.addListener(::addCreative)
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC)
     }
@@ -196,6 +204,17 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         fun onClientSetup(event: FMLClientSetupEvent) {
             LOGGER.info("Esther Server client setup")
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().user.name)
+        }
+    }
+
+    private fun onItemTooltip(event: ItemTooltipEvent) {
+        val quality = event.itemStack.get(ModDataComponents.ITEM_QUALITY.get()) ?: return
+
+        if (event.toolTip.isNotEmpty()) {
+            if (quality != ItemQuality.COMMON) {
+                event.toolTip[0] = event.toolTip[0].copy().withStyle(quality.color)
+            }
+            event.toolTip.add(1, Component.translatable(quality.translationKey).withStyle(quality.color))
         }
     }
 }

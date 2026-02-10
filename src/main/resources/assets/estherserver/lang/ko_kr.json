@@ -11,5 +11,8 @@
   "block.estherserver.test_ore": "테스트 광석",
   "block.estherserver.deepslate_test_ore": "딥슬레이트 테스트 광석",
   "item.estherserver.test_ore_raw": "테스트 원석",
-  "item.estherserver.test_ore_ingot": "테스트 주괴"
+  "item.estherserver.test_ore_ingot": "테스트 주괴",
+  "quality.estherserver.common": "일반",
+  "quality.estherserver.fine": "고급",
+  "quality.estherserver.rare": "희귀"
 }
