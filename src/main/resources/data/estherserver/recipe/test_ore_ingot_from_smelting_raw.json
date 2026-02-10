@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": "estherserver:test_ore_raw",
+  "result": {
+    "id": "estherserver:test_ore_ingot"
+  },
+  "experience": 0.7,
+  "cookingtime": 200
+}
