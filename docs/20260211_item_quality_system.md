@@ -41,17 +41,17 @@
 - COMMON 아이템은 이름 색상 그대로 (기본 흰색)
 
 ## 작업 체크리스트
-- [ ] ItemQuality enum 생성
-- [ ] ModDataComponents 등록
-- [ ] AssignQualityLootModifier 구현
-- [ ] ModLootModifiers에 ASSIGN_QUALITY 등록
-- [ ] EstherServerMod에 DataComponents 등록 + 툴팁 이벤트
-- [ ] has_quality 아이템 태그 JSON
-- [ ] assign_quality 루트 모디파이어 JSON
-- [ ] global_loot_modifiers.json 업데이트
-- [ ] 언어 파일 업데이트 (en_us, ko_kr)
-- [ ] ItemQualityTest 작성
-- [ ] 빌드 성공 확인
+- [x] ItemQuality enum 생성
+- [x] ModDataComponents 등록
+- [x] AssignQualityLootModifier 구현
+- [x] ModLootModifiers에 ASSIGN_QUALITY 등록
+- [x] EstherServerMod에 DataComponents 등록 + 툴팁 이벤트
+- [x] has_quality 아이템 태그 JSON
+- [x] assign_quality 루트 모디파이어 JSON
+- [x] global_loot_modifiers.json 업데이트
+- [x] 언어 파일 업데이트 (en_us, ko_kr)
+- [x] ItemQualityTest 작성
+- [x] 빌드 성공 확인
 
 ## 인게임 테스트
 - [ ] 낚시 시 등급 부여 확인
