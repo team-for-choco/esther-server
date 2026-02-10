@@ -121,10 +121,8 @@ TBD
 | 2026-02-07 | [20260207_custom_crop.md](docs/20260207_custom_crop.md) | CHOCO-75 | 커스텀 작물 구현 | 완료 |
 | 2026-02-07 | [20260207_fix_loot_modifier.md](docs/20260207_fix_loot_modifier.md) | #3 | 루트 모디파이어 조건 타입 수정 | 완료 |
 
-## 예정 작업
-| 관련 문서/이슈 | 제목 | 설명 |
-|---------------|------|------|
-| [20260207_fix_loot_modifier.md](docs/20260207_fix_loot_modifier.md) | 루트 모디파이어 replace 방식 구현 | 현재 테스트 생선이 기존 생선과 함께 드롭됨(add). 테스트 생선이 낚이면 기존 생선을 대체하도록 변경 필요(replace). `doApply`에서 `generatedLoot.clear()` 후 `add()` 또는 `AddItemLootModifier`에 `replace` 필드 추가 / 별도 `ReplaceItemLootModifier` 생성 검토 |
+## 로드맵
+전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.
 
 ## 알려진 이슈
 | GitHub | 관련 JIRA | 제목 | 상태 |
