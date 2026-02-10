@@ -1,6 +1,7 @@
 {
   "replace": false,
   "entries": [
-    "estherserver:add_test_fish"
+    "estherserver:add_test_fish",
+    "estherserver:assign_quality"
   ]
 }

@@ -13,4 +13,5 @@ object ModLootModifiers {
 
     val ADD_ITEM = LOOT_MODIFIERS.register("add_item", Supplier { AddItemLootModifier.CODEC })
     val REPLACE_ITEM = LOOT_MODIFIERS.register("replace_item", Supplier { ReplaceItemLootModifier.CODEC })
+    val ASSIGN_QUALITY = LOOT_MODIFIERS.register("assign_quality", Supplier { AssignQualityLootModifier.CODEC })
 }
