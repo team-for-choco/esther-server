@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "estherserver:item/red_pepper_seeds"
+  }
+}
