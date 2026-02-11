@@ -29,6 +29,6 @@ Phase 1 완료 후 레거시 코드 제거, 경고 해소, 테스트 유틸 정�
 - [x] `./gradlew build` 성공 확인
 
 ## 인게임 테스트
-- [ ] 로그에서 `No model loaded for default item ID estherserver:example_block` 경고 사라짐 확인
-- [ ] 크리에이티브 탭 아이콘이 TEST_FISH로 변경 확인
-- [ ] 모든 기존 아이템/블록 정상 동작 확인
+- [x] 로그에서 `No model loaded for default item ID estherserver:example_block` 경고 사라짐 확인
+- [x] 크리에이티브 탭 아이콘이 TEST_FISH로 변경 확인
+- [ ] 모든 기존 아이템/블록 정상 동작 확인 (시간 부족으로 미확인)
