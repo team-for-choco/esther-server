@@ -1,13 +1,9 @@
 package com.juyoung.estherserver
 
-import com.google.gson.Gson
-import com.google.gson.JsonObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.io.InputStreamReader
-import java.nio.charset.StandardCharsets
 
 /**
  * 아이템 등급 시스템 관련 리소스 파일 테스트
@@ -15,16 +11,6 @@ import java.nio.charset.StandardCharsets
  * 마인크래프트 환경 없이 JSON 파일 형식과 필수 필드를 검증합니다.
  */
 class ItemQualityTest {
-
-    private val gson = Gson()
-
-    private fun loadJsonResource(path: String): JsonObject {
-        val stream = javaClass.classLoader.getResourceAsStream(path)
-            ?: throw AssertionError("Resource not found: $path")
-        return InputStreamReader(stream, StandardCharsets.UTF_8).use { reader ->
-            gson.fromJson(reader, JsonObject::class.java)
-        }
-    }
 
     @Nested
     @DisplayName("아이템 태그 테스트")
@@ -57,8 +43,6 @@ class ItemQualityTest {
             val valueList = values.map { it.asString }
 
             assertFalse(valueList.contains("estherserver:test_seeds"), "test_seeds가 포함되지 않아야 함")
-            assertFalse(valueList.contains("estherserver:example_item"), "example_item이 포함되지 않아야 함")
-            assertFalse(valueList.contains("estherserver:example_block"), "example_block이 포함되지 않아야 함")
         }
 
         @Test

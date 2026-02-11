@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
 import com.juyoung.estherserver.block.CustomCropBlock
-import com.juyoung.estherserver.block.TestCropBlock
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.bus.api.SubscribeEvent
@@ -29,7 +28,6 @@ import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.common.NeoForge
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 import net.neoforged.neoforge.event.server.ServerStartingEvent
 import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -55,19 +53,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val CREATIVE_MODE_TABS: DeferredRegister<CreativeModeTab> =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID)
 
-        // Example block
-        val EXAMPLE_BLOCK: DeferredBlock<Block> =
-            BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE))
-        val EXAMPLE_BLOCK_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK)
-
-        // Example item
-        val EXAMPLE_ITEM: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "example_item", Item.Properties().food(
-                FoodProperties.Builder()
-                    .alwaysEdible().nutrition(1).saturationModifier(2f).build()
-            )
-        )
-
         // Custom fish - Test Fish
         val TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem("test_fish", Item.Properties())
 
@@ -80,15 +65,18 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             )
         )
 
+        // Helper for crop block properties
+        private fun cropProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
+            .noCollission()
+            .randomTicks()
+            .instabreak()
+            .sound(SoundType.CROP)
+            .pushReaction(PushReaction.DESTROY)
+
         // Custom crop - Test Crop
         val TEST_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("test_crop",
-            { properties -> TestCropBlock(properties) },
-            BlockBehaviour.Properties.of()
-                .noCollission()
-                .randomTicks()
-                .instabreak()
-                .sound(SoundType.CROP)
-                .pushReaction(PushReaction.DESTROY))
+            { properties -> CustomCropBlock(properties, Supplier { TEST_SEEDS.get() }) },
+            cropProperties())
 
         val TEST_SEEDS: DeferredItem<Item> = ITEMS.registerItem("test_seeds") { properties ->
             BlockItem(TEST_CROP.get(), properties.useItemDescriptionPrefix())
@@ -134,14 +122,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         val TEST_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_raw", Item.Properties())
         val TEST_ORE_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_ingot", Item.Properties())
-
-        // Helper for crop block properties
-        private fun cropProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
-            .noCollission()
-            .randomTicks()
-            .instabreak()
-            .sound(SoundType.CROP)
-            .pushReaction(PushReaction.DESTROY)
 
         // Korean crops - Rice
         val RICE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("rice_crop",
@@ -212,9 +192,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.estherserver"))
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    .icon { EXAMPLE_ITEM.get().defaultInstance }
+                    .icon { TEST_FISH.get().defaultInstance }
                     .displayItems { parameters: ItemDisplayParameters?, output: CreativeModeTab.Output ->
-                        output.accept(EXAMPLE_ITEM.get())
                         output.accept(TEST_FISH.get())
                         output.accept(COOKED_TEST_FISH.get())
                         output.accept(TEST_SEEDS.get())
@@ -248,7 +227,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
         }
-        modEventBus.addListener(::addCreative)
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC)
     }
 
@@ -264,12 +242,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         Config.items.forEach(Consumer { item: Item ->
             LOGGER.info("ITEM >> {}", item.toString())
         })
-    }
-
-    private fun addCreative(event: BuildCreativeModeTabContentsEvent) {
-        if (event.tabKey === CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(EXAMPLE_BLOCK_ITEM)
-        }
     }
 
     @SubscribeEvent
