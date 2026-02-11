@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
 import com.juyoung.estherserver.block.CustomCropBlock
-import com.juyoung.estherserver.block.TestCropBlock
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.bus.api.SubscribeEvent
@@ -80,15 +79,18 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             )
         )
 
+        // Helper for crop block properties
+        private fun cropProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
+            .noCollission()
+            .randomTicks()
+            .instabreak()
+            .sound(SoundType.CROP)
+            .pushReaction(PushReaction.DESTROY)
+
         // Custom crop - Test Crop
         val TEST_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("test_crop",
-            { properties -> TestCropBlock(properties) },
-            BlockBehaviour.Properties.of()
-                .noCollission()
-                .randomTicks()
-                .instabreak()
-                .sound(SoundType.CROP)
-                .pushReaction(PushReaction.DESTROY))
+            { properties -> CustomCropBlock(properties, Supplier { TEST_SEEDS.get() }) },
+            cropProperties())
 
         val TEST_SEEDS: DeferredItem<Item> = ITEMS.registerItem("test_seeds") { properties ->
             BlockItem(TEST_CROP.get(), properties.useItemDescriptionPrefix())
@@ -134,14 +136,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         val TEST_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_raw", Item.Properties())
         val TEST_ORE_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_ingot", Item.Properties())
-
-        // Helper for crop block properties
-        private fun cropProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
-            .noCollission()
-            .randomTicks()
-            .instabreak()
-            .sound(SoundType.CROP)
-            .pushReaction(PushReaction.DESTROY)
 
         // Korean crops - Rice
         val RICE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("rice_crop",
