@@ -28,7 +28,6 @@ import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.common.NeoForge
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 import net.neoforged.neoforge.event.server.ServerStartingEvent
 import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -53,19 +52,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val ITEMS: DeferredRegister.Items = DeferredRegister.createItems(MODID)
         val CREATIVE_MODE_TABS: DeferredRegister<CreativeModeTab> =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID)
-
-        // Example block
-        val EXAMPLE_BLOCK: DeferredBlock<Block> =
-            BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE))
-        val EXAMPLE_BLOCK_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK)
-
-        // Example item
-        val EXAMPLE_ITEM: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "example_item", Item.Properties().food(
-                FoodProperties.Builder()
-                    .alwaysEdible().nutrition(1).saturationModifier(2f).build()
-            )
-        )
 
         // Custom fish - Test Fish
         val TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem("test_fish", Item.Properties())
@@ -206,9 +192,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.estherserver"))
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    .icon { EXAMPLE_ITEM.get().defaultInstance }
+                    .icon { TEST_FISH.get().defaultInstance }
                     .displayItems { parameters: ItemDisplayParameters?, output: CreativeModeTab.Output ->
-                        output.accept(EXAMPLE_ITEM.get())
                         output.accept(TEST_FISH.get())
                         output.accept(COOKED_TEST_FISH.get())
                         output.accept(TEST_SEEDS.get())
@@ -242,7 +227,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
         }
-        modEventBus.addListener(::addCreative)
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC)
     }
 
@@ -258,12 +242,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         Config.items.forEach(Consumer { item: Item ->
             LOGGER.info("ITEM >> {}", item.toString())
         })
-    }
-
-    private fun addCreative(event: BuildCreativeModeTabContentsEvent) {
-        if (event.tabKey === CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(EXAMPLE_BLOCK_ITEM)
-        }
     }
 
     @SubscribeEvent

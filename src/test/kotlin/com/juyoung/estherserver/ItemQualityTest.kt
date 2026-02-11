@@ -57,8 +57,6 @@ class ItemQualityTest {
             val valueList = values.map { it.asString }
 
             assertFalse(valueList.contains("estherserver:test_seeds"), "test_seeds가 포함되지 않아야 함")
-            assertFalse(valueList.contains("estherserver:example_item"), "example_item이 포함되지 않아야 함")
-            assertFalse(valueList.contains("estherserver:example_block"), "example_block이 포함되지 않아야 함")
         }
 
         @Test
