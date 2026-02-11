@@ -5,7 +5,7 @@ import com.google.gson.JsonObject
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 
-val gson = Gson()
+private val gson = Gson()
 
 fun loadJsonResource(path: String): JsonObject {
     val stream = Thread.currentThread().contextClassLoader.getResourceAsStream(path)
