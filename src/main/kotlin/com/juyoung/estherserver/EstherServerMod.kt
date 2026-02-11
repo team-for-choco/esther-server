@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
+import com.juyoung.estherserver.block.CustomCropBlock
 import com.juyoung.estherserver.block.TestCropBlock
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
@@ -134,6 +135,77 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val TEST_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_raw", Item.Properties())
         val TEST_ORE_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_ingot", Item.Properties())
 
+        // Helper for crop block properties
+        private fun cropProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
+            .noCollission()
+            .randomTicks()
+            .instabreak()
+            .sound(SoundType.CROP)
+            .pushReaction(PushReaction.DESTROY)
+
+        // Korean crops - Rice
+        val RICE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("rice_crop",
+            { properties -> CustomCropBlock(properties, Supplier { RICE_SEEDS.get() }) },
+            cropProperties())
+
+        val RICE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("rice_seeds") { properties ->
+            BlockItem(RICE_CROP.get(), properties.useItemDescriptionPrefix())
+        }
+
+        val RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "rice", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(1)
+                    .saturationModifier(0.3f)
+                    .build()
+            )
+        )
+
+        val COOKED_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "cooked_rice", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(6)
+                    .saturationModifier(0.7f)
+                    .build()
+            )
+        )
+
+        // Korean crops - Red Pepper
+        val RED_PEPPER_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("red_pepper_crop",
+            { properties -> CustomCropBlock(properties, Supplier { RED_PEPPER_SEEDS.get() }) },
+            cropProperties())
+
+        val RED_PEPPER_SEEDS: DeferredItem<Item> = ITEMS.registerItem("red_pepper_seeds") { properties ->
+            BlockItem(RED_PEPPER_CROP.get(), properties.useItemDescriptionPrefix())
+        }
+
+        val RED_PEPPER: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "red_pepper", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(2)
+                    .saturationModifier(0.3f)
+                    .build()
+            )
+        )
+
+        // Korean crops - Spinach
+        val SPINACH_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("spinach_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SPINACH_SEEDS.get() }) },
+            cropProperties())
+
+        val SPINACH_SEEDS: DeferredItem<Item> = ITEMS.registerItem("spinach_seeds") { properties ->
+            BlockItem(SPINACH_CROP.get(), properties.useItemDescriptionPrefix())
+        }
+
+        val SPINACH: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "spinach", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(2)
+                    .saturationModifier(0.4f)
+                    .build()
+            )
+        )
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -152,6 +224,13 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(DEEPSLATE_TEST_ORE.get())
                         output.accept(TEST_ORE_RAW.get())
                         output.accept(TEST_ORE_INGOT.get())
+                        output.accept(RICE_SEEDS.get())
+                        output.accept(RICE.get())
+                        output.accept(COOKED_RICE.get())
+                        output.accept(RED_PEPPER_SEEDS.get())
+                        output.accept(RED_PEPPER.get())
+                        output.accept(SPINACH_SEEDS.get())
+                        output.accept(SPINACH.get())
                     }.build()
             })
     }

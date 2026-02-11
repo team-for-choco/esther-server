@@ -6,6 +6,10 @@
     "estherserver:test_harvest",
     "estherserver:cooked_test_harvest",
     "estherserver:test_ore_raw",
-    "estherserver:test_ore_ingot"
+    "estherserver:test_ore_ingot",
+    "estherserver:rice",
+    "estherserver:cooked_rice",
+    "estherserver:red_pepper",
+    "estherserver:spinach"
   ]
 }
