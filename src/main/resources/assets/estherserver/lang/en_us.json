@@ -22,5 +22,7 @@
   "item.estherserver.spinach": "Spinach",
   "quality.estherserver.common": "Common",
   "quality.estherserver.fine": "Fine",
-  "quality.estherserver.rare": "Rare"
+  "quality.estherserver.rare": "Rare",
+  "message.estherserver.player_sleeping": "%s is now sleeping (%s/%s)",
+  "message.estherserver.good_morning": "Good morning!"
 }
