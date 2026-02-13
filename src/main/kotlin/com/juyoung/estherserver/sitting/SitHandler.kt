@@ -1,7 +1,9 @@
 package com.juyoung.estherserver.sitting
 
 import com.juyoung.estherserver.EstherServerMod
+import com.mojang.logging.LogUtils
 import net.minecraft.core.BlockPos
+import net.minecraft.world.InteractionHand
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.StairBlock
@@ -14,11 +16,14 @@ import net.neoforged.neoforge.event.level.BlockEvent
 
 object SitHandler {
 
+    private val LOGGER = LogUtils.getLogger()
     private const val LOWER_SEAT_Y_OFFSET = 0.3
     private const val UPPER_SEAT_Y_OFFSET = 0.8
 
     @SubscribeEvent
     fun onRightClickBlock(event: PlayerInteractEvent.RightClickBlock) {
+        if (event.hand != InteractionHand.MAIN_HAND) return
+
         val player = event.entity
         val level = event.level
 
@@ -48,8 +53,20 @@ object SitHandler {
 
         val seat = SeatEntity(EstherServerMod.SEAT_ENTITY.get(), level)
         seat.setPos(pos.x + 0.5, seatY, pos.z + 0.5)
-        level.addFreshEntity(seat)
-        player.startRiding(seat)
+
+        if (!level.addFreshEntity(seat)) {
+            LOGGER.warn("Failed to add SeatEntity at {}", pos)
+            return
+        }
+
+        if (!player.startRiding(seat)) {
+            LOGGER.warn("Failed to start riding SeatEntity at {}", pos)
+            seat.discard()
+            return
+        }
+
+        event.isCanceled = true
+        LOGGER.debug("Player {} sat down at {}", player.name.string, pos)
     }
 
     @SubscribeEvent
