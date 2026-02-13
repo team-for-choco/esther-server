@@ -49,6 +49,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     private var guiTop = 0
     private var selectedCategory: CollectionCategory? = null
     private var showTitleTab = false
+    private var milestoneScroll = 0
     private val itemCache = mutableMapOf<CollectionKey, ItemStack>()
 
     override fun init() {
@@ -103,10 +104,10 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             )
         } else {
             val contentY = guiTop + 38
-            val contentHeight = Milestone.entries.size * MILESTONE_ROW_HEIGHT + MILESTONE_PADDING * 2
+            val visibleHeight = guiTop + GUI_HEIGHT - 8 - contentY
             guiGraphics.fill(
                 guiLeft + PADDING - 1, contentY - 1,
-                guiLeft + GUI_WIDTH - PADDING + 1, contentY + contentHeight + 1,
+                guiLeft + GUI_WIDTH - PADDING + 1, contentY + visibleHeight + 1,
                 BG_DARK
             )
         }
@@ -150,20 +151,37 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         }
     }
 
+    private fun getMilestoneVisibleTop(): Int = guiTop + 38
+    private fun getMilestoneVisibleHeight(): Int = guiTop + GUI_HEIGHT - 8 - getMilestoneVisibleTop()
+    private fun getMilestoneTotalHeight(): Int = Milestone.entries.size * MILESTONE_ROW_HEIGHT + MILESTONE_PADDING * 2
+    private fun getMilestoneMaxScroll(): Int = (getMilestoneTotalHeight() - getMilestoneVisibleHeight()).coerceAtLeast(0)
+
     private fun renderMilestones(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
         val data = CollectionClientHandler.cachedData
         val startX = guiLeft + PADDING
-        val startY = guiTop + 38 + MILESTONE_PADDING
+        val visibleTop = getMilestoneVisibleTop()
+        val visibleHeight = getMilestoneVisibleHeight()
         val contentWidth = GUI_WIDTH - PADDING * 2
+
+        // Clamp scroll
+        milestoneScroll = milestoneScroll.coerceIn(0, getMilestoneMaxScroll())
+
+        // Scissor to clip content within visible area
+        guiGraphics.enableScissor(
+            guiLeft + PADDING, visibleTop,
+            guiLeft + GUI_WIDTH - PADDING, visibleTop + visibleHeight
+        )
+
+        val startY = visibleTop + MILESTONE_PADDING - milestoneScroll
 
         for ((index, milestone) in Milestone.entries.withIndex()) {
             val rowY = startY + index * MILESTONE_ROW_HEIGHT
             val unlocked = milestone.id in data.unlockedMilestones
             val isActive = data.activeTitle == milestone.id
             val isHovered = mouseX >= startX && mouseX < startX + contentWidth &&
-                mouseY >= rowY && mouseY < rowY + MILESTONE_ROW_HEIGHT - 2
+                mouseY >= rowY && mouseY < rowY + MILESTONE_ROW_HEIGHT - 2 &&
+                mouseY >= visibleTop && mouseY < visibleTop + visibleHeight
 
-            // Row background
             val rowBg = when {
                 isActive -> 0xFF4A7A4A.toInt()
                 unlocked && isHovered -> 0xFF5A5A5A.toInt()
@@ -172,36 +190,41 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             }
             guiGraphics.fill(startX, rowY, startX + contentWidth, rowY + MILESTONE_ROW_HEIGHT - 2, rowBg)
 
-            // Star icon
             val starText = if (unlocked) "\u2605" else "\u2606"
             val starColor = if (unlocked) 0xFFFFD700.toInt() else 0xFF666666.toInt()
             guiGraphics.drawString(font, starText, startX + 3, rowY + 3, starColor)
 
-            // Title name
             val titleName = Component.translatable(milestone.titleKey)
             val titleColor = if (unlocked) 0xFFFFFFFF.toInt() else 0xFF888888.toInt()
             guiGraphics.drawString(font, titleName, startX + 14, rowY + 3, titleColor)
 
-            // Progress / condition on second line
             if (unlocked) {
                 val condText = Component.translatable(milestone.descriptionKey)
                 guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFFAAAAAA.toInt())
             } else {
                 val progress = milestone.progressProvider?.invoke(data)
+                val condText = Component.translatable(milestone.descriptionKey)
                 if (progress != null) {
-                    val condText = Component.translatable(milestone.descriptionKey)
-                        .append(Component.literal(" (${progress.first}/${progress.second})"))
-                    guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFF777777.toInt())
-                } else {
-                    val condText = Component.translatable(milestone.descriptionKey)
-                    guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFF777777.toInt())
+                    condText.append(Component.literal(" (${progress.first}/${progress.second})"))
                 }
+                guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFF777777.toInt())
             }
 
-            // Active check mark
             if (isActive) {
                 guiGraphics.drawString(font, "\u2714", startX + contentWidth - 12, rowY + 7, 0xFF55FF55.toInt())
             }
+        }
+
+        guiGraphics.disableScissor()
+
+        // Scrollbar
+        val maxScroll = getMilestoneMaxScroll()
+        if (maxScroll > 0) {
+            val scrollbarX = guiLeft + GUI_WIDTH - PADDING - 3
+            val scrollbarHeight = (visibleHeight.toFloat() / getMilestoneTotalHeight() * visibleHeight).toInt().coerceAtLeast(8)
+            val scrollbarY = visibleTop + (milestoneScroll.toFloat() / maxScroll * (visibleHeight - scrollbarHeight)).toInt()
+            guiGraphics.fill(scrollbarX, visibleTop, scrollbarX + 3, visibleTop + visibleHeight, 0xFF555555.toInt())
+            guiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + 3, scrollbarY + scrollbarHeight, 0xFFAAAAAA.toInt())
         }
     }
 
@@ -329,25 +352,37 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             if (showTitleTab) {
                 val data = CollectionClientHandler.cachedData
                 val startX = guiLeft + PADDING
-                val startY = guiTop + 38 + MILESTONE_PADDING
+                val visibleTop = getMilestoneVisibleTop()
+                val visibleHeight = getMilestoneVisibleHeight()
+                val startY = visibleTop + MILESTONE_PADDING - milestoneScroll
                 val contentWidth = GUI_WIDTH - PADDING * 2
 
-                for ((index, milestone) in Milestone.entries.withIndex()) {
-                    val rowY = startY + index * MILESTONE_ROW_HEIGHT
-                    if (mouseX >= startX && mouseX < startX + contentWidth &&
-                        mouseY >= rowY && mouseY < rowY + MILESTONE_ROW_HEIGHT - 2
-                    ) {
-                        val unlocked = milestone.id in data.unlockedMilestones
-                        if (unlocked) {
-                            val newId = if (data.activeTitle == milestone.id) "" else milestone.id
-                            PacketDistributor.sendToServer(TitleSelectPayload(newId))
+                if (mouseY >= visibleTop && mouseY < visibleTop + visibleHeight) {
+                    for ((index, milestone) in Milestone.entries.withIndex()) {
+                        val rowY = startY + index * MILESTONE_ROW_HEIGHT
+                        if (mouseX >= startX && mouseX < startX + contentWidth &&
+                            mouseY >= rowY && mouseY < rowY + MILESTONE_ROW_HEIGHT - 2
+                        ) {
+                            val unlocked = milestone.id in data.unlockedMilestones
+                            if (unlocked) {
+                                val newId = if (data.activeTitle == milestone.id) "" else milestone.id
+                                PacketDistributor.sendToServer(TitleSelectPayload(newId))
+                            }
+                            return true
                         }
-                        return true
                     }
                 }
             }
         }
         return super.mouseClicked(mouseX, mouseY, button)
+    }
+
+    override fun mouseScrolled(mouseX: Double, mouseY: Double, scrollX: Double, scrollY: Double): Boolean {
+        if (showTitleTab) {
+            milestoneScroll = (milestoneScroll - (scrollY * 12).toInt()).coerceIn(0, getMilestoneMaxScroll())
+            return true
+        }
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY)
     }
 
     override fun isPauseScreen(): Boolean = false
