@@ -36,6 +36,8 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
+import com.juyoung.estherserver.sleep.SleepHandler
+import net.minecraft.world.level.GameRules
 import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
 import java.util.function.Consumer
@@ -224,6 +226,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModDataComponents.DATA_COMPONENTS.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
+        NeoForge.EVENT_BUS.register(SleepHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
         }
@@ -247,6 +250,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     @SubscribeEvent
     fun onServerStarting(event: ServerStartingEvent) {
         LOGGER.info("Esther Server is starting!")
+
+        val server = event.server
+        server.gameRules.getRule(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE).set(0, server)
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = [Dist.CLIENT])

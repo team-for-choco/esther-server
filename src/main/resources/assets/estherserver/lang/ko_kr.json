@@ -22,5 +22,7 @@
   "item.estherserver.spinach": "시금치",
   "quality.estherserver.common": "일반",
   "quality.estherserver.fine": "고급",
-  "quality.estherserver.rare": "희귀"
+  "quality.estherserver.rare": "희귀",
+  "message.estherserver.player_sleeping": "%s님이 잠자리에 들었습니다 (%s/%s)",
+  "message.estherserver.good_morning": "좋은 아침입니다!"
 }
