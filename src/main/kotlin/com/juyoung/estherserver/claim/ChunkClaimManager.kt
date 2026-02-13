@@ -7,10 +7,10 @@ import java.util.UUID
 
 object ChunkClaimManager {
 
-    enum class ClaimResult {
-        SUCCESS,
-        ALREADY_OWNED_BY_SELF,
-        OWNED_BY_OTHER
+    sealed class ClaimResult {
+        data object SUCCESS : ClaimResult()
+        data object ALREADY_OWNED_BY_SELF : ClaimResult()
+        data class OWNED_BY_OTHER(val ownerName: String) : ClaimResult()
     }
 
     fun claim(player: ServerPlayer, chunkPos: ChunkPos): ClaimResult {
@@ -21,7 +21,7 @@ object ChunkClaimManager {
             return if (existing.ownerUUID == player.uuid) {
                 ClaimResult.ALREADY_OWNED_BY_SELF
             } else {
-                ClaimResult.OWNED_BY_OTHER
+                ClaimResult.OWNED_BY_OTHER(existing.ownerName)
             }
         }
 

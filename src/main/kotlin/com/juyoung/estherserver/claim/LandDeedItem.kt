@@ -6,7 +6,6 @@ import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
 
@@ -21,7 +20,7 @@ class LandDeedItem(properties: Properties) : Item(properties) {
         val result = ChunkClaimManager.claim(serverPlayer, chunkPos)
 
         when (result) {
-            ChunkClaimManager.ClaimResult.SUCCESS -> {
+            is ChunkClaimManager.ClaimResult.SUCCESS -> {
                 serverPlayer.getItemInHand(hand).shrink(1)
                 serverPlayer.displayClientMessage(
                     Component.translatable(
@@ -31,17 +30,16 @@ class LandDeedItem(properties: Properties) : Item(properties) {
                     ), false
                 )
             }
-            ChunkClaimManager.ClaimResult.ALREADY_OWNED_BY_SELF -> {
+            is ChunkClaimManager.ClaimResult.ALREADY_OWNED_BY_SELF -> {
                 serverPlayer.displayClientMessage(
                     Component.translatable("message.estherserver.claim_already_owned"), true
                 )
             }
-            ChunkClaimManager.ClaimResult.OWNED_BY_OTHER -> {
-                val claim = ChunkClaimManager.getClaimInfo(serverPlayer.serverLevel(), chunkPos)
+            is ChunkClaimManager.ClaimResult.OWNED_BY_OTHER -> {
                 serverPlayer.displayClientMessage(
                     Component.translatable(
                         "message.estherserver.claim_owned_by_other",
-                        claim?.ownerName ?: "?"
+                        result.ownerName
                     ), true
                 )
             }

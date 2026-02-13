@@ -152,21 +152,20 @@ object ClaimCommand {
                 Component.translatable("message.estherserver.claim_list_empty"), false
             )
         } else {
-            player.displayClientMessage(
-                Component.translatable(
-                    "message.estherserver.claim_list_header",
-                    claims.size.toString()
-                ), false
+            val message = Component.translatable(
+                "message.estherserver.claim_list_header",
+                claims.size.toString()
             )
             for ((chunkPos, _) in claims) {
-                player.displayClientMessage(
+                message.append(Component.literal("\n")).append(
                     Component.translatable(
                         "message.estherserver.claim_list_entry",
                         chunkPos.x.toString(),
                         chunkPos.z.toString()
-                    ), false
+                    )
                 )
             }
+            player.displayClientMessage(message, false)
         }
         return 1
     }

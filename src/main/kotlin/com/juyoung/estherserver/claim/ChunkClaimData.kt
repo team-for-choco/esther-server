@@ -102,10 +102,6 @@ class ChunkClaimData private constructor(
             return overworld.dataStorage.computeIfAbsent(factory, DATA_NAME)
         }
 
-        fun get(level: ServerLevel): ChunkClaimData {
-            val overworld = level.server.getLevel(Level.OVERWORLD)
-                ?: throw IllegalStateException("Overworld not loaded")
-            return overworld.dataStorage.computeIfAbsent(factory, DATA_NAME)
-        }
+        fun get(level: ServerLevel): ChunkClaimData = get(level.server)
     }
 }
