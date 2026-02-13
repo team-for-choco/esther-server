@@ -22,10 +22,10 @@
 - [x] `EstherServerMod.kt` 수정 (gamerule + 이벤트 등록)
 - [x] 번역 키 추가 (`ko_kr.json`, `en_us.json`)
 - [x] `./gradlew build` 확인
-- [ ] 커밋 & Push & PR
+- [x] 커밋 & Push & PR
 
 ## 인게임 테스트
-- [ ] `/gamerule playersSleepingPercentage` → 0 확인
-- [ ] 침대 눕기 → 채팅에 "X님이 잠자리에 들었습니다 (1/1)" 표시
-- [ ] 1명 수면으로 밤 넘어감 확인
-- [ ] 밤 넘긴 후 채팅에 "좋은 아침입니다!" 표시
+- [x] `/gamerule playersSleepingPercentage` → 0 확인
+- [x] 침대 눕기 → 채팅에 "X님이 잠자리에 들었습니다 (1/1)" 표시
+- [x] 1명 수면으로 밤 넘어감 확인
+- [x] 밤 넘긴 후 채팅에 "좋은 아침입니다!" 표시
