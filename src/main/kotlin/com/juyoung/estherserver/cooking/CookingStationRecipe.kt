@@ -30,7 +30,7 @@ class CookingStationRecipe(
 
     override fun placementInfo(): PlacementInfo = PlacementInfo.NOT_PLACEABLE
 
-    override fun recipeBookCategory(): RecipeBookCategory = ModCooking.COOKING_RECIPE_BOOK_CATEGORY.get()
+    override fun recipeBookCategory(): RecipeBookCategory = RecipeBookCategory()
 
     override fun getSerializer(): RecipeSerializer<CookingStationRecipe> = ModCooking.COOKING_STATION_RECIPE_SERIALIZER.get()
 

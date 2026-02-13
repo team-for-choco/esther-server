@@ -302,7 +302,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModCooking.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModCooking.RECIPE_TYPES.register(modEventBus)
         ModCooking.RECIPE_SERIALIZERS.register(modEventBus)
-        ModCooking.RECIPE_BOOK_CATEGORIES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)

@@ -2,7 +2,6 @@ package com.juyoung.estherserver.cooking
 
 import com.juyoung.estherserver.EstherServerMod
 import net.minecraft.core.registries.Registries
-import net.minecraft.world.item.crafting.RecipeBookCategory
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.block.entity.BlockEntityType
@@ -19,9 +18,6 @@ object ModCooking {
 
     val RECIPE_SERIALIZERS: DeferredRegister<RecipeSerializer<*>> =
         DeferredRegister.create(Registries.RECIPE_SERIALIZER, EstherServerMod.MODID)
-
-    val RECIPE_BOOK_CATEGORIES: DeferredRegister<RecipeBookCategory> =
-        DeferredRegister.create(Registries.RECIPE_BOOK_CATEGORY, EstherServerMod.MODID)
 
     val COOKING_STATION_BLOCK_ENTITY: DeferredHolder<BlockEntityType<*>, BlockEntityType<CookingStationBlockEntity>> =
         BLOCK_ENTITY_TYPES.register("cooking_station", Supplier {
@@ -42,8 +38,4 @@ object ModCooking {
             CookingStationRecipeSerializer()
         })
 
-    val COOKING_RECIPE_BOOK_CATEGORY: DeferredHolder<RecipeBookCategory, RecipeBookCategory> =
-        RECIPE_BOOK_CATEGORIES.register("cooking_station", Supplier {
-            RecipeBookCategory()
-        })
 }
