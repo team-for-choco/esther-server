@@ -92,5 +92,6 @@
   "message.estherserver.claim_list_header": "[Land] Owned chunks (%s):",
   "message.estherserver.claim_list_entry": "  - Chunk (%s, %s)",
 
-  "message.estherserver.cooking_not_ingredient": "This item is not a cooking ingredient."
+  "message.estherserver.cooking_not_ingredient": "This item is not a cooking ingredient.",
+  "message.estherserver.claim_protected_interact": "Protected area! (Interaction prohibited)"
 }

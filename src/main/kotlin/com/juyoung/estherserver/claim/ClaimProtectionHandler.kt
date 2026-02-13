@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.ChunkPos
 import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent
 import net.neoforged.neoforge.event.level.BlockEvent
 
 object ClaimProtectionHandler {
@@ -54,6 +55,25 @@ object ClaimProtectionHandler {
             serverPlayer.inventoryMenu.sendAllDataToRemote()
             serverPlayer.displayClientMessage(
                 Component.translatable("message.estherserver.claim_protected_place"), true
+            )
+        }
+    }
+
+    @SubscribeEvent
+    fun onRightClickBlock(event: PlayerInteractEvent.RightClickBlock) {
+        val player = event.entity
+        val level = player.level()
+        if (level.isClientSide) return
+        val serverLevel = level as? ServerLevel ?: return
+        val serverPlayer = player as? ServerPlayer ?: return
+
+        val chunkPos = ChunkPos(event.pos)
+        if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
+
+        if (!ChunkClaimManager.canModify(serverLevel, chunkPos, serverPlayer.uuid)) {
+            event.isCanceled = true
+            serverPlayer.displayClientMessage(
+                Component.translatable("message.estherserver.claim_protected_interact"), true
             )
         }
     }
