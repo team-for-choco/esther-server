@@ -36,6 +36,8 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
+import com.juyoung.estherserver.cooking.CookingStationBlock
+import com.juyoung.estherserver.cooking.ModCooking
 import com.juyoung.estherserver.daylight.DaylightHandler
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
@@ -207,6 +209,53 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             )
         )
 
+        // Cooking station
+        val COOKING_STATION: DeferredBlock<Block> = BLOCKS.registerBlock("cooking_station",
+            { properties -> CookingStationBlock(properties) },
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.WOOD)
+                .strength(-1.0f, 3600000.0f)
+                .noLootTable()
+        )
+        val COOKING_STATION_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("cooking_station", COOKING_STATION)
+
+        // Cooking dishes
+        val SPINACH_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "spinach_bibimbap", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(10)
+                    .saturationModifier(0.8f)
+                    .build()
+            )
+        )
+
+        val FISH_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "fish_stew", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(10)
+                    .saturationModifier(0.8f)
+                    .build()
+            )
+        )
+
+        val GIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "gimbap", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(12)
+                    .saturationModifier(0.9f)
+                    .build()
+            )
+        )
+
+        val HARVEST_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "harvest_bibimbap", Item.Properties().food(
+                FoodProperties.Builder()
+                    .nutrition(14)
+                    .saturationModifier(1.0f)
+                    .build()
+            )
+        )
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -231,6 +280,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(RED_PEPPER.get())
                         output.accept(SPINACH_SEEDS.get())
                         output.accept(SPINACH.get())
+                        output.accept(COOKING_STATION.get())
+                        output.accept(SPINACH_BIBIMBAP.get())
+                        output.accept(FISH_STEW.get())
+                        output.accept(GIMBAP.get())
+                        output.accept(HARVEST_BIBIMBAP.get())
                     }.build()
             })
     }
@@ -245,6 +299,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus)
         ModDataComponents.DATA_COMPONENTS.register(modEventBus)
         ENTITY_TYPES.register(modEventBus)
+        ModCooking.BLOCK_ENTITY_TYPES.register(modEventBus)
+        ModCooking.RECIPE_TYPES.register(modEventBus)
+        ModCooking.RECIPE_SERIALIZERS.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)

@@ -1,0 +1,12 @@
+{
+  "type": "estherserver:cooking_station",
+  "ingredients": [
+    "estherserver:cooked_test_fish",
+    "estherserver:red_pepper",
+    "estherserver:spinach"
+  ],
+  "result": {
+    "id": "estherserver:fish_stew",
+    "count": 1
+  }
+}

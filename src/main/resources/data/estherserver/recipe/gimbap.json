@@ -1,0 +1,12 @@
+{
+  "type": "estherserver:cooking_station",
+  "ingredients": [
+    "estherserver:cooked_rice",
+    "estherserver:cooked_test_fish",
+    "estherserver:spinach"
+  ],
+  "result": {
+    "id": "estherserver:gimbap",
+    "count": 1
+  }
+}
