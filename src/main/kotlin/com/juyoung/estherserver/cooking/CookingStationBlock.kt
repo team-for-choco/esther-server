@@ -62,6 +62,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         hand: InteractionHand,
         hitResult: BlockHitResult
     ): InteractionResult {
+        if (stack.isEmpty) return InteractionResult.TRY_WITH_EMPTY_HAND
         if (level.isClientSide) return InteractionResult.SUCCESS
 
         val blockEntity = level.getBlockEntity(pos) as? CookingStationBlockEntity
