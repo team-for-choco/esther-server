@@ -154,6 +154,7 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 | 2026-02-11 | [20260211_korean_crops.md](docs/20260211_korean_crops.md) | CHOCO-79 | 한국식 작물 추가 (쌀, 고추, 시금치) | 완료 |
 | 2026-02-11 | [20260211_cleanup_phase1.md](docs/20260211_cleanup_phase1.md) | CHOCO-80 | Phase 1 코드 정리 및 리팩토링 | 완료 |
 | 2026-02-12 | [20260212_sleeping_system.md](docs/20260212_sleeping_system.md) | CHOCO-81 | 슬리핑 시스템 구현 | 완료 |
+| 2026-02-13 | [20260213_daylight_extension.md](docs/20260213_daylight_extension.md) | CHOCO-82 | 낮 시간 연장 | 완료 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.

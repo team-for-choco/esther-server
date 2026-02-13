@@ -30,12 +30,17 @@ object Config {
             ::validateItemName
         )
 
+    private val DAYTIME_MULTIPLIER: ModConfigSpec.IntValue =
+        BUILDER.comment("Daytime duration multiplier (1 = vanilla, 3 = 3x longer daytime)")
+            .defineInRange("daytimeMultiplier", 3, 1, 10)
+
     val SPEC: ModConfigSpec = BUILDER.build()
 
     var logDirtBlock: Boolean = false
     var magicNumber: Int = 0
     lateinit var magicNumberIntroduction: String
     lateinit var items: Set<Item>
+    var daytimeMultiplier: Int = 3
 
     private fun validateItemName(obj: Any): Boolean {
         return obj is String && BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(obj))
@@ -52,5 +57,7 @@ object Config {
             .filter { BuiltInRegistries.ITEM.containsKey(it) }
             .map { BuiltInRegistries.ITEM.getValue(it) }
             .collect(Collectors.toSet())
+
+        daytimeMultiplier = DAYTIME_MULTIPLIER.get()
     }
 }
