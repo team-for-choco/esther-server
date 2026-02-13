@@ -10,6 +10,14 @@ import net.neoforged.neoforge.event.level.BlockEvent
 object ClaimProtectionHandler {
 
     private const val OP_LEVEL = 2
+    const val FAKE_PLAYER_NAME = "FakePlayer"
+
+    private fun canBypassProtection(player: ServerPlayer, level: ServerLevel, chunkPos: ChunkPos): Boolean {
+        if (!player.hasPermissions(OP_LEVEL)) return false
+        val claim = ChunkClaimManager.getClaimInfo(level, chunkPos) ?: return true
+        // fakeclaim은 OP도 우회 불가 (테스트용)
+        return claim.ownerName != FAKE_PLAYER_NAME
+    }
 
     @SubscribeEvent
     fun onBlockBreak(event: BlockEvent.BreakEvent) {
@@ -19,9 +27,9 @@ object ClaimProtectionHandler {
         val serverLevel = level as? ServerLevel ?: return
         val serverPlayer = player as? ServerPlayer ?: return
 
-        if (serverPlayer.hasPermissions(OP_LEVEL)) return
-
         val chunkPos = ChunkPos(event.pos)
+        if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
+
         if (!ChunkClaimManager.canModify(serverLevel, chunkPos, player.uuid)) {
             event.isCanceled = true
             serverPlayer.displayClientMessage(
@@ -38,9 +46,9 @@ object ClaimProtectionHandler {
         val serverLevel = level as? ServerLevel ?: return
         val serverPlayer = entity as? ServerPlayer ?: return
 
-        if (serverPlayer.hasPermissions(OP_LEVEL)) return
-
         val chunkPos = ChunkPos(event.pos)
+        if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
+
         if (!ChunkClaimManager.canModify(serverLevel, chunkPos, serverPlayer.uuid)) {
             event.isCanceled = true
             serverPlayer.displayClientMessage(

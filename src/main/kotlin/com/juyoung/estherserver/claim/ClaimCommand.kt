@@ -120,7 +120,7 @@ object ClaimCommand {
 
         data.setClaim(chunkPos, ChunkClaimEntry(
             ownerUUID = UUID.randomUUID(),
-            ownerName = "FakePlayer",
+            ownerName = ClaimProtectionHandler.FAKE_PLAYER_NAME,
             claimedAt = player.serverLevel().gameTime
         ))
         player.displayClientMessage(
