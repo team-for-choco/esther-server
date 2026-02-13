@@ -24,5 +24,8 @@
   "quality.estherserver.fine": "고급",
   "quality.estherserver.rare": "희귀",
   "message.estherserver.player_sleeping": "%s님이 잠자리에 들었습니다 (%s/%s)",
-  "message.estherserver.good_morning": "좋은 아침입니다!"
+  "message.estherserver.good_morning": "좋은 아침입니다!",
+  "entity.estherserver.seat": "좌석",
+  "key.categories.estherserver": "Esther Server",
+  "key.estherserver.sit": "앉기"
 }
