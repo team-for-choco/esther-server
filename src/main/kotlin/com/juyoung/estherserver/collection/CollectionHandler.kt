@@ -67,7 +67,7 @@ object CollectionHandler {
         data.register(key, gameTick)
         player.setData(ModCollection.COLLECTION_DATA.get(), data)
 
-        val entry = data.getEntry(key)!!
+        val entry = data.getEntry(key) ?: return true
         PacketDistributor.sendToPlayer(
             player,
             CollectionUpdatePayload(key, entry, data.getCompletedCount())

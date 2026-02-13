@@ -24,8 +24,7 @@ data class CollectionKey(
         fun fromNBT(tag: CompoundTag): CollectionKey {
             val item = ResourceLocation.parse(tag.getString("item"))
             val quality = if (tag.contains("quality")) {
-                val name = tag.getString("quality")
-                ItemQuality.entries.find { it.getSerializedName() == name }
+                ItemQuality.byName(tag.getString("quality"))
             } else null
             return CollectionKey(item, quality)
         }

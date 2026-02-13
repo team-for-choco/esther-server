@@ -28,6 +28,14 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         private val UNDISCOVERED_BG = 0xFF555555.toInt()
     }
 
+    private val tabs = listOf<Pair<CollectionCategory?, String>>(
+        null to "gui.estherserver.collection.tab.all",
+        CollectionCategory.FISH to CollectionCategory.FISH.translationKey,
+        CollectionCategory.CROPS to CollectionCategory.CROPS.translationKey,
+        CollectionCategory.MINERALS to CollectionCategory.MINERALS.translationKey,
+        CollectionCategory.COOKING to CollectionCategory.COOKING.translationKey
+    )
+
     private var guiLeft = 0
     private var guiTop = 0
     private var selectedCategory: CollectionCategory? = null
@@ -93,14 +101,6 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     }
 
     private fun renderTabs(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
-        val tabs = listOf<Pair<CollectionCategory?, String>>(
-            null to "gui.estherserver.collection.tab.all",
-            CollectionCategory.FISH to CollectionCategory.FISH.translationKey,
-            CollectionCategory.CROPS to CollectionCategory.CROPS.translationKey,
-            CollectionCategory.MINERALS to CollectionCategory.MINERALS.translationKey,
-            CollectionCategory.COOKING to CollectionCategory.COOKING.translationKey
-        )
-
         var tabX = guiLeft + PADDING
         val tabY = guiTop + 19
 
@@ -231,32 +231,17 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (button == 0) {
-            val tabs = listOf<CollectionCategory?>(
-                null,
-                CollectionCategory.FISH,
-                CollectionCategory.CROPS,
-                CollectionCategory.MINERALS,
-                CollectionCategory.COOKING
-            )
-            val tabTranslationKeys = listOf(
-                "gui.estherserver.collection.tab.all",
-                CollectionCategory.FISH.translationKey,
-                CollectionCategory.CROPS.translationKey,
-                CollectionCategory.MINERALS.translationKey,
-                CollectionCategory.COOKING.translationKey
-            )
-
             var tabX = guiLeft + PADDING
             val tabY = guiTop + 19
 
-            for (i in tabs.indices) {
-                val label = Component.translatable(tabTranslationKeys[i])
+            for ((category, translationKey) in tabs) {
+                val label = Component.translatable(translationKey)
                 val tabWidth = font.width(label) + 8
 
                 if (mouseX >= tabX && mouseX < tabX + tabWidth &&
                     mouseY >= tabY && mouseY < tabY + TAB_HEIGHT
                 ) {
-                    selectedCategory = tabs[i]
+                    selectedCategory = category
                     return true
                 }
                 tabX += tabWidth + TAB_GAP
@@ -268,11 +253,8 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     override fun isPauseScreen(): Boolean = false
 
     private fun getVisibleDefinitions(): List<CollectibleDefinition> {
-        return if (selectedCategory == null) {
-            CollectibleRegistry.getAllDefinitions()
-        } else {
-            CollectibleRegistry.getDefinitionsByCategory(selectedCategory!!)
-        }
+        val category = selectedCategory ?: return CollectibleRegistry.getAllDefinitions()
+        return CollectibleRegistry.getDefinitionsByCategory(category)
     }
 
     private fun getQualityColor(quality: ItemQuality?): Int {
