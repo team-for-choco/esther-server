@@ -15,7 +15,7 @@ class SeatEntity(entityType: EntityType<SeatEntity>, level: Level) : Entity(enti
     }
 
     override fun defineSynchedData(builder: SynchedEntityData.Builder) {
-        // 동기화 데이터 불필요
+        // 커스텀 동기화 데이터 불필요 (기본 데이터는 Entity 생성자에서 등록됨)
     }
 
     override fun readAdditionalSaveData(compound: CompoundTag) {
