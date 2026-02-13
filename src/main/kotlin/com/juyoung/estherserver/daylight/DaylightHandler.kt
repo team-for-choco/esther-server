@@ -9,6 +9,8 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent
 
 object DaylightHandler {
 
+    private const val TICKS_PER_DAY = 24000
+    private const val DAY_END_TICK = 12000
     private var tickCounter = 0
 
     @SubscribeEvent
@@ -21,9 +23,9 @@ object DaylightHandler {
         val multiplier = Config.daytimeMultiplier
         if (multiplier <= 1) return
 
-        val dayTime = level.dayTime % 24000
+        val dayTime = level.dayTime % TICKS_PER_DAY
 
-        if (dayTime in 0 until 12000) {
+        if (dayTime in 0 until DAY_END_TICK) {
             tickCounter++
             if (tickCounter % multiplier != 0) {
                 level.setDayTime(level.dayTime - 1)
