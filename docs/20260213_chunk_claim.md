@@ -48,16 +48,16 @@ ChunkClaimData (SavedData):
 - `/claim list` — 내 소유 청크 목록
 
 ## 작업 체크리스트
-- [ ] ChunkClaimData.kt — 데이터 모델 + SavedData 직렬화
-- [ ] ChunkClaimManager.kt — 비즈니스 로직 파사드
-- [ ] LandDeedItem.kt — 토지 증서 아이템
-- [ ] EstherServerMod.kt — 아이템 등록 + 크리에이티브 탭
-- [ ] 리소스 파일 — items/land_deed.json, models/item/land_deed.json
-- [ ] ClaimProtectionHandler.kt — 블록 보호 이벤트
-- [ ] ClaimCommand.kt — /claim 명령어
-- [ ] 번역 파일 업데이트
-- [ ] 빌드 확인
-- [ ] 문서/ROADMAP/CLAUDE.md 업데이트
+- [x] ChunkClaimData.kt — 데이터 모델 + SavedData 직렬화
+- [x] ChunkClaimManager.kt — 비즈니스 로직 파사드
+- [x] LandDeedItem.kt — 토지 증서 아이템
+- [x] EstherServerMod.kt — 아이템 등록 + 크리에이티브 탭
+- [x] 리소스 파일 — items/land_deed.json, models/item/land_deed.json
+- [x] ClaimProtectionHandler.kt — 블록 보호 이벤트
+- [x] ClaimCommand.kt — /claim 명령어
+- [x] 번역 파일 업데이트
+- [x] 빌드 확인
+- [x] 문서/ROADMAP/CLAUDE.md 업데이트
 
 ## 인게임 테스트
 - [ ] 크리에이티브 탭에 토지 증서 표시
