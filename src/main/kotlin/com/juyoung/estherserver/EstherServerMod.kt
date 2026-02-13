@@ -282,6 +282,13 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             LOGGER.info("Esther Server client setup")
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().user.name)
         }
+
+        @SubscribeEvent
+        fun onRegisterRenderers(event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers) {
+            event.registerEntityRenderer(SEAT_ENTITY.get()) { context ->
+                net.minecraft.client.renderer.entity.NoopRenderer(context)
+            }
+        }
     }
 
     private fun onItemTooltip(event: ItemTooltipEvent) {
