@@ -17,12 +17,11 @@ object SleepHandler {
         val level = player.level()
         if (level !is ServerLevel) return
 
-        val server = level.server
-        val allPlayers = server.playerList.players
-        val totalPlayers = allPlayers.count { !it.isSpectator }
-        val sleepingPlayers = allPlayers.count { it.isSleeping } + 1 // +1 for the player about to sleep
+        val playersInDimension = level.players()
+        val totalPlayers = playersInDimension.count { !it.isSpectator }
+        val sleepingPlayers = playersInDimension.count { it.isSleeping } + 1 // +1 for the player about to sleep
 
-        server.playerList.broadcastSystemMessage(
+        level.server.playerList.broadcastSystemMessage(
             Component.translatable(
                 "message.estherserver.player_sleeping",
                 player.displayName,
