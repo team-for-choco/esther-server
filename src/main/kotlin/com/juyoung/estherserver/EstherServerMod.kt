@@ -36,6 +36,7 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
+import com.juyoung.estherserver.daylight.DaylightHandler
 import com.juyoung.estherserver.sleep.SleepHandler
 import net.minecraft.world.level.GameRules
 import net.neoforged.fml.loading.FMLEnvironment
@@ -227,6 +228,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
+        NeoForge.EVENT_BUS.register(DaylightHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
         }
