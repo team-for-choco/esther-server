@@ -75,5 +75,20 @@
   "message.estherserver.title_list_header": "=== Milestone List ===",
   "message.estherserver.title_list_unlocked": "  \u2605 %s - %s",
   "message.estherserver.title_list_locked": "  \u2606 %s - %s",
-  "message.estherserver.title_list_locked_progress": "  \u2606 %s - %s (%s/%s)"
+  "message.estherserver.title_list_locked_progress": "  \u2606 %s - %s (%s/%s)",
+
+  "item.estherserver.land_deed": "Land Deed",
+  "message.estherserver.claim_success": "[Land] Claimed chunk (%s, %s)!",
+  "message.estherserver.claim_already_owned": "You already own this chunk.",
+  "message.estherserver.claim_owned_by_other": "This chunk is owned by %s.",
+  "message.estherserver.claim_protected_break": "Protected area! (Block breaking prohibited)",
+  "message.estherserver.claim_protected_place": "Protected area! (Block placing prohibited)",
+  "message.estherserver.claim_info_unclaimed": "[Land] Chunk (%s, %s): No owner",
+  "message.estherserver.claim_info_claimed": "[Land] Chunk (%s, %s): Owner %s",
+  "message.estherserver.claim_removed": "[Land] Released claim on chunk (%s, %s).",
+  "message.estherserver.claim_not_claimed": "This chunk is not claimed.",
+  "message.estherserver.claim_not_owner": "You do not own this chunk.",
+  "message.estherserver.claim_list_empty": "[Land] You don't own any chunks.",
+  "message.estherserver.claim_list_header": "[Land] Owned chunks (%s):",
+  "message.estherserver.claim_list_entry": "  - Chunk (%s, %s)"
 }

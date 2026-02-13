@@ -75,5 +75,20 @@
   "message.estherserver.title_list_header": "=== 마일스톤 목록 ===",
   "message.estherserver.title_list_unlocked": "  \u2605 %s - %s",
   "message.estherserver.title_list_locked": "  \u2606 %s - %s",
-  "message.estherserver.title_list_locked_progress": "  \u2606 %s - %s (%s/%s)"
+  "message.estherserver.title_list_locked_progress": "  \u2606 %s - %s (%s/%s)",
+
+  "item.estherserver.land_deed": "토지 증서",
+  "message.estherserver.claim_success": "[토지] 청크 (%s, %s)를 클레임했습니다!",
+  "message.estherserver.claim_already_owned": "이미 본인이 소유한 청크입니다.",
+  "message.estherserver.claim_owned_by_other": "이 청크는 %s님이 소유하고 있습니다.",
+  "message.estherserver.claim_protected_break": "보호된 구역입니다! (블록 파괴 금지)",
+  "message.estherserver.claim_protected_place": "보호된 구역입니다! (블록 설치 금지)",
+  "message.estherserver.claim_info_unclaimed": "[토지] 청크 (%s, %s): 소유자 없음",
+  "message.estherserver.claim_info_claimed": "[토지] 청크 (%s, %s): 소유자 %s",
+  "message.estherserver.claim_removed": "[토지] 청크 (%s, %s) 클레임을 해제했습니다.",
+  "message.estherserver.claim_not_claimed": "이 청크는 클레임되지 않았습니다.",
+  "message.estherserver.claim_not_owner": "본인이 소유한 청크가 아닙니다.",
+  "message.estherserver.claim_list_empty": "[토지] 소유 중인 청크가 없습니다.",
+  "message.estherserver.claim_list_header": "[토지] 소유 청크 목록 (%s개):",
+  "message.estherserver.claim_list_entry": "  - 청크 (%s, %s)"
 }
