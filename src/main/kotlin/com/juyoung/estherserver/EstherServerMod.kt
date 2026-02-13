@@ -36,6 +36,13 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
+import com.juyoung.estherserver.collection.CollectibleRegistry
+import com.juyoung.estherserver.collection.CollectionClientHandler
+import com.juyoung.estherserver.collection.CollectionHandler
+import com.juyoung.estherserver.collection.CollectionPedestalBlock
+import com.juyoung.estherserver.collection.CollectionSyncPayload
+import com.juyoung.estherserver.collection.CollectionUpdatePayload
+import com.juyoung.estherserver.collection.ModCollection
 import com.juyoung.estherserver.cooking.CookingStationBlock
 import com.juyoung.estherserver.cooking.ModCooking
 import com.juyoung.estherserver.daylight.DaylightHandler
@@ -256,6 +263,16 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             )
         )
 
+        // Collection pedestal
+        val COLLECTION_PEDESTAL: DeferredBlock<Block> = BLOCKS.registerBlock("collection_pedestal",
+            { properties -> CollectionPedestalBlock(properties) },
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.STONE)
+                .strength(-1.0f, 3600000.0f)
+                .noLootTable()
+        )
+        val COLLECTION_PEDESTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("collection_pedestal", COLLECTION_PEDESTAL)
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -285,6 +302,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(FISH_STEW.get())
                         output.accept(GIMBAP.get())
                         output.accept(HARVEST_BIBIMBAP.get())
+                        output.accept(COLLECTION_PEDESTAL.get())
                     }.build()
             })
     }
@@ -302,11 +320,13 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModCooking.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModCooking.RECIPE_TYPES.register(modEventBus)
         ModCooking.RECIPE_SERIALIZERS.register(modEventBus)
+        ModCollection.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
         NeoForge.EVENT_BUS.register(DaylightHandler)
         NeoForge.EVENT_BUS.register(SitHandler)
+        NeoForge.EVENT_BUS.register(CollectionHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -321,10 +341,21 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     SitHandler.handleSitOnGround(context.player())
                 }
             }
+            .playToClient(CollectionSyncPayload.TYPE, CollectionSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    CollectionClientHandler.handleSync(payload)
+                }
+            }
+            .playToClient(CollectionUpdatePayload.TYPE, CollectionUpdatePayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    CollectionClientHandler.handleUpdate(payload)
+                }
+            }
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {
         LOGGER.info("Esther Server mod initialized!")
+        CollectibleRegistry.init()
 
         if (Config.logDirtBlock) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT))
@@ -356,6 +387,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         @SubscribeEvent
         fun onRegisterKeyMappings(event: net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent) {
             event.register(ModKeyBindings.SIT_KEY)
+            event.register(ModKeyBindings.COLLECTION_KEY)
         }
 
         @SubscribeEvent
