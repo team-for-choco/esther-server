@@ -1,5 +1,7 @@
 package com.juyoung.estherserver.claim
 
+import com.juyoung.estherserver.collection.CollectionPedestalBlock
+import com.juyoung.estherserver.cooking.CookingStationBlock
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -66,6 +68,10 @@ object ClaimProtectionHandler {
         if (level.isClientSide) return
         val serverLevel = level as? ServerLevel ?: return
         val serverPlayer = player as? ServerPlayer ?: return
+
+        // 공용 블록은 클레임과 무관하게 상호작용 허용
+        val block = serverLevel.getBlockState(event.pos).block
+        if (block is CookingStationBlock || block is CollectionPedestalBlock) return
 
         val chunkPos = ChunkPos(event.pos)
         if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
