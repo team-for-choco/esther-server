@@ -36,5 +36,18 @@
   "message.estherserver.ingredient_added": "재료 투입 (%s개)",
   "message.estherserver.cooking_station_full": "더 이상 재료를 넣을 수 없습니다!",
   "message.estherserver.cooking_success": "요리 완성!",
-  "message.estherserver.cooking_failed": "요리에 실패했습니다..."
+  "message.estherserver.cooking_failed": "요리에 실패했습니다...",
+  "block.estherserver.collection_pedestal": "도감대",
+  "key.estherserver.collection": "도감 열기",
+  "gui.estherserver.collection.title": "도감",
+  "gui.estherserver.collection.tab.all": "전체",
+  "gui.estherserver.collection.category.fish": "생선",
+  "gui.estherserver.collection.category.crops": "농산물",
+  "gui.estherserver.collection.category.minerals": "광물",
+  "gui.estherserver.collection.category.cooking": "요리",
+  "gui.estherserver.collection.progress": "진행도: %s/%s (%s%%)",
+  "message.estherserver.collection_registered": "[도감] %s을(를) 등록했습니다! (%s/%s)",
+  "message.estherserver.collection_not_collectible": "이 아이템은 도감에 등록할 수 없습니다.",
+  "message.estherserver.collection_invalid_quality": "등급이 없는 아이템은 등록할 수 없습니다.",
+  "message.estherserver.collection_already_registered": "이미 등록된 아이템입니다."
 }

@@ -26,7 +26,10 @@ enum class ItemQuality(
             { entries[it] }, { it.ordinal }
         )
 
+        private val BY_NAME: Map<String, ItemQuality> = entries.associateBy { it.getSerializedName() }
         private val TOTAL_WEIGHT = entries.sumOf { it.weight }
+
+        fun byName(name: String): ItemQuality? = BY_NAME[name]
 
         fun randomQuality(random: RandomSource): ItemQuality {
             var roll = random.nextInt(TOTAL_WEIGHT)

@@ -36,5 +36,18 @@
   "message.estherserver.ingredient_added": "Ingredient added (%s)",
   "message.estherserver.cooking_station_full": "Cannot add more ingredients!",
   "message.estherserver.cooking_success": "Cooking complete!",
-  "message.estherserver.cooking_failed": "Cooking failed..."
+  "message.estherserver.cooking_failed": "Cooking failed...",
+  "block.estherserver.collection_pedestal": "Collection Pedestal",
+  "key.estherserver.collection": "Open Collection",
+  "gui.estherserver.collection.title": "Collection",
+  "gui.estherserver.collection.tab.all": "All",
+  "gui.estherserver.collection.category.fish": "Fish",
+  "gui.estherserver.collection.category.crops": "Crops",
+  "gui.estherserver.collection.category.minerals": "Minerals",
+  "gui.estherserver.collection.category.cooking": "Cooking",
+  "gui.estherserver.collection.progress": "Progress: %s/%s (%s%%)",
+  "message.estherserver.collection_registered": "[Collection] Registered %s! (%s/%s)",
+  "message.estherserver.collection_not_collectible": "This item cannot be registered.",
+  "message.estherserver.collection_invalid_quality": "This item has no quality grade.",
+  "message.estherserver.collection_already_registered": "Already registered."
 }
