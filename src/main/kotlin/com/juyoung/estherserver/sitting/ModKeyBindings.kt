@@ -12,7 +12,7 @@ object ModKeyBindings {
     val SIT_KEY = KeyMapping(
         "key.estherserver.sit",
         InputConstants.Type.KEYSYM,
-        GLFW.GLFW_KEY_X,
+        GLFW.GLFW_KEY_V,
         "key.categories.estherserver"
     )
 
