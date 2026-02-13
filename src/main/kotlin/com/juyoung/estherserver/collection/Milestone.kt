@@ -55,8 +55,8 @@ enum class Milestone(
         titleKey = "milestone.estherserver.half_complete.title",
         descriptionKey = "milestone.estherserver.half_complete.desc",
         color = ChatFormatting.LIGHT_PURPLE,
-        check = { data -> data.getCompletedCount() >= 23 },
-        progressProvider = { data -> data.getCompletedCount().coerceAtMost(23) to 23 }
+        check = { data -> data.getCompletedCount() >= CollectibleRegistry.getTotalCount() / 2 },
+        progressProvider = { data -> data.getCompletedCount().coerceAtMost(CollectibleRegistry.getTotalCount() / 2) to CollectibleRegistry.getTotalCount() / 2 }
     ),
     ALL_COMPLETE(
         id = "all_complete",
