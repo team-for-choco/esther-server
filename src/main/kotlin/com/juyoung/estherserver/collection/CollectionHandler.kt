@@ -90,6 +90,74 @@ object CollectionHandler {
             1.0f, 1.0f
         )
 
+        checkMilestones(player, data)
+
         return true
+    }
+
+    private fun checkMilestones(player: ServerPlayer, data: CollectionData) {
+        var changed = false
+        for (milestone in Milestone.entries) {
+            if (milestone.id in data.unlockedMilestones) continue
+            if (!milestone.check(data)) continue
+
+            data.unlockedMilestones.add(milestone.id)
+            changed = true
+
+            val titleName = Component.translatable(milestone.titleKey)
+            val server = player.server
+            server.playerList.broadcastSystemMessage(
+                Component.translatable(
+                    "message.estherserver.milestone_achieved",
+                    player.displayName, titleName
+                ),
+                false
+            )
+
+            player.level().playSound(
+                null, player.blockPosition(),
+                SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS,
+                1.0f, 2.0f
+            )
+        }
+        if (changed) {
+            player.setData(ModCollection.COLLECTION_DATA.get(), data)
+            syncToClient(player)
+        }
+    }
+
+    fun handleTitleSelect(player: ServerPlayer, milestoneId: String) {
+        val data = player.getData(ModCollection.COLLECTION_DATA.get())
+
+        if (milestoneId.isEmpty()) {
+            data.activeTitle = null
+            player.setData(ModCollection.COLLECTION_DATA.get(), data)
+            syncToClient(player)
+            player.refreshDisplayName()
+            player.refreshTabListName()
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.title_cleared"), false
+            )
+            return
+        }
+
+        val milestone = Milestone.byId(milestoneId)
+        if (milestone == null || milestoneId !in data.unlockedMilestones) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.title_not_unlocked"), false
+            )
+            return
+        }
+
+        data.activeTitle = milestoneId
+        player.setData(ModCollection.COLLECTION_DATA.get(), data)
+        syncToClient(player)
+        player.refreshDisplayName()
+        player.refreshTabListName()
+
+        val titleName = Component.translatable(milestone.titleKey)
+        player.displayClientMessage(
+            Component.translatable("message.estherserver.title_selected", titleName), false
+        )
     }
 }
