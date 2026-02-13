@@ -68,7 +68,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 EntityType.Builder.of(::SeatEntity, MobCategory.MISC)
                     .sized(0.0f, 0.0f)
                     .noSummon()
-                    .noSave()
                     .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
             })
 

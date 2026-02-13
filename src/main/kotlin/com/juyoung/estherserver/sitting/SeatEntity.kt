@@ -18,8 +18,15 @@ class SeatEntity(entityType: EntityType<SeatEntity>, level: Level) : Entity(enti
         // 커스텀 동기화 데이터 불필요 (기본 데이터는 Entity 생성자에서 등록됨)
     }
 
+    override fun tick() {
+        super.tick()
+        if (!level().isClientSide && passengers.isEmpty()) {
+            discard()
+        }
+    }
+
     override fun readAdditionalSaveData(compound: CompoundTag) {
-        // 비저장 — 서버 재시작 시 자동 정리
+        // 비저장 — 로드 후 tick()에서 탑승자 없으면 자동 제거
     }
 
     override fun addAdditionalSaveData(compound: CompoundTag) {
