@@ -17,8 +17,8 @@ import net.neoforged.neoforge.event.level.BlockEvent
 object SitHandler {
 
     private val LOGGER = LogUtils.getLogger()
-    private const val LOWER_SEAT_Y_OFFSET = 0.3
-    private const val UPPER_SEAT_Y_OFFSET = 0.8
+    private const val LOWER_SEAT_Y_OFFSET = 0.5
+    private const val UPPER_SEAT_Y_OFFSET = 1.0
 
     @SubscribeEvent
     fun onRightClickBlock(event: PlayerInteractEvent.RightClickBlock) {
