@@ -1,18 +1,23 @@
 package com.juyoung.estherserver.cooking
 
+import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.quality.ModDataComponents
 import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.particles.ParticleTypes
+import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
+import net.minecraft.tags.TagKey
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
@@ -31,6 +36,11 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         val CODEC: MapCodec<CookingStationBlock> = simpleCodec(::CookingStationBlock)
         val FACING: EnumProperty<Direction> = HorizontalDirectionalBlock.FACING
         private const val MAX_INGREDIENTS = 4
+
+        val COOKING_INGREDIENT_TAG: TagKey<Item> = TagKey.create(
+            Registries.ITEM,
+            ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "cooking_ingredient")
+        )
     }
 
     init {
@@ -65,10 +75,20 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         if (stack.isEmpty) return InteractionResult.TRY_WITH_EMPTY_HAND
         if (level.isClientSide) return InteractionResult.SUCCESS
 
+        // 요리 재료 태그 검증
+        if (!stack.`is`(COOKING_INGREDIENT_TAG)) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.cooking_not_ingredient"), true
+            )
+            return InteractionResult.FAIL
+        }
+
         val blockEntity = level.getBlockEntity(pos) as? CookingStationBlockEntity
             ?: return InteractionResult.FAIL
 
-        if (blockEntity.getIngredientCount() >= MAX_INGREDIENTS) {
+        val playerUUID = player.uuid
+
+        if (blockEntity.getIngredientCount(playerUUID) >= MAX_INGREDIENTS) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_station_full"), true
             )
@@ -78,7 +98,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         // Store the ingredient (with quality data)
         val ingredientCopy = stack.copy()
         ingredientCopy.count = 1
-        blockEntity.addIngredient(ingredientCopy)
+        blockEntity.addIngredient(playerUUID, ingredientCopy)
 
         // Consume one item from player
         stack.shrink(1)
@@ -92,7 +112,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         )
         level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.8f, 1.2f)
 
-        val count = blockEntity.getIngredientCount()
+        val count = blockEntity.getIngredientCount(playerUUID)
         player.displayClientMessage(
             Component.translatable("message.estherserver.ingredient_added", count), true
         )
@@ -112,17 +132,19 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         val blockEntity = level.getBlockEntity(pos) as? CookingStationBlockEntity
             ?: return InteractionResult.FAIL
 
-        if (blockEntity.getIngredientCount() == 0) {
+        val playerUUID = player.uuid
+
+        if (blockEntity.getIngredientCount(playerUUID) == 0) {
             return InteractionResult.PASS
         }
 
         val serverLevel = level as ServerLevel
-        val recipeResult = CookingRecipeMatcher.findMatchingRecipe(level, blockEntity.getIngredients())
+        val recipeResult = CookingRecipeMatcher.findMatchingRecipe(level, blockEntity.getIngredients(playerUUID))
 
         if (recipeResult != null) {
             // Success: determine quality and spawn result
             val quality = CookingQualityCalculator.calculateQuality(
-                blockEntity.getIngredients(), level.random
+                blockEntity.getIngredients(playerUUID), level.random
             )
             val resultStack = recipeResult.copy()
             resultStack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
@@ -161,7 +183,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
             )
         }
 
-        blockEntity.clearIngredients()
+        blockEntity.clearIngredients(playerUUID)
         return InteractionResult.SUCCESS
     }
 }

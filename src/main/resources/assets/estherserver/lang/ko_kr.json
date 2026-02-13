@@ -90,5 +90,8 @@
   "message.estherserver.claim_not_owner": "본인이 소유한 청크가 아닙니다.",
   "message.estherserver.claim_list_empty": "[토지] 소유 중인 청크가 없습니다.",
   "message.estherserver.claim_list_header": "[토지] 소유 청크 목록 (%s개):",
-  "message.estherserver.claim_list_entry": "  - 청크 (%s, %s)"
+  "message.estherserver.claim_list_entry": "  - 청크 (%s, %s)",
+
+  "message.estherserver.cooking_not_ingredient": "이 아이템은 요리 재료가 아닙니다.",
+  "message.estherserver.claim_protected_interact": "보호된 구역입니다! (상호작용 금지)"
 }
