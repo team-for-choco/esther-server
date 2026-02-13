@@ -36,6 +36,9 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
+import com.juyoung.estherserver.claim.ClaimCommand
+import com.juyoung.estherserver.claim.ClaimProtectionHandler
+import com.juyoung.estherserver.claim.LandDeedItem
 import com.juyoung.estherserver.collection.ChatTitleHandler
 import com.juyoung.estherserver.collection.CollectibleRegistry
 import com.juyoung.estherserver.collection.CollectionClientHandler
@@ -277,6 +280,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         )
         val COLLECTION_PEDESTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("collection_pedestal", COLLECTION_PEDESTAL)
 
+        // Land deed
+        val LAND_DEED: DeferredItem<Item> = ITEMS.registerItem("land_deed") { properties ->
+            LandDeedItem(properties.stacksTo(16).rarity(net.minecraft.world.item.Rarity.UNCOMMON))
+        }
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -307,6 +315,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(GIMBAP.get())
                         output.accept(HARVEST_BIBIMBAP.get())
                         output.accept(COLLECTION_PEDESTAL.get())
+                        output.accept(LAND_DEED.get())
                     }.build()
             })
     }
@@ -332,6 +341,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(SitHandler)
         NeoForge.EVENT_BUS.register(CollectionHandler)
         NeoForge.EVENT_BUS.register(ChatTitleHandler)
+        NeoForge.EVENT_BUS.register(ClaimProtectionHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -382,6 +392,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     @SubscribeEvent
     fun onRegisterCommands(event: RegisterCommandsEvent) {
         TitleCommand.register(event.dispatcher)
+        ClaimCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent
