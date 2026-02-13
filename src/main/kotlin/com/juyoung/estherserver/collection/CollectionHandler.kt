@@ -133,6 +133,8 @@ object CollectionHandler {
             data.activeTitle = null
             player.setData(ModCollection.COLLECTION_DATA.get(), data)
             syncToClient(player)
+            player.refreshDisplayName()
+            player.refreshTabListName()
             player.displayClientMessage(
                 Component.translatable("message.estherserver.title_cleared"), false
             )
@@ -150,6 +152,8 @@ object CollectionHandler {
         data.activeTitle = milestoneId
         player.setData(ModCollection.COLLECTION_DATA.get(), data)
         syncToClient(player)
+        player.refreshDisplayName()
+        player.refreshTabListName()
 
         val titleName = Component.translatable(milestone.titleKey)
         player.displayClientMessage(
