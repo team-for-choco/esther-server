@@ -52,13 +52,13 @@
 - [x] JIRA 이슈 생성 (CHOCO-84)
 - [x] 브랜치 생성 (feature/CHOCO-84)
 - [x] 문서 생성
-- [ ] ModCooking 등록 객체 + EstherServerMod 연동
-- [ ] CookingStationBlock + BlockEntity + 블록 리소스
-- [ ] CookingStationRecipe + Serializer + 레시피 JSON
-- [ ] 요리 아이템 등록 + 리소스
-- [ ] CookingQualityCalculator + 등급 부여 연동
-- [ ] 번역, 태그 업데이트
-- [ ] 빌드 확인
+- [x] ModCooking 등록 객체 + EstherServerMod 연동
+- [x] CookingStationBlock + BlockEntity + 블록 리소스
+- [x] CookingStationRecipe + Serializer + 레시피 JSON
+- [x] 요리 아이템 등록 + 리소스
+- [x] CookingQualityCalculator + 등급 부여 연동
+- [x] 번역, 태그 업데이트
+- [x] 빌드 확인
 
 ## 인게임 테스트
 - [ ] 조리대 크리에이티브 모드에서 획득
