@@ -10,6 +10,10 @@
     "estherserver:rice",
     "estherserver:cooked_rice",
     "estherserver:red_pepper",
-    "estherserver:spinach"
+    "estherserver:spinach",
+    "estherserver:spinach_bibimbap",
+    "estherserver:fish_stew",
+    "estherserver:gimbap",
+    "estherserver:harvest_bibimbap"
   ]
 }

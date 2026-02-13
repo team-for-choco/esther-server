@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "estherserver:block/cooking_station"
+  }
+}

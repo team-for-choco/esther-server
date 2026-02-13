@@ -46,11 +46,11 @@ class ItemQualityTest {
         }
 
         @Test
-        @DisplayName("has_quality 태그에 정확히 10개 아이템이 있어야 함")
+        @DisplayName("has_quality 태그에 정확히 14개 아이템이 있어야 함")
         fun hasQualityTagHasCorrectCount() {
             val tag = loadJsonResource("data/estherserver/tags/item/has_quality.json")
             val values = tag.getAsJsonArray("values")
-            assertEquals(10, values.size(), "등급 대상 아이템이 10개여야 함")
+            assertEquals(14, values.size(), "등급 대상 아이템이 14개여야 함")
         }
     }
 

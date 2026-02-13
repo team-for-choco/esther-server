@@ -24,5 +24,17 @@
   "quality.estherserver.fine": "Fine",
   "quality.estherserver.rare": "Rare",
   "message.estherserver.player_sleeping": "%s is now sleeping (%s/%s)",
-  "message.estherserver.good_morning": "Good morning!"
+  "message.estherserver.good_morning": "Good morning!",
+  "entity.estherserver.seat": "Seat",
+  "key.categories.estherserver": "Esther Server",
+  "key.estherserver.sit": "Sit",
+  "block.estherserver.cooking_station": "Cooking Station",
+  "item.estherserver.spinach_bibimbap": "Spinach Bibimbap",
+  "item.estherserver.fish_stew": "Fish Stew",
+  "item.estherserver.gimbap": "Gimbap",
+  "item.estherserver.harvest_bibimbap": "Harvest Bibimbap",
+  "message.estherserver.ingredient_added": "Ingredient added (%s)",
+  "message.estherserver.cooking_station_full": "Cannot add more ingredients!",
+  "message.estherserver.cooking_success": "Cooking complete!",
+  "message.estherserver.cooking_failed": "Cooking failed..."
 }

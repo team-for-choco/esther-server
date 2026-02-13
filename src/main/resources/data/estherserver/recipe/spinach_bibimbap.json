@@ -1,0 +1,12 @@
+{
+  "type": "estherserver:cooking_station",
+  "ingredients": [
+    "estherserver:cooked_rice",
+    "estherserver:spinach",
+    "estherserver:red_pepper"
+  ],
+  "result": {
+    "id": "estherserver:spinach_bibimbap",
+    "count": 1
+  }
+}

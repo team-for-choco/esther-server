@@ -27,5 +27,14 @@
   "message.estherserver.good_morning": "좋은 아침입니다!",
   "entity.estherserver.seat": "좌석",
   "key.categories.estherserver": "Esther Server",
-  "key.estherserver.sit": "앉기"
+  "key.estherserver.sit": "앉기",
+  "block.estherserver.cooking_station": "조리대",
+  "item.estherserver.spinach_bibimbap": "시금치비빔밥",
+  "item.estherserver.fish_stew": "생선찌개",
+  "item.estherserver.gimbap": "김밥",
+  "item.estherserver.harvest_bibimbap": "수확물비빔밥",
+  "message.estherserver.ingredient_added": "재료 투입 (%s개)",
+  "message.estherserver.cooking_station_full": "더 이상 재료를 넣을 수 없습니다!",
+  "message.estherserver.cooking_success": "요리 완성!",
+  "message.estherserver.cooking_failed": "요리에 실패했습니다..."
 }

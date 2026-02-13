@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "estherserver:block/cooking_station" },
+    "facing=south": { "model": "estherserver:block/cooking_station", "y": 180 },
+    "facing=west": { "model": "estherserver:block/cooking_station", "y": 270 },
+    "facing=east": { "model": "estherserver:block/cooking_station", "y": 90 }
+  }
+}
