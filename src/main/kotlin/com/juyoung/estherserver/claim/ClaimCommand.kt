@@ -1,12 +1,10 @@
 package com.juyoung.estherserver.claim
 
-import com.juyoung.estherserver.EstherServerMod
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.network.chat.Component
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ChunkPos
 import java.util.UUID
 
@@ -76,10 +74,6 @@ object ClaimCommand {
 
         when (result) {
             ChunkClaimManager.UnclaimResult.SUCCESS -> {
-                val deedStack = ItemStack(EstherServerMod.LAND_DEED.get())
-                if (!player.inventory.add(deedStack)) {
-                    player.drop(deedStack, false)
-                }
                 player.displayClientMessage(
                     Component.translatable(
                         "message.estherserver.claim_removed",
