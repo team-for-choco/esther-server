@@ -10,6 +10,8 @@ import net.minecraft.world.level.Level
 
 class SeatEntity(entityType: EntityType<SeatEntity>, level: Level) : Entity(entityType, level) {
 
+    private var loadedFromDisk = false
+
     init {
         noPhysics = true
     }
@@ -20,13 +22,13 @@ class SeatEntity(entityType: EntityType<SeatEntity>, level: Level) : Entity(enti
 
     override fun tick() {
         super.tick()
-        if (!level().isClientSide && passengers.isEmpty()) {
+        if (!level().isClientSide && (passengers.isEmpty() || loadedFromDisk)) {
             discard()
         }
     }
 
     override fun readAdditionalSaveData(compound: CompoundTag) {
-        // 비저장 — 로드 후 tick()에서 탑승자 없으면 자동 제거
+        loadedFromDisk = true
     }
 
     override fun addAdditionalSaveData(compound: CompoundTag) {
