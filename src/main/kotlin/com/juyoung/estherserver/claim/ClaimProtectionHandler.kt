@@ -51,6 +51,7 @@ object ClaimProtectionHandler {
 
         if (!ChunkClaimManager.canModify(serverLevel, chunkPos, serverPlayer.uuid)) {
             event.isCanceled = true
+            serverPlayer.inventoryMenu.broadcastChanges()
             serverPlayer.displayClientMessage(
                 Component.translatable("message.estherserver.claim_protected_place"), true
             )
