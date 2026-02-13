@@ -35,11 +35,11 @@
 - [x] DaylightHandler.kt 구현
 - [x] Config.kt에 daytimeMultiplier 추가
 - [x] EstherServerMod.kt에 핸들러 등록
-- [ ] `./gradlew build` 성공
-- [ ] 인게임 테스트
+- [x] `./gradlew build` 성공
+- [x] 인게임 테스트
 
 ## 인게임 테스트
-- [ ] `/time query daytime` 명령어로 낮에 틱 값이 천천히 증가하는지 확인
-- [ ] `/time query daytime` 명령어로 밤에는 정상 속도로 진행되는지 확인
-- [ ] `/time set day` 등 명령어 정상 동작 확인
-- [ ] 설정 파일에서 multiplier 변경 후 반영 확인
+- [x] `/time query daytime` 명령어로 낮에 틱 값이 천천히 증가하는지 확인
+- [x] `/time query daytime` 명령어로 밤에는 정상 속도로 진행되는지 확인
+- [x] `/time set day` 등 명령어 정상 동작 확인
+- [x] 설정 파일에서 multiplier 변경 후 반영 확인
