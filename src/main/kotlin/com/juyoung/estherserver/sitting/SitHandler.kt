@@ -76,11 +76,15 @@ object SitHandler {
         removeSeatAt(level, event.pos)
     }
 
+    private fun seatSearchArea(pos: BlockPos): AABB {
+        return AABB(pos).inflate(0.0, 0.5, 0.0)
+    }
+
     private fun hasSeatAt(level: Level, pos: BlockPos): Boolean {
-        return level.getEntitiesOfClass(SeatEntity::class.java, AABB(pos)).isNotEmpty()
+        return level.getEntitiesOfClass(SeatEntity::class.java, seatSearchArea(pos)).isNotEmpty()
     }
 
     private fun removeSeatAt(level: Level, pos: BlockPos) {
-        level.getEntitiesOfClass(SeatEntity::class.java, AABB(pos)).forEach { it.discard() }
+        level.getEntitiesOfClass(SeatEntity::class.java, seatSearchArea(pos)).forEach { it.discard() }
     }
 }
