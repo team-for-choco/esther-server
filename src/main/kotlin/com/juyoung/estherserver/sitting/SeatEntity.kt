@@ -10,8 +10,6 @@ import net.minecraft.world.level.Level
 
 class SeatEntity(entityType: EntityType<SeatEntity>, level: Level) : Entity(entityType, level) {
 
-    private var loadedFromDisk = false
-
     init {
         noPhysics = true
     }
@@ -22,18 +20,16 @@ class SeatEntity(entityType: EntityType<SeatEntity>, level: Level) : Entity(enti
 
     override fun tick() {
         super.tick()
-        if (!level().isClientSide && (passengers.isEmpty() || loadedFromDisk)) {
+        if (!level().isClientSide && passengers.isEmpty()) {
             discard()
         }
     }
 
-    override fun readAdditionalSaveData(compound: CompoundTag) {
-        loadedFromDisk = true
-    }
+    override fun shouldBeSaved(): Boolean = false
 
-    override fun addAdditionalSaveData(compound: CompoundTag) {
-        // 비저장
-    }
+    override fun readAdditionalSaveData(compound: CompoundTag) {}
+
+    override fun addAdditionalSaveData(compound: CompoundTag) {}
 
     override fun hurtServer(level: ServerLevel, source: DamageSource, amount: Float): Boolean {
         return false

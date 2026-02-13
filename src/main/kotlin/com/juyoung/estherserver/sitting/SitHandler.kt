@@ -38,9 +38,7 @@ object SitHandler {
         val block = state.block
 
         val seatY: Double = when {
-            block is StairBlock && state.getValue(StairBlock.HALF) == Half.BOTTOM -> {
-                pos.y + LOWER_SEAT_Y_OFFSET
-            }
+            block is StairBlock && state.getValue(StairBlock.HALF) == Half.BOTTOM ||
             block is SlabBlock && state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM -> {
                 pos.y + LOWER_SEAT_Y_OFFSET
             }

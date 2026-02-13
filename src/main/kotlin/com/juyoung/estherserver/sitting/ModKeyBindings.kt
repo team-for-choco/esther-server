@@ -19,7 +19,7 @@ object ModKeyBindings {
     @SubscribeEvent
     fun onClientTick(event: ClientTickEvent.Post) {
         while (SIT_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(SitPayload())
+            PacketDistributor.sendToServer(SitPayload)
         }
     }
 }
