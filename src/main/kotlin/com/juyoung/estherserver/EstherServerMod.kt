@@ -37,7 +37,11 @@ import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
 import com.juyoung.estherserver.daylight.DaylightHandler
+import com.juyoung.estherserver.sitting.SeatEntity
+import com.juyoung.estherserver.sitting.SitHandler
 import com.juyoung.estherserver.sleep.SleepHandler
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.MobCategory
 import net.minecraft.world.level.GameRules
 import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
@@ -55,6 +59,18 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val ITEMS: DeferredRegister.Items = DeferredRegister.createItems(MODID)
         val CREATIVE_MODE_TABS: DeferredRegister<CreativeModeTab> =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID)
+        val ENTITY_TYPES: DeferredRegister<EntityType<*>> =
+            DeferredRegister.create(Registries.ENTITY_TYPE, MODID)
+
+        // Seat entity
+        val SEAT_ENTITY: DeferredHolder<EntityType<*>, EntityType<SeatEntity>> =
+            ENTITY_TYPES.register("seat", java.util.function.Function { registryName ->
+                EntityType.Builder.of(::SeatEntity, MobCategory.MISC)
+                    .sized(0.0f, 0.0f)
+                    .noSummon()
+                    .noSave()
+                    .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
+            })
 
         // Custom fish - Test Fish
         val TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem("test_fish", Item.Properties())
@@ -225,10 +241,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         CREATIVE_MODE_TABS.register(modEventBus)
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus)
         ModDataComponents.DATA_COMPONENTS.register(modEventBus)
+        ENTITY_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
         NeoForge.EVENT_BUS.register(DaylightHandler)
+        NeoForge.EVENT_BUS.register(SitHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
         }
