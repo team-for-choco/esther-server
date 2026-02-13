@@ -3,6 +3,7 @@ package com.juyoung.estherserver.collection
 import com.juyoung.estherserver.quality.ItemQuality
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
+import net.minecraft.nbt.StringTag
 import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
@@ -84,7 +85,9 @@ data class CollectionEntry(
 }
 
 class CollectionData(
-    private val entries: MutableMap<CollectionKey, CollectionEntry> = mutableMapOf()
+    private val entries: MutableMap<CollectionKey, CollectionEntry> = mutableMapOf(),
+    val unlockedMilestones: MutableSet<String> = mutableSetOf(),
+    var activeTitle: String? = null
 ) {
     fun isComplete(key: CollectionKey): Boolean {
         val entry = entries[key] ?: return false
@@ -127,6 +130,17 @@ class CollectionData(
             list.add(entryTag)
         }
         tag.put("entries", list)
+
+        val milestoneList = ListTag()
+        for (ms in unlockedMilestones) {
+            milestoneList.add(StringTag.valueOf(ms))
+        }
+        tag.put("milestones", milestoneList)
+
+        if (activeTitle != null) {
+            tag.putString("activeTitle", activeTitle!!)
+        }
+
         return tag
     }
 
@@ -142,6 +156,15 @@ class CollectionData(
                     data.entries[key] = entry
                 }
             }
+            if (tag.contains("milestones")) {
+                val milestoneList = tag.getList("milestones", 8) // 8 = StringTag
+                for (i in 0 until milestoneList.size) {
+                    data.unlockedMilestones.add(milestoneList.getString(i))
+                }
+            }
+            if (tag.contains("activeTitle")) {
+                data.activeTitle = tag.getString("activeTitle")
+            }
             return data
         }
 
@@ -154,6 +177,14 @@ class CollectionData(
                     val entry = CollectionEntry.STREAM_CODEC.decode(buf)
                     data.entries[key] = entry
                 }
+                val milestoneCount = buf.readVarInt()
+                for (i in 0 until milestoneCount) {
+                    data.unlockedMilestones.add(buf.readUtf())
+                }
+                val hasActiveTitle = buf.readBoolean()
+                if (hasActiveTitle) {
+                    data.activeTitle = buf.readUtf()
+                }
                 return data
             }
 
@@ -162,6 +193,14 @@ class CollectionData(
                 for ((key, entry) in value.entries) {
                     CollectionKey.STREAM_CODEC.encode(buf, key)
                     CollectionEntry.STREAM_CODEC.encode(buf, entry)
+                }
+                buf.writeVarInt(value.unlockedMilestones.size)
+                for (ms in value.unlockedMilestones) {
+                    buf.writeUtf(ms)
+                }
+                buf.writeBoolean(value.activeTitle != null)
+                if (value.activeTitle != null) {
+                    buf.writeUtf(value.activeTitle!!)
                 }
             }
         }

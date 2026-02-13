@@ -117,11 +117,17 @@ CollectibleDefinition:
 - [x] 블록 리소스 (blockstate, model, item definition)
 - [x] 빌드 확인
 
-### Phase B (별도 이슈)
-- [ ] MilestoneDefinitions (마일스톤/칭호 정의)
-- [ ] TitleHandler (채팅 칭호 표시)
-- [ ] 도감 GUI에 마일스톤 탭 추가
-- [ ] 칭호 선택 기능
+### Phase B (CHOCO-86)
+- [x] Milestone.kt (마일스톤 7종 enum 정의, check() 함수)
+- [x] CollectionData 확장 (unlockedMilestones, activeTitle 필드 + NBT/StreamCodec)
+- [x] CollectionHandler 확장 (마일스톤 체크 로직, handleTitleSelect(), 서버 전체 공지)
+- [x] TitleSelectPayload (C→S 패킷, 칭호 선택/해제)
+- [x] ChatTitleHandler (NameFormat + TabListNameFormat 이벤트 핸들러)
+- [x] TitleCommand (/title select|clear|list 명령어)
+- [x] EstherServerMod 연동 (ChatTitleHandler, TitleSelectPayload, RegisterCommandsEvent)
+- [x] CollectionScreen 칭호 탭 (마일스톤 목록 렌더링, 클릭 선택/해제)
+- [x] 번역 파일 (~25개 키 추가: 마일스톤, 칭호, 메시지)
+- [x] 빌드 확인
 
 ## 인게임 테스트
 
@@ -154,3 +160,15 @@ CollectibleDefinition:
 - [x] 사망 후 리스폰 → 도감 데이터 유지 (G키로 확인)
 - [x] 로그아웃 후 재접속 → 도감 데이터 유지
 - [x] 차원 이동 (네더/엔드) → 도감 데이터 유지
+
+### Phase B: 마일스톤 + 칭호
+- [ ] 아이템 1종 등록 → "첫 발견" 마일스톤 서버 전체 공지
+- [ ] `/title list` → 달성/미달성 목록 출력 (진행률 포함)
+- [ ] `/title select first_discovery` → 채팅에 [초보 수집가] 표시
+- [ ] `/title clear` → 칭호 해제
+- [ ] G키 → 도감 GUI → 칭호 탭 표시
+- [ ] 칭호 탭에서 달성 마일스톤 클릭 → 칭호 선택
+- [ ] 칭호 탭에서 활성 칭호 재클릭 → 칭호 해제
+- [ ] 미달성 마일스톤 클릭 → 반응 없음
+- [ ] 탭 목록(TAB)에 칭호 표시 확인
+- [ ] 사망 후/재접속 → 마일스톤 + 칭호 유지

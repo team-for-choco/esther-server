@@ -36,6 +36,7 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
+import com.juyoung.estherserver.collection.ChatTitleHandler
 import com.juyoung.estherserver.collection.CollectibleRegistry
 import com.juyoung.estherserver.collection.CollectionClientHandler
 import com.juyoung.estherserver.collection.CollectionHandler
@@ -43,6 +44,8 @@ import com.juyoung.estherserver.collection.CollectionPedestalBlock
 import com.juyoung.estherserver.collection.CollectionSyncPayload
 import com.juyoung.estherserver.collection.CollectionUpdatePayload
 import com.juyoung.estherserver.collection.ModCollection
+import com.juyoung.estherserver.collection.TitleCommand
+import com.juyoung.estherserver.collection.TitleSelectPayload
 import com.juyoung.estherserver.cooking.CookingStationBlock
 import com.juyoung.estherserver.cooking.ModCooking
 import com.juyoung.estherserver.daylight.DaylightHandler
@@ -51,6 +54,7 @@ import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
 import com.juyoung.estherserver.sitting.SitPayload
 import com.juyoung.estherserver.sleep.SleepHandler
+import net.neoforged.neoforge.event.RegisterCommandsEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.MobCategory
@@ -327,6 +331,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(DaylightHandler)
         NeoForge.EVENT_BUS.register(SitHandler)
         NeoForge.EVENT_BUS.register(CollectionHandler)
+        NeoForge.EVENT_BUS.register(ChatTitleHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -351,6 +356,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     CollectionClientHandler.handleUpdate(payload)
                 }
             }
+            .playToServer(TitleSelectPayload.TYPE, TitleSelectPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    CollectionHandler.handleTitleSelect(player, payload.milestoneId)
+                }
+            }
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {
@@ -366,6 +377,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         Config.items.forEach(Consumer { item: Item ->
             LOGGER.info("ITEM >> {}", item.toString())
         })
+    }
+
+    @SubscribeEvent
+    fun onRegisterCommands(event: RegisterCommandsEvent) {
+        TitleCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent

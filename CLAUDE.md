@@ -158,6 +158,7 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 | 2026-02-13 | [20260213_sitting_system.md](docs/20260213_sitting_system.md) | CHOCO-83 | 앉기 기능 | 완료 |
 | 2026-02-13 | [20260213_cooking_system.md](docs/20260213_cooking_system.md) | CHOCO-84 | 요리 시스템 (Phase 2-1) | 완료 |
 | 2026-02-13 | [20260213_collection_system.md](docs/20260213_collection_system.md) | CHOCO-85 | 도감 시스템 Phase A (Phase 2-2) | 완료 |
+| 2026-02-13 | [20260213_collection_system.md](docs/20260213_collection_system.md) | CHOCO-86 | 도감 시스템 Phase B: 마일스톤 + 칭호 | 완료 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.

@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import net.neoforged.neoforge.network.PacketDistributor
 import java.util.Optional
 
 class CollectionScreen : Screen(Component.translatable("gui.estherserver.collection.title")) {
@@ -21,24 +22,33 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         private const val TAB_HEIGHT = 16
         private const val TAB_GAP = 2
 
+        private const val MILESTONE_ROW_HEIGHT = 24
+        private const val MILESTONE_PADDING = 4
+
         private val BG_COLOR = 0xFFC6C6C6.toInt()
         private val BG_DARK = 0xFF8B8B8B.toInt()
         private val SLOT_BG = 0xFF8B8B8B.toInt()
         private val SLOT_INNER = 0xFF373737.toInt()
         private val UNDISCOVERED_BG = 0xFF555555.toInt()
+
+        private const val TITLE_TAB_KEY = "gui.estherserver.collection.tab.title"
     }
 
-    private val tabs = listOf<Pair<CollectionCategory?, String>>(
-        null to "gui.estherserver.collection.tab.all",
-        CollectionCategory.FISH to CollectionCategory.FISH.translationKey,
-        CollectionCategory.CROPS to CollectionCategory.CROPS.translationKey,
-        CollectionCategory.MINERALS to CollectionCategory.MINERALS.translationKey,
-        CollectionCategory.COOKING to CollectionCategory.COOKING.translationKey
+    private data class TabEntry(val category: CollectionCategory?, val translationKey: String, val isTitleTab: Boolean = false)
+
+    private val tabs = listOf(
+        TabEntry(null, "gui.estherserver.collection.tab.all"),
+        TabEntry(CollectionCategory.FISH, CollectionCategory.FISH.translationKey),
+        TabEntry(CollectionCategory.CROPS, CollectionCategory.CROPS.translationKey),
+        TabEntry(CollectionCategory.MINERALS, CollectionCategory.MINERALS.translationKey),
+        TabEntry(CollectionCategory.COOKING, CollectionCategory.COOKING.translationKey),
+        TabEntry(null, TITLE_TAB_KEY, isTitleTab = true)
     )
 
     private var guiLeft = 0
     private var guiTop = 0
     private var selectedCategory: CollectionCategory? = null
+    private var showTitleTab = false
     private val itemCache = mutableMapOf<CollectionKey, ItemStack>()
 
     override fun init() {
@@ -67,27 +77,39 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         renderPanel(guiGraphics)
         renderTitle(guiGraphics)
         renderTabs(guiGraphics, mouseX, mouseY)
-        renderGrid(guiGraphics, mouseX, mouseY)
-        renderProgress(guiGraphics)
-        renderTooltips(guiGraphics, mouseX, mouseY)
+        if (showTitleTab) {
+            renderMilestones(guiGraphics, mouseX, mouseY)
+        } else {
+            renderGrid(guiGraphics, mouseX, mouseY)
+            renderProgress(guiGraphics)
+            renderTooltips(guiGraphics, mouseX, mouseY)
+        }
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        // Main background
         guiGraphics.fill(guiLeft, guiTop, guiLeft + GUI_WIDTH, guiTop + GUI_HEIGHT, BG_COLOR)
-        // Border
         guiGraphics.renderOutline(guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT, 0xFF000000.toInt())
-        // Inner dark area for grid
-        val gridY = guiTop + 38
-        val gridHeight = getVisibleDefinitions().size.let { count ->
-            val rows = (count + COLUMNS - 1) / COLUMNS
-            rows.coerceAtLeast(1) * SLOT_SIZE + 4
+
+        if (!showTitleTab) {
+            val gridY = guiTop + 38
+            val gridHeight = getVisibleDefinitions().size.let { count ->
+                val rows = (count + COLUMNS - 1) / COLUMNS
+                rows.coerceAtLeast(1) * SLOT_SIZE + 4
+            }
+            guiGraphics.fill(
+                guiLeft + PADDING - 1, gridY - 1,
+                guiLeft + PADDING + COLUMNS * SLOT_SIZE + 1, gridY + gridHeight + 1,
+                BG_DARK
+            )
+        } else {
+            val contentY = guiTop + 38
+            val contentHeight = Milestone.entries.size * MILESTONE_ROW_HEIGHT + MILESTONE_PADDING * 2
+            guiGraphics.fill(
+                guiLeft + PADDING - 1, contentY - 1,
+                guiLeft + GUI_WIDTH - PADDING + 1, contentY + contentHeight + 1,
+                BG_DARK
+            )
         }
-        guiGraphics.fill(
-            guiLeft + PADDING - 1, gridY - 1,
-            guiLeft + PADDING + COLUMNS * SLOT_SIZE + 1, gridY + gridHeight + 1,
-            BG_DARK
-        )
     }
 
     private fun renderTitle(guiGraphics: GuiGraphics) {
@@ -104,10 +126,10 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         var tabX = guiLeft + PADDING
         val tabY = guiTop + 19
 
-        for ((category, translationKey) in tabs) {
-            val label = Component.translatable(translationKey)
+        for (tab in tabs) {
+            val label = Component.translatable(tab.translationKey)
             val tabWidth = font.width(label) + 8
-            val isSelected = selectedCategory == category
+            val isSelected = if (tab.isTitleTab) showTitleTab else (!showTitleTab && selectedCategory == tab.category)
             val isHovered = mouseX >= tabX && mouseX < tabX + tabWidth &&
                 mouseY >= tabY && mouseY < tabY + TAB_HEIGHT
 
@@ -128,6 +150,61 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         }
     }
 
+    private fun renderMilestones(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
+        val data = CollectionClientHandler.cachedData
+        val startX = guiLeft + PADDING
+        val startY = guiTop + 38 + MILESTONE_PADDING
+        val contentWidth = GUI_WIDTH - PADDING * 2
+
+        for ((index, milestone) in Milestone.entries.withIndex()) {
+            val rowY = startY + index * MILESTONE_ROW_HEIGHT
+            val unlocked = milestone.id in data.unlockedMilestones
+            val isActive = data.activeTitle == milestone.id
+            val isHovered = mouseX >= startX && mouseX < startX + contentWidth &&
+                mouseY >= rowY && mouseY < rowY + MILESTONE_ROW_HEIGHT - 2
+
+            // Row background
+            val rowBg = when {
+                isActive -> 0xFF4A7A4A.toInt()
+                unlocked && isHovered -> 0xFF5A5A5A.toInt()
+                unlocked -> 0xFF4A4A4A.toInt()
+                else -> 0xFF3A3A3A.toInt()
+            }
+            guiGraphics.fill(startX, rowY, startX + contentWidth, rowY + MILESTONE_ROW_HEIGHT - 2, rowBg)
+
+            // Star icon
+            val starText = if (unlocked) "\u2605" else "\u2606"
+            val starColor = if (unlocked) 0xFFFFD700.toInt() else 0xFF666666.toInt()
+            guiGraphics.drawString(font, starText, startX + 3, rowY + 3, starColor)
+
+            // Title name
+            val titleName = Component.translatable(milestone.titleKey)
+            val titleColor = if (unlocked) 0xFFFFFFFF.toInt() else 0xFF888888.toInt()
+            guiGraphics.drawString(font, titleName, startX + 14, rowY + 3, titleColor)
+
+            // Progress / condition on second line
+            if (unlocked) {
+                val condText = Component.translatable(milestone.descriptionKey)
+                guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFFAAAAAA.toInt())
+            } else {
+                val progress = milestone.progressProvider?.invoke(data)
+                if (progress != null) {
+                    val condText = Component.translatable(milestone.descriptionKey)
+                        .append(Component.literal(" (${progress.first}/${progress.second})"))
+                    guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFF777777.toInt())
+                } else {
+                    val condText = Component.translatable(milestone.descriptionKey)
+                    guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFF777777.toInt())
+                }
+            }
+
+            // Active check mark
+            if (isActive) {
+                guiGraphics.drawString(font, "\u2714", startX + contentWidth - 12, rowY + 7, 0xFF55FF55.toInt())
+            }
+        }
+    }
+
     private fun renderGrid(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
         val defs = getVisibleDefinitions()
         val data = CollectionClientHandler.cachedData
@@ -143,18 +220,15 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             val isDiscovered = data.isComplete(def.key)
 
             if (isDiscovered) {
-                // Quality-colored border
                 val qualityColor = getQualityColor(def.key.quality)
                 guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, qualityColor)
                 guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, SLOT_INNER)
 
-                // Render item icon
                 val stack = itemCache[def.key]
                 if (stack != null) {
                     guiGraphics.renderItem(stack, slotX + 1, slotY + 1)
                 }
             } else {
-                // Undiscovered slot
                 guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0xFF666666.toInt())
                 guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, UNDISCOVERED_BG)
                 guiGraphics.drawCenteredString(font, "?", slotX + 9, slotY + 5, 0xFF888888.toInt())
@@ -172,16 +246,13 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         val rows = (defs.size + COLUMNS - 1) / COLUMNS
         val progressY = guiTop + 38 + rows.coerceAtLeast(1) * SLOT_SIZE + 8
 
-        // Progress bar background
         val barX = guiLeft + PADDING
         val barWidth = COLUMNS * SLOT_SIZE
         guiGraphics.fill(barX, progressY, barX + barWidth, progressY + 10, BG_DARK)
 
-        // Progress bar fill
         val fillWidth = if (total > 0) barWidth * completed / total else 0
         guiGraphics.fill(barX, progressY, barX + fillWidth, progressY + 10, 0xFF55AA55.toInt())
 
-        // Progress text
         val progressText = Component.translatable(
             "gui.estherserver.collection.progress", completed, total, percentage
         )
@@ -231,20 +302,49 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (button == 0) {
+            // Tab click handling
             var tabX = guiLeft + PADDING
             val tabY = guiTop + 19
 
-            for ((category, translationKey) in tabs) {
-                val label = Component.translatable(translationKey)
+            for (tab in tabs) {
+                val label = Component.translatable(tab.translationKey)
                 val tabWidth = font.width(label) + 8
 
                 if (mouseX >= tabX && mouseX < tabX + tabWidth &&
                     mouseY >= tabY && mouseY < tabY + TAB_HEIGHT
                 ) {
-                    selectedCategory = category
+                    if (tab.isTitleTab) {
+                        showTitleTab = true
+                        selectedCategory = null
+                    } else {
+                        showTitleTab = false
+                        selectedCategory = tab.category
+                    }
                     return true
                 }
                 tabX += tabWidth + TAB_GAP
+            }
+
+            // Milestone row click handling (title tab)
+            if (showTitleTab) {
+                val data = CollectionClientHandler.cachedData
+                val startX = guiLeft + PADDING
+                val startY = guiTop + 38 + MILESTONE_PADDING
+                val contentWidth = GUI_WIDTH - PADDING * 2
+
+                for ((index, milestone) in Milestone.entries.withIndex()) {
+                    val rowY = startY + index * MILESTONE_ROW_HEIGHT
+                    if (mouseX >= startX && mouseX < startX + contentWidth &&
+                        mouseY >= rowY && mouseY < rowY + MILESTONE_ROW_HEIGHT - 2
+                    ) {
+                        val unlocked = milestone.id in data.unlockedMilestones
+                        if (unlocked) {
+                            val newId = if (data.activeTitle == milestone.id) "" else milestone.id
+                            PacketDistributor.sendToServer(TitleSelectPayload(newId))
+                        }
+                        return true
+                    }
+                }
             }
         }
         return super.mouseClicked(mouseX, mouseY, button)

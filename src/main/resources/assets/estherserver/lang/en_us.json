@@ -49,5 +49,31 @@
   "message.estherserver.collection_registered": "[Collection] Registered %s! (%s/%s)",
   "message.estherserver.collection_not_collectible": "This item cannot be registered.",
   "message.estherserver.collection_invalid_quality": "This item has no quality grade.",
-  "message.estherserver.collection_already_registered": "Already registered."
+  "message.estherserver.collection_already_registered": "Already registered.",
+
+  "gui.estherserver.collection.tab.title": "Titles",
+
+  "milestone.estherserver.first_discovery.title": "Novice Collector",
+  "milestone.estherserver.first_discovery.desc": "Collect 1 item",
+  "milestone.estherserver.fish_complete.title": "Fisher",
+  "milestone.estherserver.fish_complete.desc": "Collect all fish",
+  "milestone.estherserver.crops_complete.title": "Farmer",
+  "milestone.estherserver.crops_complete.desc": "Collect all crops",
+  "milestone.estherserver.minerals_complete.title": "Miner",
+  "milestone.estherserver.minerals_complete.desc": "Collect all minerals",
+  "milestone.estherserver.cooking_complete.title": "Chef",
+  "milestone.estherserver.cooking_complete.desc": "Collect all dishes",
+  "milestone.estherserver.half_complete.title": "Collector",
+  "milestone.estherserver.half_complete.desc": "Collect 23+ items",
+  "milestone.estherserver.all_complete.title": "Polymath",
+  "milestone.estherserver.all_complete.desc": "Collect everything",
+
+  "message.estherserver.milestone_achieved": "[Collection] %s achieved the '%s' milestone!",
+  "message.estherserver.title_selected": "[Collection] Title set to '%s'.",
+  "message.estherserver.title_cleared": "[Collection] Title cleared.",
+  "message.estherserver.title_not_unlocked": "[Collection] Milestone not yet achieved.",
+  "message.estherserver.title_list_header": "=== Milestone List ===",
+  "message.estherserver.title_list_unlocked": "  \u2605 %s - %s",
+  "message.estherserver.title_list_locked": "  \u2606 %s - %s",
+  "message.estherserver.title_list_locked_progress": "  \u2606 %s - %s (%s/%s)"
 }
