@@ -1,9 +1,12 @@
 package com.juyoung.estherserver.collection
 
+import net.minecraft.ChatFormatting
+
 enum class Milestone(
     val id: String,
     val titleKey: String,
     val descriptionKey: String,
+    val color: ChatFormatting,
     val check: (CollectionData) -> Boolean,
     val progressProvider: ((CollectionData) -> Pair<Int, Int>)? = null
 ) {
@@ -11,6 +14,7 @@ enum class Milestone(
         id = "first_discovery",
         titleKey = "milestone.estherserver.first_discovery.title",
         descriptionKey = "milestone.estherserver.first_discovery.desc",
+        color = ChatFormatting.GREEN,
         check = { data -> data.getCompletedCount() >= 1 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(1) to 1 }
     ),
@@ -18,6 +22,7 @@ enum class Milestone(
         id = "fish_complete",
         titleKey = "milestone.estherserver.fish_complete.title",
         descriptionKey = "milestone.estherserver.fish_complete.desc",
+        color = ChatFormatting.AQUA,
         check = { data -> isCategoryComplete(data, CollectionCategory.FISH) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.FISH) }
     ),
@@ -25,6 +30,7 @@ enum class Milestone(
         id = "crops_complete",
         titleKey = "milestone.estherserver.crops_complete.title",
         descriptionKey = "milestone.estherserver.crops_complete.desc",
+        color = ChatFormatting.DARK_GREEN,
         check = { data -> isCategoryComplete(data, CollectionCategory.CROPS) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.CROPS) }
     ),
@@ -32,6 +38,7 @@ enum class Milestone(
         id = "minerals_complete",
         titleKey = "milestone.estherserver.minerals_complete.title",
         descriptionKey = "milestone.estherserver.minerals_complete.desc",
+        color = ChatFormatting.GRAY,
         check = { data -> isCategoryComplete(data, CollectionCategory.MINERALS) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.MINERALS) }
     ),
@@ -39,6 +46,7 @@ enum class Milestone(
         id = "cooking_complete",
         titleKey = "milestone.estherserver.cooking_complete.title",
         descriptionKey = "milestone.estherserver.cooking_complete.desc",
+        color = ChatFormatting.YELLOW,
         check = { data -> isCategoryComplete(data, CollectionCategory.COOKING) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.COOKING) }
     ),
@@ -46,6 +54,7 @@ enum class Milestone(
         id = "half_complete",
         titleKey = "milestone.estherserver.half_complete.title",
         descriptionKey = "milestone.estherserver.half_complete.desc",
+        color = ChatFormatting.LIGHT_PURPLE,
         check = { data -> data.getCompletedCount() >= 23 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(23) to 23 }
     ),
@@ -53,6 +62,7 @@ enum class Milestone(
         id = "all_complete",
         titleKey = "milestone.estherserver.all_complete.title",
         descriptionKey = "milestone.estherserver.all_complete.desc",
+        color = ChatFormatting.GOLD,
         check = { data -> data.getCompletedCount() >= CollectibleRegistry.getTotalCount() },
         progressProvider = { data -> data.getCompletedCount() to CollectibleRegistry.getTotalCount() }
     );

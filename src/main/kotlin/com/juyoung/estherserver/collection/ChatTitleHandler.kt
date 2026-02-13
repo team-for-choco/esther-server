@@ -27,7 +27,7 @@ object ChatTitleHandler {
         val activeTitleId = data.activeTitle ?: return null
         val milestone = Milestone.byId(activeTitleId) ?: return null
         return Component.literal("[")
-            .append(Component.translatable(milestone.titleKey))
+            .append(Component.translatable(milestone.titleKey).withStyle(milestone.color))
             .append(Component.literal("] "))
     }
 }
