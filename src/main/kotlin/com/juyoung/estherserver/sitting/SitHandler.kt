@@ -4,6 +4,7 @@ import com.juyoung.estherserver.EstherServerMod
 import com.mojang.logging.LogUtils
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.StairBlock
@@ -86,5 +87,19 @@ object SitHandler {
 
     private fun removeSeatAt(level: Level, pos: BlockPos) {
         level.getEntitiesOfClass(SeatEntity::class.java, seatSearchArea(pos)).forEach { it.discard() }
+    }
+
+    fun handleSitOnGround(player: Player) {
+        val level = player.level()
+        if (level.isClientSide) return
+        if (player.isPassenger) return
+
+        val seat = SeatEntity(EstherServerMod.SEAT_ENTITY.get(), level)
+        seat.setPos(player.x, player.y, player.z)
+
+        if (!level.addFreshEntity(seat)) return
+        if (!player.startRiding(seat)) {
+            seat.discard()
+        }
     }
 }

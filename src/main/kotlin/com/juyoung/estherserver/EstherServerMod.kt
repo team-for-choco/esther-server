@@ -37,9 +37,12 @@ import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
 import com.juyoung.estherserver.daylight.DaylightHandler
+import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
+import com.juyoung.estherserver.sitting.SitPayload
 import com.juyoung.estherserver.sleep.SleepHandler
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.MobCategory
 import net.minecraft.world.level.GameRules
@@ -234,6 +237,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
     init {
         modEventBus.addListener(::commonSetup)
+        modEventBus.addListener(::registerPayloads)
 
         BLOCKS.register(modEventBus)
         ITEMS.register(modEventBus)
@@ -248,8 +252,18 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(SitHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
+            NeoForge.EVENT_BUS.register(ModKeyBindings)
         }
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC)
+    }
+
+    private fun registerPayloads(event: RegisterPayloadHandlersEvent) {
+        event.registrar(MODID)
+            .playToServer(SitPayload.TYPE, SitPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    SitHandler.handleSitOnGround(context.player())
+                }
+            }
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {
@@ -280,6 +294,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         fun onClientSetup(event: FMLClientSetupEvent) {
             LOGGER.info("Esther Server client setup")
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().user.name)
+        }
+
+        @SubscribeEvent
+        fun onRegisterKeyMappings(event: net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent) {
+            event.register(ModKeyBindings.SIT_KEY)
         }
 
         @SubscribeEvent
