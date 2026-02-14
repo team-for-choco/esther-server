@@ -1,0 +1,8 @@
+PS C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\scripts> .\update-server.ps1 -ModsDir "C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server-on"
+理쒖떊 由대━???뺤씤 以?..
+Invoke-RestMethod : {"message":"Not Found","documentation_url":"https://docs.github.com/rest/releases/releases#get-the-latest-release","status":"404"}
+위치 C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\scripts\update-server.ps1:31 문자:12
++ $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo ...
++            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebException
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
