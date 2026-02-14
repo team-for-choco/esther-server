@@ -63,7 +63,7 @@ object ChunkClaimManager {
         NOT_OWNER
     }
 
-    fun updatePermissions(player: ServerPlayer, chunkPos: ChunkPos, permissions: ClaimPermissions): UpdatePermResult {
+    fun updatePermissions(player: ServerPlayer, chunkPos: ChunkPos, type: String, allow: Boolean): UpdatePermResult {
         val data = ChunkClaimData.get(player.serverLevel())
         val existing = data.getClaim(chunkPos) ?: return UpdatePermResult.NOT_CLAIMED
 
@@ -71,7 +71,14 @@ object ChunkClaimManager {
             return UpdatePermResult.NOT_OWNER
         }
 
-        data.setClaim(chunkPos, existing.copy(permissions = permissions))
+        val newPermissions = when (type) {
+            "break" -> existing.permissions.copy(allowBreak = allow)
+            "place" -> existing.permissions.copy(allowPlace = allow)
+            "interact" -> existing.permissions.copy(allowInteract = allow)
+            else -> existing.permissions
+        }
+
+        data.setClaim(chunkPos, existing.copy(permissions = newPermissions))
         return UpdatePermResult.SUCCESS
     }
 

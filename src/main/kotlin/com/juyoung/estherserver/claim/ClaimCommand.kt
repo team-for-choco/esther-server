@@ -140,23 +140,8 @@ object ClaimCommand {
     private fun settingsUpdate(context: CommandContext<CommandSourceStack>, type: String, allow: Boolean): Int {
         val player = context.source.playerOrException
         val chunkPos = ChunkPos(player.blockPosition())
-        val claim = ChunkClaimManager.getClaimInfo(player.serverLevel(), chunkPos)
 
-        if (claim == null) {
-            player.displayClientMessage(
-                Component.translatable("message.estherserver.claim_not_claimed"), true
-            )
-            return 0
-        }
-
-        val newPerms = when (type) {
-            "break" -> claim.permissions.copy(allowBreak = allow)
-            "place" -> claim.permissions.copy(allowPlace = allow)
-            "interact" -> claim.permissions.copy(allowInteract = allow)
-            else -> claim.permissions
-        }
-
-        val result = ChunkClaimManager.updatePermissions(player, chunkPos, newPerms)
+        val result = ChunkClaimManager.updatePermissions(player, chunkPos, type, allow)
         when (result) {
             ChunkClaimManager.UpdatePermResult.SUCCESS -> {
                 val typeKey = "message.estherserver.claim_perm_type_$type"
