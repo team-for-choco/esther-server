@@ -1,0 +1,64 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Read mod version
+        id: version
+        run: |
+          VERSION=$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Find JAR
+        id: jar
+        run: |
+          JAR=$(find build/libs -name "estherserver-*.jar" ! -name "*-sources.jar" | head -1)
+          echo "path=$JAR" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename $JAR)" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        id: release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          files: ${{ steps.jar.outputs.path }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dispatch to modpack repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.MODPACK_PAT }}
+          repository: team-for-choco/esther-modpack
+          event-type: mod-updated
+          client-payload: |
+            {
+              "version": "${{ steps.version.outputs.version }}",
+              "jar_name": "${{ steps.jar.outputs.name }}",
+              "download_url": "https://github.com/team-for-choco/esther-server/releases/download/v${{ steps.version.outputs.version }}/${{ steps.jar.outputs.name }}"
+            }
