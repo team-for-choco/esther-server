@@ -93,5 +93,17 @@
   "message.estherserver.claim_list_entry": "  - 청크 (%s, %s)",
 
   "message.estherserver.cooking_not_ingredient": "이 아이템은 요리 재료가 아닙니다.",
-  "message.estherserver.claim_protected_interact": "보호된 구역입니다! (상호작용 금지)"
+  "message.estherserver.claim_protected_interact": "보호된 구역입니다! (상호작용 금지)",
+
+  "message.estherserver.claim_perm_allow": "허용",
+  "message.estherserver.claim_perm_deny": "금지",
+  "message.estherserver.claim_perm_type_break": "블록 파괴",
+  "message.estherserver.claim_perm_type_place": "블록 설치",
+  "message.estherserver.claim_perm_type_interact": "상호작용",
+  "message.estherserver.claim_info_perms": "  설정: 파괴=%s / 설치=%s / 상호작용=%s",
+  "message.estherserver.claim_settings_header": "[토지] 청크 (%s, %s) 설정:",
+  "message.estherserver.claim_settings_break": "  블록 파괴: %s",
+  "message.estherserver.claim_settings_place": "  블록 설치: %s",
+  "message.estherserver.claim_settings_interact": "  상호작용: %s",
+  "message.estherserver.claim_settings_updated": "[토지] %s을(를) %s(으)로 변경했습니다."
 }

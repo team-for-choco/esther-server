@@ -57,6 +57,31 @@ object ChunkClaimManager {
         return claim.ownerUUID == playerUUID
     }
 
+    enum class UpdatePermResult {
+        SUCCESS,
+        NOT_CLAIMED,
+        NOT_OWNER
+    }
+
+    fun updatePermissions(player: ServerPlayer, chunkPos: ChunkPos, type: String, allow: Boolean): UpdatePermResult {
+        val data = ChunkClaimData.get(player.serverLevel())
+        val existing = data.getClaim(chunkPos) ?: return UpdatePermResult.NOT_CLAIMED
+
+        if (existing.ownerUUID != player.uuid) {
+            return UpdatePermResult.NOT_OWNER
+        }
+
+        val newPermissions = when (type) {
+            "break" -> existing.permissions.copy(allowBreak = allow)
+            "place" -> existing.permissions.copy(allowPlace = allow)
+            "interact" -> existing.permissions.copy(allowInteract = allow)
+            else -> existing.permissions
+        }
+
+        data.setClaim(chunkPos, existing.copy(permissions = newPermissions))
+        return UpdatePermResult.SUCCESS
+    }
+
     fun getClaimInfo(level: ServerLevel, chunkPos: ChunkPos): ChunkClaimEntry? {
         return ChunkClaimData.get(level).getClaim(chunkPos)
     }

@@ -93,5 +93,17 @@
   "message.estherserver.claim_list_entry": "  - Chunk (%s, %s)",
 
   "message.estherserver.cooking_not_ingredient": "This item is not a cooking ingredient.",
-  "message.estherserver.claim_protected_interact": "Protected area! (Interaction prohibited)"
+  "message.estherserver.claim_protected_interact": "Protected area! (Interaction prohibited)",
+
+  "message.estherserver.claim_perm_allow": "Allow",
+  "message.estherserver.claim_perm_deny": "Deny",
+  "message.estherserver.claim_perm_type_break": "Block Breaking",
+  "message.estherserver.claim_perm_type_place": "Block Placing",
+  "message.estherserver.claim_perm_type_interact": "Interaction",
+  "message.estherserver.claim_info_perms": "  Settings: Break=%s / Place=%s / Interact=%s",
+  "message.estherserver.claim_settings_header": "[Land] Chunk (%s, %s) Settings:",
+  "message.estherserver.claim_settings_break": "  Block Breaking: %s",
+  "message.estherserver.claim_settings_place": "  Block Placing: %s",
+  "message.estherserver.claim_settings_interact": "  Interaction: %s",
+  "message.estherserver.claim_settings_updated": "[Land] %s set to %s."
 }
