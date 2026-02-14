@@ -33,12 +33,14 @@ object ClaimProtectionHandler {
         val chunkPos = ChunkPos(event.pos)
         if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
 
-        if (!ChunkClaimManager.canModify(serverLevel, chunkPos, player.uuid)) {
-            event.isCanceled = true
-            serverPlayer.displayClientMessage(
-                Component.translatable("message.estherserver.claim_protected_break"), true
-            )
-        }
+        val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
+        if (claim.ownerUUID == player.uuid) return
+        if (claim.permissions.allowBreak) return
+
+        event.isCanceled = true
+        serverPlayer.displayClientMessage(
+            Component.translatable("message.estherserver.claim_protected_break"), true
+        )
     }
 
     @SubscribeEvent
@@ -52,13 +54,15 @@ object ClaimProtectionHandler {
         val chunkPos = ChunkPos(event.pos)
         if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
 
-        if (!ChunkClaimManager.canModify(serverLevel, chunkPos, serverPlayer.uuid)) {
-            event.isCanceled = true
-            serverPlayer.inventoryMenu.sendAllDataToRemote()
-            serverPlayer.displayClientMessage(
-                Component.translatable("message.estherserver.claim_protected_place"), true
-            )
-        }
+        val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
+        if (claim.ownerUUID == serverPlayer.uuid) return
+        if (claim.permissions.allowPlace) return
+
+        event.isCanceled = true
+        serverPlayer.inventoryMenu.sendAllDataToRemote()
+        serverPlayer.displayClientMessage(
+            Component.translatable("message.estherserver.claim_protected_place"), true
+        )
     }
 
     @SubscribeEvent
@@ -76,11 +80,13 @@ object ClaimProtectionHandler {
         val chunkPos = ChunkPos(event.pos)
         if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
 
-        if (!ChunkClaimManager.canModify(serverLevel, chunkPos, serverPlayer.uuid)) {
-            event.isCanceled = true
-            serverPlayer.displayClientMessage(
-                Component.translatable("message.estherserver.claim_protected_interact"), true
-            )
-        }
+        val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
+        if (claim.ownerUUID == serverPlayer.uuid) return
+        if (claim.permissions.allowInteract) return
+
+        event.isCanceled = true
+        serverPlayer.displayClientMessage(
+            Component.translatable("message.estherserver.claim_protected_interact"), true
+        )
     }
 }

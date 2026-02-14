@@ -15,7 +15,8 @@ data class ChunkClaimEntry(
     val ownerName: String,
     val claimedAt: Long,
     val yMin: Int = 0,
-    val yMax: Int = 319
+    val yMax: Int = 319,
+    val permissions: ClaimPermissions = ClaimPermissions()
 ) {
     fun toNBT(): CompoundTag {
         val tag = CompoundTag()
@@ -24,17 +25,24 @@ data class ChunkClaimEntry(
         tag.putLong("claimedAt", claimedAt)
         tag.putInt("yMin", yMin)
         tag.putInt("yMax", yMax)
+        tag.put("permissions", permissions.toNBT())
         return tag
     }
 
     companion object {
         fun fromNBT(tag: CompoundTag): ChunkClaimEntry {
+            val permissions = if (tag.contains("permissions"))
+                ClaimPermissions.fromNBT(tag.getCompound("permissions"))
+            else
+                ClaimPermissions()
+
             return ChunkClaimEntry(
                 ownerUUID = tag.getUUID("ownerUUID"),
                 ownerName = tag.getString("ownerName"),
                 claimedAt = tag.getLong("claimedAt"),
                 yMin = if (tag.contains("yMin")) tag.getInt("yMin") else 0,
-                yMax = if (tag.contains("yMax")) tag.getInt("yMax") else 319
+                yMax = if (tag.contains("yMax")) tag.getInt("yMax") else 319,
+                permissions = permissions
             )
         }
     }
