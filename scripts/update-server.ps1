@@ -43,7 +43,7 @@ if (-not $tag) {
 }
 
 $asset = $release.assets | Where-Object { $_.name -like "*.jar" } | Select-Object -First 1
-$downloadUrl = $asset.browser_download_url
+$downloadUrl = $asset.url
 $jarName = $asset.name
 
 Write-Host "최신 버전: $tag"
@@ -59,9 +59,13 @@ if ($existing) {
     }
 }
 
-# 새 JAR 다운로드
+# 새 JAR 다운로드 (API 경유 - private 레포는 browser_download_url이 작동하지 않음)
 Write-Host "다운로드 중..."
 $destPath = Join-Path $ModsDir $jarName
-Invoke-WebRequest -Uri $downloadUrl -OutFile $destPath -Headers $headers
+$dlHeaders = @{
+    "Authorization" = "token $Token"
+    "Accept" = "application/octet-stream"
+}
+Invoke-WebRequest -Uri $downloadUrl -OutFile $destPath -Headers $dlHeaders
 
 Write-Host "완료: $destPath" -ForegroundColor Green
