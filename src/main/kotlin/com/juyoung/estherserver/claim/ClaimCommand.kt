@@ -1,9 +1,11 @@
 package com.juyoung.estherserver.claim
 
 import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
+import net.minecraft.commands.SharedSuggestionProvider
 import net.minecraft.network.chat.Component
 import net.minecraft.world.level.ChunkPos
 import java.util.UUID
@@ -42,6 +44,43 @@ object ClaimCommand {
                             Commands.literal("interact")
                                 .then(Commands.literal("allow").executes { settingsUpdate(it, "interact", true) })
                                 .then(Commands.literal("deny").executes { settingsUpdate(it, "interact", false) })
+                        )
+                )
+                .then(
+                    Commands.literal("trust")
+                        .then(
+                            Commands.literal("add")
+                                .then(
+                                    Commands.argument("playerName", StringArgumentType.word())
+                                        .suggests { context, builder ->
+                                            SharedSuggestionProvider.suggest(
+                                                context.source.server.playerList.players
+                                                    .filter { it.uuid != context.source.playerOrException.uuid }
+                                                    .map { it.gameProfile.name },
+                                                builder
+                                            )
+                                        }
+                                        .executes { context -> trustAdd(context) }
+                                )
+                        )
+                        .then(
+                            Commands.literal("remove")
+                                .then(
+                                    Commands.argument("playerName", StringArgumentType.word())
+                                        .suggests { context, builder ->
+                                            val player = context.source.playerOrException
+                                            val trusted = ChunkClaimManager.getTrustedPlayers(player.serverLevel(), player.uuid)
+                                            SharedSuggestionProvider.suggest(
+                                                trusted.map { ChunkClaimManager.getTrustedPlayerName(player.serverLevel(), it) },
+                                                builder
+                                            )
+                                        }
+                                        .executes { context -> trustRemove(context) }
+                                )
+                        )
+                        .then(
+                            Commands.literal("list")
+                                .executes { context -> trustList(context) }
                         )
                 )
                 .then(
@@ -95,6 +134,22 @@ object ClaimCommand {
                     permissionStatusText(perms.allowInteract)
                 )
             )
+
+            val data = ChunkClaimData.get(player.serverLevel())
+            val trusted = data.getTrustedPlayers(claim.ownerUUID)
+            if (trusted.isNotEmpty()) {
+                if (claim.ownerUUID == player.uuid) {
+                    val names = trusted.joinToString(", ") { data.getTrustedPlayerName(it) }
+                    message.append(Component.literal("\n")).append(
+                        Component.translatable("message.estherserver.claim_info_trusted", trusted.size.toString(), names)
+                    )
+                } else {
+                    message.append(Component.literal("\n")).append(
+                        Component.translatable("message.estherserver.claim_info_trusted_count", trusted.size.toString())
+                    )
+                }
+            }
+
             player.displayClientMessage(message, false)
         }
         return 1
@@ -240,6 +295,120 @@ object ClaimCommand {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.claim_not_claimed"), true
             )
+        }
+        return 1
+    }
+
+    private fun trustAdd(context: CommandContext<CommandSourceStack>): Int {
+        val player = context.source.playerOrException
+        val chunkPos = ChunkPos(player.blockPosition())
+        val targetName = StringArgumentType.getString(context, "playerName")
+
+        val targetPlayer = player.server.playerList.getPlayerByName(targetName)
+        if (targetPlayer == null) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.trust_player_not_found", targetName), true
+            )
+            return 0
+        }
+
+        val result = ChunkClaimManager.addTrust(player, chunkPos, targetPlayer.uuid, targetName)
+        when (result) {
+            ChunkClaimManager.TrustResult.SUCCESS -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.trust_added", targetName), false
+                )
+                targetPlayer.displayClientMessage(
+                    Component.translatable("message.estherserver.trust_added_notify", player.gameProfile.name), false
+                )
+            }
+            ChunkClaimManager.TrustResult.NOT_CLAIMED -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.claim_not_claimed"), true
+                )
+            }
+            ChunkClaimManager.TrustResult.NOT_OWNER -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.claim_not_owner"), true
+                )
+            }
+            ChunkClaimManager.TrustResult.ALREADY_TRUSTED -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.trust_already", targetName), true
+                )
+            }
+            ChunkClaimManager.TrustResult.CANNOT_TRUST_SELF -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.trust_self"), true
+                )
+            }
+        }
+        return 1
+    }
+
+    private fun trustRemove(context: CommandContext<CommandSourceStack>): Int {
+        val player = context.source.playerOrException
+        val chunkPos = ChunkPos(player.blockPosition())
+        val targetName = StringArgumentType.getString(context, "playerName")
+
+        val data = ChunkClaimData.get(player.serverLevel())
+        val trusted = data.getTrustedPlayers(player.uuid)
+        val targetUUID = trusted.firstOrNull { data.getTrustedPlayerName(it) == targetName }
+
+        if (targetUUID == null) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.trust_not_found", targetName), true
+            )
+            return 0
+        }
+
+        val result = ChunkClaimManager.removeTrust(player, chunkPos, targetUUID)
+        when (result) {
+            ChunkClaimManager.UntrustResult.SUCCESS -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.trust_removed", targetName), false
+                )
+            }
+            ChunkClaimManager.UntrustResult.NOT_CLAIMED -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.claim_not_claimed"), true
+                )
+            }
+            ChunkClaimManager.UntrustResult.NOT_OWNER -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.claim_not_owner"), true
+                )
+            }
+            ChunkClaimManager.UntrustResult.NOT_TRUSTED -> {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.trust_not_found", targetName), true
+                )
+            }
+        }
+        return 1
+    }
+
+    private fun trustList(context: CommandContext<CommandSourceStack>): Int {
+        val player = context.source.playerOrException
+        val data = ChunkClaimData.get(player.serverLevel())
+        val trusted = data.getTrustedPlayers(player.uuid)
+
+        if (trusted.isEmpty()) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.trust_list_empty"), false
+            )
+        } else {
+            val message = Component.translatable(
+                "message.estherserver.trust_list_header",
+                trusted.size.toString()
+            )
+            for (trustedUUID in trusted) {
+                val name = data.getTrustedPlayerName(trustedUUID)
+                message.append(Component.literal("\n")).append(
+                    Component.translatable("message.estherserver.trust_list_entry", name)
+                )
+            }
+            player.displayClientMessage(message, false)
         }
         return 1
     }

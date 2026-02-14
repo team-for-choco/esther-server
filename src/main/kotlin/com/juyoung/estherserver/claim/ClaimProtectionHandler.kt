@@ -35,6 +35,7 @@ object ClaimProtectionHandler {
 
         val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
         if (claim.ownerUUID == player.uuid) return
+        if (ChunkClaimManager.isTrusted(serverLevel, claim.ownerUUID, player.uuid)) return
         if (claim.permissions.allowBreak) return
 
         event.isCanceled = true
@@ -56,6 +57,7 @@ object ClaimProtectionHandler {
 
         val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
         if (claim.ownerUUID == serverPlayer.uuid) return
+        if (ChunkClaimManager.isTrusted(serverLevel, claim.ownerUUID, serverPlayer.uuid)) return
         if (claim.permissions.allowPlace) return
 
         event.isCanceled = true
@@ -82,6 +84,7 @@ object ClaimProtectionHandler {
 
         val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
         if (claim.ownerUUID == serverPlayer.uuid) return
+        if (ChunkClaimManager.isTrusted(serverLevel, claim.ownerUUID, serverPlayer.uuid)) return
         if (claim.permissions.allowInteract) return
 
         event.isCanceled = true

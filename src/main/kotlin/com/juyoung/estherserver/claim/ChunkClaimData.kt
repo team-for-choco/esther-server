@@ -49,7 +49,9 @@ data class ChunkClaimEntry(
 }
 
 class ChunkClaimData private constructor(
-    val claims: MutableMap<Long, ChunkClaimEntry> = mutableMapOf()
+    val claims: MutableMap<Long, ChunkClaimEntry> = mutableMapOf(),
+    val trustedPlayers: MutableMap<UUID, MutableSet<UUID>> = mutableMapOf(),
+    val trustedPlayerNames: MutableMap<UUID, String> = mutableMapOf()
 ) : SavedData() {
 
     override fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
@@ -60,6 +62,23 @@ class ChunkClaimData private constructor(
             list.add(entryTag)
         }
         tag.put("claims", list)
+
+        val trustList = ListTag()
+        for ((ownerUUID, trustedSet) in trustedPlayers) {
+            val ownerTag = CompoundTag()
+            ownerTag.putUUID("ownerUUID", ownerUUID)
+            val playerList = ListTag()
+            for (trustedUUID in trustedSet) {
+                val playerTag = CompoundTag()
+                playerTag.putUUID("playerUUID", trustedUUID)
+                playerTag.putString("playerName", trustedPlayerNames[trustedUUID] ?: "???")
+                playerList.add(playerTag)
+            }
+            ownerTag.put("players", playerList)
+            trustList.add(ownerTag)
+        }
+        tag.put("trustedPlayers", trustList)
+
         return tag
     }
 
@@ -82,6 +101,32 @@ class ChunkClaimData private constructor(
             .map { ChunkPos(it.key) to it.value }
     }
 
+    fun getTrustedPlayers(ownerUUID: UUID): Set<UUID> {
+        return trustedPlayers[ownerUUID] ?: emptySet()
+    }
+
+    fun addTrust(ownerUUID: UUID, targetUUID: UUID, targetName: String) {
+        trustedPlayers.getOrPut(ownerUUID) { mutableSetOf() }.add(targetUUID)
+        trustedPlayerNames[targetUUID] = targetName
+        setDirty()
+    }
+
+    fun removeTrust(ownerUUID: UUID, targetUUID: UUID) {
+        trustedPlayers[ownerUUID]?.remove(targetUUID)
+        if (trustedPlayers[ownerUUID]?.isEmpty() == true) {
+            trustedPlayers.remove(ownerUUID)
+        }
+        setDirty()
+    }
+
+    fun isTrusted(ownerUUID: UUID, playerUUID: UUID): Boolean {
+        return trustedPlayers[ownerUUID]?.contains(playerUUID) == true
+    }
+
+    fun getTrustedPlayerName(playerUUID: UUID): String {
+        return trustedPlayerNames[playerUUID] ?: "???"
+    }
+
     companion object {
         private const val DATA_NAME = "estherserver_chunk_claims"
 
@@ -99,6 +144,23 @@ class ChunkClaimData private constructor(
                     val chunkKey = entryTag.getLong("chunkKey")
                     val entry = ChunkClaimEntry.fromNBT(entryTag)
                     data.claims[chunkKey] = entry
+                }
+            }
+            if (tag.contains("trustedPlayers")) {
+                val trustList = tag.getList("trustedPlayers", 10)
+                for (i in 0 until trustList.size) {
+                    val ownerTag = trustList.getCompound(i)
+                    val ownerUUID = ownerTag.getUUID("ownerUUID")
+                    val playerList = ownerTag.getList("players", 10)
+                    val trustedSet = mutableSetOf<UUID>()
+                    for (j in 0 until playerList.size) {
+                        val playerTag = playerList.getCompound(j)
+                        val playerUUID = playerTag.getUUID("playerUUID")
+                        val playerName = playerTag.getString("playerName")
+                        trustedSet.add(playerUUID)
+                        data.trustedPlayerNames[playerUUID] = playerName
+                    }
+                    data.trustedPlayers[ownerUUID] = trustedSet
                 }
             }
             return data

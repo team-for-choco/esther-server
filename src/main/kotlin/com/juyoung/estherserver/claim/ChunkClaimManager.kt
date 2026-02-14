@@ -54,7 +54,43 @@ object ChunkClaimManager {
     fun canModify(level: ServerLevel, chunkPos: ChunkPos, playerUUID: UUID): Boolean {
         val data = ChunkClaimData.get(level)
         val claim = data.getClaim(chunkPos) ?: return true
-        return claim.ownerUUID == playerUUID
+        return claim.ownerUUID == playerUUID || data.isTrusted(claim.ownerUUID, playerUUID)
+    }
+
+    enum class TrustResult { SUCCESS, NOT_CLAIMED, NOT_OWNER, ALREADY_TRUSTED, CANNOT_TRUST_SELF }
+    enum class UntrustResult { SUCCESS, NOT_CLAIMED, NOT_OWNER, NOT_TRUSTED }
+
+    fun addTrust(player: ServerPlayer, chunkPos: ChunkPos, targetUUID: UUID, targetName: String): TrustResult {
+        val data = ChunkClaimData.get(player.serverLevel())
+        val existing = data.getClaim(chunkPos) ?: return TrustResult.NOT_CLAIMED
+        if (existing.ownerUUID != player.uuid) return TrustResult.NOT_OWNER
+        if (targetUUID == player.uuid) return TrustResult.CANNOT_TRUST_SELF
+        if (data.isTrusted(player.uuid, targetUUID)) return TrustResult.ALREADY_TRUSTED
+
+        data.addTrust(player.uuid, targetUUID, targetName)
+        return TrustResult.SUCCESS
+    }
+
+    fun removeTrust(player: ServerPlayer, chunkPos: ChunkPos, targetUUID: UUID): UntrustResult {
+        val data = ChunkClaimData.get(player.serverLevel())
+        val existing = data.getClaim(chunkPos) ?: return UntrustResult.NOT_CLAIMED
+        if (existing.ownerUUID != player.uuid) return UntrustResult.NOT_OWNER
+        if (!data.isTrusted(player.uuid, targetUUID)) return UntrustResult.NOT_TRUSTED
+
+        data.removeTrust(player.uuid, targetUUID)
+        return UntrustResult.SUCCESS
+    }
+
+    fun getTrustedPlayers(level: ServerLevel, ownerUUID: UUID): Set<UUID> {
+        return ChunkClaimData.get(level).getTrustedPlayers(ownerUUID)
+    }
+
+    fun isTrusted(level: ServerLevel, ownerUUID: UUID, playerUUID: UUID): Boolean {
+        return ChunkClaimData.get(level).isTrusted(ownerUUID, playerUUID)
+    }
+
+    fun getTrustedPlayerName(level: ServerLevel, playerUUID: UUID): String {
+        return ChunkClaimData.get(level).getTrustedPlayerName(playerUUID)
     }
 
     enum class UpdatePermResult {
