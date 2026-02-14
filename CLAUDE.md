@@ -161,6 +161,7 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 | 2026-02-13 | [20260213_collection_system.md](docs/20260213_collection_system.md) | CHOCO-86 | 도감 시스템 Phase B: 마일스톤 + 칭호 | 완료 |
 | 2026-02-13 | [20260213_chunk_claim.md](docs/20260213_chunk_claim.md) | CHOCO-87 | 청크 클레임 기본 구현 (Phase 2.5-1) | 완료 |
 | 2026-02-14 | [20260214_cooking_multiplayer_title_fix.md](docs/20260214_cooking_multiplayer_title_fix.md) | CHOCO-88 | 요리 멀티플레이어 개선 + 칭호 버그/기능 | 완료 |
+| 2026-02-14 | [20260214_deploy_automation.md](docs/20260214_deploy_automation.md) | CHOCO-89 | 모드 배포 자동화 (Prism Launcher + packwiz) | 완료 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.

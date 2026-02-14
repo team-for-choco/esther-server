@@ -22,6 +22,7 @@
 - [x] 도감 시스템 Phase B (CHOCO-86) — 마일스톤 7종, 칭호 시스템, /title 명령어
 - [x] 청크 클레임 기본 구현 (CHOCO-87) — 토지 증서, 블록 보호, /claim 명령어
 - [x] 요리 멀티플레이어 개선 + 칭호 수정 (CHOCO-88) — 재료 분리, 태그 검증, 칭호 Team 방식
+- [x] 모드 배포 자동화 (CHOCO-89) — GitHub Actions + packwiz + Prism Launcher
 
 ---
 
@@ -112,6 +113,13 @@
   - 소유자가 특정 플레이어를 초대하여 함께 활동 가능
   - 초대된 플레이어는 소유자와 동일한 권한
 
+## 인프라: 배포 자동화
+
+- [x] ~~**모드 배포 자동화**~~ (CHOCO-89) ★★★
+  - GitHub Actions: main 머지 → 빌드 → Release → modpack 자동 업데이트
+  - packwiz + Prism Launcher: 클라이언트 자동 업데이트
+  - 서버 업데이트 스크립트 (scripts/update-server.sh)
+
 ## Phase 3: 경제
 
 > 거래할 컨텐츠가 다양해진 후 경제 시스템 도입.
@@ -162,6 +170,8 @@
                                  요리 시스템 ✅ → 도감 Phase A ✅ → 도감 Phase B ✅
                                               ↓
                                      QoL (청크 클레임 ✅, 행동 제한, 플레이어 초대)
+                                              ↓
+                                 인프라: 배포 자동화 ✅ (GitHub Actions + packwiz)
                                               ↓
                               화폐 → 플레이어 상점 → NPC 상인
                                               ↓
