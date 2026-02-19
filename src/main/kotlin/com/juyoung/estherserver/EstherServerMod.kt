@@ -346,6 +346,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     init {
         modEventBus.addListener(::commonSetup)
         modEventBus.addListener(::registerPayloads)
+        modEventBus.addListener(::registerEntityAttributes)
 
         BLOCKS.register(modEventBus)
         ITEMS.register(modEventBus)
@@ -413,6 +414,10 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     ShopBuyRegistry.handleBuy(player, payload.itemId, payload.quantity)
                 }
             }
+    }
+
+    private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
+        event.put(MERCHANT_ENTITY.get(), MerchantEntity.createAttributes().build())
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {

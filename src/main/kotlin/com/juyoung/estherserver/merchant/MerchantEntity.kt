@@ -6,7 +6,9 @@ import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.Mob
 import net.minecraft.world.entity.PathfinderMob
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
@@ -42,4 +44,8 @@ class MerchantEntity(entityType: EntityType<MerchantEntity>, level: Level) :
     override fun canBeLeashed(): Boolean = false
 
     override fun isPersistenceRequired(): Boolean = true
+
+    companion object {
+        fun createAttributes(): AttributeSupplier.Builder = Mob.createMobAttributes()
+    }
 }
