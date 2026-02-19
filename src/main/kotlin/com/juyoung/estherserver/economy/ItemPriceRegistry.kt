@@ -29,6 +29,7 @@ object ItemPriceRegistry {
         register("estherserver:rice_seeds", 2, ShopCategory.SEEDS)
         register("estherserver:red_pepper_seeds", 2, ShopCategory.SEEDS)
         register("estherserver:spinach_seeds", 2, ShopCategory.SEEDS)
+        register("estherserver:special_farmland", 10, ShopCategory.SEEDS)
 
         // Harvests
         register("estherserver:test_harvest", 3, ShopCategory.FOOD)

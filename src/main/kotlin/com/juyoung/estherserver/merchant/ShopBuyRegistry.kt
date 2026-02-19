@@ -45,6 +45,8 @@ object ShopBuyRegistry {
         register("estherserver:rice_seeds", 8, ShopCategory.SEEDS)
         register("estherserver:red_pepper_seeds", 8, ShopCategory.SEEDS)
         register("estherserver:spinach_seeds", 8, ShopCategory.SEEDS)
+        register("estherserver:special_farmland", 20, ShopCategory.SEEDS)
+        register("estherserver:sprayer", 100, ShopCategory.SEEDS)
     }
 
     private fun registerFood() {

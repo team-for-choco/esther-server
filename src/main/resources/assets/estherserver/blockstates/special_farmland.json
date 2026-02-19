@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "moisture=0": {
+      "model": "estherserver:block/special_farmland"
+    },
+    "moisture=1": {
+      "model": "estherserver:block/special_farmland_moist"
+    }
+  }
+}

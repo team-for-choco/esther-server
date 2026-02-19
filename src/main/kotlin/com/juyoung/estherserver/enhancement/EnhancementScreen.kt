@@ -69,14 +69,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
         )
 
         for ((profession, item) in equipmentMap) {
-            var found: ItemStack? = null
-            for (i in 0 until player.inventory.items.size) {
-                val stack = player.inventory.items[i]
-                if (!stack.isEmpty && stack.item === item) {
-                    found = stack
-                    break
-                }
-            }
+            val found = player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }
 
             val level = found?.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0) ?: -1
             result.add(EquipmentSlot(profession, item, found, level))
@@ -415,13 +408,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
 
     private fun hasEnhancementStone(): Boolean {
         val player = Minecraft.getInstance().player ?: return false
-        for (i in 0 until player.inventory.items.size) {
-            val stack = player.inventory.items[i]
-            if (!stack.isEmpty && stack.item === EstherServerMod.ENHANCEMENT_STONE.get()) {
-                return true
-            }
-        }
-        return false
+        return player.inventory.items.any { !it.isEmpty && it.item === EstherServerMod.ENHANCEMENT_STONE.get() }
     }
 
     private fun getGradeColor(level: Int): Int = when {

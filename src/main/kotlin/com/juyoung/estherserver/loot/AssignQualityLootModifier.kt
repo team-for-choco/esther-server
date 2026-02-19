@@ -28,6 +28,7 @@ class AssignQualityLootModifier(
 
     override fun doApply(generatedLoot: ObjectArrayList<ItemStack>, context: LootContext): ObjectArrayList<ItemStack> {
         val player = getPlayerFromContext(context)
+        val tool = context.getOptionalParameter(LootContextParams.TOOL)
 
         val relevantProfessions = mutableSetOf<Profession>()
 
@@ -36,14 +37,25 @@ class AssignQualityLootModifier(
                 val quality = ItemQuality.randomQuality(context.random)
                 stack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
 
-                // Grant profession XP
+                // Grant profession XP only with correct special tool
                 if (player != null) {
                     val profession = ProfessionHandler.getProfessionForItem(stack)
-                    if (profession != null) {
+                    if (profession != null && isCorrectToolForProfession(tool, profession)) {
                         val xp = ProfessionHandler.getXpForQuality(quality)
                         ProfessionHandler.addExperience(player, profession, xp)
                         relevantProfessions.add(profession)
                     }
+                }
+            }
+        }
+
+        // Vanilla mining XP (no quality, fixed XP per ore type)
+        if (player != null && isCorrectToolForProfession(tool, Profession.MINING)) {
+            for (stack in generatedLoot) {
+                val xp = ProfessionHandler.getVanillaMiningXp(stack)
+                if (xp != null) {
+                    ProfessionHandler.addExperience(player, Profession.MINING, xp)
+                    relevantProfessions.add(Profession.MINING)
                 }
             }
         }
@@ -61,6 +73,12 @@ class AssignQualityLootModifier(
         }
 
         return generatedLoot
+    }
+
+    private fun isCorrectToolForProfession(tool: ItemStack?, profession: Profession): Boolean {
+        if (tool == null || tool.isEmpty) return false
+        val expectedItem = EnhancementHandler.EQUIPMENT_MAP[profession]?.get() ?: return false
+        return tool.item === expectedItem
     }
 
     private fun getPlayerFromContext(context: LootContext): ServerPlayer? {

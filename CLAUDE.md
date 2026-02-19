@@ -173,7 +173,10 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 | 2026-02-19 | [20260219_currency_system.md](docs/20260219_currency_system.md) | CHOCO-92 | 화폐 시스템 (Phase 3-1) | 완료 |
 | 2026-02-19 | [20260219_npc_merchant.md](docs/20260219_npc_merchant.md) | CHOCO-93 | NPC 상인 시스템 (Phase 3-3) | 완료 |
 | 2026-02-19 | [20260219_merchant_improvement.md](docs/20260219_merchant_improvement.md) | CHOCO-94 | 상인 시스템 개선: 전문 상인 + 판매 탭 | 완료 |
-| 2026-02-19 | [20260219_profession_level.md](docs/20260219_profession_level.md) | CHOCO-95 | 전문 레벨 시스템 (Phase 4-1a) | 진행 중 |
+| 2026-02-19 | [20260219_profession_level.md](docs/20260219_profession_level.md) | CHOCO-95 | 전문 레벨 시스템 (Phase 4-1a) | 완료 |
+| 2026-02-19 | [20260219_enhancement_system.md](docs/20260219_enhancement_system.md) | CHOCO-96 | 장비 강화 시스템 (Phase 4-1b) | 완료 |
+| 2026-02-19 | [20260219_profession_gui.md](docs/20260219_profession_gui.md) | CHOCO-97 | 전문 분야 현황 GUI (Phase 4-1c) | 완료 |
+| 2026-02-19 | [20260219_equipment_farmland.md](docs/20260219_equipment_farmland.md) | CHOCO-98 | 특수 장비 기능화 + 특수 농사용 흙 (Phase 4-1d) | 완료 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.

@@ -78,6 +78,11 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         if (stack.isEmpty) return InteractionResult.TRY_WITH_EMPTY_HAND
         if (level.isClientSide) return InteractionResult.SUCCESS
 
+        // Cooking tool → perform cooking
+        if (stack.item === EstherServerMod.SPECIAL_COOKING_TOOL.get()) {
+            return performCooking(level, pos, player)
+        }
+
         // 요리 재료 태그 검증
         if (!stack.`is`(COOKING_INGREDIENT_TAG)) {
             player.displayClientMessage(
@@ -132,6 +137,21 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
     ): InteractionResult {
         if (level.isClientSide) return InteractionResult.SUCCESS
 
+        val blockEntity = level.getBlockEntity(pos) as? CookingStationBlockEntity
+            ?: return InteractionResult.FAIL
+
+        val playerUUID = player.uuid
+
+        if (blockEntity.getIngredientCount(playerUUID) > 0) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.cooking_need_tool"), true
+            )
+            return InteractionResult.SUCCESS
+        }
+        return InteractionResult.PASS
+    }
+
+    private fun performCooking(level: Level, pos: BlockPos, player: Player): InteractionResult {
         val blockEntity = level.getBlockEntity(pos) as? CookingStationBlockEntity
             ?: return InteractionResult.FAIL
 

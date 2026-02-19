@@ -159,7 +159,14 @@ class KoreanCropTest {
             assertTrue(lootTable.has("pools"), "$cropName: pools 필드가 있어야 함")
 
             val pools = lootTable.getAsJsonArray("pools")
-            assertTrue(pools.size() >= 2, "$cropName: 최소 2개의 풀이 있어야 함 (수확물 + 씨앗 보너스)")
+            assertTrue(pools.size() >= 1, "$cropName: 최소 1개의 풀이 있어야 함")
+
+            // Verify match_tool condition (special hoe required)
+            val firstPool = pools[0].asJsonObject
+            assertTrue(firstPool.has("conditions"), "$cropName: 풀에 조건이 있어야 함")
+            val poolConditions = firstPool.getAsJsonArray("conditions")
+            val matchTool = poolConditions[0].asJsonObject
+            assertEquals("minecraft:match_tool", matchTool.get("condition").asString, "$cropName: match_tool 조건이어야 함")
         }
 
         @ParameterizedTest(name = "{0}_crop 완전 성장 시 수확물을 드롭해야 함")
@@ -200,21 +207,19 @@ class KoreanCropTest {
             assertEquals("estherserver:${cropName}_seeds", seedEntry.get("name").asString)
         }
 
-        @ParameterizedTest(name = "{0}_crop 행운 인챈트 보너스 씨앗 풀이 있어야 함")
+        @ParameterizedTest(name = "{0}_crop 특수 호미 match_tool 조건이 있어야 함")
         @ValueSource(strings = ["rice", "red_pepper", "spinach"])
-        fun hasFortuneBonusSeedPool(cropName: String) {
+        fun hasMatchToolCondition(cropName: String) {
             val lootTable = loadJsonResource("data/estherserver/loot_table/blocks/${cropName}_crop.json")
             val pools = lootTable.getAsJsonArray("pools")
-            val bonusPool = pools[1].asJsonObject
+            val firstPool = pools[0].asJsonObject
 
-            val entries = bonusPool.getAsJsonArray("entries")
-            val seedEntry = entries[0].asJsonObject
-            assertEquals("estherserver:${cropName}_seeds", seedEntry.get("name").asString)
+            val conditions = firstPool.getAsJsonArray("conditions")
+            val matchTool = conditions[0].asJsonObject
+            assertEquals("minecraft:match_tool", matchTool.get("condition").asString)
 
-            val functions = seedEntry.getAsJsonArray("functions")
-            val bonusFunction = functions[0].asJsonObject
-            assertEquals("minecraft:apply_bonus", bonusFunction.get("function").asString)
-            assertEquals("minecraft:fortune", bonusFunction.get("enchantment").asString)
+            val predicate = matchTool.getAsJsonObject("predicate")
+            assertEquals("estherserver:special_hoe", predicate.get("items").asString)
         }
     }
 

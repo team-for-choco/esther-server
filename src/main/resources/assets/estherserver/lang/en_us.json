@@ -214,5 +214,12 @@
   "gui.estherserver.profession.level_display": "Lv %s",
   "gui.estherserver.profession.max_level": "MAX",
   "gui.estherserver.profession.equip_status": "Lv%s (%s)",
-  "gui.estherserver.profession.equip_none": "No equipment"
+  "gui.estherserver.profession.equip_none": "No equipment",
+
+  "block.estherserver.special_farmland": "Special Farmland",
+  "item.estherserver.sprayer": "Sprayer",
+  "message.estherserver.cooking_need_tool": "Use cooking tool to complete cooking.",
+  "message.estherserver.sprayer_empty": "Sprayer is empty.",
+  "message.estherserver.sprayer_filled": "Sprayer filled. (%s/%s)",
+  "message.estherserver.sprayer_used": "Moisturized soil. (%s/%s)"
 }
