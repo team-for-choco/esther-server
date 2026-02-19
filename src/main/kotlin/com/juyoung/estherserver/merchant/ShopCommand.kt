@@ -62,7 +62,7 @@ object ShopCommand {
             return 0
         }
 
-        val nearest = merchants.minByOrNull { it.distanceToSqr(pos) }!!
+        val nearest = merchants.minByOrNull { it.distanceToSqr(pos) } ?: return 0
         nearest.discard()
 
         source.sendSuccess({

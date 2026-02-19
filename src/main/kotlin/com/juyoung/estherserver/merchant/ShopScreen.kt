@@ -295,8 +295,8 @@ class ShopScreen : Screen(Component.translatable("gui.estherserver.shop.title"))
     override fun isPauseScreen(): Boolean = false
 
     private fun getVisibleEntries(): List<ShopEntry> {
-        val category = selectedCategory ?: return ShopBuyRegistry.getAllEntries()
-        return ShopBuyRegistry.getAllEntries().filter { it.category == category }
+        val allEntries = ShopBuyRegistry.getAllEntries()
+        return selectedCategory?.let { category -> allEntries.filter { it.category == category } } ?: allEntries
     }
 
     private fun getMaxVisibleRows(): Int = 4

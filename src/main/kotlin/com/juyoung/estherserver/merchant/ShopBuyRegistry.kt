@@ -93,18 +93,10 @@ object ShopBuyRegistry {
         entries.find { it.itemId == itemId }
 
     fun handleBuy(player: ServerPlayer, itemIdStr: String, quantity: Int): Boolean {
-        val itemId = ResourceLocation.parse(itemIdStr)
+        val itemId = ResourceLocation.tryParse(itemIdStr) ?: return false
         val entry = getEntry(itemId) ?: return false
 
         val totalCost = entry.buyPrice * quantity
-        val balance = EconomyHandler.getBalance(player)
-
-        if (balance < totalCost) {
-            player.sendSystemMessage(
-                Component.translatable("message.estherserver.shop_insufficient")
-            )
-            return false
-        }
 
         val item = BuiltInRegistries.ITEM.getValue(itemId)
         if (item === Items.AIR) return false
@@ -117,7 +109,12 @@ object ShopBuyRegistry {
             return false
         }
 
-        if (!EconomyHandler.removeBalance(player, totalCost)) return false
+        if (!EconomyHandler.removeBalance(player, totalCost)) {
+            player.sendSystemMessage(
+                Component.translatable("message.estherserver.shop_insufficient")
+            )
+            return false
+        }
 
         // Give items respecting max stack size
         var remaining = quantity
