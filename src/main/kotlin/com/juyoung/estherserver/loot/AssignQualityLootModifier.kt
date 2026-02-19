@@ -3,14 +3,17 @@ package com.juyoung.estherserver.loot
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.Profession
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.core.registries.Registries
+import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.tags.TagKey
 import net.minecraft.world.entity.projectile.FishingHook
@@ -31,20 +34,28 @@ class AssignQualityLootModifier(
         val tool = context.getOptionalParameter(LootContextParams.TOOL)
 
         val relevantProfessions = mutableSetOf<Profession>()
+        val extraDrops = mutableListOf<ItemStack>()
 
         for (stack in generatedLoot) {
             if (stack.`is`(HAS_QUALITY_TAG)) {
-                val quality = ItemQuality.randomQuality(context.random)
+                // Calculate quality bonuses from profession level
+                var fineBonus = 0
+                var rareBonus = 0
+                val profession = ProfessionHandler.getProfessionForItem(stack)
+                if (player != null && profession != null && isCorrectToolForProfession(tool, profession)) {
+                    val profLevel = ProfessionHandler.getLevel(player, profession)
+                    fineBonus = ProfessionBonusHelper.getFineQualityBonus(profLevel)
+                    rareBonus = ProfessionBonusHelper.getRareQualityBonus(profLevel)
+                }
+
+                val quality = ItemQuality.randomQualityWithBonus(context.random, fineBonus, rareBonus)
                 stack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
 
                 // Grant profession XP only with correct special tool
-                if (player != null) {
-                    val profession = ProfessionHandler.getProfessionForItem(stack)
-                    if (profession != null && isCorrectToolForProfession(tool, profession)) {
-                        val xp = ProfessionHandler.getXpForQuality(quality)
-                        ProfessionHandler.addExperience(player, profession, xp)
-                        relevantProfessions.add(profession)
-                    }
+                if (player != null && profession != null && isCorrectToolForProfession(tool, profession)) {
+                    val xp = ProfessionHandler.getXpForQuality(quality)
+                    ProfessionHandler.addExperience(player, profession, xp)
+                    relevantProfessions.add(profession)
                 }
             }
         }
@@ -66,12 +77,78 @@ class AssignQualityLootModifier(
                 if (prof != Profession.FISHING && prof != Profession.MINING) continue
                 val equipLevel = EnhancementHandler.getEquipmentLevel(player, prof)
                 if (equipLevel >= 4 && context.random.nextFloat() < EnhancementHandler.ENHANCEMENT_STONE_DROP_RATE) {
-                    generatedLoot.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
+                    extraDrops.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
                     break
                 }
             }
         }
 
+        // --- Lv50 & Equipment bonus effects (extra drops, no XP to prevent loops) ---
+        if (player != null) {
+            // Mining Lv50: 30% double drop
+            if (Profession.MINING in relevantProfessions) {
+                val profLevel = ProfessionHandler.getLevel(player, Profession.MINING)
+                if (ProfessionBonusHelper.shouldDoubleMineDrop(profLevel, context.random)) {
+                    for (stack in generatedLoot) {
+                        if (stack.`is`(HAS_QUALITY_TAG) || ProfessionHandler.getVanillaMiningXp(stack) != null) {
+                            extraDrops.add(stack.copy())
+                        }
+                    }
+                    player.displayClientMessage(
+                        Component.translatable("message.estherserver.double_mine_drop"), false
+                    )
+                }
+            }
+
+            // Fishing Lv50: 25% double fish
+            if (Profession.FISHING in relevantProfessions) {
+                val profLevel = ProfessionHandler.getLevel(player, Profession.FISHING)
+                if (ProfessionBonusHelper.shouldDoubleFish(profLevel, context.random)) {
+                    for (stack in generatedLoot) {
+                        if (stack.`is`(HAS_QUALITY_TAG)) {
+                            val bonusCopy = stack.copy()
+                            val bonusQuality = ItemQuality.randomQuality(context.random)
+                            bonusCopy.set(ModDataComponents.ITEM_QUALITY.get(), bonusQuality)
+                            extraDrops.add(bonusCopy)
+                        }
+                    }
+                    player.displayClientMessage(
+                        Component.translatable("message.estherserver.double_fish"), false
+                    )
+                }
+            }
+
+            // Farming equipment Lv3+: extra harvest chance
+            if (Profession.FARMING in relevantProfessions) {
+                val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FARMING)
+                val extraChance = ProfessionBonusHelper.getExtraHarvestChance(equipLevel)
+                if (extraChance > 0f && context.random.nextFloat() < extraChance) {
+                    for (stack in generatedLoot) {
+                        if (stack.`is`(HAS_QUALITY_TAG) && ProfessionHandler.getProfessionForItem(stack) == Profession.FARMING) {
+                            extraDrops.add(stack.copy())
+                        }
+                    }
+                }
+
+                // Farming Lv50: 30% seed preservation
+                val profLevel = ProfessionHandler.getLevel(player, Profession.FARMING)
+                if (ProfessionBonusHelper.shouldPreserveSeed(profLevel, context.random)) {
+                    val blockState = context.getOptionalParameter(LootContextParams.BLOCK_STATE)
+                    if (blockState != null) {
+                        val blockId = BuiltInRegistries.BLOCK.getKey(blockState.block)
+                        val seedStack = ProfessionHandler.getSeedForCrop(blockId)
+                        if (seedStack != null) {
+                            extraDrops.add(seedStack)
+                            player.displayClientMessage(
+                                Component.translatable("message.estherserver.seed_preserved"), false
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        generatedLoot.addAll(extraDrops)
         return generatedLoot
     }
 

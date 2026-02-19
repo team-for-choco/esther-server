@@ -223,5 +223,10 @@
   "message.estherserver.sprayer_filled": "Sprayer filled. (%s/%s)",
   "message.estherserver.sprayer_used": "Moisturized soil. (%s/%s)",
 
-  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s"
+  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s",
+
+  "message.estherserver.double_mine_drop": "Minerals dropped double!",
+  "message.estherserver.double_fish": "Caught an extra fish!",
+  "message.estherserver.seed_preserved": "Seed preserved!",
+  "message.estherserver.ingredient_saved": "Ingredient saved!"
 }
