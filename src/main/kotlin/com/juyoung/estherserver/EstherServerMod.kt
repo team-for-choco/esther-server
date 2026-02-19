@@ -597,7 +597,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 enhancementLevel >= 3 -> net.minecraft.ChatFormatting.GREEN
                 else -> net.minecraft.ChatFormatting.WHITE
             }
-            event.toolTip[0] = event.toolTip[0].copy().withStyle(gradeColor)
+            if (gradeColor != net.minecraft.ChatFormatting.WHITE) {
+                event.toolTip[0] = event.toolTip[0].copy().withStyle(gradeColor)
+            }
             val insertIndex = if (quality != null) 2 else 1
             val gradeKey = EnhancementHandler.getGradeTranslationKey(enhancementLevel)
             event.toolTip.add(insertIndex,

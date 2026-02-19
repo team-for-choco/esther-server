@@ -48,13 +48,7 @@ object EnhancementHandler {
     }
 
     fun findEquipmentInInventory(player: ServerPlayer, item: Item): ItemStack? {
-        for (i in 0 until player.inventory.items.size) {
-            val stack = player.inventory.items[i]
-            if (!stack.isEmpty && stack.item === item) {
-                return stack
-            }
-        }
-        return null
+        return player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }
     }
 
     fun handleBuyEquipment(player: ServerPlayer, professionName: String): Boolean {
@@ -128,13 +122,12 @@ object EnhancementHandler {
         val cost = ENHANCEMENT_TABLE[currentLevel] ?: return false
 
         // Check enhancement stone
-        if (cost.requiresStone) {
-            if (findEnhancementStone(player) < 0) {
-                player.sendSystemMessage(
-                    Component.translatable("message.estherserver.enhance_need_stone")
-                )
-                return false
-            }
+        val stoneSlot = if (cost.requiresStone) findEnhancementStone(player) else -1
+        if (cost.requiresStone && stoneSlot < 0) {
+            player.sendSystemMessage(
+                Component.translatable("message.estherserver.enhance_need_stone")
+            )
+            return false
         }
 
         // Check balance
@@ -147,10 +140,7 @@ object EnhancementHandler {
 
         // Consume enhancement stone (before roll, consumed on attempt)
         if (cost.requiresStone) {
-            val stoneSlot = findEnhancementStone(player)
-            if (stoneSlot >= 0) {
-                player.inventory.getItem(stoneSlot).shrink(1)
-            }
+            player.inventory.getItem(stoneSlot).shrink(1)
         }
 
         // Roll for success
