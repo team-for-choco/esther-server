@@ -162,7 +162,7 @@ class ShopScreen : Screen(Component.translatable("gui.estherserver.shop.title"))
             }
 
             // Price text
-            val priceText = "${entry.buyPrice}G"
+            val priceText = "${entry.buyPrice} 기운"
             val priceColor = if (balance >= entry.buyPrice) GOLD_COLOR else INSUFFICIENT_COLOR
             val priceWidth = font.width(priceText)
             guiGraphics.drawString(
