@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.merchant
 
+import com.juyoung.estherserver.enhancement.EnhancementScreen
 import net.minecraft.client.Minecraft
 
 object ShopClientHandler {
@@ -9,6 +10,11 @@ object ShopClientHandler {
         } catch (_: IllegalArgumentException) {
             ShopCategory.SEEDS
         }
-        Minecraft.getInstance().setScreen(ShopScreen(merchantType, payload.entityId))
+
+        if (merchantType == ShopCategory.BLACKSMITH) {
+            Minecraft.getInstance().setScreen(EnhancementScreen())
+        } else {
+            Minecraft.getInstance().setScreen(ShopScreen(merchantType, payload.entityId))
+        }
     }
 }

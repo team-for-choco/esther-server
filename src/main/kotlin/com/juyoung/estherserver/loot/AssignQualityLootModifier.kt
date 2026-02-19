@@ -1,6 +1,8 @@
 package com.juyoung.estherserver.loot
 
 import com.juyoung.estherserver.EstherServerMod
+import com.juyoung.estherserver.enhancement.EnhancementHandler
+import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
@@ -27,6 +29,8 @@ class AssignQualityLootModifier(
     override fun doApply(generatedLoot: ObjectArrayList<ItemStack>, context: LootContext): ObjectArrayList<ItemStack> {
         val player = getPlayerFromContext(context)
 
+        val relevantProfessions = mutableSetOf<Profession>()
+
         for (stack in generatedLoot) {
             if (stack.`is`(HAS_QUALITY_TAG)) {
                 val quality = ItemQuality.randomQuality(context.random)
@@ -38,10 +42,24 @@ class AssignQualityLootModifier(
                     if (profession != null) {
                         val xp = ProfessionHandler.getXpForQuality(quality)
                         ProfessionHandler.addExperience(player, profession, xp)
+                        relevantProfessions.add(profession)
                     }
                 }
             }
         }
+
+        // Enhancement stone drop (fishing/mining with Lv4+ equipment)
+        if (player != null) {
+            for (prof in relevantProfessions) {
+                if (prof != Profession.FISHING && prof != Profession.MINING) continue
+                val equipLevel = EnhancementHandler.getEquipmentLevel(player, prof)
+                if (equipLevel >= 4 && context.random.nextFloat() < EnhancementHandler.ENHANCEMENT_STONE_DROP_RATE) {
+                    generatedLoot.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
+                    break
+                }
+            }
+        }
+
         return generatedLoot
     }
 
