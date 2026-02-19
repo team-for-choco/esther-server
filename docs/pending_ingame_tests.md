@@ -27,3 +27,16 @@
 > 원본: [20260219_currency_system.md](20260219_currency_system.md)
 
 - [ ] `/money pay` 송금 → 양쪽 잔고 변경 (멀티플레이어 필요)
+
+## CHOCO-93 — NPC 상인 시스템 (Phase 3-3)
+> 원본: [20260219_npc_merchant.md](20260219_npc_merchant.md)
+
+- [ ] `/shop summon`으로 NPC 소환 → 빌리저 외형 표시
+- [ ] NPC 우클릭 → 상점 GUI 열림
+- [ ] 아이템 클릭 구매 → 잔고 차감 + 아이템 획득
+- [ ] Shift+클릭 다량 구매
+- [ ] 잔고 부족 시 구매 실패 메시지
+- [ ] 인벤토리 풀 시 아이템 드롭
+- [ ] `/shop remove`로 NPC 제거
+- [ ] 서버 재시작 후 NPC 유지
+- [ ] NPC 무적/부동 확인
