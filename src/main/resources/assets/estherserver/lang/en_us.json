@@ -119,5 +119,19 @@
   "message.estherserver.trust_list_header": "[Land] Trust list (%s):",
   "message.estherserver.trust_list_entry": "  - %s",
   "message.estherserver.claim_info_trusted": "  Trusted: %s (%s)",
-  "message.estherserver.claim_info_trusted_count": "  Trusted: %s players"
+  "message.estherserver.claim_info_trusted_count": "  Trusted: %s players",
+
+  "message.estherserver.money_balance": "[Economy] Balance: %s Esther's Essence",
+  "message.estherserver.money_player_not_found": "Player %s not found.",
+  "message.estherserver.money_pay_self": "You cannot send money to yourself.",
+  "message.estherserver.money_insufficient": "Insufficient balance.",
+  "message.estherserver.money_pay_sent": "[Economy] Sent %s Esther's Essence to %s.",
+  "message.estherserver.money_pay_received": "[Economy] Received %s Esther's Essence from %s.",
+  "message.estherserver.money_admin_add": "[Economy] Added %s Esther's Essence to %s.",
+  "message.estherserver.money_admin_remove": "[Economy] Removed %s Esther's Essence from %s.",
+  "message.estherserver.money_admin_set": "[Economy] Set %s's balance to %s Esther's Essence.",
+  "message.estherserver.money_admin_insufficient": "%s has insufficient balance.",
+  "message.estherserver.sell_empty_hand": "You must hold an item in your hand.",
+  "message.estherserver.sell_no_price": "This item cannot be sold.",
+  "message.estherserver.sell_success": "[Economy] Sold %s %s for %s Esther's Essence."
 }

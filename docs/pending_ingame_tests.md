@@ -22,3 +22,8 @@
 - [ ] `/claim trust list` → 신뢰 목록 표시
 - [ ] 자기 자신 초대 방지
 - [ ] 기존 데이터 하위 호환성
+
+## CHOCO-92 — 화폐 시스템 (Phase 3-1)
+> 원본: [20260219_currency_system.md](20260219_currency_system.md)
+
+- [ ] `/money pay` 송금 → 양쪽 잔고 변경 (멀티플레이어 필요)

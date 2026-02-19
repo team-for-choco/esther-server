@@ -34,6 +34,14 @@ object Config {
         BUILDER.comment("Daytime duration multiplier (1 = vanilla, 3 = 3x longer daytime)")
             .defineInRange("daytimeMultiplier", 3, 1, 10)
 
+    private val BALANCE_HUD_X: ModConfigSpec.IntValue =
+        BUILDER.comment("Balance HUD X position (negative = offset from right edge, e.g. -5)")
+            .defineInRange("balanceHudX", -5, -1000, 1000)
+
+    private val BALANCE_HUD_Y: ModConfigSpec.IntValue =
+        BUILDER.comment("Balance HUD Y position (negative = offset from bottom edge, e.g. 5 = top)")
+            .defineInRange("balanceHudY", 5, -1000, 1000)
+
     val SPEC: ModConfigSpec = BUILDER.build()
 
     var logDirtBlock: Boolean = false
@@ -41,6 +49,8 @@ object Config {
     lateinit var magicNumberIntroduction: String
     lateinit var items: Set<Item>
     var daytimeMultiplier: Int = 3
+    var balanceHudX: Int = -5
+    var balanceHudY: Int = 5
 
     private fun validateItemName(obj: Any): Boolean {
         return obj is String && BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(obj))
@@ -59,5 +69,7 @@ object Config {
             .collect(Collectors.toSet())
 
         daytimeMultiplier = DAYTIME_MULTIPLIER.get()
+        balanceHudX = BALANCE_HUD_X.get()
+        balanceHudY = BALANCE_HUD_Y.get()
     }
 }
