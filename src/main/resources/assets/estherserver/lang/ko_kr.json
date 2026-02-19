@@ -119,5 +119,19 @@
   "message.estherserver.trust_list_header": "[토지] 신뢰 목록 (%s명):",
   "message.estherserver.trust_list_entry": "  - %s",
   "message.estherserver.claim_info_trusted": "  신뢰: %s명 (%s)",
-  "message.estherserver.claim_info_trusted_count": "  신뢰: %s명"
+  "message.estherserver.claim_info_trusted_count": "  신뢰: %s명",
+
+  "message.estherserver.money_balance": "[경제] 잔고: %s 에스더의 기운",
+  "message.estherserver.money_player_not_found": "%s님을 찾을 수 없습니다.",
+  "message.estherserver.money_pay_self": "자기 자신에게 송금할 수 없습니다.",
+  "message.estherserver.money_insufficient": "잔고가 부족합니다.",
+  "message.estherserver.money_pay_sent": "[경제] %s 에스더의 기운을 %s님에게 송금했습니다.",
+  "message.estherserver.money_pay_received": "[경제] %s님에게서 %s 에스더의 기운을 받았습니다.",
+  "message.estherserver.money_admin_add": "[경제] %s 에스더의 기운을 %s님에게 지급했습니다.",
+  "message.estherserver.money_admin_remove": "[경제] %s 에스더의 기운을 %s님에게서 회수했습니다.",
+  "message.estherserver.money_admin_set": "[경제] %s님의 잔고를 %s 에스더의 기운으로 설정했습니다.",
+  "message.estherserver.money_admin_insufficient": "%s님의 잔고가 부족합니다.",
+  "message.estherserver.sell_empty_hand": "손에 아이템을 들고 있어야 합니다.",
+  "message.estherserver.sell_no_price": "이 아이템은 판매할 수 없습니다.",
+  "message.estherserver.sell_success": "[경제] %s개의 %s을(를) %s 에스더의 기운에 판매했습니다."
 }

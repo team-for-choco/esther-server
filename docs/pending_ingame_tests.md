@@ -22,3 +22,16 @@
 - [ ] `/claim trust list` → 신뢰 목록 표시
 - [ ] 자기 자신 초대 방지
 - [ ] 기존 데이터 하위 호환성
+
+## CHOCO-92 — 화폐 시스템 (Phase 3-1)
+> 원본: [20260219_currency_system.md](20260219_currency_system.md)
+
+- [ ] 첫 접속 시 잔고 0
+- [ ] HUD에 잔고 표시
+- [ ] `/sell`로 아이템 판매 → 잔고 증가 + HUD 갱신
+- [ ] 등급별 판매 가격 차이 확인
+- [ ] `/money pay` 송금 → 양쪽 잔고 변경
+- [ ] `/money admin add/remove/set` 동작
+- [ ] 사망 후 잔고 유지 (copyOnDeath)
+- [ ] 서버 재시작 후 잔고 유지
+- [ ] F3 화면에서 HUD 숨김

@@ -52,6 +52,14 @@ import com.juyoung.estherserver.collection.TitleSelectPayload
 import com.juyoung.estherserver.cooking.CookingStationBlock
 import com.juyoung.estherserver.cooking.ModCooking
 import com.juyoung.estherserver.daylight.DaylightHandler
+import com.juyoung.estherserver.economy.BalanceHudOverlay
+import com.juyoung.estherserver.economy.BalanceSyncPayload
+import com.juyoung.estherserver.economy.EconomyClientHandler
+import com.juyoung.estherserver.economy.EconomyHandler
+import com.juyoung.estherserver.economy.ItemPriceRegistry
+import com.juyoung.estherserver.economy.ModEconomy
+import com.juyoung.estherserver.economy.MoneyCommand
+import com.juyoung.estherserver.economy.SellCommand
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
@@ -334,6 +342,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModCooking.RECIPE_TYPES.register(modEventBus)
         ModCooking.RECIPE_SERIALIZERS.register(modEventBus)
         ModCollection.ATTACHMENT_TYPES.register(modEventBus)
+        ModEconomy.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -342,6 +351,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(CollectionHandler)
         NeoForge.EVENT_BUS.register(ChatTitleHandler)
         NeoForge.EVENT_BUS.register(ClaimProtectionHandler)
+        NeoForge.EVENT_BUS.register(EconomyHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -372,11 +382,17 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     CollectionHandler.handleTitleSelect(player, payload.milestoneId)
                 }
             }
+            .playToClient(BalanceSyncPayload.TYPE, BalanceSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    EconomyClientHandler.handleSync(payload)
+                }
+            }
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {
         LOGGER.info("Esther Server mod initialized!")
         CollectibleRegistry.init()
+        ItemPriceRegistry.init()
 
         if (Config.logDirtBlock) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT))
@@ -393,6 +409,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     fun onRegisterCommands(event: RegisterCommandsEvent) {
         TitleCommand.register(event.dispatcher)
         ClaimCommand.register(event.dispatcher)
+        MoneyCommand.register(event.dispatcher)
+        SellCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent
@@ -415,6 +433,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         fun onRegisterKeyMappings(event: net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent) {
             event.register(ModKeyBindings.SIT_KEY)
             event.register(ModKeyBindings.COLLECTION_KEY)
+        }
+
+        @SubscribeEvent
+        fun onRegisterGuiLayers(event: net.neoforged.neoforge.client.event.RegisterGuiLayersEvent) {
+            BalanceHudOverlay.registerLayer(event)
         }
 
         @SubscribeEvent
