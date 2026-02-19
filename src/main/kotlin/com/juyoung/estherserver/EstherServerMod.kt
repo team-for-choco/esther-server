@@ -59,6 +59,8 @@ import com.juyoung.estherserver.economy.EconomyHandler
 import com.juyoung.estherserver.economy.ItemPriceRegistry
 import com.juyoung.estherserver.economy.ModEconomy
 import com.juyoung.estherserver.economy.MoneyCommand
+import com.juyoung.estherserver.enhancement.EnhanceItemPayload
+import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.ModProfession
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.merchant.SellItemPayload
@@ -310,6 +312,25 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             LandDeedItem(properties.stacksTo(16).rarity(net.minecraft.world.item.Rarity.UNCOMMON))
         }
 
+        // Specialty equipment (stacksTo 1, inventory presence grants effect)
+        val SPECIAL_FISHING_ROD: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "special_fishing_rod", Item.Properties().stacksTo(1)
+        )
+        val SPECIAL_HOE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "special_hoe", Item.Properties().stacksTo(1)
+        )
+        val SPECIAL_PICKAXE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "special_pickaxe", Item.Properties().stacksTo(1)
+        )
+        val SPECIAL_COOKING_TOOL: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "special_cooking_tool", Item.Properties().stacksTo(1)
+        )
+
+        // Enhancement stone (rare grade, used for Lv4→Lv5 enhancement)
+        val ENHANCEMENT_STONE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "enhancement_stone", Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)
+        )
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -341,6 +362,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(HARVEST_BIBIMBAP.get())
                         output.accept(COLLECTION_PEDESTAL.get())
                         output.accept(LAND_DEED.get())
+                        output.accept(SPECIAL_FISHING_ROD.get())
+                        output.accept(SPECIAL_HOE.get())
+                        output.accept(SPECIAL_PICKAXE.get())
+                        output.accept(SPECIAL_COOKING_TOOL.get())
+                        output.accept(ENHANCEMENT_STONE.get())
                     }.build()
             })
     }
@@ -425,6 +451,15 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     ShopBuyRegistry.handleSell(player, payload.slotIndex, payload.quantity, merchant.merchantType)
                 }
             }
+            .playToServer(EnhanceItemPayload.TYPE, EnhanceItemPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    when (payload.action) {
+                        "BUY" -> EnhancementHandler.handleBuyEquipment(player, payload.profession)
+                        "ENHANCE" -> EnhancementHandler.handleEnhance(player, payload.profession)
+                    }
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
@@ -496,13 +531,34 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     }
 
     private fun onItemTooltip(event: ItemTooltipEvent) {
-        val quality = event.itemStack.get(ModDataComponents.ITEM_QUALITY.get()) ?: return
+        if (event.toolTip.isEmpty()) return
 
-        if (event.toolTip.isNotEmpty()) {
+        // Quality display
+        val quality = event.itemStack.get(ModDataComponents.ITEM_QUALITY.get())
+        if (quality != null) {
             if (quality != ItemQuality.COMMON) {
                 event.toolTip[0] = event.toolTip[0].copy().withStyle(quality.color)
             }
             event.toolTip.add(1, Component.translatable(quality.translationKey).withStyle(quality.color))
+        }
+
+        // Enhancement level display
+        val enhancementLevel = event.itemStack.get(ModDataComponents.ENHANCEMENT_LEVEL.get())
+        if (enhancementLevel != null) {
+            val gradeColor = when {
+                enhancementLevel >= 5 -> net.minecraft.ChatFormatting.BLUE
+                enhancementLevel >= 3 -> net.minecraft.ChatFormatting.GREEN
+                else -> net.minecraft.ChatFormatting.WHITE
+            }
+            event.toolTip[0] = event.toolTip[0].copy().withStyle(gradeColor)
+            val insertIndex = if (quality != null) 2 else 1
+            val gradeKey = EnhancementHandler.getGradeTranslationKey(enhancementLevel)
+            event.toolTip.add(insertIndex,
+                Component.translatable("tooltip.estherserver.enhancement_level", enhancementLevel)
+                    .append(" (")
+                    .append(Component.translatable(gradeKey))
+                    .append(")")
+                    .withStyle(gradeColor))
         }
     }
 }

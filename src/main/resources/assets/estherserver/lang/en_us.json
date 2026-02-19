@@ -172,5 +172,40 @@
   "profession.estherserver.mining": "Mining",
   "profession.estherserver.cooking": "Cooking",
   "message.estherserver.profession_xp": "[Profession] %s +%sxp (%s/%s)",
-  "message.estherserver.profession_levelup": "[Profession] %s reached level %s!"
+  "message.estherserver.profession_levelup": "[Profession] %s reached level %s!",
+
+  "item.estherserver.special_fishing_rod": "Special Fishing Rod",
+  "item.estherserver.special_hoe": "Special Hoe",
+  "item.estherserver.special_pickaxe": "Special Pickaxe",
+  "item.estherserver.special_cooking_tool": "Special Cooking Tool",
+  "item.estherserver.enhancement_stone": "Enhancement Stone",
+
+  "entity.estherserver.merchant.blacksmith": "Blacksmith",
+  "gui.estherserver.shop.title.blacksmith": "Blacksmith",
+  "gui.estherserver.shop.category.blacksmith": "Blacksmith",
+
+  "gui.estherserver.enhancement.title": "Blacksmith",
+  "gui.estherserver.enhancement.level": "Enhancement Lv%s",
+  "gui.estherserver.enhancement.not_owned": "Not Owned",
+  "gui.estherserver.enhancement.select_equipment": "Select equipment",
+  "gui.estherserver.enhancement.buy_info": "Purchase Equipment",
+  "gui.estherserver.enhancement.buy_price": "Price: %s Essence",
+  "gui.estherserver.enhancement.buy_button": "Buy",
+  "gui.estherserver.enhancement.enhance_button": "Enhance",
+  "gui.estherserver.enhancement.max_level": "Max Enhancement!",
+  "gui.estherserver.enhancement.enhance_info": "Lv%s → Lv%s",
+  "gui.estherserver.enhancement.cost": "Cost: %s Essence",
+  "gui.estherserver.enhancement.rate": "Success: %s%%",
+  "gui.estherserver.enhancement.requires_stone": "Enhancement Stone x1 required",
+  "gui.estherserver.enhancement.profession_label": "Profession: %s",
+
+  "tooltip.estherserver.enhancement_level": "Enhancement Lv%s",
+
+  "message.estherserver.enhance_buy_success": "[Blacksmith] Purchased %s for %s Essence.",
+  "message.estherserver.enhance_already_owned": "[Blacksmith] You already own this equipment.",
+  "message.estherserver.enhance_not_owned": "[Blacksmith] You need to purchase the equipment first.",
+  "message.estherserver.enhance_max_level": "[Blacksmith] Already at max enhancement level.",
+  "message.estherserver.enhance_need_stone": "[Blacksmith] Enhancement Stone required.",
+  "message.estherserver.enhance_success": "[Blacksmith] %s enhanced successfully! (Lv%s)",
+  "message.estherserver.enhance_fail": "[Blacksmith] %s enhancement failed. (Level maintained)"
 }

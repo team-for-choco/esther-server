@@ -1,6 +1,10 @@
 package com.juyoung.estherserver.quality
 
 import com.juyoung.estherserver.EstherServerMod
+import com.mojang.serialization.Codec
+import io.netty.buffer.ByteBuf
+import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.network.codec.StreamCodec
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.minecraft.core.component.DataComponentType
@@ -16,6 +20,14 @@ object ModDataComponents {
             DataComponentType.builder<ItemQuality>()
                 .persistent(ItemQuality.CODEC)
                 .networkSynchronized(ItemQuality.STREAM_CODEC)
+                .build()
+        })
+
+    val ENHANCEMENT_LEVEL: DeferredHolder<DataComponentType<*>, DataComponentType<Int>> =
+        DATA_COMPONENTS.register("enhancement_level", Supplier {
+            DataComponentType.builder<Int>()
+                .persistent(Codec.INT)
+                .networkSynchronized(ByteBufCodecs.VAR_INT)
                 .build()
         })
 }

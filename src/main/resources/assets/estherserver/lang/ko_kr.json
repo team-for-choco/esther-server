@@ -172,5 +172,40 @@
   "profession.estherserver.mining": "채광",
   "profession.estherserver.cooking": "요리",
   "message.estherserver.profession_xp": "[전문] %s +%sxp (%s/%s)",
-  "message.estherserver.profession_levelup": "[전문] %s 레벨 %s 달성!"
+  "message.estherserver.profession_levelup": "[전문] %s 레벨 %s 달성!",
+
+  "item.estherserver.special_fishing_rod": "특수 낚시대",
+  "item.estherserver.special_hoe": "특수 호미",
+  "item.estherserver.special_pickaxe": "특수 곡괭이",
+  "item.estherserver.special_cooking_tool": "특수 조리도구",
+  "item.estherserver.enhancement_stone": "강화석",
+
+  "entity.estherserver.merchant.blacksmith": "대장장이",
+  "gui.estherserver.shop.title.blacksmith": "대장장이",
+  "gui.estherserver.shop.category.blacksmith": "대장장이",
+
+  "gui.estherserver.enhancement.title": "대장장이",
+  "gui.estherserver.enhancement.level": "강화 Lv%s",
+  "gui.estherserver.enhancement.not_owned": "미보유",
+  "gui.estherserver.enhancement.select_equipment": "장비를 선택하세요",
+  "gui.estherserver.enhancement.buy_info": "장비 구매",
+  "gui.estherserver.enhancement.buy_price": "가격: %s 기운",
+  "gui.estherserver.enhancement.buy_button": "구매",
+  "gui.estherserver.enhancement.enhance_button": "강화",
+  "gui.estherserver.enhancement.max_level": "최대 강화 달성!",
+  "gui.estherserver.enhancement.enhance_info": "Lv%s → Lv%s",
+  "gui.estherserver.enhancement.cost": "비용: %s 기운",
+  "gui.estherserver.enhancement.rate": "확률: %s%%",
+  "gui.estherserver.enhancement.requires_stone": "강화석 x1 필요",
+  "gui.estherserver.enhancement.profession_label": "분야: %s",
+
+  "tooltip.estherserver.enhancement_level": "강화 Lv%s",
+
+  "message.estherserver.enhance_buy_success": "[대장장이] %s을(를) %s 기운에 구매했습니다.",
+  "message.estherserver.enhance_already_owned": "[대장장이] 이미 보유 중인 장비입니다.",
+  "message.estherserver.enhance_not_owned": "[대장장이] 장비를 먼저 구매해야 합니다.",
+  "message.estherserver.enhance_max_level": "[대장장이] 이미 최대 강화 레벨입니다.",
+  "message.estherserver.enhance_need_stone": "[대장장이] 강화석이 필요합니다.",
+  "message.estherserver.enhance_success": "[대장장이] %s 강화 성공! (Lv%s)",
+  "message.estherserver.enhance_fail": "[대장장이] %s 강화에 실패했습니다. (레벨 유지)"
 }

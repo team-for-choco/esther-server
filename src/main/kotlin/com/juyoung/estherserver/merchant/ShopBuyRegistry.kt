@@ -19,7 +19,8 @@ enum class ShopCategory(val translationKey: String) {
     SEEDS("gui.estherserver.shop.category.seeds"),
     FOOD("gui.estherserver.shop.category.food"),
     MINERALS("gui.estherserver.shop.category.minerals"),
-    SPECIAL("gui.estherserver.shop.category.special")
+    SPECIAL("gui.estherserver.shop.category.special"),
+    BLACKSMITH("gui.estherserver.shop.category.blacksmith")
 }
 
 object ShopBuyRegistry {
