@@ -301,40 +301,34 @@ object ClaimCommand {
 
     private fun trustAdd(context: CommandContext<CommandSourceStack>): Int {
         val player = context.source.playerOrException
-        val chunkPos = ChunkPos(player.blockPosition())
         val targetName = StringArgumentType.getString(context, "playerName")
 
-        val targetPlayer = player.server.playerList.getPlayerByName(targetName)
-        if (targetPlayer == null) {
+        val targetProfile = player.server.profileCache?.get(targetName)?.orElse(null)
+        if (targetProfile == null) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.trust_player_not_found", targetName), true
             )
             return 0
         }
 
-        val result = ChunkClaimManager.addTrust(player, chunkPos, targetPlayer.uuid, targetName)
+        val result = ChunkClaimManager.addTrust(player, targetProfile.id, targetProfile.name)
         when (result) {
             ChunkClaimManager.TrustResult.SUCCESS -> {
                 player.displayClientMessage(
-                    Component.translatable("message.estherserver.trust_added", targetName), false
+                    Component.translatable("message.estherserver.trust_added", targetProfile.name), false
                 )
-                targetPlayer.displayClientMessage(
+                player.server.playerList.getPlayer(targetProfile.id)?.displayClientMessage(
                     Component.translatable("message.estherserver.trust_added_notify", player.gameProfile.name), false
                 )
             }
-            ChunkClaimManager.TrustResult.NOT_CLAIMED -> {
+            ChunkClaimManager.TrustResult.NO_CLAIMS -> {
                 player.displayClientMessage(
-                    Component.translatable("message.estherserver.claim_not_claimed"), true
-                )
-            }
-            ChunkClaimManager.TrustResult.NOT_OWNER -> {
-                player.displayClientMessage(
-                    Component.translatable("message.estherserver.claim_not_owner"), true
+                    Component.translatable("message.estherserver.trust_no_claims"), true
                 )
             }
             ChunkClaimManager.TrustResult.ALREADY_TRUSTED -> {
                 player.displayClientMessage(
-                    Component.translatable("message.estherserver.trust_already", targetName), true
+                    Component.translatable("message.estherserver.trust_already", targetProfile.name), true
                 )
             }
             ChunkClaimManager.TrustResult.CANNOT_TRUST_SELF -> {
@@ -348,7 +342,6 @@ object ClaimCommand {
 
     private fun trustRemove(context: CommandContext<CommandSourceStack>): Int {
         val player = context.source.playerOrException
-        val chunkPos = ChunkPos(player.blockPosition())
         val targetName = StringArgumentType.getString(context, "playerName")
 
         val data = ChunkClaimData.get(player.serverLevel())
@@ -362,21 +355,16 @@ object ClaimCommand {
             return 0
         }
 
-        val result = ChunkClaimManager.removeTrust(player, chunkPos, targetUUID)
+        val result = ChunkClaimManager.removeTrust(player, targetUUID)
         when (result) {
             ChunkClaimManager.UntrustResult.SUCCESS -> {
                 player.displayClientMessage(
                     Component.translatable("message.estherserver.trust_removed", targetName), false
                 )
             }
-            ChunkClaimManager.UntrustResult.NOT_CLAIMED -> {
+            ChunkClaimManager.UntrustResult.NO_CLAIMS -> {
                 player.displayClientMessage(
-                    Component.translatable("message.estherserver.claim_not_claimed"), true
-                )
-            }
-            ChunkClaimManager.UntrustResult.NOT_OWNER -> {
-                player.displayClientMessage(
-                    Component.translatable("message.estherserver.claim_not_owner"), true
+                    Component.translatable("message.estherserver.trust_no_claims"), true
                 )
             }
             ChunkClaimManager.UntrustResult.NOT_TRUSTED -> {

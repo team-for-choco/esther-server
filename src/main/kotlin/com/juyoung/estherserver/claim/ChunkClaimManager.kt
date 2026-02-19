@@ -57,13 +57,12 @@ object ChunkClaimManager {
         return claim.ownerUUID == playerUUID || data.isTrusted(claim.ownerUUID, playerUUID)
     }
 
-    enum class TrustResult { SUCCESS, NOT_CLAIMED, NOT_OWNER, ALREADY_TRUSTED, CANNOT_TRUST_SELF }
-    enum class UntrustResult { SUCCESS, NOT_CLAIMED, NOT_OWNER, NOT_TRUSTED }
+    enum class TrustResult { SUCCESS, NO_CLAIMS, ALREADY_TRUSTED, CANNOT_TRUST_SELF }
+    enum class UntrustResult { SUCCESS, NO_CLAIMS, NOT_TRUSTED }
 
-    fun addTrust(player: ServerPlayer, chunkPos: ChunkPos, targetUUID: UUID, targetName: String): TrustResult {
+    fun addTrust(player: ServerPlayer, targetUUID: UUID, targetName: String): TrustResult {
         val data = ChunkClaimData.get(player.serverLevel())
-        val existing = data.getClaim(chunkPos) ?: return TrustResult.NOT_CLAIMED
-        if (existing.ownerUUID != player.uuid) return TrustResult.NOT_OWNER
+        if (data.getClaimsByOwner(player.uuid).isEmpty()) return TrustResult.NO_CLAIMS
         if (targetUUID == player.uuid) return TrustResult.CANNOT_TRUST_SELF
         if (data.isTrusted(player.uuid, targetUUID)) return TrustResult.ALREADY_TRUSTED
 
@@ -71,10 +70,9 @@ object ChunkClaimManager {
         return TrustResult.SUCCESS
     }
 
-    fun removeTrust(player: ServerPlayer, chunkPos: ChunkPos, targetUUID: UUID): UntrustResult {
+    fun removeTrust(player: ServerPlayer, targetUUID: UUID): UntrustResult {
         val data = ChunkClaimData.get(player.serverLevel())
-        val existing = data.getClaim(chunkPos) ?: return UntrustResult.NOT_CLAIMED
-        if (existing.ownerUUID != player.uuid) return UntrustResult.NOT_OWNER
+        if (data.getClaimsByOwner(player.uuid).isEmpty()) return UntrustResult.NO_CLAIMS
         if (!data.isTrusted(player.uuid, targetUUID)) return UntrustResult.NOT_TRUSTED
 
         data.removeTrust(player.uuid, targetUUID)

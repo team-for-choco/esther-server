@@ -71,13 +71,21 @@ class ChunkClaimData private constructor(
             for (trustedUUID in trustedSet) {
                 val playerTag = CompoundTag()
                 playerTag.putUUID("playerUUID", trustedUUID)
-                playerTag.putString("playerName", trustedPlayerNames[trustedUUID] ?: "???")
                 playerList.add(playerTag)
             }
             ownerTag.put("players", playerList)
             trustList.add(ownerTag)
         }
         tag.put("trustedPlayers", trustList)
+
+        val nameCache = ListTag()
+        for ((uuid, name) in trustedPlayerNames) {
+            val entry = CompoundTag()
+            entry.putUUID("playerUUID", uuid)
+            entry.putString("playerName", name)
+            nameCache.add(entry)
+        }
+        tag.put("playerNameCache", nameCache)
 
         return tag
     }
@@ -156,11 +164,21 @@ class ChunkClaimData private constructor(
                     for (j in 0 until playerList.size) {
                         val playerTag = playerList.getCompound(j)
                         val playerUUID = playerTag.getUUID("playerUUID")
-                        val playerName = playerTag.getString("playerName")
                         trustedSet.add(playerUUID)
-                        data.trustedPlayerNames[playerUUID] = playerName
+                        // 하위 호환: 구 포맷에서 이름이 있으면 로드
+                        if (playerTag.contains("playerName")) {
+                            data.trustedPlayerNames[playerUUID] = playerTag.getString("playerName")
+                        }
                     }
                     data.trustedPlayers[ownerUUID] = trustedSet
+                }
+            }
+            // 신규 포맷: 별도 이름 캐시 (구 포맷 값을 덮어씀)
+            if (tag.contains("playerNameCache")) {
+                val nameCache = tag.getList("playerNameCache", 10)
+                for (i in 0 until nameCache.size) {
+                    val entry = nameCache.getCompound(i)
+                    data.trustedPlayerNames[entry.getUUID("playerUUID")] = entry.getString("playerName")
                 }
             }
             return data

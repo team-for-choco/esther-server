@@ -32,17 +32,17 @@
 - 기존 `NameFormat`/`TabListNameFormat` 이벤트 핸들러 → Team 기반으로 교체
 
 ## 작업 체크리스트
-- [ ] `CookingStationBlockEntity` 플레이어별 Map 구조 변경 + NBT
-- [ ] `CookingStationBlock` player.uuid 전달 + cooking_ingredient 태그 검증
-- [ ] `cooking_ingredient.json` 태그 파일 생성
-- [ ] `ChatTitleHandler` → Scoreboard Team 기반으로 교체
-- [ ] `CollectionHandler.handleTitleSelect`에서 Team 업데이트 호출
-- [ ] 번역키 추가
-- [ ] `./gradlew build` 성공
+- [x] `CookingStationBlockEntity` 플레이어별 Map 구조 변경 + NBT
+- [x] `CookingStationBlock` player.uuid 전달 + cooking_ingredient 태그 검증
+- [x] `cooking_ingredient.json` 태그 파일 생성
+- [x] `ChatTitleHandler` → Scoreboard Team 기반으로 교체
+- [x] `CollectionHandler.handleTitleSelect`에서 Team 업데이트 호출
+- [x] 번역키 추가
+- [x] `./gradlew build` 성공
 
 ## 인게임 테스트
-- [ ] 멀티: A 플레이어 재료 투입 → B 플레이어 빈 손 우클릭 → A 재료에 접근 불가
-- [ ] 비재료 아이템(네더라이트 갑옷 등) 투입 시도 → 거부 메시지
-- [ ] TAB에서 칭호가 한 번만 표시
-- [ ] 캐릭터 머리 위 이름에 칭호 표시
-- [ ] 채팅에서 칭호 표시
+- [x] 멀티: A 플레이어 재료 투입 → B 플레이어 빈 손 우클릭 → A 재료에 접근 불가
+- [x] 비재료 아이템(네더라이트 갑옷 등) 투입 시도 → 거부 메시지
+- [x] TAB에서 칭호가 한 번만 표시
+- [x] 캐릭터 머리 위 이름에 칭호 표시
+- [x] 채팅에서 칭호 표시
