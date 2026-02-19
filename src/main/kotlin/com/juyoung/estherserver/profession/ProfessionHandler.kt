@@ -9,6 +9,9 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.item.ItemStack
+import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.neoforge.event.entity.player.PlayerEvent
+import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.registries.DeferredItem
 
 object ProfessionHandler {
@@ -94,6 +97,8 @@ object ProfessionHandler {
             // Level-up sound
             player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0f, 1.0f)
         }
+
+        syncToClient(player)
     }
 
     fun getLevel(player: ServerPlayer, profession: Profession): Int {
@@ -102,5 +107,28 @@ object ProfessionHandler {
 
     fun getXp(player: ServerPlayer, profession: Profession): Int {
         return player.getData(ModProfession.PROFESSION_DATA.get()).getXp(profession)
+    }
+
+    fun syncToClient(player: ServerPlayer) {
+        val data = player.getData(ModProfession.PROFESSION_DATA.get())
+        PacketDistributor.sendToPlayer(player, ProfessionSyncPayload(data))
+    }
+
+    @SubscribeEvent
+    fun onPlayerLoggedIn(event: PlayerEvent.PlayerLoggedInEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncToClient(player)
+    }
+
+    @SubscribeEvent
+    fun onPlayerChangedDimension(event: PlayerEvent.PlayerChangedDimensionEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncToClient(player)
+    }
+
+    @SubscribeEvent
+    fun onPlayerRespawn(event: PlayerEvent.PlayerRespawnEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncToClient(player)
     }
 }

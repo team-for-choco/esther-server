@@ -62,7 +62,9 @@ import com.juyoung.estherserver.economy.MoneyCommand
 import com.juyoung.estherserver.enhancement.EnhanceItemPayload
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.ModProfession
+import com.juyoung.estherserver.profession.ProfessionClientHandler
 import com.juyoung.estherserver.profession.ProfessionHandler
+import com.juyoung.estherserver.profession.ProfessionSyncPayload
 import com.juyoung.estherserver.merchant.SellItemPayload
 import com.juyoung.estherserver.merchant.BuyItemPayload
 import com.juyoung.estherserver.merchant.MerchantEntity
@@ -397,6 +399,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(ChatTitleHandler)
         NeoForge.EVENT_BUS.register(ClaimProtectionHandler)
         NeoForge.EVENT_BUS.register(EconomyHandler)
+        NeoForge.EVENT_BUS.register(ProfessionHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -430,6 +433,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             .playToClient(BalanceSyncPayload.TYPE, BalanceSyncPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
                     EconomyClientHandler.handleSync(payload)
+                }
+            }
+            .playToClient(ProfessionSyncPayload.TYPE, ProfessionSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    ProfessionClientHandler.handleSync(payload)
                 }
             }
             .playToClient(OpenShopPayload.TYPE, OpenShopPayload.STREAM_CODEC) { payload, context ->
@@ -512,6 +520,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         fun onRegisterKeyMappings(event: net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent) {
             event.register(ModKeyBindings.SIT_KEY)
             event.register(ModKeyBindings.COLLECTION_KEY)
+            event.register(ModKeyBindings.PROFESSION_KEY)
         }
 
         @SubscribeEvent
