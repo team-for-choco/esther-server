@@ -72,6 +72,21 @@ object ShopBuyRegistry {
         entries.add(ShopEntry(ResourceLocation.parse(item), price, category))
     }
 
+    private fun hasInventorySpace(player: ServerPlayer, item: net.minecraft.world.item.Item, quantity: Int): Boolean {
+        var space = 0
+        val maxStack = item.defaultMaxStackSize
+        for (i in 0 until player.inventory.items.size) {
+            val slot = player.inventory.items[i]
+            if (slot.isEmpty) {
+                space += maxStack
+            } else if (slot.item === item && slot.count < maxStack) {
+                space += maxStack - slot.count
+            }
+            if (space >= quantity) return true
+        }
+        return false
+    }
+
     fun getAllEntries(): List<ShopEntry> = entries.toList()
 
     fun getEntry(itemId: ResourceLocation): ShopEntry? =
@@ -94,6 +109,14 @@ object ShopBuyRegistry {
         val item = BuiltInRegistries.ITEM.getValue(itemId)
         if (item === Items.AIR) return false
 
+        // Check inventory space before purchase
+        if (!hasInventorySpace(player, item, quantity)) {
+            player.sendSystemMessage(
+                Component.translatable("message.estherserver.shop_inventory_full")
+            )
+            return false
+        }
+
         if (!EconomyHandler.removeBalance(player, totalCost)) return false
 
         // Give items respecting max stack size
@@ -101,10 +124,7 @@ object ShopBuyRegistry {
         while (remaining > 0) {
             val stackSize = remaining.coerceAtMost(item.defaultMaxStackSize)
             val stack = ItemStack(item, stackSize)
-            if (!player.inventory.add(stack)) {
-                // Inventory full - drop remaining
-                player.drop(stack, false)
-            }
+            player.inventory.add(stack)
             remaining -= stackSize
         }
 
