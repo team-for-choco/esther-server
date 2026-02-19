@@ -1,7 +1,9 @@
 package com.juyoung.estherserver.cooking
 
 import com.juyoung.estherserver.EstherServerMod
+import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.Profession
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.quality.ModDataComponents
 import com.mojang.serialization.MapCodec
@@ -165,9 +167,21 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         val recipeResult = CookingRecipeMatcher.findMatchingRecipe(level, blockEntity.getIngredients(playerUUID))
 
         if (recipeResult != null) {
+            // Calculate profession + equipment bonuses
+            val serverPlayer = player as? ServerPlayer
+            var fineBonus = 0
+            var rareBonus = 0
+            if (serverPlayer != null) {
+                val profLevel = ProfessionHandler.getLevel(serverPlayer, Profession.COOKING)
+                val equipLevel = EnhancementHandler.getEquipmentLevel(serverPlayer, Profession.COOKING)
+                fineBonus = ProfessionBonusHelper.getFineQualityBonus(profLevel)
+                rareBonus = ProfessionBonusHelper.getRareQualityBonus(profLevel) +
+                    ProfessionBonusHelper.getCookingRareBonus(equipLevel)
+            }
+
             // Success: determine quality and spawn result
             val quality = CookingQualityCalculator.calculateQuality(
-                blockEntity.getIngredients(playerUUID), level.random
+                blockEntity.getIngredients(playerUUID), level.random, fineBonus, rareBonus
             )
             val resultStack = recipeResult.copy()
             resultStack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
@@ -190,10 +204,33 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
             level.playSound(null, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7f, 1.5f)
 
             // Grant cooking profession XP
-            val serverPlayer = player as? ServerPlayer
             if (serverPlayer != null) {
                 val xp = ProfessionHandler.getXpForQuality(quality)
                 ProfessionHandler.addExperience(serverPlayer, Profession.COOKING, xp)
+            }
+
+            // Lv50: 25% chance to preserve one random ingredient
+            if (serverPlayer != null) {
+                val profLevel = ProfessionHandler.getLevel(serverPlayer, Profession.COOKING)
+                if (ProfessionBonusHelper.shouldSaveIngredient(profLevel, level.random)) {
+                    val ingredients = blockEntity.getIngredients(playerUUID)
+                    if (ingredients.isNotEmpty()) {
+                        val savedIngredient = ingredients[level.random.nextInt(ingredients.size)].copy()
+                        savedIngredient.count = 1
+                        if (!player.inventory.add(savedIngredient)) {
+                            val savedEntity = ItemEntity(
+                                level,
+                                pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
+                                savedIngredient
+                            )
+                            savedEntity.setDefaultPickUpDelay()
+                            level.addFreshEntity(savedEntity)
+                        }
+                        player.displayClientMessage(
+                            Component.translatable("message.estherserver.ingredient_saved"), false
+                        )
+                    }
+                }
             }
 
             player.displayClientMessage(

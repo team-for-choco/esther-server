@@ -19,9 +19,19 @@ object CookingQualityCalculator {
     private val FINE_WEIGHTS = intArrayOf(50, 40, 10)
     private val RARE_WEIGHTS = intArrayOf(30, 55, 15)
 
-    fun calculateQuality(ingredients: List<ItemStack>, random: RandomSource): ItemQuality {
+    fun calculateQuality(
+        ingredients: List<ItemStack>,
+        random: RandomSource,
+        fineBonus: Int = 0,
+        rareBonus: Int = 0
+    ): ItemQuality {
         val avgScore = calculateAverageScore(ingredients)
         val weights = interpolateWeights(avgScore)
+        if (fineBonus > 0 || rareBonus > 0) {
+            weights[0] = maxOf(10, weights[0] - fineBonus - rareBonus)
+            weights[1] = weights[1] + fineBonus
+            weights[2] = weights[2] + rareBonus
+        }
         return rollQuality(weights, random)
     }
 
@@ -40,7 +50,7 @@ object CookingQualityCalculator {
 
     private fun interpolateWeights(avgScore: Double): IntArray {
         return when {
-            avgScore <= 0.0 -> BASE_WEIGHTS
+            avgScore <= 0.0 -> BASE_WEIGHTS.copyOf()
             avgScore <= 1.0 -> {
                 // Interpolate between BASE and FINE
                 val t = avgScore
@@ -51,7 +61,7 @@ object CookingQualityCalculator {
                 val t = avgScore - 1.0
                 interpolate(FINE_WEIGHTS, RARE_WEIGHTS, t)
             }
-            else -> RARE_WEIGHTS
+            else -> RARE_WEIGHTS.copyOf()
         }
     }
 

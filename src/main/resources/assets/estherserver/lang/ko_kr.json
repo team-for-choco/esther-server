@@ -223,5 +223,10 @@
   "message.estherserver.sprayer_filled": "분무기에 물을 채웠습니다. (%s/%s)",
   "message.estherserver.sprayer_used": "수분을 보충했습니다. (%s/%s)",
 
-  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s"
+  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s",
+
+  "message.estherserver.double_mine_drop": "광물이 2배로 떨어졌습니다!",
+  "message.estherserver.double_fish": "물고기를 한 마리 더 낚았습니다!",
+  "message.estherserver.seed_preserved": "씨앗이 보존되었습니다!",
+  "message.estherserver.ingredient_saved": "재료가 절약되었습니다!"
 }
