@@ -72,12 +72,12 @@ CHOCO-92
 - [x] 빌드 확인
 
 ## 인게임 테스트
-- [ ] 첫 접속 시 잔고 0
-- [ ] HUD에 잔고 표시
-- [ ] `/sell`로 아이템 판매 → 잔고 증가 + HUD 갱신
-- [ ] 등급별 판매 가격 차이 확인
-- [ ] `/money pay` 송금 → 양쪽 잔고 변경
-- [ ] `/money admin add/remove/set` 동작
-- [ ] 사망 후 잔고 유지 (copyOnDeath)
-- [ ] 서버 재시작 후 잔고 유지
-- [ ] F3 화면에서 HUD 숨김
+- [x] 첫 접속 시 잔고 0
+- [x] HUD에 잔고 표시
+- [x] `/sell`로 아이템 판매 → 잔고 증가 + HUD 갱신
+- [x] 등급별 판매 가격 차이 확인
+- [ ] `/money pay` 송금 → 양쪽 잔고 변경 (멀티플레이어 필요)
+- [x] `/money admin add/remove/set` 동작
+- [x] 사망 후 잔고 유지 (copyOnDeath)
+- [x] 서버 재시작 후 잔고 유지
+- [x] F3 화면에서 HUD 숨김
