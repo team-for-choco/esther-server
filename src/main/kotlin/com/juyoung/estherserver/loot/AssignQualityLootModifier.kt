@@ -49,6 +49,17 @@ class AssignQualityLootModifier(
             }
         }
 
+        // Vanilla mining XP (no quality, fixed XP per ore type)
+        if (player != null && isCorrectToolForProfession(tool, Profession.MINING)) {
+            for (stack in generatedLoot) {
+                val xp = ProfessionHandler.getVanillaMiningXp(stack)
+                if (xp != null) {
+                    ProfessionHandler.addExperience(player, Profession.MINING, xp)
+                    relevantProfessions.add(Profession.MINING)
+                }
+            }
+        }
+
         // Enhancement stone drop (fishing/mining with Lv4+ equipment)
         if (player != null) {
             for (prof in relevantProfessions) {

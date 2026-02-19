@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredItem
 object ProfessionHandler {
 
     private val itemProfessionMap = mutableMapOf<ResourceLocation, Profession>()
+    private val vanillaMiningXpMap = mutableMapOf<ResourceLocation, Int>()
 
     fun init() {
         // Fishing
@@ -30,24 +31,31 @@ object ProfessionHandler {
 
         // Mining
         register(EstherServerMod.TEST_ORE_RAW, Profession.MINING)
-        registerVanilla("minecraft:coal", Profession.MINING)
-        registerVanilla("minecraft:raw_iron", Profession.MINING)
-        registerVanilla("minecraft:raw_gold", Profession.MINING)
-        registerVanilla("minecraft:raw_copper", Profession.MINING)
-        registerVanilla("minecraft:diamond", Profession.MINING)
-        registerVanilla("minecraft:emerald", Profession.MINING)
-        registerVanilla("minecraft:lapis_lazuli", Profession.MINING)
-        registerVanilla("minecraft:redstone", Profession.MINING)
-        registerVanilla("minecraft:quartz", Profession.MINING)
-        registerVanilla("minecraft:amethyst_shard", Profession.MINING)
+
+        // Vanilla mining XP (fixed amount per ore type, no quality)
+        registerVanillaMining("minecraft:coal", 1)
+        registerVanillaMining("minecraft:raw_copper", 1)
+        registerVanillaMining("minecraft:redstone", 1)
+        registerVanillaMining("minecraft:lapis_lazuli", 2)
+        registerVanillaMining("minecraft:raw_iron", 2)
+        registerVanillaMining("minecraft:quartz", 2)
+        registerVanillaMining("minecraft:amethyst_shard", 2)
+        registerVanillaMining("minecraft:raw_gold", 3)
+        registerVanillaMining("minecraft:emerald", 4)
+        registerVanillaMining("minecraft:diamond", 5)
     }
 
     private fun register(item: DeferredItem<*>, profession: Profession) {
         itemProfessionMap[item.id] = profession
     }
 
-    private fun registerVanilla(item: String, profession: Profession) {
-        itemProfessionMap[ResourceLocation.parse(item)] = profession
+    private fun registerVanillaMining(item: String, xp: Int) {
+        vanillaMiningXpMap[ResourceLocation.parse(item)] = xp
+    }
+
+    fun getVanillaMiningXp(stack: ItemStack): Int? {
+        val key = BuiltInRegistries.ITEM.getKey(stack.item)
+        return vanillaMiningXpMap[key]
     }
 
     fun getProfessionForItem(stack: ItemStack): Profession? {
