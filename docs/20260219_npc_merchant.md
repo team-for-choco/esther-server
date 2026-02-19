@@ -60,23 +60,23 @@ NPC 엔티티가 서버 기본 상점 역할을 하며, 기본 재료를 별도 
 - [x] Jira 이슈 생성 (CHOCO-93)
 - [x] 브랜치 생성 (feature/CHOCO-93)
 - [x] 문서 생성
-- [ ] ShopBuyRegistry.kt 구현
-- [ ] ShopPayloads.kt + ShopClientHandler.kt 구현
-- [ ] MerchantEntity.kt 구현
-- [ ] MerchantEntityRenderer.kt 구현
-- [ ] ShopScreen.kt 구현
-- [ ] ShopCommand.kt 구현
-- [ ] EstherServerMod.kt 통합
-- [ ] 번역 키 추가
-- [ ] 빌드 확인
+- [x] ShopBuyRegistry.kt 구현
+- [x] ShopPayloads.kt + ShopClientHandler.kt 구현
+- [x] MerchantEntity.kt 구현
+- [x] MerchantEntityRenderer.kt 구현
+- [x] ShopScreen.kt 구현
+- [x] ShopCommand.kt 구현
+- [x] EstherServerMod.kt 통합
+- [x] 번역 키 추가
+- [x] 빌드 확인
 
 ## 인게임 테스트
-- [ ] `/shop summon`으로 NPC 소환 → 빌리저 외형 표시
-- [ ] NPC 우클릭 → 상점 GUI 열림
-- [ ] 아이템 클릭 구매 → 잔고 차감 + 아이템 획득
-- [ ] Shift+클릭 다량 구매
-- [ ] 잔고 부족 시 구매 실패 메시지
-- [ ] 인벤토리 풀 시 아이템 드롭
-- [ ] `/shop remove`로 NPC 제거
-- [ ] 서버 재시작 후 NPC 유지
-- [ ] NPC 무적/부동 확인
+- [x] `/shop summon`으로 NPC 소환 → 빌리저 외형 표시
+- [x] NPC 우클릭 → 상점 GUI 열림
+- [x] 아이템 클릭 구매 → 잔고 차감 + 아이템 획득
+- [x] Shift+클릭 다량 구매
+- [x] 잔고 부족 시 구매 실패 메시지
+- [x] 인벤토리 풀 시 구매 차단 (드롭 대신 차단으로 변경)
+- [x] `/shop remove`로 NPC 제거
+- [x] 서버 재시작 후 NPC 유지
+- [x] NPC 무적/부동 확인 (물 밀림 방지 포함)
