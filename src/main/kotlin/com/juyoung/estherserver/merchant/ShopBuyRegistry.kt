@@ -169,6 +169,7 @@ object ShopBuyRegistry {
         if (sellCount <= 0) return false
 
         val totalPrice = pricePerItem * sellCount
+        val itemName = Component.translatable(stack.item.descriptionId)
 
         // Execute sale
         stack.shrink(sellCount)
@@ -178,7 +179,7 @@ object ShopBuyRegistry {
             Component.translatable(
                 "message.estherserver.shop_sell_success",
                 sellCount,
-                Component.translatable(stack.item.descriptionId),
+                itemName,
                 totalPrice
             )
         )
