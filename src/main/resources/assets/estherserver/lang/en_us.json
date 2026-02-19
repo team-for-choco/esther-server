@@ -221,5 +221,7 @@
   "message.estherserver.cooking_need_tool": "Use cooking tool to complete cooking.",
   "message.estherserver.sprayer_empty": "Sprayer is empty.",
   "message.estherserver.sprayer_filled": "Sprayer filled. (%s/%s)",
-  "message.estherserver.sprayer_used": "Moisturized soil. (%s/%s)"
+  "message.estherserver.sprayer_used": "Moisturized soil. (%s/%s)",
+
+  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s"
 }

@@ -177,6 +177,7 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 | 2026-02-19 | [20260219_enhancement_system.md](docs/20260219_enhancement_system.md) | CHOCO-96 | 장비 강화 시스템 (Phase 4-1b) | 완료 |
 | 2026-02-19 | [20260219_profession_gui.md](docs/20260219_profession_gui.md) | CHOCO-97 | 전문 분야 현황 GUI (Phase 4-1c) | 완료 |
 | 2026-02-19 | [20260219_equipment_farmland.md](docs/20260219_equipment_farmland.md) | CHOCO-98 | 특수 장비 기능화 + 특수 농사용 흙 (Phase 4-1d) | 완료 |
+| 2026-02-20 | [20260220_pr29_review.md](docs/20260220_pr29_review.md) | CHOCO-99 | PR #29 코드 리뷰 반영 | 완료 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.
