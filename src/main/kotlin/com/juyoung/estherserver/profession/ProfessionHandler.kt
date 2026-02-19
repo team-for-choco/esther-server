@@ -30,10 +30,24 @@ object ProfessionHandler {
 
         // Mining
         register(EstherServerMod.TEST_ORE_RAW, Profession.MINING)
+        registerVanilla("minecraft:coal", Profession.MINING)
+        registerVanilla("minecraft:raw_iron", Profession.MINING)
+        registerVanilla("minecraft:raw_gold", Profession.MINING)
+        registerVanilla("minecraft:raw_copper", Profession.MINING)
+        registerVanilla("minecraft:diamond", Profession.MINING)
+        registerVanilla("minecraft:emerald", Profession.MINING)
+        registerVanilla("minecraft:lapis_lazuli", Profession.MINING)
+        registerVanilla("minecraft:redstone", Profession.MINING)
+        registerVanilla("minecraft:quartz", Profession.MINING)
+        registerVanilla("minecraft:amethyst_shard", Profession.MINING)
     }
 
     private fun register(item: DeferredItem<*>, profession: Profession) {
         itemProfessionMap[item.id] = profession
+    }
+
+    private fun registerVanilla(item: String, profession: Profession) {
+        itemProfessionMap[ResourceLocation.parse(item)] = profession
     }
 
     fun getProfessionForItem(stack: ItemStack): Profession? {
