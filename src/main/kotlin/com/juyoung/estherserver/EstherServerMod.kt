@@ -60,6 +60,13 @@ import com.juyoung.estherserver.economy.ItemPriceRegistry
 import com.juyoung.estherserver.economy.ModEconomy
 import com.juyoung.estherserver.economy.MoneyCommand
 import com.juyoung.estherserver.economy.SellCommand
+import com.juyoung.estherserver.merchant.BuyItemPayload
+import com.juyoung.estherserver.merchant.MerchantEntity
+import com.juyoung.estherserver.merchant.MerchantEntityRenderer
+import com.juyoung.estherserver.merchant.OpenShopPayload
+import com.juyoung.estherserver.merchant.ShopBuyRegistry
+import com.juyoung.estherserver.merchant.ShopClientHandler
+import com.juyoung.estherserver.merchant.ShopCommand
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
@@ -95,6 +102,14 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 EntityType.Builder.of(::SeatEntity, MobCategory.MISC)
                     .sized(0.0f, 0.0f)
                     .noSummon()
+                    .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
+            })
+
+        // Merchant NPC entity
+        val MERCHANT_ENTITY: DeferredHolder<EntityType<*>, EntityType<MerchantEntity>> =
+            ENTITY_TYPES.register("merchant", java.util.function.Function { registryName ->
+                EntityType.Builder.of(::MerchantEntity, MobCategory.MISC)
+                    .sized(0.6f, 1.95f)
                     .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
             })
 
@@ -331,6 +346,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     init {
         modEventBus.addListener(::commonSetup)
         modEventBus.addListener(::registerPayloads)
+        modEventBus.addListener(::registerEntityAttributes)
 
         BLOCKS.register(modEventBus)
         ITEMS.register(modEventBus)
@@ -387,12 +403,28 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     EconomyClientHandler.handleSync(payload)
                 }
             }
+            .playToClient(OpenShopPayload.TYPE, OpenShopPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    ShopClientHandler.handleOpenShop(payload)
+                }
+            }
+            .playToServer(BuyItemPayload.TYPE, BuyItemPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    ShopBuyRegistry.handleBuy(player, payload.itemId, payload.quantity)
+                }
+            }
+    }
+
+    private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
+        event.put(MERCHANT_ENTITY.get(), MerchantEntity.createAttributes().build())
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {
         LOGGER.info("Esther Server mod initialized!")
         CollectibleRegistry.init()
         ItemPriceRegistry.init()
+        ShopBuyRegistry.init()
 
         if (Config.logDirtBlock) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT))
@@ -411,6 +443,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ClaimCommand.register(event.dispatcher)
         MoneyCommand.register(event.dispatcher)
         SellCommand.register(event.dispatcher)
+        ShopCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent
@@ -444,6 +477,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         fun onRegisterRenderers(event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers) {
             event.registerEntityRenderer(SEAT_ENTITY.get()) { context ->
                 net.minecraft.client.renderer.entity.NoopRenderer(context)
+            }
+            event.registerEntityRenderer(MERCHANT_ENTITY.get()) { context ->
+                MerchantEntityRenderer(context)
             }
         }
     }

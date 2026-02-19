@@ -133,5 +133,23 @@
   "message.estherserver.money_admin_insufficient": "%s has insufficient balance.",
   "message.estherserver.sell_empty_hand": "You must hold an item in your hand.",
   "message.estherserver.sell_no_price": "This item cannot be sold.",
-  "message.estherserver.sell_success": "[Economy] Sold %s %s for %s Esther's Essence."
+  "message.estherserver.sell_success": "[Economy] Sold %s %s for %s Esther's Essence.",
+
+  "entity.estherserver.merchant": "Merchant",
+  "gui.estherserver.shop.title": "Shop",
+  "gui.estherserver.shop.tab.all": "All",
+  "gui.estherserver.shop.category.seeds": "Seeds",
+  "gui.estherserver.shop.category.food": "Food",
+  "gui.estherserver.shop.category.minerals": "Minerals",
+  "gui.estherserver.shop.category.special": "Special",
+  "gui.estherserver.shop.balance": "Balance: %s Esther's Essence",
+  "gui.estherserver.shop.price": "Price: %s Esther's Essence",
+  "gui.estherserver.shop.click_to_buy": "Click: Buy 1 / Shift+Click: Buy 16",
+  "message.estherserver.shop_buy_success": "[Shop] Bought %s %s for %s Esther's Essence.",
+  "message.estherserver.shop_insufficient": "[Shop] Insufficient balance.",
+  "message.estherserver.shop_inventory_full": "[Shop] Inventory is full.",
+  "message.estherserver.shop_summoned": "[Shop] Summoned merchant NPC.",
+  "message.estherserver.shop_removed": "[Shop] Removed merchant NPC.",
+  "message.estherserver.shop_removed_all": "[Shop] Removed %s merchant NPC(s).",
+  "message.estherserver.shop_not_found": "[Shop] No merchant NPC found nearby."
 }

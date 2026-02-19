@@ -27,3 +27,4 @@
 > 원본: [20260219_currency_system.md](20260219_currency_system.md)
 
 - [ ] `/money pay` 송금 → 양쪽 잔고 변경 (멀티플레이어 필요)
+

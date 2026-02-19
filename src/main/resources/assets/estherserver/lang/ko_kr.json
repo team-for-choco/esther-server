@@ -133,5 +133,23 @@
   "message.estherserver.money_admin_insufficient": "%s님의 잔고가 부족합니다.",
   "message.estherserver.sell_empty_hand": "손에 아이템을 들고 있어야 합니다.",
   "message.estherserver.sell_no_price": "이 아이템은 판매할 수 없습니다.",
-  "message.estherserver.sell_success": "[경제] %s개의 %s을(를) %s 에스더의 기운에 판매했습니다."
+  "message.estherserver.sell_success": "[경제] %s개의 %s을(를) %s 에스더의 기운에 판매했습니다.",
+
+  "entity.estherserver.merchant": "상인",
+  "gui.estherserver.shop.title": "상점",
+  "gui.estherserver.shop.tab.all": "전체",
+  "gui.estherserver.shop.category.seeds": "씨앗",
+  "gui.estherserver.shop.category.food": "식재료",
+  "gui.estherserver.shop.category.minerals": "광물",
+  "gui.estherserver.shop.category.special": "특수",
+  "gui.estherserver.shop.balance": "잔고: %s 에스더의 기운",
+  "gui.estherserver.shop.price": "가격: %s 에스더의 기운",
+  "gui.estherserver.shop.click_to_buy": "클릭: 1개 구매 / Shift+클릭: 16개 구매",
+  "message.estherserver.shop_buy_success": "[상점] %s개의 %s을(를) %s 에스더의 기운에 구매했습니다.",
+  "message.estherserver.shop_insufficient": "[상점] 잔고가 부족합니다.",
+  "message.estherserver.shop_inventory_full": "[상점] 인벤토리가 가득 찼습니다.",
+  "message.estherserver.shop_summoned": "[상점] 상인 NPC를 소환했습니다.",
+  "message.estherserver.shop_removed": "[상점] 상인 NPC를 제거했습니다.",
+  "message.estherserver.shop_removed_all": "[상점] 상인 NPC %s명을 모두 제거했습니다.",
+  "message.estherserver.shop_not_found": "[상점] 주변에 상인 NPC가 없습니다."
 }
