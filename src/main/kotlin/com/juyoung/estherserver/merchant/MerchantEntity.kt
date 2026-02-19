@@ -31,6 +31,9 @@ class MerchantEntity(entityType: EntityType<MerchantEntity>, level: Level) :
 
     override fun isPushable(): Boolean = false
 
+    @Suppress("DEPRECATION")
+    override fun isPushedByFluid(): Boolean = false
+
     override fun removeWhenFarAway(distanceToClosestPlayer: Double): Boolean = false
 
     override fun mobInteract(player: Player, hand: InteractionHand): InteractionResult {
