@@ -165,5 +165,12 @@
   "message.estherserver.shop_not_found": "[Shop] No merchant NPC found nearby.",
   "message.estherserver.shop_sell_success": "[Shop] Sold %s %s for %s Esther's Essence.",
   "message.estherserver.shop_sell_no_price": "[Shop] This item cannot be sold.",
-  "message.estherserver.shop_sell_wrong_merchant": "[Shop] This merchant does not buy this item."
+  "message.estherserver.shop_sell_wrong_merchant": "[Shop] This merchant does not buy this item.",
+
+  "profession.estherserver.fishing": "Fishing",
+  "profession.estherserver.farming": "Farming",
+  "profession.estherserver.mining": "Mining",
+  "profession.estherserver.cooking": "Cooking",
+  "message.estherserver.profession_xp": "[Profession] %s +%sxp (%s/%s)",
+  "message.estherserver.profession_levelup": "[Profession] %s reached level %s!"
 }
