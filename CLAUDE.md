@@ -172,6 +172,7 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 | 2026-02-14 | [20260214_claim_trust.md](docs/20260214_claim_trust.md) | CHOCO-91 | 청크 클레임 신뢰 시스템 (플레이어 초대) | 완료 |
 | 2026-02-19 | [20260219_currency_system.md](docs/20260219_currency_system.md) | CHOCO-92 | 화폐 시스템 (Phase 3-1) | 완료 |
 | 2026-02-19 | [20260219_npc_merchant.md](docs/20260219_npc_merchant.md) | CHOCO-93 | NPC 상인 시스템 (Phase 3-3) | 완료 |
+| 2026-02-19 | [20260219_merchant_improvement.md](docs/20260219_merchant_improvement.md) | CHOCO-94 | 상인 시스템 개선: 전문 상인 + 판매 탭 | 완료 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.

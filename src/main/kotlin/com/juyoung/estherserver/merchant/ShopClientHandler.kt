@@ -4,6 +4,11 @@ import net.minecraft.client.Minecraft
 
 object ShopClientHandler {
     fun handleOpenShop(payload: OpenShopPayload) {
-        Minecraft.getInstance().setScreen(ShopScreen())
+        val merchantType = try {
+            ShopCategory.valueOf(payload.merchantType)
+        } catch (_: IllegalArgumentException) {
+            ShopCategory.SEEDS
+        }
+        Minecraft.getInstance().setScreen(ShopScreen(merchantType, payload.entityId))
     }
 }

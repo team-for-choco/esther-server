@@ -1,7 +1,7 @@
 package com.juyoung.estherserver.merchant
 
-import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyHandler
+import com.juyoung.estherserver.economy.ItemPriceRegistry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -131,6 +131,56 @@ object ShopBuyRegistry {
                 quantity,
                 Component.translatable(item.descriptionId),
                 totalCost
+            )
+        )
+
+        return true
+    }
+
+    fun handleSell(player: ServerPlayer, slotIndex: Int, quantity: Int, merchantType: ShopCategory): Boolean {
+        // Validate slot index (0..35 = hotbar + main inventory)
+        if (slotIndex < 0 || slotIndex > 35) return false
+
+        val stack = player.inventory.getItem(slotIndex)
+        if (stack.isEmpty) return false
+
+        val itemId = stack.itemHolder.unwrapKey().orElse(null)?.location() ?: return false
+
+        // Check category matches merchant type
+        val category = ItemPriceRegistry.getCategory(itemId)
+        if (category == null) {
+            player.sendSystemMessage(
+                Component.translatable("message.estherserver.shop_sell_no_price")
+            )
+            return false
+        }
+        if (category != merchantType) {
+            player.sendSystemMessage(
+                Component.translatable("message.estherserver.shop_sell_wrong_merchant")
+            )
+            return false
+        }
+
+        // Get price per item (with quality multiplier)
+        val pricePerItem = ItemPriceRegistry.getPrice(stack) ?: return false
+
+        // Validate quantity
+        val sellCount = quantity.coerceAtMost(stack.count)
+        if (sellCount <= 0) return false
+
+        val totalPrice = pricePerItem * sellCount
+        val itemName = Component.translatable(stack.item.descriptionId)
+
+        // Execute sale
+        stack.shrink(sellCount)
+        EconomyHandler.addBalance(player, totalPrice)
+
+        player.sendSystemMessage(
+            Component.translatable(
+                "message.estherserver.shop_sell_success",
+                sellCount,
+                itemName,
+                totalPrice
             )
         )
 
