@@ -207,5 +207,12 @@
   "message.estherserver.enhance_max_level": "[대장장이] 이미 최대 강화 레벨입니다.",
   "message.estherserver.enhance_need_stone": "[대장장이] 강화석이 필요합니다.",
   "message.estherserver.enhance_success": "[대장장이] %s 강화 성공! (Lv%s)",
-  "message.estherserver.enhance_fail": "[대장장이] %s 강화에 실패했습니다. (레벨 유지)"
+  "message.estherserver.enhance_fail": "[대장장이] %s 강화에 실패했습니다. (레벨 유지)",
+
+  "key.estherserver.profession": "전문 분야 현황",
+  "gui.estherserver.profession.title": "전문 분야 현황",
+  "gui.estherserver.profession.level_display": "Lv %s",
+  "gui.estherserver.profession.max_level": "MAX",
+  "gui.estherserver.profession.equip_status": "Lv%s (%s)",
+  "gui.estherserver.profession.equip_none": "장비 미보유"
 }

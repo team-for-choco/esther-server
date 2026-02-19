@@ -1,6 +1,7 @@
 package com.juyoung.estherserver.sitting
 
 import com.juyoung.estherserver.collection.CollectionScreen
+import com.juyoung.estherserver.profession.ProfessionScreen
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
@@ -25,6 +26,13 @@ object ModKeyBindings {
         "key.categories.estherserver"
     )
 
+    val PROFESSION_KEY = KeyMapping(
+        "key.estherserver.profession",
+        InputConstants.Type.KEYSYM,
+        GLFW.GLFW_KEY_J,
+        "key.categories.estherserver"
+    )
+
     @SubscribeEvent
     fun onClientTick(event: ClientTickEvent.Post) {
         while (SIT_KEY.consumeClick()) {
@@ -32,6 +40,9 @@ object ModKeyBindings {
         }
         while (COLLECTION_KEY.consumeClick()) {
             Minecraft.getInstance().setScreen(CollectionScreen())
+        }
+        while (PROFESSION_KEY.consumeClick()) {
+            Minecraft.getInstance().setScreen(ProfessionScreen())
         }
     }
 }

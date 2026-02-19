@@ -207,5 +207,12 @@
   "message.estherserver.enhance_max_level": "[Blacksmith] Already at max enhancement level.",
   "message.estherserver.enhance_need_stone": "[Blacksmith] Enhancement Stone required.",
   "message.estherserver.enhance_success": "[Blacksmith] %s enhanced successfully! (Lv%s)",
-  "message.estherserver.enhance_fail": "[Blacksmith] %s enhancement failed. (Level maintained)"
+  "message.estherserver.enhance_fail": "[Blacksmith] %s enhancement failed. (Level maintained)",
+
+  "key.estherserver.profession": "Profession Status",
+  "gui.estherserver.profession.title": "Profession Status",
+  "gui.estherserver.profession.level_display": "Lv %s",
+  "gui.estherserver.profession.max_level": "MAX",
+  "gui.estherserver.profession.equip_status": "Lv%s (%s)",
+  "gui.estherserver.profession.equip_none": "No equipment"
 }
