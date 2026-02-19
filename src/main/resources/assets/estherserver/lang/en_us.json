@@ -105,5 +105,19 @@
   "message.estherserver.claim_settings_break": "  Block Breaking: %s",
   "message.estherserver.claim_settings_place": "  Block Placing: %s",
   "message.estherserver.claim_settings_interact": "  Interaction: %s",
-  "message.estherserver.claim_settings_updated": "[Land] %s set to %s."
+  "message.estherserver.claim_settings_updated": "[Land] %s set to %s.",
+
+  "message.estherserver.trust_added": "[Land] Added %s to trust list. They can access all your claimed chunks.",
+  "message.estherserver.trust_added_notify": "[Land] %s added you to their trust list!",
+  "message.estherserver.trust_removed": "[Land] Removed %s from trust list.",
+  "message.estherserver.trust_already": "%s is already in your trust list.",
+  "message.estherserver.trust_self": "You cannot add yourself to trust list.",
+  "message.estherserver.trust_player_not_found": "Player %s not found.",
+  "message.estherserver.trust_no_claims": "You don't have any claims.",
+  "message.estherserver.trust_not_found": "%s is not in your trust list.",
+  "message.estherserver.trust_list_empty": "[Land] Your trust list is empty.",
+  "message.estherserver.trust_list_header": "[Land] Trust list (%s):",
+  "message.estherserver.trust_list_entry": "  - %s",
+  "message.estherserver.claim_info_trusted": "  Trusted: %s (%s)",
+  "message.estherserver.claim_info_trusted_count": "  Trusted: %s players"
 }

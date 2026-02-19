@@ -125,6 +125,12 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 2. **CLAUDE.md 작업 기록 업데이트**: 작업 기록 테이블에 해당 작업 행 추가
 3. **ROADMAP.md 업데이트**: 완료된 작업 항목이 로드맵에 반영 (체크 표시, 흐름도 등)
 
+### 인게임 테스트 추적
+- 미완료 인게임 테스트는 **[docs/pending_ingame_tests.md](docs/pending_ingame_tests.md)** 에서 관리
+- 각 작업 문서의 "인게임 테스트" 항목과 **중복으로 유지**
+- 테스트 완료 시: 원본 문서에는 `[x]` 체크 표시, `pending_ingame_tests.md`에서는 해당 항목 **삭제**
+- 새 작업에서 인게임 테스트 항목이 남으면 이 문서에도 추가
+
 ### 빌드
 ```bash
 ./gradlew build        # JAR 빌드
@@ -163,6 +169,7 @@ PR을 main에 머지하기 **전에** 반드시 다음 3가지를 완료해야 �
 | 2026-02-14 | [20260214_cooking_multiplayer_title_fix.md](docs/20260214_cooking_multiplayer_title_fix.md) | CHOCO-88 | 요리 멀티플레이어 개선 + 칭호 버그/기능 | 완료 |
 | 2026-02-14 | [20260214_deploy_automation.md](docs/20260214_deploy_automation.md) | CHOCO-89 | 모드 배포 자동화 (Prism Launcher + packwiz) | 완료 |
 | 2026-02-14 | [20260214_claim_permissions.md](docs/20260214_claim_permissions.md) | CHOCO-90 | 청크 클레임 행동 제한 설정 | 완료 |
+| 2026-02-14 | [20260214_claim_trust.md](docs/20260214_claim_trust.md) | CHOCO-91 | 청크 클레임 신뢰 시스템 (플레이어 초대) | 완료 |
 
 ## 로드맵
 전체 로드맵은 **[docs/ROADMAP.md](docs/ROADMAP.md)** 참고.

@@ -49,7 +49,9 @@ data class ChunkClaimEntry(
 }
 
 class ChunkClaimData private constructor(
-    val claims: MutableMap<Long, ChunkClaimEntry> = mutableMapOf()
+    val claims: MutableMap<Long, ChunkClaimEntry> = mutableMapOf(),
+    val trustedPlayers: MutableMap<UUID, MutableSet<UUID>> = mutableMapOf(),
+    val trustedPlayerNames: MutableMap<UUID, String> = mutableMapOf()
 ) : SavedData() {
 
     override fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
@@ -60,6 +62,31 @@ class ChunkClaimData private constructor(
             list.add(entryTag)
         }
         tag.put("claims", list)
+
+        val trustList = ListTag()
+        for ((ownerUUID, trustedSet) in trustedPlayers) {
+            val ownerTag = CompoundTag()
+            ownerTag.putUUID("ownerUUID", ownerUUID)
+            val playerList = ListTag()
+            for (trustedUUID in trustedSet) {
+                val playerTag = CompoundTag()
+                playerTag.putUUID("playerUUID", trustedUUID)
+                playerList.add(playerTag)
+            }
+            ownerTag.put("players", playerList)
+            trustList.add(ownerTag)
+        }
+        tag.put("trustedPlayers", trustList)
+
+        val nameCache = ListTag()
+        for ((uuid, name) in trustedPlayerNames) {
+            val entry = CompoundTag()
+            entry.putUUID("playerUUID", uuid)
+            entry.putString("playerName", name)
+            nameCache.add(entry)
+        }
+        tag.put("playerNameCache", nameCache)
+
         return tag
     }
 
@@ -82,6 +109,32 @@ class ChunkClaimData private constructor(
             .map { ChunkPos(it.key) to it.value }
     }
 
+    fun getTrustedPlayers(ownerUUID: UUID): Set<UUID> {
+        return trustedPlayers[ownerUUID] ?: emptySet()
+    }
+
+    fun addTrust(ownerUUID: UUID, targetUUID: UUID, targetName: String) {
+        trustedPlayers.getOrPut(ownerUUID) { mutableSetOf() }.add(targetUUID)
+        trustedPlayerNames[targetUUID] = targetName
+        setDirty()
+    }
+
+    fun removeTrust(ownerUUID: UUID, targetUUID: UUID) {
+        trustedPlayers[ownerUUID]?.remove(targetUUID)
+        if (trustedPlayers[ownerUUID]?.isEmpty() == true) {
+            trustedPlayers.remove(ownerUUID)
+        }
+        setDirty()
+    }
+
+    fun isTrusted(ownerUUID: UUID, playerUUID: UUID): Boolean {
+        return trustedPlayers[ownerUUID]?.contains(playerUUID) == true
+    }
+
+    fun getTrustedPlayerName(playerUUID: UUID): String {
+        return trustedPlayerNames[playerUUID] ?: "???"
+    }
+
     companion object {
         private const val DATA_NAME = "estherserver_chunk_claims"
 
@@ -99,6 +152,33 @@ class ChunkClaimData private constructor(
                     val chunkKey = entryTag.getLong("chunkKey")
                     val entry = ChunkClaimEntry.fromNBT(entryTag)
                     data.claims[chunkKey] = entry
+                }
+            }
+            if (tag.contains("trustedPlayers")) {
+                val trustList = tag.getList("trustedPlayers", 10)
+                for (i in 0 until trustList.size) {
+                    val ownerTag = trustList.getCompound(i)
+                    val ownerUUID = ownerTag.getUUID("ownerUUID")
+                    val playerList = ownerTag.getList("players", 10)
+                    val trustedSet = mutableSetOf<UUID>()
+                    for (j in 0 until playerList.size) {
+                        val playerTag = playerList.getCompound(j)
+                        val playerUUID = playerTag.getUUID("playerUUID")
+                        trustedSet.add(playerUUID)
+                        // 하위 호환: 구 포맷에서 이름이 있으면 로드
+                        if (playerTag.contains("playerName")) {
+                            data.trustedPlayerNames[playerUUID] = playerTag.getString("playerName")
+                        }
+                    }
+                    data.trustedPlayers[ownerUUID] = trustedSet
+                }
+            }
+            // 신규 포맷: 별도 이름 캐시 (구 포맷 값을 덮어씀)
+            if (tag.contains("playerNameCache")) {
+                val nameCache = tag.getList("playerNameCache", 10)
+                for (i in 0 until nameCache.size) {
+                    val entry = nameCache.getCompound(i)
+                    data.trustedPlayerNames[entry.getUUID("playerUUID")] = entry.getString("playerName")
                 }
             }
             return data
