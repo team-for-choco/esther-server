@@ -188,7 +188,14 @@ class CustomCropTest {
             assertTrue(lootTable.has("pools"), "pools 필드가 있어야 함")
 
             val pools = lootTable.getAsJsonArray("pools")
-            assertTrue(pools.size() >= 2, "최소 2개의 풀이 있어야 함 (수확물 + 씨앗 보너스)")
+            assertTrue(pools.size() >= 1, "최소 1개의 풀이 있어야 함")
+
+            // Verify match_tool condition (special hoe required)
+            val firstPool = pools[0].asJsonObject
+            assertTrue(firstPool.has("conditions"), "풀에 조건이 있어야 함")
+            val poolConditions = firstPool.getAsJsonArray("conditions")
+            val matchTool = poolConditions[0].asJsonObject
+            assertEquals("minecraft:match_tool", matchTool.get("condition").asString, "match_tool 조건이어야 함")
         }
 
         @Test

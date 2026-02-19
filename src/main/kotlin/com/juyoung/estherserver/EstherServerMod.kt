@@ -18,6 +18,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
 import com.juyoung.estherserver.block.CustomCropBlock
+import com.juyoung.estherserver.block.SpecialFarmlandBlock
+import com.juyoung.estherserver.item.SpecialFishingRodItem
+import com.juyoung.estherserver.item.SprayerItem
+import net.minecraft.core.component.DataComponents
+import net.minecraft.tags.BlockTags
+import net.minecraft.world.item.component.Tool
+import net.neoforged.neoforge.event.level.block.CropGrowEvent
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.bus.api.SubscribeEvent
@@ -85,6 +92,7 @@ import net.minecraft.world.entity.MobCategory
 import net.minecraft.world.level.GameRules
 import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
+import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import java.util.function.Consumer
 import java.util.function.Supplier
 
@@ -314,19 +322,47 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             LandDeedItem(properties.stacksTo(16).rarity(net.minecraft.world.item.Rarity.UNCOMMON))
         }
 
-        // Specialty equipment (stacksTo 1, inventory presence grants effect)
-        val SPECIAL_FISHING_ROD: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "special_fishing_rod", Item.Properties().stacksTo(1)
-        )
+        // Specialty equipment (stacksTo 1, no durability)
+        val SPECIAL_FISHING_ROD: DeferredItem<Item> = ITEMS.registerItem("special_fishing_rod") { properties ->
+            SpecialFishingRodItem(properties.stacksTo(1))
+        }
         val SPECIAL_HOE: DeferredItem<Item> = ITEMS.registerSimpleItem(
             "special_hoe", Item.Properties().stacksTo(1)
         )
-        val SPECIAL_PICKAXE: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "special_pickaxe", Item.Properties().stacksTo(1)
-        )
+        val SPECIAL_PICKAXE: DeferredItem<Item> = ITEMS.registerItem("special_pickaxe") { properties ->
+            val blockLookup = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK)
+            Item(properties.stacksTo(1).component(
+                DataComponents.TOOL,
+                Tool(
+                    listOf(Tool.Rule.minesAndDrops(
+                        blockLookup.getOrThrow(BlockTags.MINEABLE_WITH_PICKAXE), 4.0f
+                    )),
+                    1.0f,
+                    0
+                )
+            ))
+        }
         val SPECIAL_COOKING_TOOL: DeferredItem<Item> = ITEMS.registerSimpleItem(
             "special_cooking_tool", Item.Properties().stacksTo(1)
         )
+
+        // Special farmland block
+        val SPECIAL_FARMLAND: DeferredBlock<Block> = BLOCKS.registerBlock("special_farmland",
+            ::SpecialFarmlandBlock,
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.DIRT)
+                .strength(0.6f)
+                .sound(SoundType.GRAVEL)
+                .isViewBlocking { _, _, _ -> true }
+                .isSuffocating { _, _, _ -> true }
+        )
+        val SPECIAL_FARMLAND_ITEM: DeferredItem<BlockItem> =
+            ITEMS.registerSimpleBlockItem("special_farmland", SPECIAL_FARMLAND)
+
+        // Sprayer item
+        val SPRAYER: DeferredItem<Item> = ITEMS.registerItem("sprayer") { properties ->
+            SprayerItem(properties.stacksTo(1))
+        }
 
         // Enhancement stone (rare grade, used for Lv4→Lv5 enhancement)
         val ENHANCEMENT_STONE: DeferredItem<Item> = ITEMS.registerSimpleItem(
@@ -369,6 +405,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(SPECIAL_PICKAXE.get())
                         output.accept(SPECIAL_COOKING_TOOL.get())
                         output.accept(ENHANCEMENT_STONE.get())
+                        output.accept(SPECIAL_FARMLAND.get())
+                        output.accept(SPRAYER.get())
                     }.build()
             })
     }
@@ -568,6 +606,30 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     .append(Component.translatable(gradeKey))
                     .append(")")
                     .withStyle(gradeColor))
+        }
+    }
+
+    @SubscribeEvent
+    fun onBreakSpeed(event: PlayerEvent.BreakSpeed) {
+        val stack = event.entity.mainHandItem
+        if (stack.item === SPECIAL_PICKAXE.get()) {
+            val enhLevel = stack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
+            val multiplier = when {
+                enhLevel >= 5 -> 2.0f    // Rare (Blue): 8.0 = diamond
+                enhLevel >= 3 -> 1.5f    // Fine (Green): 6.0 = iron
+                else -> 1.0f             // Common (White): 4.0 = stone
+            }
+            event.newSpeed = event.newSpeed * multiplier
+        }
+    }
+
+    @SubscribeEvent
+    fun onCropGrow(event: CropGrowEvent.Pre) {
+        val belowState = event.level.getBlockState(event.pos.below())
+        if (belowState.block is SpecialFarmlandBlock) {
+            if (belowState.getValue(SpecialFarmlandBlock.MOISTURE) == 0) {
+                event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW)
+            }
         }
     }
 }

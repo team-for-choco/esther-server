@@ -30,4 +30,12 @@ object ModDataComponents {
                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                 .build()
         })
+
+    val WATER_CHARGES: DeferredHolder<DataComponentType<*>, DataComponentType<Int>> =
+        DATA_COMPONENTS.register("water_charges", Supplier {
+            DataComponentType.builder<Int>()
+                .persistent(Codec.INT)
+                .networkSynchronized(ByteBufCodecs.VAR_INT)
+                .build()
+        })
 }
