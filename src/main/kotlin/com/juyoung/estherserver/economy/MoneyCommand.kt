@@ -146,49 +146,46 @@ object MoneyCommand {
         return 1
     }
 
-    private fun findOnlinePlayer(source: CommandSourceStack, name: String): ServerPlayer? {
-        return source.server.playerList.getPlayerByName(name)
-    }
-
-    private fun adminAdd(source: CommandSourceStack, targetName: String, amount: Long): Int {
-        val target = findOnlinePlayer(source, targetName)
+    private fun withOnlinePlayer(
+        source: CommandSourceStack,
+        targetName: String,
+        action: (ServerPlayer) -> Int
+    ): Int {
+        val target = source.server.playerList.getPlayerByName(targetName)
         if (target == null) {
             source.sendFailure(Component.translatable("message.estherserver.money_player_not_found", targetName))
             return 0
         }
-        EconomyHandler.addBalance(target, amount)
-        source.sendSuccess({
-            Component.translatable("message.estherserver.money_admin_add", amount, target.displayName)
-        }, false)
-        return 1
+        return action(target)
     }
 
-    private fun adminRemove(source: CommandSourceStack, targetName: String, amount: Long): Int {
-        val target = findOnlinePlayer(source, targetName)
-        if (target == null) {
-            source.sendFailure(Component.translatable("message.estherserver.money_player_not_found", targetName))
-            return 0
+    private fun adminAdd(source: CommandSourceStack, targetName: String, amount: Long): Int =
+        withOnlinePlayer(source, targetName) { target ->
+            EconomyHandler.addBalance(target, amount)
+            source.sendSuccess({
+                Component.translatable("message.estherserver.money_admin_add", amount, target.displayName)
+            }, false)
+            1
         }
-        if (!EconomyHandler.removeBalance(target, amount)) {
-            source.sendFailure(Component.translatable("message.estherserver.money_admin_insufficient", target.displayName))
-            return 0
-        }
-        source.sendSuccess({
-            Component.translatable("message.estherserver.money_admin_remove", amount, target.displayName)
-        }, false)
-        return 1
-    }
 
-    private fun adminSet(source: CommandSourceStack, targetName: String, amount: Long): Int {
-        val target = findOnlinePlayer(source, targetName)
-        if (target == null) {
-            source.sendFailure(Component.translatable("message.estherserver.money_player_not_found", targetName))
-            return 0
+    private fun adminRemove(source: CommandSourceStack, targetName: String, amount: Long): Int =
+        withOnlinePlayer(source, targetName) { target ->
+            if (!EconomyHandler.removeBalance(target, amount)) {
+                source.sendFailure(Component.translatable("message.estherserver.money_admin_insufficient", target.displayName))
+                return@withOnlinePlayer 0
+            }
+            source.sendSuccess({
+                Component.translatable("message.estherserver.money_admin_remove", amount, target.displayName)
+            }, false)
+            1
         }
-        EconomyHandler.setBalance(target, amount)
-        source.sendSuccess({
-            Component.translatable("message.estherserver.money_admin_set", target.displayName, amount)
-        }, false)
-        return 1
-    }
+
+    private fun adminSet(source: CommandSourceStack, targetName: String, amount: Long): Int =
+        withOnlinePlayer(source, targetName) { target ->
+            EconomyHandler.setBalance(target, amount)
+            source.sendSuccess({
+                Component.translatable("message.estherserver.money_admin_set", target.displayName, amount)
+            }, false)
+            1
+        }
 }

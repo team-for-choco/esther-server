@@ -12,9 +12,11 @@ object ItemPriceRegistry {
     fun init() {
         if (initialized) return
         initialized = true
+        registerCustomItemPrices()
+        registerVanillaItemPrices()
+    }
 
-        // === Custom items ===
-
+    private fun registerCustomItemPrices() {
         // Fish
         register("estherserver:test_fish", 5)
         register("estherserver:cooked_test_fish", 8)
@@ -42,9 +44,9 @@ object ItemPriceRegistry {
         register("estherserver:fish_stew", 25)
         register("estherserver:gimbap", 25)
         register("estherserver:harvest_bibimbap", 30)
+    }
 
-        // === Vanilla items ===
-
+    private fun registerVanillaItemPrices() {
         // Fish
         register("minecraft:cod", 3)
         register("minecraft:salmon", 4)
