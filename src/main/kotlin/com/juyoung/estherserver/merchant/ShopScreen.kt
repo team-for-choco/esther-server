@@ -2,6 +2,8 @@ package com.juyoung.estherserver.merchant
 
 import com.juyoung.estherserver.economy.EconomyClientHandler
 import com.juyoung.estherserver.economy.ItemPriceRegistry
+import com.juyoung.estherserver.quality.ItemQuality
+import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
@@ -38,7 +40,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
         SELL("gui.estherserver.shop.tab.sell")
     }
 
-    data class SellableSlot(val slotIndex: Int, val stack: ItemStack, val pricePerItem: Long)
+    data class SellableSlot(val slotIndex: Int, val stack: ItemStack, val pricePerItem: Long, val quality: ItemQuality?)
 
     private var guiLeft = 0
     private var guiTop = 0
@@ -76,7 +78,8 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             val category = ItemPriceRegistry.getCategory(itemId) ?: continue
             if (category != merchantType) continue
             val price = ItemPriceRegistry.getPrice(stack) ?: continue
-            result.add(SellableSlot(i, stack.copy(), price))
+            val quality = stack.get(ModDataComponents.ITEM_QUALITY.get())
+            result.add(SellableSlot(i, stack.copy(), price, quality))
         }
         sellableSlots = result
     }
@@ -220,6 +223,16 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
 
             val bgColor = if (isHovered) CELL_HOVER else CELL_BG
             guiGraphics.fill(cellX + 1, cellY + 1, cellX + CELL_WIDTH - 1, cellY + CELL_HEIGHT - 1, bgColor)
+
+            // Quality border
+            val borderColor = when (slot.quality) {
+                ItemQuality.FINE -> 0xFF55FF55.toInt()   // Green
+                ItemQuality.RARE -> 0xFF5555FF.toInt()   // Blue
+                else -> null
+            }
+            if (borderColor != null) {
+                guiGraphics.renderOutline(cellX + 1, cellY + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2, borderColor)
+            }
 
             guiGraphics.renderItem(slot.stack, cellX + (CELL_WIDTH - 16) / 2, cellY + 2)
 
