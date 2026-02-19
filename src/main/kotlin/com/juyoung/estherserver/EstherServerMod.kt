@@ -614,14 +614,14 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     @SubscribeEvent
     fun onBreakSpeed(event: PlayerEvent.BreakSpeed) {
         val stack = event.entity.mainHandItem
-        if (stack.item === SPECIAL_PICKAXE.get()) {
+        if (stack.item === SPECIAL_PICKAXE.get() && event.state.`is`(BlockTags.MINEABLE_WITH_PICKAXE)) {
             val enhLevel = stack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
             val multiplier = when {
                 enhLevel >= 5 -> 2.0f    // Rare (Blue): 8.0 = diamond
                 enhLevel >= 3 -> 1.5f    // Fine (Green): 6.0 = iron
                 else -> 1.0f             // Common (White): 4.0 = stone
             }
-            event.newSpeed = event.newSpeed * multiplier
+            event.newSpeed = event.originalSpeed * multiplier
         }
     }
 

@@ -106,7 +106,7 @@ class SprayerItem(properties: Properties) : Item(properties) {
     ) {
         val charges = stack.getOrDefault(ModDataComponents.WATER_CHARGES.get(), 0)
         tooltipComponents.add(
-            Component.literal("\uD83D\uDCA7 $charges/$MAX_CHARGES")
+            Component.translatable("tooltip.estherserver.sprayer_charges", charges, MAX_CHARGES)
         )
     }
 }

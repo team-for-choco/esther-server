@@ -221,5 +221,7 @@
   "message.estherserver.cooking_need_tool": "조리도구를 들고 우클릭하여 요리를 완성하세요.",
   "message.estherserver.sprayer_empty": "분무기에 물이 없습니다.",
   "message.estherserver.sprayer_filled": "분무기에 물을 채웠습니다. (%s/%s)",
-  "message.estherserver.sprayer_used": "수분을 보충했습니다. (%s/%s)"
+  "message.estherserver.sprayer_used": "수분을 보충했습니다. (%s/%s)",
+
+  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s"
 }
