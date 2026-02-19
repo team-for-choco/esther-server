@@ -12,7 +12,7 @@ import net.minecraft.world.item.Items
 import net.neoforged.neoforge.network.PacketDistributor
 import java.util.Optional
 
-class ShopScreen(private val merchantType: ShopCategory) :
+class ShopScreen(private val merchantType: ShopCategory, private val entityId: Int) :
     Screen(Component.translatable("gui.estherserver.shop.title.${merchantType.name.lowercase()}")) {
 
     companion object {
@@ -424,9 +424,18 @@ class ShopScreen(private val merchantType: ShopCategory) :
                 mouseY >= cellY && mouseY < cellY + CELL_HEIGHT
             ) {
                 val quantity = if (hasShiftDown()) slot.stack.count else 1
-                PacketDistributor.sendToServer(SellItemPayload(slot.slotIndex, quantity))
-                // Rescan after a short delay to reflect changes
-                scanSellableItems()
+                PacketDistributor.sendToServer(SellItemPayload(entityId, slot.slotIndex, quantity))
+
+                // Optimistic UI update
+                val newCount = slot.stack.count - quantity
+                if (newCount <= 0) {
+                    sellableSlots = sellableSlots.toMutableList().also { it.removeAt(index) }
+                } else {
+                    val updatedStack = slot.stack.copy().also { it.count = newCount }
+                    sellableSlots = sellableSlots.toMutableList().also {
+                        it[index] = slot.copy(stack = updatedStack)
+                    }
+                }
                 return true
             }
         }

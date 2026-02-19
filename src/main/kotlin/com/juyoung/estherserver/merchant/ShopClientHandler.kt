@@ -9,6 +9,6 @@ object ShopClientHandler {
         } catch (_: IllegalArgumentException) {
             ShopCategory.SEEDS
         }
-        Minecraft.getInstance().setScreen(ShopScreen(merchantType))
+        Minecraft.getInstance().setScreen(ShopScreen(merchantType, payload.entityId))
     }
 }

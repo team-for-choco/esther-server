@@ -417,12 +417,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             .playToServer(SellItemPayload.TYPE, SellItemPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
                     val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
-                    // Find nearest merchant to determine type
-                    val nearbyMerchants = player.level().getEntitiesOfClass(
-                        MerchantEntity::class.java,
-                        player.boundingBox.inflate(5.0)
-                    )
-                    val merchant = nearbyMerchants.minByOrNull { it.distanceToSqr(player) } ?: return@enqueueWork
+                    val entity = player.level().getEntity(payload.entityId)
+                    val merchant = entity as? MerchantEntity ?: return@enqueueWork
                     ShopBuyRegistry.handleSell(player, payload.slotIndex, payload.quantity, merchant.merchantType)
                 }
             }

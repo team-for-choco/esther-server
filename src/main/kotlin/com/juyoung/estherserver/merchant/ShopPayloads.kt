@@ -49,7 +49,7 @@ class BuyItemPayload(val itemId: String, val quantity: Int) : CustomPacketPayloa
     }
 }
 
-class SellItemPayload(val slotIndex: Int, val quantity: Int) : CustomPacketPayload {
+class SellItemPayload(val entityId: Int, val slotIndex: Int, val quantity: Int) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -60,10 +60,11 @@ class SellItemPayload(val slotIndex: Int, val quantity: Int) : CustomPacketPaylo
         val STREAM_CODEC: StreamCodec<FriendlyByteBuf, SellItemPayload> =
             object : StreamCodec<FriendlyByteBuf, SellItemPayload> {
                 override fun decode(buf: FriendlyByteBuf): SellItemPayload {
-                    return SellItemPayload(buf.readVarInt(), buf.readVarInt())
+                    return SellItemPayload(buf.readVarInt(), buf.readVarInt(), buf.readVarInt())
                 }
 
                 override fun encode(buf: FriendlyByteBuf, value: SellItemPayload) {
+                    buf.writeVarInt(value.entityId)
                     buf.writeVarInt(value.slotIndex)
                     buf.writeVarInt(value.quantity)
                 }
