@@ -1,0 +1,593 @@
+[192월2026 17:32:46.865] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, neoforgeclientdev, --version, 21.4.156, --assetIndex, 19, --assetsDir, C:\\Users\\hajuu\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 6.0.18, --fml.mcVersion, 1.21.4, --fml.neoForgeVersion, 21.4.156, --fml.neoFormVersion, 20241203.161809]
+[192월2026 17:32:46.867] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Amazon.com Inc. OpenJDK 64-Bit Server VM 21.0.4+7-LTS
+[192월2026 17:32:46.868] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.4+main.d2e20e43 starting: java version 21.0.4 by Amazon.com Inc.; OS Windows 11 arch amd64 version 10.0
+[192월2026 17:32:46.886] [main/DEBUG] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Found launch services [minecraft,neoforgeclientdatadev,neoforgeserver,testharness,neoforgejunitdev,neoforgegametestserverdev,neoforgeclient,neoforgeserverdev,neoforgeclientdev,neoforgeserverdatadev]
+[192월2026 17:32:46.910] [main/DEBUG] [cpw.mods.modlauncher.LaunchPluginHandler/MODLAUNCHER]: Found launch plugins: [mixin,slf4jfixer,runtime_enum_extender,accesstransformer,runtimedistcleaner]
+[192월2026 17:32:46.922] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Discovering transformation services
+[192월2026 17:32:46.925] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path GAMEDIR is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run
+[192월2026 17:32:46.925] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path MODSDIR is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\mods
+[192월2026 17:32:46.925] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path CONFIGDIR is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config
+[192월2026 17:32:46.927] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path FMLCONFIG is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\fml.toml
+[192월2026 17:32:46.979] [main/DEBUG] [net.neoforged.fml.loading.targets.CommonLaunchHandler/CORE]: Got mod coordinates estherserver%%C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\java\main;estherserver%%C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\kotlin\main;estherserver%%C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\resources\main from env
+[192월2026 17:32:46.983] [main/DEBUG] [net.neoforged.fml.loading.targets.CommonLaunchHandler/CORE]: Found supplied mod coordinates [{estherserver=[C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\java\main, C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\kotlin\main, C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\resources\main]}]
+[192월2026 17:32:46.986] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Found additional transformation services from discovery services: 
+[192월2026 17:32:46.994] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[192월2026 17:32:47.097] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[192월2026 17:32:47.310] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[192월2026 17:32:47.349] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Found transformer services : [mixin,fml]
+[192월2026 17:32:47.349] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Transformation services loading
+[192월2026 17:32:47.349] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Loading service mixin
+[192월2026 17:32:47.349] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Loaded service mixin
+[192월2026 17:32:47.349] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Loading service fml
+[192월2026 17:32:47.351] [main/DEBUG] [net.neoforged.fml.loading.FMLLoader/CORE]: FML 6.0.18 loading
+[192월2026 17:32:47.351] [main/DEBUG] [net.neoforged.fml.loading.FMLLoader/CORE]: FML found ModLauncher version : 11.0.4+main.d2e20e43
+[192월2026 17:32:47.351] [main/DEBUG] [net.neoforged.fml.loading.FMLLoader/CORE]: FML found AccessTransformer version : 11.0.2+90f14086
+[192월2026 17:32:47.351] [main/DEBUG] [net.neoforged.fml.loading.FMLLoader/CORE]: FML found EventBus version : null
+[192월2026 17:32:47.352] [main/DEBUG] [net.neoforged.fml.loading.FMLLoader/CORE]: Found Runtime Dist Cleaner
+[192월2026 17:32:47.352] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Loaded service fml
+[192월2026 17:32:47.352] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Configuring option handling for services
+[192월2026 17:32:47.363] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Received command line version data  : VersionInfo[neoForgeVersion=21.4.156, fmlVersion=6.0.18, mcVersion=1.21.4, neoFormVersion=20241203.161809]
+[192월2026 17:32:47.363] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Transformation services initializing
+[192월2026 17:32:47.363] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initializing transformation service mixin
+[192월2026 17:32:47.373] [main/DEBUG] [mixin/]: MixinService [ModLauncher] was successfully booted in cpw.mods.cl.ModuleClassLoader@5e57643e
+[192월2026 17:32:47.382] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/hajuu/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23162!/ Service=ModLauncher Env=CLIENT
+[192월2026 17:32:47.384] [main/DEBUG] [mixin/]: Initialising Mixin Platform Manager
+[192월2026 17:32:47.385] [main/DEBUG] [mixin/]: Adding mixin platform agents for container ModLauncher Root Container(ModLauncher:4f56a0a2)
+[192월2026 17:32:47.385] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for ModLauncher Root Container(ModLauncher:4f56a0a2)
+[192월2026 17:32:47.385] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container ModLauncher Root Container(ModLauncher:4f56a0a2)
+[192월2026 17:32:47.386] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for ModLauncher Root Container(ModLauncher:4f56a0a2)
+[192월2026 17:32:47.386] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container ModLauncher Root Container(ModLauncher:4f56a0a2)
+[192월2026 17:32:47.388] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initialized transformation service mixin
+[192월2026 17:32:47.388] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initializing transformation service fml
+[192월2026 17:32:47.388] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Setting up basic FML game directories
+[192월2026 17:32:47.388] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path GAMEDIR is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run
+[192월2026 17:32:47.389] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path MODSDIR is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\mods
+[192월2026 17:32:47.389] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path CONFIGDIR is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config
+[192월2026 17:32:47.389] [main/DEBUG] [net.neoforged.fml.loading.FMLPaths/CORE]: Path FMLCONFIG is C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\fml.toml
+[192월2026 17:32:47.389] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Loading configuration
+[192월2026 17:32:47.392] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Preparing launch handler
+[192월2026 17:32:47.393] [main/DEBUG] [net.neoforged.fml.loading.FMLLoader/CORE]: Using neoforgeclientdev as launch service
+[192월2026 17:32:47.394] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initialized transformation service fml
+[192월2026 17:32:47.395] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Transformation services begin scanning
+[192월2026 17:32:47.395] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Beginning scan trigger - transformation service mixin
+[192월2026 17:32:47.395] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: End scan trigger - transformation service mixin
+[192월2026 17:32:47.395] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Beginning scan trigger - transformation service fml
+[192월2026 17:32:47.396] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Initiating mod scan
+[192월2026 17:32:47.396] [main/DEBUG] [net.neoforged.fml.loading.targets.CommonLaunchHandler/CORE]: Got mod coordinates estherserver%%C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\java\main;estherserver%%C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\kotlin\main;estherserver%%C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\resources\main from env
+[192월2026 17:32:47.396] [main/DEBUG] [net.neoforged.fml.loading.targets.CommonLaunchHandler/CORE]: Found supplied mod coordinates [{estherserver=[C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\java\main, C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\kotlin\main, C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\resources\main]}]
+[192월2026 17:32:47.399] [main/DEBUG] [net.neoforged.fml.loading.targets.NeoForgeDevLaunchHandler/]: Launching with NeoForge from C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\moddev\artifacts\neoforge-21.4.156-minecraft.jar
+[192월2026 17:32:47.411] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: Found 4 implementations of IModFileCandidateLocator:
+[192월2026 17:32:47.411] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	       0 - [built-in] net.neoforged.fml.loading.moddiscovery.locators.NeoForgeDevProvider from loader-6.0.18.jar
+[192월2026 17:32:47.411] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	       0 - net.neoforged.fml.loading.moddiscovery.locators.ModsFolderLocator from loader-6.0.18.jar
+[192월2026 17:32:47.412] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	       0 - net.neoforged.fml.loading.moddiscovery.locators.MavenDirectoryLocator from loader-6.0.18.jar
+[192월2026 17:32:47.412] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	   -1000 - [built-in] net.neoforged.fml.loading.moddiscovery.locators.UserdevLocator from loader-6.0.18.jar
+[192월2026 17:32:47.413] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: Found 2 implementations of IModFileReader:
+[192월2026 17:32:47.413] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	       0 - net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader from loader-6.0.18.jar
+[192월2026 17:32:47.414] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	   -1000 - net.neoforged.fml.loading.moddiscovery.readers.NestedLibraryModReader from loader-6.0.18.jar
+[192월2026 17:32:47.414] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: Found 1 implementations of IDependencyLocator:
+[192월2026 17:32:47.415] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	       0 - net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator from loader-6.0.18.jar
+[192월2026 17:32:47.509] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file neoforge-21.4.156-minecraft.jar with {minecraft} mods - versions {1.21.4}
+[192월2026 17:32:47.516] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Considering mod file candidate C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\moddev\artifacts\neoforge-21.4.156-minecraft.jar
+[192월2026 17:32:47.530] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file neoforge-21.4.156-minecraft.jar with {neoforge} mods - versions {21.4.156}
+[192월2026 17:32:47.532] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModListHandler/CORE]: Found mod coordinates from lists: []
+[192월2026 17:32:47.535] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Considering mod file candidate C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\java\main
+[192월2026 17:32:47.542] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file main with {estherserver} mods - versions {1.0.0}
+[192월2026 17:32:47.552] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Considering mod file candidate C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\moddev\artifacts\neoforge-21.4.156-minecraft.jar
+[192월2026 17:32:47.553] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file neoforge-21.4.156-minecraft.jar with {neoforge} mods - versions {21.4.156}
+[192월2026 17:32:47.556] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Considering mod file candidate C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\thedarkcolour\kffmod-neoforge\5.7.0\ffb98b3f40fb9ac6f727c3fde16d5f6616bd5322\kffmod-neoforge-5.7.0.jar
+[192월2026 17:32:47.557] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file kffmod-neoforge-5.7.0.jar with {kotlinforforge} mods - versions {5.7.0}
+[192월2026 17:32:47.588] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 4080/PCIe/SSE2 GL version 4.6.0 NVIDIA 576.88, NVIDIA Corporation
+[192월2026 17:32:47.618] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged.fancymodloader\earlydisplay\6.0.18\63203c5fc5a552fc9cdd3aac7c6ada46d73fb3b1\earlydisplay-6.0.18.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged.fancymodloader\loader\6.0.18\87957873971a693e716ff29f8b94f833f23c741f\loader-6.0.18.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged.accesstransformers\at-modlauncher\11.0.2\88dea58a6e1969cfce4029bf0cc5d231f9d95107\at-modlauncher-11.0.2.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged\accesstransformers\11.0.2\25dcb69c78b16669935f0ab91dff830ce192379d\accesstransformers-11.0.2.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged\bus\8.0.5\5b2d33285ab5d1554e9798ad98c40d6ea3868bd5\bus-8.0.5.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged\coremods\7.0.3\9147e6f638b4272b3bd5fc8f92ad37802512c6c\coremods-7.0.3.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\cpw.mods\modlauncher\11.0.4\6619d4812a3c092310d521ebc4c9503727563df7\modlauncher-11.0.4.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged\mergetool\2.0.0\52fe1949be64e3303aabaaa21e315f551db9c9f4\mergetool-2.0.0-api.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.electronwill.night-config\toml\3.8.1\fb0731789fc50ddeb3ad43e48ef65008b777b2ec\toml-3.8.1.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.electronwill.night-config\core\3.8.1\530d608fc238350f00c815d562f21a5d79939972\core-3.8.1.jar because it was already located earlier
+[192월2026 17:32:47.619] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged\JarJarSelector\0.4.1\fb3cc7a58af22ad2880adb98af6d518128c47dae\JarJarSelector-0.4.1.jar because it was already located earlier
+[192월2026 17:32:47.620] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged\JarJarMetadata\0.4.1\f8da03683dc81694556dc3e177c5e3bb77ae6fcb\JarJarMetadata-0.4.1.jar because it was already located earlier
+[192월2026 17:32:47.620] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.9.9\a130ec431ef32e12a4424f9b074735bb58e15d2d\maven-artifact-3.9.9.jar because it was already located earlier
+[192월2026 17:32:47.620] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.jodah\typetools\0.6.3\a01aaa6ddaea9ec07ec4f209487b7a46a526283a\typetools-0.6.3.jar because it was already located earlier
+[192월2026 17:32:47.620] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.minecrell\terminalconsoleappender\1.3.0\b562e9bb61235c9520e26282cdee71f8f802d1fc\terminalconsoleappender-1.3.0.jar because it was already located earlier
+[192월2026 17:32:47.620] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.fabricmc\sponge-mixin\0.15.2+mixin.0.8.7\2af2f021d8e02a0220dc27a7a72b4666d66d44ca\sponge-mixin-0.15.2+mixin.0.8.7.jar because it was already located earlier
+[192월2026 17:32:47.620] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.openjdk.nashorn\nashorn-core\15.4\f67f5ffaa5f5130cf6fb9b133da00c7df3b532a5\nashorn-core-15.4.jar because it was already located earlier
+[192월2026 17:32:47.620] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.sf.jopt-simple\jopt-simple\5.0.4\4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c\jopt-simple-5.0.4.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\commons-io\commons-io\2.17.0\ddcc8433eb019fb48fe25207c0278143f3e1d7e2\commons-io-2.17.0.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\logging\1.5.10\9ab1202793717af9df9c1704d0a02892067001eb\logging-1.5.10.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-slf4j2-impl\2.24.1\8e3ddc96464ef7f768823e7e001a52b23de8cd0a\log4j-slf4j2-impl-2.24.1.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-core\2.24.1\c85285146f28d8c8962384f786e2dff04172fb43\log4j-core-2.24.1.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-api\2.24.1\7ebeb12c20606373005af4232cd0ecca72613dda\log4j-api-2.24.1.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.neoforged.accesstransformers\at-parser\11.0.2\64aae57d6d26d69543c5275181fe6971707a4e16\at-parser-11.0.2.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.machinezoo.noexception\noexception\1.7.1\b65330c98e38a1f915fa54a6e5eca496505e3f0a\noexception-1.7.1.jar because it was already located earlier
+[192월2026 17:32:47.621] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\2.0.16\172931663a09a1fa515567af5fbef00897d3c04\slf4j-api-2.0.16.jar because it was already located earlier
+[192월2026 17:32:47.622] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\33.3.1-jre\852f8b363da0111e819460021ca693cacca3e8db\guava-33.3.1-jre.jar because it was already located earlier
+[192월2026 17:32:47.622] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.11.0\527175ca6d81050b53bdd4c457a6d6e017626b0e\gson-2.11.0.jar because it was already located earlier
+[192월2026 17:32:47.622] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-lang3\3.17.0\b17d2136f0460dcc0d2016ceefca8723bdf4ee70\commons-lang3-3.17.0.jar because it was already located earlier
+[192월2026 17:32:47.622] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.minecraftforge\srgutils\0.4.15\ca408b131759478f164e010fae0d73997e125fb5\srgutils-0.4.15.jar because it was already located earlier
+[192월2026 17:32:47.622] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.codehaus.plexus\plexus-utils\3.5.1\c6bfb17c97ecc8863e88778ea301be742c62b06d\plexus-utils-3.5.1.jar because it was already located earlier
+[192월2026 17:32:47.622] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.jline\jline-reader\3.20.0\8f15415b022a25b473e8e16c28ae913186ffb9c4\jline-reader-3.20.0.jar because it was already located earlier
+[192월2026 17:32:47.623] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.13.4\858c6cc78e1f08a885b1613e1d817c829df70a6e\jackson-annotations-2.13.4.jar because it was already located earlier
+[192월2026 17:32:47.623] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.13.4\cf934c681294b97ef6d80082faeefbe1edadf56\jackson-core-2.13.4.jar because it was already located earlier
+[192월2026 17:32:47.623] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.13.4.2\325c06bdfeb628cfb80ebaaf1a26cc1eb558a585\jackson-databind-2.13.4.2.jar because it was already located earlier
+[192월2026 17:32:47.623] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.github.oshi\oshi-core\6.6.5\e1099981fd15dc4236c4499d82aba1276fb43a9a\oshi-core-6.6.5.jar because it was already located earlier
+[192월2026 17:32:47.623] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.github.stephenc.jcip\jcip-annotations\1.0-1\ef31541dd28ae2cefdd17c7ebf352d93e9058c63\jcip-annotations-1.0-1.jar because it was already located earlier
+[192월2026 17:32:47.624] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.google.guava\failureaccess\1.0.2\c4a06a64e650562f30b7bf9aaec1bfed43aca12b\failureaccess-1.0.2.jar because it was already located earlier
+[192월2026 17:32:47.624] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.ibm.icu\icu4j\76.1\215f3a8e936d4069344bd75f2b1368fd58112894\icu4j-76.1.jar because it was already located earlier
+[192월2026 17:32:47.624] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.microsoft.azure\msal4j\1.17.2\a6211e3d71d0388929babaa0ff0951b30d001852\msal4j-1.17.2.jar because it was already located earlier
+[192월2026 17:32:47.624] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\authlib\6.0.57\bded3161a7346de32213da750388ec6529fe4f6b\authlib-6.0.57.jar because it was already located earlier
+[192월2026 17:32:47.624] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\blocklist\1.0.10\5c685c5ffa94c4cd39496c7184c1d122e515ecef\blocklist-1.0.10.jar because it was already located earlier
+[192월2026 17:32:47.624] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\brigadier\1.3.10\d15b53a14cf20fdcaa98f731af5dda654452c010\brigadier-1.3.10.jar because it was already located earlier
+[192월2026 17:32:47.624] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\datafixerupper\8.0.16\67d4de6d7f95d89bcf5862995fb854ebaec02a34\datafixerupper-8.0.16.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\jtracy\1.0.29\6f07dcb6a2e595c7ee2ca43b67e5d1c018ca0770\jtracy-1.0.29.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\jtracy\1.0.29\e05332cb31c7ae582dc8d8bd1bffd47c2ff7636f\jtracy-1.0.29-natives-windows.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\patchy\2.2.10\da05971b07cbb379d002cf7eaec6a2048211fefc\patchy-2.2.10.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.mojang\text2speech\1.17.9\3cad216e3a7f0c19b4b394388bc9ffc446f13b14\text2speech-1.17.9.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.nimbusds\content-type\2.3\e3aa0be212d7a42839a8f3f506f5b990bcce0222\content-type-2.3.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.nimbusds\lang-tag\1.7\97c73ecd70bc7e8eefb26c5eea84f251a63f1031\lang-tag-1.7.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.nimbusds\nimbus-jose-jwt\9.40\42b1dfa0360e4062951b070bac52dd8d96fd7b38\nimbus-jose-jwt-9.40.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.nimbusds\oauth2-oidc-sdk\11.18\7c7ec4f4066625ff07a711ad856fa04da1ff9de\oauth2-oidc-sdk-11.18.jar because it was already located earlier
+[192월2026 17:32:47.625] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.17.1\973638b7149d333563584137ebf13a691bb60579\commons-codec-1.17.1.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\commons-logging\commons-logging\1.3.4\b9fc14968d63a8b8a8a2c1885fe3e90564239708\commons-logging-1.3.4.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-buffer\4.1.115.Final\d5daf1030e5c36d198caf7562da2441a97ec0df6\netty-buffer-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-codec\4.1.115.Final\d326bf3a4c785b272da3db6941779a1bd5448378\netty-codec-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-common\4.1.115.Final\9da10a9f72e3f87e181d91b525174007a6fc4f11\netty-common-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-handler\4.1.115.Final\d54dbf68b9d88a98240107758c6b63da5e46e23a\netty-handler-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-resolver\4.1.115.Final\e33b4d476c03975957f5d8d0319d592bf2bc5e96\netty-resolver-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport-classes-epoll\4.1.115.Final\11fea00408ecbd8b8d1f0698d708e37db4a01841\netty-transport-classes-epoll-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport-native-unix-common\4.1.115.Final\dc96c67d06cd6b5eb677f2728f27bf2e3d9a7284\netty-transport-native-unix-common-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport\4.1.115.Final\39cef77c1a25908ac1abf4960c2e789f0bf70ff9\netty-transport-4.1.115.Final.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\it.unimi.dsi\fastutil\8.5.15\1e885b40c9563ab0d3899b871fd0b30e958705dc\fastutil-8.5.15.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.java.dev.jna\jna-platform\5.15.0\86b502cad57d45da172b5e3231c537b042e296ef\jna-platform-5.15.0.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.java.dev.jna\jna\5.15.0\1ee1d80ff44f08280188f7c0e740d57207841ac\jna-5.15.0.jar because it was already located earlier
+[192월2026 17:32:47.627] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.minidev\accessors-smart\2.5.1\19b820261eb2e7de7d5bde11d1c06e4501dd7e5f\accessors-smart-2.5.1.jar because it was already located earlier
+[192월2026 17:32:47.628] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\net.minidev\json-smart\2.5.1\4c11d2808d009132dfbbf947ebf37de6bf266c8e\json-smart-2.5.1.jar because it was already located earlier
+[192월2026 17:32:47.628] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-compress\1.27.1\a19151084758e2fbb6b41eddaa88e7b8ff4e6599\commons-compress-1.27.1.jar because it was already located earlier
+[192월2026 17:32:47.628] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpclient\4.5.14\1194890e6f56ec29177673f2f12d0b8e627dec98\httpclient-4.5.14.jar because it was already located earlier
+[192월2026 17:32:47.628] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpcore\4.4.16\51cf043c87253c9f58b539c9f7e44c8894223850\httpcore-4.4.16.jar because it was already located earlier
+[192월2026 17:32:47.628] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.jcraft\jorbis\0.0.17\8872d22b293e8f5d7d56ff92be966e6dc28ebdc6\jorbis-0.0.17.jar because it was already located earlier
+[192월2026 17:32:47.628] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.joml\joml\1.10.8\fc0a71dad90a2cf41d82a76156a0e700af8e4f8d\joml-1.10.8.jar because it was already located earlier
+[192월2026 17:32:47.628] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-freetype\3.3.3\a0db6c84a8becc8ca05f9dbfa985edc348a824c7\lwjgl-freetype-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.634] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-freetype\3.3.3\15a8c1de7f51d07a92eae7ce1222557073a0c0c3\lwjgl-freetype-3.3.3-natives-windows-x86.jar because it was already located earlier
+[192월2026 17:32:47.634] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-glfw\3.3.3\efa1eb78c5ccd840e9f329717109b5e892d72f8e\lwjgl-glfw-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.639] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-glfw\3.3.3\32334f3fd5270a59bad9939a93115acb6de36dcf\lwjgl-glfw-3.3.3-natives-windows-x86.jar because it was already located earlier
+[192월2026 17:32:47.639] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-jemalloc\3.3.3\b543467b7ff3c6920539a88ee602d34098628be5\lwjgl-jemalloc-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.639] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-jemalloc\3.3.3\426222fc027602a5f21b9c0fe79cde6a4c7a011f\lwjgl-jemalloc-3.3.3-natives-windows.jar because it was already located earlier
+[192월2026 17:32:47.645] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-openal\3.3.3\daada81ceb5fc0c291fbfdd4433cb8d9423577f2\lwjgl-openal-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.651] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-openal\3.3.3\87b8d5050e3adb46bb58fe1cb2669a4a48fce10d\lwjgl-openal-3.3.3-natives-windows-x86.jar because it was already located earlier
+[192월2026 17:32:47.651] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-opengl\3.3.3\2f6b0147078396a58979125a4c947664e98293a\lwjgl-opengl-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.654] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-opengl\3.3.3\65e956d3735a1abdc82eff4baec1b61174697d4b\lwjgl-opengl-3.3.3-natives-windows-arm64.jar because it was already located earlier
+[192월2026 17:32:47.658] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-stb\3.3.3\25dd6161988d7e65f71d5065c99902402ee32746\lwjgl-stb-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.658] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-stb\3.3.3\1d9facdf6541de114b0f963be33505b7679c78cb\lwjgl-stb-3.3.3-natives-windows.jar because it was already located earlier
+[192월2026 17:32:47.662] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-tinyfd\3.3.3\82d755ca94b102e9ca77283b9e2dc46d1b15fbe5\lwjgl-tinyfd-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.663] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl-tinyfd\3.3.3\a6697981b0449a5087c1d546fc08b4f73e8f98c9\lwjgl-tinyfd-3.3.3-natives-windows.jar because it was already located earlier
+[192월2026 17:32:47.668] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl\3.3.3\29589b5f87ed335a6c7e7ee6a5775f81f97ecb84\lwjgl-3.3.3.jar because it was already located earlier
+[192월2026 17:32:47.675] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lwjgl\lwjgl\3.3.3\9e670718e050aeaeea0c2d5b907cffb142f2e58f\lwjgl-3.3.3-natives-windows-x86.jar because it was already located earlier
+[192월2026 17:32:47.675] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.lz4\lz4-java\1.8.0\4b986a99445e49ea5fbf5d149c4b63f6ed6c6780\lz4-java-1.8.0.jar because it was already located earlier
+[192월2026 17:32:47.675] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.jline\jline-terminal\3.20.0\d0ddcc708ddf527a3454c941b7b9225cc83a15ff\jline-terminal-3.20.0.jar because it was already located earlier
+[192월2026 17:32:47.675] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.google.errorprone\error_prone_annotations\2.28.0\59fc00087ce372de42e394d2c789295dff2d19f0\error_prone_annotations-2.28.0.jar because it was already located earlier
+[192월2026 17:32:47.675] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.google.guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\b421526c5f297295adef1c886e5246c39d4ac629\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar because it was already located earlier
+[192월2026 17:32:47.675] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.2\25ea2e8b0c338a877313bd4672d3fe056ea78f0d\jsr305-3.0.2.jar because it was already located earlier
+[192월2026 17:32:47.676] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\org.checkerframework\checker-qual\3.43.0\9425eee39e56b116d2b998b7c2cebcbd11a3c98b\checker-qual-3.43.0.jar because it was already located earlier
+[192월2026 17:32:47.676] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: Skipping C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\com.google.j2objc\j2objc-annotations\3.0.0\7399e65dd7e9ff3404f4535b2f017093bdb134c7\j2objc-annotations-3.0.0.jar because it was already located earlier
+[192월2026 17:32:47.677] [main/DEBUG] [net.neoforged.fml.loading.UniqueModListBuilder/]: Found 2 mods for first modid neoforge, selecting most recent based on version data
+[192월2026 17:32:47.677] [main/DEBUG] [net.neoforged.fml.loading.UniqueModListBuilder/]: Selected file neoforge-21.4.156-minecraft.jar for modid neoforge with version 21.4.156
+[192월2026 17:32:47.938] [main/WARN] [net.neoforged.jarjar.selection.JarSelector/]: Attempted to select two dependency jars from JarJar which have the same identification: Nested Mod File  in Mod File: C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\thedarkcolour\kotlinforforge-neoforge\5.7.0\2db379876c28da1526de37196c699a34c33fb08\kotlinforforge-neoforge-5.7.0-all.jar and Nested Mod File  in Mod File: C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\thedarkcolour\kotlinforforge-neoforge\5.7.0\2db379876c28da1526de37196c699a34c33fb08\kotlinforforge-neoforge-5.7.0-all.jar. Using Nested Mod File  in Mod File: C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\thedarkcolour\kotlinforforge-neoforge\5.7.0\2db379876c28da1526de37196c699a34c33fb08\kotlinforforge-neoforge-5.7.0-all.jar
+[192월2026 17:32:47.939] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 10 dependencies adding them to mods collection
+[192월2026 17:32:47.940] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+     Mod List:
+		Name Version (Mod Id)
+
+		Esther Server 1.0.0 (estherserver)
+		Kotlin For Forge 5.7.0 (kotlinforforge)
+		Minecraft 1.21.4 (minecraft)
+		NeoForge 21.4.156 (neoforge)
+[192월2026 17:32:47.942] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file neoforge-21.4.156-minecraft.jar with {minecraft} mods - versions {1.21.4}
+[192월2026 17:32:47.944] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Loading mod file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\moddev\artifacts\neoforge-21.4.156-minecraft.jar with languages [LanguageSpec[languageName=minecraft, acceptedVersions=1]]
+[192월2026 17:32:47.945] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Considering mod file candidate C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\java\main
+[192월2026 17:32:47.948] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file main with {estherserver} mods - versions {1.0.0}
+[192월2026 17:32:47.948] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Loading mod file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\classes\java\main with languages [LanguageSpec[languageName=kotlinforforge, acceptedVersions=[5.7,)]]
+[192월2026 17:32:47.949] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Found mixin config MixinConfig[config=estherserver.mixins.json, requiredMods=[]]
+[192월2026 17:32:47.949] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Considering mod file candidate C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\thedarkcolour\kffmod-neoforge\5.7.0\ffb98b3f40fb9ac6f727c3fde16d5f6616bd5322\kffmod-neoforge-5.7.0.jar
+[192월2026 17:32:47.950] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file kffmod-neoforge-5.7.0.jar with {kotlinforforge} mods - versions {5.7.0}
+[192월2026 17:32:47.950] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Loading mod file C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\thedarkcolour\kffmod-neoforge\5.7.0\ffb98b3f40fb9ac6f727c3fde16d5f6616bd5322\kffmod-neoforge-5.7.0.jar with languages [LanguageSpec[languageName=kotlinforforge, acceptedVersions=[5,)]]
+[192월2026 17:32:47.952] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileParser/LOADING]: Considering mod file candidate C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\moddev\artifacts\neoforge-21.4.156-minecraft.jar
+[192월2026 17:32:47.952] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFileInfo/LOADING]: Found valid mod file neoforge-21.4.156-minecraft.jar with {neoforge} mods - versions {21.4.156}
+[192월2026 17:32:47.953] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Loading mod file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\build\moddev\artifacts\neoforge-21.4.156-minecraft.jar with languages [LanguageSpec[languageName=javafml, acceptedVersions=[3,]]]
+[192월2026 17:32:47.953] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Found mixin config MixinConfig[config=neoforge.mixins.json, requiredMods=[]]
+[192월2026 17:32:47.954] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Loading mod file C:\Users\hajuu\.gradle\caches\modules-2\files-2.1\thedarkcolour\kfflib-neoforge\5.7.0\21b29ae9a7b41e725546fcd383c16298af16fc25\kfflib-neoforge-5.7.0.jar with languages []
+[192월2026 17:32:47.954] [main/DEBUG] [net.neoforged.fml.loading.moddiscovery.ModFile/LOADING]: Loading mod file  with languages []
+[192월2026 17:32:47.955] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: End scan trigger - transformation service fml
+[192월2026 17:32:47.981] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: Found 4 implementations of IModLanguageLoader:
+[192월2026 17:32:47.981] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	thedarkcolour.kotlinforforge.neoforge.KotlinLanguageLoader from kfflang-neoforge-5.7.0.jar
+[192월2026 17:32:47.981] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	net.neoforged.fml.javafmlmod.FMLJavaModLanguageProvider from loader-6.0.18.jar
+[192월2026 17:32:47.981] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	net.neoforged.fml.lowcodemod.LowCodeModLanguageProvider from loader-6.0.18.jar
+[192월2026 17:32:47.982] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	net.neoforged.fml.mclanguageprovider.MinecraftModLanguageProvider from loader-6.0.18.jar
+[192월2026 17:32:47.982] [main/DEBUG] [net.neoforged.fml.loading.LanguageProviderLoader/CORE]: Found language provider kotlinforforge, version 5.7.0
+[192월2026 17:32:47.983] [main/DEBUG] [net.neoforged.fml.loading.LanguageProviderLoader/CORE]: Found language provider javafml, version 6.0.18
+[192월2026 17:32:47.983] [main/DEBUG] [net.neoforged.fml.loading.LanguageProviderLoader/CORE]: Found language provider lowcodefml, version 6.0.18
+[192월2026 17:32:47.983] [main/DEBUG] [net.neoforged.fml.loading.LanguageProviderLoader/CORE]: Found language provider minecraft, version 6.0.18
+[192월2026 17:32:47.988] [main/DEBUG] [net.neoforged.fml.loading.ModSorter/]: Configured system mods: [minecraft, neoforge]
+[192월2026 17:32:47.988] [main/DEBUG] [net.neoforged.fml.loading.ModSorter/]: Found system mod: minecraft
+[192월2026 17:32:47.988] [main/DEBUG] [net.neoforged.fml.loading.ModSorter/]: Found system mod: neoforge
+[192월2026 17:32:47.989] [main/DEBUG] [net.neoforged.fml.loading.ModSorter/LOADING]: Found 3 mod requirements (3 mandatory, 0 optional)
+[192월2026 17:32:47.990] [main/DEBUG] [net.neoforged.fml.loading.ModSorter/LOADING]: Found 0 mod requirements missing (0 mandatory, 0 optional)
+[192월2026 17:32:48.032] [main/DEBUG] [mixin/]: Adding mixin platform agents for container net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6
+[192월2026 17:32:48.033] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6
+[192월2026 17:32:48.033] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6
+[192월2026 17:32:48.033] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6
+[192월2026 17:32:48.033] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6
+[192월2026 17:32:48.033] [main/DEBUG] [mixin/]: Instancing new FMLMixinPlatformAgent for net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6
+[192월2026 17:32:48.033] [main/DEBUG] [mixin/]: FMLMixinPlatformAgent accepted container net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6
+[192월2026 17:32:48.040] [main/DEBUG] [cpw.mods.modlauncher.TransformationServicesHandler/MODLAUNCHER]: Transformation services loading transformers
+[192월2026 17:32:48.040] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initializing transformers for transformation service mixin
+[192월2026 17:32:48.041] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initialized transformers for transformation service mixin
+[192월2026 17:32:48.041] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initializing transformers for transformation service fml
+[192월2026 17:32:48.041] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/LOADING]: Loading coremod transformers
+[192월2026 17:32:48.041] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Not loading coremod script-engine since no mod requested it
+[192월2026 17:32:48.043] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: Found 1 implementations of ICoreMod:
+[192월2026 17:32:48.043] [main/DEBUG] [net.neoforged.fml.util.ServiceLoaderUtil/CORE]: 	net.neoforged.neoforge.coremods.NeoForgeCoreMod from neoforge-21.4.156-minecraft.jar > net.neoforged.neoforge-coremods-21.4.156.jar
+[192월2026 17:32:48.051] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Adding [Target[className=net.minecraft.world.level.biome.Biome, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6]] transformer from core-mod net.neoforged.neoforge.coremods.NeoForgeCoreMod@51e0301d in neoforge-21.4.156-minecraft.jar > net.neoforged.neoforge-coremods-21.4.156.jar
+[192월2026 17:32:48.051] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Adding [Target[className=net.minecraft.world.level.levelgen.structure.Structure, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6]] transformer from core-mod net.neoforged.neoforge.coremods.NeoForgeCoreMod@51e0301d in neoforge-21.4.156-minecraft.jar > net.neoforged.neoforge-coremods-21.4.156.jar
+[192월2026 17:32:48.051] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Adding [Target[className=net.minecraft.world.level.block.FlowerPotBlock, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6]] transformer from core-mod net.neoforged.neoforge.coremods.NeoForgeCoreMod@51e0301d in neoforge-21.4.156-minecraft.jar > net.neoforged.neoforge-coremods-21.4.156.jar
+[192월2026 17:32:48.052] [main/DEBUG] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Adding [Target[className=net/minecraft/server/commands/SummonCommand, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/levelgen/structure/structures/WoodlandMansionPieces$WoodlandMansionPiece, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/npc/CatSpawner, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/NaturalSpawner, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/levelgen/PhantomSpawner, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/EntityType, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/levelgen/PatrolSpawner, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/server/commands/RaidCommand, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/animal/horse/SkeletonTrapGoal, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/levelgen/structure/structures/OceanRuinPieces$OceanRuinPiece, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/ai/village/VillageSiege, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/monster/Strider, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/monster/Evoker$EvokerSummonSpellGoal, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/levelgen/structure/structures/OceanMonumentPieces$OceanMonumentPiece, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/animal/frog/Tadpole, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/raid/Raid, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/level/levelgen/structure/structures/SwampHutPiece, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/npc/Villager, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/monster/Zombie, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/monster/Spider, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6], Target[className=net/minecraft/world/entity/monster/ZombieVillager, elementName=, elementDescriptor=, targetType=cpw.mods.modlauncher.api.TargetType@39fcbef6]] transformer from core-mod net.neoforged.neoforge.coremods.NeoForgeCoreMod@51e0301d in neoforge-21.4.156-minecraft.jar > net.neoforged.neoforge-coremods-21.4.156.jar
+[192월2026 17:32:48.055] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.ReplaceFieldWithGetterAccess@1dbb650b to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/biome/Biome;} {} {V}
+[192월2026 17:32:48.056] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.ReplaceFieldWithGetterAccess@7b7b3edb to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/structure/Structure;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.ReplaceFieldWithGetterAccess@6b474074 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/block/FlowerPotBlock;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/server/commands/SummonCommand;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/structure/structures/WoodlandMansionPieces$WoodlandMansionPiece;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/npc/CatSpawner;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/NaturalSpawner;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/PhantomSpawner;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/EntityType;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/PatrolSpawner;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/server/commands/RaidCommand;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/animal/horse/SkeletonTrapGoal;} {} {V}
+[192월2026 17:32:48.057] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/structure/structures/OceanRuinPieces$OceanRuinPiece;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/ai/village/VillageSiege;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/monster/Strider;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/monster/Evoker$EvokerSummonSpellGoal;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/structure/structures/OceanMonumentPieces$OceanMonumentPiece;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/animal/frog/Tadpole;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/raid/Raid;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/level/levelgen/structure/structures/SwampHutPiece;} {} {V}
+[192월2026 17:32:48.059] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/npc/Villager;} {} {V}
+[192월2026 17:32:48.060] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/monster/Zombie;} {} {V}
+[192월2026 17:32:48.060] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/monster/Spider;} {} {V}
+[192월2026 17:32:48.060] [main/DEBUG] [cpw.mods.modlauncher.TransformStore/MODLAUNCHER]: Adding transformer net.neoforged.neoforge.coremods.MethodRedirector@108531c2 to Target : cpw.mods.modlauncher.api.TargetType@39fcbef6 {Lnet/minecraft/world/entity/monster/ZombieVillager;} {} {V}
+[192월2026 17:32:48.061] [main/DEBUG] [cpw.mods.modlauncher.TransformationServiceDecorator/MODLAUNCHER]: Initialized transformers for transformation service fml
+[192월2026 17:32:48.711] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:ModLauncher Root Container(ModLauncher:4f56a0a2)]
+[192월2026 17:32:48.711] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6]
+[192월2026 17:32:48.712] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[FMLMixinPlatformAgent:null]
+[192월2026 17:32:48.745] [main/DEBUG] [mixin/]: Compatibility level JAVA_21 specified by estherserver.mixins.json is higher than the maximum level supported by this version of mixin (JAVA_13).
+[192월2026 17:32:48.751] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
+[192월2026 17:32:48.753] [main/DEBUG] [mixin/]: Processing launch tasks for PlatformAgent[MixinPlatformAgentDefault:ModLauncher Root Container(ModLauncher:4f56a0a2)]
+[192월2026 17:32:48.753] [main/DEBUG] [mixin/]: Adding mixin platform agents for container SecureJarResource(mixin_synthetic)
+[192월2026 17:32:48.753] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for SecureJarResource(mixin_synthetic)
+[192월2026 17:32:48.753] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container SecureJarResource(mixin_synthetic)
+[192월2026 17:32:48.753] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for SecureJarResource(mixin_synthetic)
+[192월2026 17:32:48.753] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container SecureJarResource(mixin_synthetic)
+[192월2026 17:32:48.753] [main/DEBUG] [mixin/]: Instancing new FMLMixinPlatformAgent for SecureJarResource(mixin_synthetic)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: FMLMixinPlatformAgent rejected container SecureJarResource(mixin_synthetic)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(mixin_synthetic)]
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: Adding mixin platform agents for container SecureJarResource(minecraft)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for SecureJarResource(minecraft)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container SecureJarResource(minecraft)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for SecureJarResource(minecraft)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container SecureJarResource(minecraft)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: Instancing new FMLMixinPlatformAgent for SecureJarResource(minecraft)
+[192월2026 17:32:48.754] [main/DEBUG] [mixin/]: FMLMixinPlatformAgent rejected container SecureJarResource(minecraft)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(minecraft)]
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Adding mixin platform agents for container SecureJarResource(estherserver)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for SecureJarResource(estherserver)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container SecureJarResource(estherserver)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for SecureJarResource(estherserver)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container SecureJarResource(estherserver)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Instancing new FMLMixinPlatformAgent for SecureJarResource(estherserver)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: FMLMixinPlatformAgent rejected container SecureJarResource(estherserver)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(estherserver)]
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Adding mixin platform agents for container SecureJarResource(kotlinforforge)
+[192월2026 17:32:48.755] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for SecureJarResource(kotlinforforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container SecureJarResource(kotlinforforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for SecureJarResource(kotlinforforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container SecureJarResource(kotlinforforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: Instancing new FMLMixinPlatformAgent for SecureJarResource(kotlinforforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: FMLMixinPlatformAgent rejected container SecureJarResource(kotlinforforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(kotlinforforge)]
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: Adding mixin platform agents for container SecureJarResource(kfflib.neoforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for SecureJarResource(kfflib.neoforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container SecureJarResource(kfflib.neoforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for SecureJarResource(kfflib.neoforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container SecureJarResource(kfflib.neoforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: Instancing new FMLMixinPlatformAgent for SecureJarResource(kfflib.neoforge)
+[192월2026 17:32:48.756] [main/DEBUG] [mixin/]: FMLMixinPlatformAgent rejected container SecureJarResource(kfflib.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(kfflib.neoforge)]
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: Adding mixin platform agents for container SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentMinecraftForge for SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: MixinPlatformAgentMinecraftForge rejected container SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: Instancing new MixinPlatformAgentDefault for SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: MixinPlatformAgentDefault accepted container SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: Instancing new FMLMixinPlatformAgent for SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: FMLMixinPlatformAgent rejected container SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(mixinextras.neoforge)]
+[192월2026 17:32:48.757] [main/DEBUG] [mixin/]: Registering mixin config: mixinextras.init.mixins.json source=SecureJarResource(mixinextras.neoforge)
+[192월2026 17:32:48.758] [main/DEBUG] [mixin/]: inject() running with 8 agents
+[192월2026 17:32:48.758] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:ModLauncher Root Container(ModLauncher:4f56a0a2)]
+[192월2026 17:32:48.758] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:net.neoforged.fml.loading.mixin.FMLMixinContainerHandle@73ba6fe6]
+[192월2026 17:32:48.758] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[FMLMixinPlatformAgent:null]
+[192월2026 17:32:48.758] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(mixin_synthetic)]
+[192월2026 17:32:48.758] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(minecraft)]
+[192월2026 17:32:48.759] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(estherserver)]
+[192월2026 17:32:48.759] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(kotlinforforge)]
+[192월2026 17:32:48.759] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(kfflib.neoforge)]
+[192월2026 17:32:48.759] [main/DEBUG] [mixin/]: Processing inject() for PlatformAgent[MixinPlatformAgentDefault:SecureJarResource(mixinextras.neoforge)]
+[192월2026 17:32:48.759] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'neoforgeclientdev' with arguments [--version, 21.4.156, --gameDir, ., --assetsDir, C:\Users\hajuu\.gradle\caches\neoformruntime\assets, --assetIndex, 19]
+[192월2026 17:32:48.816] [main/DEBUG] [mixin/]: Preparing mixins for MixinEnvironment[DEFAULT]
+[192월2026 17:32:48.816] [main/DEBUG] [mixin/]: Selecting config estherserver.mixins.json
+[192월2026 17:32:48.821] [main/DEBUG] [mixin/]: Selecting config neoforge.mixins.json
+[192월2026 17:32:48.821] [main/DEBUG] [mixin/]: Selecting config mixinextras.init.mixins.json
+[192월2026 17:32:48.857] [main/DEBUG] [MixinExtras|Service/]: com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0) is taking over from null
+[192월2026 17:32:48.879] [main/DEBUG] [mixin/]: Registering new injector for @Inject with org.spongepowered.asm.mixin.injection.struct.CallbackInjectionInfo
+[192월2026 17:32:48.880] [main/DEBUG] [mixin/]: Registering new injector for @ModifyArg with org.spongepowered.asm.mixin.injection.struct.ModifyArgInjectionInfo
+[192월2026 17:32:48.881] [main/DEBUG] [mixin/]: Registering new injector for @ModifyArgs with org.spongepowered.asm.mixin.injection.struct.ModifyArgsInjectionInfo
+[192월2026 17:32:48.882] [main/DEBUG] [mixin/]: Registering new injector for @Redirect with org.spongepowered.asm.mixin.injection.struct.RedirectInjectionInfo
+[192월2026 17:32:48.883] [main/DEBUG] [mixin/]: Registering new injector for @ModifyVariable with org.spongepowered.asm.mixin.injection.struct.ModifyVariableInjectionInfo
+[192월2026 17:32:48.884] [main/DEBUG] [mixin/]: Registering new injector for @ModifyConstant with org.spongepowered.asm.mixin.injection.struct.ModifyConstantInjectionInfo
+[192월2026 17:32:48.891] [main/DEBUG] [mixin/]: Preparing estherserver.mixins.json (1)
+[192월2026 17:32:48.955] [main/DEBUG] [mixin/]: Preparing neoforge.mixins.json (2)
+[192월2026 17:32:48.964] [main/DEBUG] [mixin/]: Preparing mixinextras.init.mixins.json (0)
+[192월2026 17:32:49.118] [main/DEBUG] [io.netty.util.internal.logging.InternalLoggerFactory/]: Using SLF4J as the default logging framework
+[192월2026 17:32:49.119] [main/DEBUG] [io.netty.util.ResourceLeakDetector/]: -Dio.netty.leakDetection.level: simple
+[192월2026 17:32:49.119] [main/DEBUG] [io.netty.util.ResourceLeakDetector/]: -Dio.netty.leakDetection.targetRecords: 4
+[192월2026 17:32:49.717] [main/DEBUG] [oshi.util.FileUtil/]: No oshi.properties file found from ClassLoader cpw.mods.modlauncher.TransformingClassLoader@4ba89729
+[192월2026 17:32:50.154] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 246 Datafixer optimizations took 467 milliseconds
+[192월2026 17:32:50.219] [main/DEBUG] [oshi.util.FileUtil/]: No oshi.architecture.properties file found from ClassLoader cpw.mods.modlauncher.TransformingClassLoader@4ba89729
+[192월2026 17:32:50.265] [main/WARN] [oshi.driver.windows.perfmon.PerfmonDisabled/]: Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
+[192월2026 17:32:50.300] [pool-8-thread-1/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[192월2026 17:32:50.301] [pool-8-thread-1/DEBUG] [mixin/]: Registering new injector for @SugarWrapper with com.llamalad7.mixinextras.sugar.impl.SugarWrapperInjectionInfo
+[192월2026 17:32:50.301] [pool-8-thread-1/DEBUG] [mixin/]: Registering new injector for @FactoryRedirectWrapper with com.llamalad7.mixinextras.wrapper.factory.FactoryRedirectWrapperInjectionInfo
+[192월2026 17:32:50.301] [pool-8-thread-1/DEBUG] [mixin/]: Registering new injector for @ExpressionInjectorWrapper with com.llamalad7.mixinextras.expression.impl.wrapper.ExpressionInjectorWrapperInjectionInfo
+[192월2026 17:32:50.309] [pool-8-thread-1/DEBUG] [mixin/]: Mixing MappedRegistryAccessor from neoforge.mixins.json into net.minecraft.core.MappedRegistry
+[192월2026 17:32:50.989] [pool-8-thread-1/DEBUG] [mixin/]: Mixing BlockEntityTypeAccessor from neoforge.mixins.json into net.minecraft.world.level.block.entity.BlockEntityType
+[192월2026 17:32:52.260] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: -Dio.netty.noUnsafe: false
+[192월2026 17:32:52.260] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: Java version: 21
+[192월2026 17:32:52.261] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.theUnsafe: available
+[192월2026 17:32:52.261] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe base methods: all available
+[192월2026 17:32:52.262] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: sun.misc.Unsafe.storeFence: available
+[192월2026 17:32:52.262] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.Buffer.address: available
+[192월2026 17:32:52.262] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+[192월2026 17:32:52.263] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.Bits.unaligned: available, true
+[192월2026 17:32:52.264] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 (in module io.netty.common) cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to module io.netty.common
+[192월2026 17:32:52.264] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent0/]: java.nio.DirectByteBuffer.<init>(long, {int,long}): unavailable
+[192월2026 17:32:52.264] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent/]: sun.misc.Unsafe: available
+[192월2026 17:32:52.264] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.tmpdir: C:\Users\hajuu\AppData\Local\Temp (java.io.tmpdir)
+[192월2026 17:32:52.264] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.bitMode: 64 (sun.arch.data.model)
+[192월2026 17:32:52.265] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent/]: Platform: Windows
+[192월2026 17:32:52.265] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.maxDirectMemory: -1 bytes
+[192월2026 17:32:52.265] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.uninitializedArrayAllocationThreshold: -1
+[192월2026 17:32:52.266] [pool-8-thread-1/DEBUG] [io.netty.util.internal.CleanerJava9/]: java.nio.ByteBuffer.cleaner(): available
+[192월2026 17:32:52.266] [pool-8-thread-1/DEBUG] [io.netty.util.internal.PlatformDependent/]: -Dio.netty.noPreferDirect: false
+[192월2026 17:32:54.092] [main/DEBUG] [mixin/]: Mixing EstherServerMixin from estherserver.mixins.json into net.minecraft.server.MinecraftServer
+[192월2026 17:32:54.155] [main/DEBUG] [mixin/]: estherserver.mixins.json:EstherServerMixin from mod estherserver->@Inject::estherserver$loadLevel(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V doesn't use it's CallbackInfo
+[192월2026 17:32:54.155] [main/DEBUG] [mixin/]: estherserver.mixins.json:EstherServerMixin from mod estherserver->@Inject::estherserver$loadLevel(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V has 0 override(s) in child classes
+[192월2026 17:32:54.156] [main/DEBUG] [mixin/]: estherserver.mixins.json:EstherServerMixin from mod estherserver->@Inject::estherserver$loadLevel(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V won't be passed a CallbackInfo as a result
+[192월2026 17:32:54.753] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[192월2026 17:32:54.755] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[192월2026 17:32:54.759] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[192월2026 17:32:54.760] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[192월2026 17:32:54.761] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[192월2026 17:32:54.899] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/hajuu/OneDrive/바탕%20화면/coding/esther-server/build/moddev/artifacts/neoforge-21.4.156-minecraft.jar%23215!/assets/.mcassetsroot' uses unexpected schema
+[192월2026 17:32:54.899] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/hajuu/OneDrive/바탕%20화면/coding/esther-server/build/moddev/artifacts/neoforge-21.4.156-minecraft.jar%23215!/data/.mcassetsroot' uses unexpected schema
+[192월2026 17:32:54.931] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[192월2026 17:32:54.939] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[192월2026 17:32:55.014] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[192월2026 17:32:55.326] [Render thread/DEBUG] [net.neoforged.fml.ModWorkManager/LOADING]: Using 16 threads for parallel mod-loading
+[192월2026 17:32:55.357] [Render thread/DEBUG] [thedarkcolour.kotlinforforge.neoforge.LoggerKt/LOADING]: Creating KotlinModContainer instance for [com.juyoung.estherserver.EstherServerMod]
+[192월2026 17:32:55.365] [Render thread/DEBUG] [thedarkcolour.kotlinforforge.neoforge.LoggerKt/LOADING]: Creating KotlinModContainer instance for [thedarkcolour.kotlinforforge.neoforge.test.KotlinForForge]
+[192월2026 17:32:55.367] [Render thread/DEBUG] [net.neoforged.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for [net.neoforged.neoforge.common.NeoForgeMod, net.neoforged.neoforge.client.ClientNeoForgeMod]
+[192월2026 17:32:55.390] [modloading-worker-0/DEBUG] [net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion/CORE]: Found NeoForge version 21.4.156
+[192월2026 17:32:55.391] [modloading-worker-0/DEBUG] [net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion/CORE]: Found FML version 6.0.18
+[192월2026 17:32:55.391] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.4.156, for MC 1.21.4
+[192월2026 17:32:55.422] [modloading-worker-0/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Config file neoforge-client.toml for neoforge tracking
+[192월2026 17:32:55.422] [modloading-worker-0/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Config file neoforge-server.toml for neoforge tracking
+[192월2026 17:32:55.422] [modloading-worker-0/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Config file neoforge-common.toml for neoforge tracking
+[192월2026 17:32:55.488] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for neoforge
+[192월2026 17:32:55.489] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.server.command.ConfigCommand for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.490] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/server/command/ConfigCommand; to the game event bus
+[192월2026 17:32:55.491] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.network.filters.GenericPacketSplitter for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.509] [modloading-worker-0/DEBUG] [io.netty.buffer.AbstractByteBuf/]: -Dio.netty.buffer.checkAccessible: true
+[192월2026 17:32:55.510] [modloading-worker-0/DEBUG] [io.netty.buffer.AbstractByteBuf/]: -Dio.netty.buffer.checkBounds: true
+[192월2026 17:32:55.510] [modloading-worker-0/DEBUG] [io.netty.util.ResourceLeakDetectorFactory/]: Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@1f8c25a4
+[192월2026 17:32:55.518] [modloading-worker-0/DEBUG] [io.netty.util.internal.InternalThreadLocalMap/]: -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+[192월2026 17:32:55.518] [modloading-worker-0/DEBUG] [io.netty.util.internal.InternalThreadLocalMap/]: -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+[192월2026 17:32:55.532] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.numHeapArenas: 32
+[192월2026 17:32:55.532] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.numDirectArenas: 32
+[192월2026 17:32:55.532] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.pageSize: 8192
+[192월2026 17:32:55.532] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.maxOrder: 9
+[192월2026 17:32:55.532] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.chunkSize: 4194304
+[192월2026 17:32:55.532] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.smallCacheSize: 256
+[192월2026 17:32:55.533] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.normalCacheSize: 64
+[192월2026 17:32:55.533] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+[192월2026 17:32:55.533] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimInterval: 8192
+[192월2026 17:32:55.533] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+[192월2026 17:32:55.533] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.useCacheForAllThreads: false
+[192월2026 17:32:55.533] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+[192월2026 17:32:55.533] [modloading-worker-0/DEBUG] [io.netty.buffer.PooledByteBufAllocator/]: -Dio.netty.allocator.disableCacheFinalizersForFastThreadLocalThreads: false
+[192월2026 17:32:55.540] [modloading-worker-0/DEBUG] [io.netty.buffer.ByteBufUtil/]: -Dio.netty.allocator.type: pooled
+[192월2026 17:32:55.540] [modloading-worker-0/DEBUG] [io.netty.buffer.ByteBufUtil/]: -Dio.netty.threadLocalDirectBufferSize: 0
+[192월2026 17:32:55.540] [modloading-worker-0/DEBUG] [io.netty.buffer.ByteBufUtil/]: -Dio.netty.maxThreadLocalCharBufferSize: 16384
+[192월2026 17:32:55.546] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/network/filters/GenericPacketSplitter; to the mod event bus of mod neoforge
+[192월2026 17:32:55.549] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.network.NetworkInitialization for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.550] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/network/NetworkInitialization; to the mod event bus of mod neoforge
+[192월2026 17:32:55.550] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.network.ConfigurationInitialization for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.554] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/network/ConfigurationInitialization; to the mod event bus of mod neoforge
+[192월2026 17:32:55.554] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.common.MonsterRoomHooks for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.555] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/common/MonsterRoomHooks; to the game event bus
+[192월2026 17:32:55.556] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.client.model.data.ModelDataManager for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.558] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/client/model/data/ModelDataManager; to the game event bus
+[192월2026 17:32:55.559] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.client.ParticleBoundsDebugRenderer for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.563] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/client/ParticleBoundsDebugRenderer; to the game event bus
+[192월2026 17:32:55.564] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.client.ClientHooks$ClientEvents for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.577] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/client/ClientHooks$ClientEvents; to the mod event bus of mod neoforge
+[192월2026 17:32:55.577] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.client.BlockEntityRenderBoundsDebugRenderer for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.578] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/client/BlockEntityRenderBoundsDebugRenderer; to the game event bus
+[192월2026 17:32:55.578] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Scanning class net.neoforged.neoforge.attachment.AttachmentInternals for @SubscribeEvent-annotated methods
+[192월2026 17:32:55.580] [modloading-worker-0/DEBUG] [net.neoforged.fml.javafmlmod.AutomaticEventSubscriber/]: Subscribing @EventBusSubscriber class Lnet/neoforged/neoforge/attachment/AttachmentInternals; to the game event bus
+[192월2026 17:32:55.640] [modloading-worker-0/INFO] [thedarkcolour.kotlinforforge.neoforge.test.KotlinForForge/]: Kotlin For Forge Enabled!
+[192월2026 17:32:55.641] [modloading-worker-0/DEBUG] [thedarkcolour.kotlinforforge.neoforge.LoggerKt/LOADING]: Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for kotlinforforge
+[192월2026 17:32:55.674] [modloading-worker-0/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Config file estherserver-common.toml for estherserver tracking
+[192월2026 17:32:55.674] [modloading-worker-0/DEBUG] [thedarkcolour.kotlinforforge.neoforge.LoggerKt/LOADING]: Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for estherserver
+[192월2026 17:32:55.678] [modloading-worker-0/DEBUG] [thedarkcolour.kotlinforforge.neoforge.LoggerKt/LOADING]: Auto-subscribing kotlin object net.neoforged.fml.common.EventBusSubscriber to MOD
+[192월2026 17:32:55.684] [modloading-worker-0/DEBUG] [thedarkcolour.kotlinforforge.neoforge.LoggerKt/LOADING]: Auto-subscribing kotlin object net.neoforged.fml.common.EventBusSubscriber to MOD
+[192월2026 17:32:55.844] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Loading configs type CLIENT
+[192월2026 17:32:55.856] [modloading-sync-worker/DEBUG] [net.neoforged.neoforge.common.NeoForgeConfig/FORGEMOD]: Loaded NeoForge config file neoforge-client.toml
+[192월2026 17:32:55.856] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Loaded TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\neoforge-client.toml
+[192월2026 17:32:55.861] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Watching TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\neoforge-client.toml for changes
+[192월2026 17:32:55.861] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Loading configs type COMMON
+[192월2026 17:32:55.862] [modloading-sync-worker/DEBUG] [net.neoforged.neoforge.common.NeoForgeConfig/FORGEMOD]: Loaded NeoForge config file neoforge-common.toml
+[192월2026 17:32:55.862] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Loaded TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\neoforge-common.toml
+[192월2026 17:32:55.862] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Watching TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\neoforge-common.toml for changes
+[192월2026 17:32:55.864] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Loaded TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\estherserver-common.toml
+[192월2026 17:32:55.865] [modloading-sync-worker/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Watching TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\estherserver-common.toml for changes
+[192월2026 17:32:56.288] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [estherserver]
+[192월2026 17:32:56.523] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/estherserver, mod/kotlinforforge, mod/neoforge
+[192월2026 17:32:56.532] [resourceLoad/INFO] [com.juyoung.estherserver.EstherServerMod/]: Esther Server mod initialized!
+[192월2026 17:32:56.549] [resourceLoad/INFO] [com.juyoung.estherserver.EstherServerMod/]: DIRT BLOCK >> minecraft:dirt
+[192월2026 17:32:56.549] [resourceLoad/INFO] [com.juyoung.estherserver.EstherServerMod/]: The magic number is... 42
+[192월2026 17:32:56.550] [resourceLoad/INFO] [com.juyoung.estherserver.EstherServerMod/]: ITEM >> minecraft:iron_ingot
+[192월2026 17:32:56.613] [resourceLoad/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-16.0.01.hex, loading
+[192월2026 17:32:56.613] [resourceLoad/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-16.0.01.hex, loading
+[192월2026 17:32:56.675] [Render thread/DEBUG] [net.neoforged.fml.DeferredWorkQueue/LOADING]: Dispatching synchronous work for work queue Common setup: 1 jobs
+[192월2026 17:32:56.680] [Render thread/DEBUG] [net.neoforged.fml.DeferredWorkQueue/LOADING]: Synchronous work queue completed in 4.071 ms
+[192월2026 17:32:56.684] [resourceLoad/INFO] [com.juyoung.estherserver.EstherServerMod/]: Esther Server client setup
+[192월2026 17:32:56.684] [resourceLoad/INFO] [com.juyoung.estherserver.EstherServerMod/]: MINECRAFT NAME >> Dev
+[192월2026 17:32:57.847] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Headphones(High Definition Audio Device)
+[192월2026 17:32:57.848] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[192월2026 17:32:57.920] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[192월2026 17:32:57.928] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[192월2026 17:32:57.928] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[192월2026 17:32:57.928] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[192월2026 17:32:57.928] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[192월2026 17:32:57.929] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[192월2026 17:32:57.929] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[192월2026 17:32:57.929] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[192월2026 17:32:57.930] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[192월2026 17:32:57.931] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[192월2026 17:32:57.997] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[192월2026 17:32:57.997] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[192월2026 17:32:57.998] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[192월2026 17:32:57.998] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[192월2026 17:32:58.003] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[192월2026 17:33:02.008] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1385 recipes
+[192월2026 17:33:02.016] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1481 advancements
+[192월2026 17:33:02.019] [Render thread/INFO] [net.neoforged.neoforge.common.crafting.RecipePriorityManager/]: Loaded 0 recipe priority overrides
+[192월2026 17:33:02.077] [Render thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save 새로운 세계
+[192월2026 17:33:02.142] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.4
+[192월2026 17:33:02.142] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[192월2026 17:33:02.189] [Server thread/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Loading configs type SERVER
+[192월2026 17:33:02.189] [Server thread/DEBUG] [net.neoforged.neoforge.common.NeoForgeConfig/FORGEMOD]: Loaded NeoForge config file neoforge-server.toml
+[192월2026 17:33:02.189] [Server thread/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Loaded TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\neoforge-server.toml
+[192월2026 17:33:02.191] [Server thread/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Watching TOML config file C:\Users\hajuu\OneDrive\바탕 화면\coding\esther-server\run\config\neoforge-server.toml for changes
+[192월2026 17:33:02.403] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[192월2026 17:33:02.962] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: 스폰 영역 준비 중: 0%
+[192월2026 17:33:02.962] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: 스폰 영역 준비 중: 0%
+[192월2026 17:33:03.033] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 627 ms
+[192월2026 17:33:03.033] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[192월2026 17:33:03.035] [Server thread/INFO] [com.juyoung.estherserver.EstherServerMod/]: Esther Server is starting!
+[192월2026 17:33:03.110] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[192월2026 17:33:03.110] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[192월2026 17:33:03.148] [Render thread/DEBUG] [io.netty.channel.MultithreadEventLoopGroup/]: -Dio.netty.eventLoopThreads: 32
+[192월2026 17:33:03.168] [Render thread/DEBUG] [io.netty.util.concurrent.GlobalEventExecutor/]: -Dio.netty.globalEventExecutor.quietPeriodSeconds: 1
+[192월2026 17:33:03.186] [Render thread/DEBUG] [io.netty.channel.nio.NioEventLoop/]: -Dio.netty.noKeySetOptimization: false
+[192월2026 17:33:03.187] [Render thread/DEBUG] [io.netty.channel.nio.NioEventLoop/]: -Dio.netty.selectorAutoRebuildThreshold: 512
+[192월2026 17:33:03.197] [Render thread/DEBUG] [io.netty.util.internal.PlatformDependent/]: org.jctools-core.MpscChunkedArrayQueue: available
+[192월2026 17:33:03.257] [Render thread/DEBUG] [io.netty.channel.DefaultChannelId/]: -Dio.netty.processId: 11960 (auto-detected)
+[192월2026 17:33:03.259] [Render thread/DEBUG] [io.netty.util.NetUtil/]: -Djava.net.preferIPv4Stack: false
+[192월2026 17:33:03.259] [Render thread/DEBUG] [io.netty.util.NetUtil/]: -Djava.net.preferIPv6Addresses: system
+[192월2026 17:33:03.262] [Render thread/DEBUG] [io.netty.util.NetUtilInitializations/]: Loopback interface: loopback_0 (Software Loopback Interface 1, 0:0:0:0:0:0:0:1)
+[192월2026 17:33:03.263] [Render thread/DEBUG] [io.netty.util.NetUtil/]: Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+[192월2026 17:33:03.263] [Render thread/DEBUG] [io.netty.channel.DefaultChannelId/]: -Dio.netty.machineId: 58:11:22:ff:fe:c2:78:a6 (auto-detected)
+[192월2026 17:33:03.288] [Render thread/DEBUG] [io.netty.bootstrap.ChannelInitializerExtensions/]: -Dio.netty.bootstrap.extensions: null
+[192월2026 17:33:03.332] [Render thread/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.maxCapacityPerThread: 4096
+[192월2026 17:33:03.333] [Render thread/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.ratio: 8
+[192월2026 17:33:03.333] [Render thread/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.chunkSize: 32
+[192월2026 17:33:03.333] [Render thread/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.blocking: false
+[192월2026 17:33:03.333] [Render thread/DEBUG] [io.netty.util.Recycler/]: -Dio.netty.recycler.batchFastThreadLocalOnly: true
+[192월2026 17:33:03.442] [Netty Server IO #1/DEBUG] [net.neoforged.neoforge.network.filters.NetworkFilters/]: Injected net.neoforged.neoforge.network.filters.GenericPacketSplitter@3269d1f7 into net.minecraft.network.Connection@1238df81
+[192월2026 17:33:03.447] [Netty Local Client IO #0/DEBUG] [net.neoforged.neoforge.network.filters.NetworkFilters/]: Injected net.neoforged.neoforge.network.filters.GenericPacketSplitter@45ec60b8 into net.minecraft.network.Connection@23f08c4b
+[192월2026 17:33:03.752] [Netty Server IO #1/DEBUG] [net.neoforged.neoforge.network.filters.NetworkFilters/]: Injected net.neoforged.neoforge.network.filters.GenericPacketSplitter@16d5c044 into net.minecraft.network.Connection@1238df81
+[192월2026 17:33:03.821] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:d677141a] logged in with entity id 14 at (-109.7345824549187, 64.0, -67.62491113948008)
+[192월2026 17:33:03.829] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/]: Sending 0 recipes of the following types: []
+[192월2026 17:33:03.869] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [초보 수집가] Dev이(가) 게임에 참여했습니다
+[192월2026 17:33:04.135] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 105 advancements
+[192월2026 17:33:10.876] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [[초보 수집가] Dev: [상점] 상인 NPC를 소환했습니다.]
+[192월2026 17:33:10.882] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 상인 NPC를 소환했습니다.
+[192월2026 17:33:17.469] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [[초보 수집가] Dev: [상점] 상인 NPC를 제거했습니다.]
+[192월2026 17:33:17.474] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 상인 NPC를 제거했습니다.
+[192월2026 17:33:22.028] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 알 수 없거나 불완전한 명령어입니다. 아래의 오류를 확인하세요
+[192월2026 17:33:22.028] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ...hop summon<--[여기]
+[192월2026 17:33:24.895] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [[초보 수집가] Dev: [상점] 상인 NPC를 소환했습니다.]
+[192월2026 17:33:24.896] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 상인 NPC를 소환했습니다.
+[192월2026 17:33:30.684] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 알 수 없거나 불완전한 명령어입니다. 아래의 오류를 확인하세요
+[192월2026 17:33:30.684] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ...hop summon<--[여기]
+[192월2026 17:33:34.752] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [[초보 수집가] Dev: [상점] 상인 NPC를 소환했습니다.]
+[192월2026 17:33:34.757] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 상인 NPC를 소환했습니다.
+[192월2026 17:33:39.268] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [[초보 수집가] Dev: [상점] 상인 NPC를 소환했습니다.]
+[192월2026 17:33:39.268] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 상인 NPC를 소환했습니다.
+[192월2026 17:33:52.779] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:33:56.445] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:33:56.879] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:33:57.299] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:09.185] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 1개의 밀 씨앗을(를) 5 에스더의 기운에 구매했습니다.
+[192월2026 17:34:18.322] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:18.681] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:20.962] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 1개의 구리 원석을(를) 3 에스더의 기운에 판매했습니다.
+[192월2026 17:34:29.508] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 9개의 공기을(를) 27 에스더의 기운에 판매했습니다.
+[192월2026 17:34:36.953] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 1개의 석탄을(를) 2 에스더의 기운에 판매했습니다.
+[192월2026 17:34:37.572] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 15개의 공기을(를) 30 에스더의 기운에 판매했습니다.
+[192월2026 17:34:42.412] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:44.341] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:44.543] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:44.871] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:45.146] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:45.841] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:46.478] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:46.838] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:47.165] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:47.817] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:48.077] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:48.320] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:48.555] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:50.549] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:34:55.739] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 1개의 김밥을(를) 25 에스더의 기운에 판매했습니다.
+[192월2026 17:34:59.140] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 61개의 공기을(를) 1525 에스더의 기운에 판매했습니다.
+[192월2026 17:35:04.114] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:35:04.614] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 이 상인에게는 판매할 수 없는 아이템입니다.
+[192월2026 17:35:09.949] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 1개의 익히지 않은 대구을(를) 3 에스더의 기운에 판매했습니다.
+[192월2026 17:35:11.256] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 1개의 익히지 않은 대구을(를) 3 에스더의 기운에 판매했습니다.
+[192월2026 17:35:13.879] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 1개의 익히지 않은 대구을(를) 3 에스더의 기운에 판매했습니다.
+[192월2026 17:35:14.792] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [상점] 4개의 공기을(를) 12 에스더의 기운에 판매했습니다.
+[192월2026 17:35:18.136] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[192월2026 17:35:18.151] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[새로운 세계]'/minecraft:overworld
+[192월2026 17:35:18.179] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[새로운 세계]'/minecraft:the_nether
+[192월2026 17:35:18.179] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[새로운 세계]'/minecraft:the_end
+[192월2026 17:35:18.182] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save 새로운 세계
+[192월2026 17:35:18.689] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: 연결 끊김
+[192월2026 17:35:18.689] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [초보 수집가] Dev이(가) 게임을 떠났습니다
+[192월2026 17:35:18.699] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[192월2026 17:35:18.735] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[192월2026 17:35:18.735] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[192월2026 17:35:18.735] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[192월2026 17:35:18.767] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[새로운 세계]'/minecraft:overworld
+[192월2026 17:35:18.837] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[새로운 세계]'/minecraft:the_nether
+[192월2026 17:35:18.839] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[새로운 세계]'/minecraft:the_end
+[192월2026 17:35:18.842] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save 새로운 세계
+[192월2026 17:35:18.845] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (새로운 세계): All chunks are saved
+[192월2026 17:35:18.845] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[192월2026 17:35:18.845] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[192월2026 17:35:18.845] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[192월2026 17:35:18.857] [Server thread/DEBUG] [net.neoforged.fml.config.ConfigTracker/CONFIG]: Unloading configs type SERVER
+[192월2026 17:35:20.268] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
