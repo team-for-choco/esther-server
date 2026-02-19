@@ -13,26 +13,25 @@
 - AttachmentType 기반 데이터 저장 (copyOnDeath)
 - 경험치: 일반 1xp, 고급 3xp, 희귀 5xp
 - 경험치 테이블: 구간별 증가 (총 39,500 XP)
-- 활동 감지:
-  - 낚시: Global Loot Modifier에서 감지
-  - 농사: BlockEvent.BreakEvent (작물 블록)
-  - 채광: BlockEvent.BreakEvent (광석 블록)
-  - 요리: CookingStationBlock에서 직접 호출
+- 활동 감지 방식:
+  - 낚시/농사/채광: AssignQualityLootModifier에서 등급 부여 시 아이템→분야 매핑으로 XP 부여
+  - 요리: CookingStationBlock에서 요리 완성 시 직접 호출
+- 아이템→분야 매핑: ProfessionHandler.init()에서 등록 (TEST_FISH→낚시, RICE/RED_PEPPER/SPINACH/TEST_HARVEST→농사, TEST_ORE_RAW→채광)
 
 ## 작업 체크리스트
-- [ ] Profession enum 생성
-- [ ] ProfessionData 데이터 클래스 (NBT/StreamCodec)
-- [ ] ModProfession AttachmentType 등록
-- [ ] ProfessionHandler (경험치 추가/레벨업 로직)
-- [ ] 활동 감지 이벤트 연결
-  - [ ] 낚시 (Loot Modifier)
-  - [ ] 농사 (BlockEvent)
-  - [ ] 채광 (BlockEvent)
-  - [ ] 요리 (CookingStationBlock)
-- [ ] 레벨업 알림 메시지
-- [ ] 번역 키 추가
-- [ ] EstherServerMod 등록
-- [ ] 빌드 확인
+- [x] Profession enum 생성
+- [x] ProfessionData 데이터 클래스 (NBT/StreamCodec)
+- [x] ModProfession AttachmentType 등록
+- [x] ProfessionHandler (경험치 추가/레벨업 로직)
+- [x] 활동 감지 연결
+  - [x] 낚시 (Loot Modifier)
+  - [x] 농사 (Loot Modifier)
+  - [x] 채광 (Loot Modifier)
+  - [x] 요리 (CookingStationBlock)
+- [x] 레벨업 알림 메시지
+- [x] 번역 키 추가
+- [x] EstherServerMod 등록
+- [x] 빌드 확인
 
 ## 인게임 테스트
 - [ ] 생선 낚기 → 낚시 경험치 획득 확인
