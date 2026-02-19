@@ -9,14 +9,18 @@ enum class Profession(val translationKey: String) {
     companion object {
         const val MAX_LEVEL = 50
 
-        fun getRequiredXp(level: Int): Int = when {
-            level < 1 -> 0
-            level <= 10 -> 50
-            level <= 20 -> 100
-            level <= 30 -> 200
-            level <= 40 -> 600
-            level <= 50 -> 3000
-            else -> Int.MAX_VALUE
+        private val XP_TABLE = listOf(
+            10 to 50,
+            20 to 100,
+            30 to 200,
+            40 to 600,
+            MAX_LEVEL to 3000
+        )
+
+        fun getRequiredXp(level: Int): Int {
+            if (level <= 0) return 0
+            if (level > MAX_LEVEL) return Int.MAX_VALUE
+            return XP_TABLE.first { level <= it.first }.second
         }
     }
 }
