@@ -59,6 +59,8 @@ import com.juyoung.estherserver.economy.EconomyHandler
 import com.juyoung.estherserver.economy.ItemPriceRegistry
 import com.juyoung.estherserver.economy.ModEconomy
 import com.juyoung.estherserver.economy.MoneyCommand
+import com.juyoung.estherserver.profession.ModProfession
+import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.merchant.SellItemPayload
 import com.juyoung.estherserver.merchant.BuyItemPayload
 import com.juyoung.estherserver.merchant.MerchantEntity
@@ -359,6 +361,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModCooking.RECIPE_SERIALIZERS.register(modEventBus)
         ModCollection.ATTACHMENT_TYPES.register(modEventBus)
         ModEconomy.ATTACHMENT_TYPES.register(modEventBus)
+        ModProfession.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -433,6 +436,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         CollectibleRegistry.init()
         ItemPriceRegistry.init()
         ShopBuyRegistry.init()
+        ProfessionHandler.init()
 
         if (Config.logDirtBlock) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT))

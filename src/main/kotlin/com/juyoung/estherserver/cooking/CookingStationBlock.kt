@@ -1,6 +1,8 @@
 package com.juyoung.estherserver.cooking
 
 import com.juyoung.estherserver.EstherServerMod
+import com.juyoung.estherserver.profession.Profession
+import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.quality.ModDataComponents
 import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
@@ -10,6 +12,7 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.tags.TagKey
@@ -165,6 +168,13 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
                 15, 0.3, 0.2, 0.3, 0.05
             )
             level.playSound(null, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7f, 1.5f)
+
+            // Grant cooking profession XP
+            val serverPlayer = player as? ServerPlayer
+            if (serverPlayer != null) {
+                val xp = ProfessionHandler.getXpForQuality(quality)
+                ProfessionHandler.addExperience(serverPlayer, Profession.COOKING, xp)
+            }
 
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_success"), true

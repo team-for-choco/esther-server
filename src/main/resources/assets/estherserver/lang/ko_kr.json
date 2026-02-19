@@ -165,5 +165,12 @@
   "message.estherserver.shop_not_found": "[상점] 주변에 상인 NPC가 없습니다.",
   "message.estherserver.shop_sell_success": "[상점] %s개의 %s을(를) %s 에스더의 기운에 판매했습니다.",
   "message.estherserver.shop_sell_no_price": "[상점] 이 아이템은 판매할 수 없습니다.",
-  "message.estherserver.shop_sell_wrong_merchant": "[상점] 이 상인에게는 판매할 수 없는 아이템입니다."
+  "message.estherserver.shop_sell_wrong_merchant": "[상점] 이 상인에게는 판매할 수 없는 아이템입니다.",
+
+  "profession.estherserver.fishing": "낚시",
+  "profession.estherserver.farming": "농사",
+  "profession.estherserver.mining": "채광",
+  "profession.estherserver.cooking": "요리",
+  "message.estherserver.profession_xp": "[전문] %s +%sxp (%s/%s)",
+  "message.estherserver.profession_levelup": "[전문] %s 레벨 %s 달성!"
 }
