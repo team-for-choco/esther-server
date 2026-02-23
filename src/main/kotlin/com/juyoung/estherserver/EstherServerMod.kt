@@ -745,10 +745,27 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     fun onItemPickup(event: net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent.Pre) {
         val player = event.player as? net.minecraft.server.level.ServerPlayer ?: return
         if (player.containerMenu is ProfessionInventoryMenu) return
+        if (event.itemEntity.hasPickUpDelay()) return
         val stack = event.itemEntity.item
         if (stack.isEmpty) return
 
+        val countBefore = stack.count
         if (ProfessionInventoryHandler.tryAddItem(player, stack)) {
+            val pickedUp = countBefore - stack.count
+            // 바닐라와 동일한 픽업 애니메이션 (아이템이 플레이어에게 날아감)
+            player.take(event.itemEntity, pickedUp)
+            // 바닐라와 동일한 픽업 사운드
+            player.level().playSound(
+                null, player.x, player.y, player.z,
+                net.minecraft.sounds.SoundEvents.ITEM_PICKUP,
+                net.minecraft.sounds.SoundSource.PLAYERS,
+                0.2f,
+                ((player.random.nextFloat() - player.random.nextFloat()) * 0.7f + 1.0f) * 2.0f
+            )
+            if (stack.isEmpty) {
+                event.itemEntity.discard()
+                event.setCanPickup(net.neoforged.neoforge.common.util.TriState.FALSE)
+            }
             ProfessionInventoryHandler.syncToClient(player)
         }
     }
