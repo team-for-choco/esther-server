@@ -14,7 +14,16 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent
 object OreVeinDetector {
 
     private const val SCAN_INTERVAL_TICKS = 40  // every 2 seconds
-    private const val SCAN_RADIUS = 8
+
+    /** 강화 레벨별 탐지 반경 (블록). 인덱스 = enhLevel - 5 */
+    private val SCAN_RADIUS_BY_TIER = intArrayOf(
+        4,  // Lv5: 반경 4블록
+    )
+
+    private fun getScanRadius(enhLevel: Int): Int {
+        val tierIndex = (enhLevel - 5).coerceIn(0, SCAN_RADIUS_BY_TIER.lastIndex)
+        return SCAN_RADIUS_BY_TIER[tierIndex]
+    }
 
     @SubscribeEvent
     fun onServerTick(event: ServerTickEvent.Post) {
@@ -33,12 +42,13 @@ object OreVeinDetector {
         val enhLevel = stack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
         if (enhLevel < 5) return
 
+        val radius = getScanRadius(enhLevel)
         val level = player.serverLevel()
         val center = player.blockPosition()
 
-        for (x in -SCAN_RADIUS..SCAN_RADIUS) {
-            for (y in -SCAN_RADIUS..SCAN_RADIUS) {
-                for (z in -SCAN_RADIUS..SCAN_RADIUS) {
+        for (x in -radius..radius) {
+            for (y in -radius..radius) {
+                for (z in -radius..radius) {
                     val pos = center.offset(x, y, z)
                     val state = level.getBlockState(pos)
                     if (state.`is`(BlockTags.COAL_ORES) ||
@@ -51,13 +61,13 @@ object OreVeinDetector {
                         state.`is`(BlockTags.REDSTONE_ORES)
                     ) {
                         val packet = ClientboundLevelParticlesPacket(
-                            ParticleTypes.ENCHANT,
+                            ParticleTypes.ELECTRIC_SPARK,
                             false, // overrideLimiter
-                            false, // alwaysShow
+                            true,  // alwaysShow
                             pos.x.toDouble() + 0.5, pos.y.toDouble() + 0.5, pos.z.toDouble() + 0.5,
-                            0.2f, 0.2f, 0.2f,
-                            0.01f,
-                            2
+                            0.3f, 0.3f, 0.3f,
+                            0.02f,
+                            5
                         )
                         player.connection.send(packet)
                     }

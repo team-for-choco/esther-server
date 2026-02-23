@@ -248,5 +248,7 @@
   "message.estherserver.profession_status_entry": "  %s: Lv%s (%s/%s xp)",
   "message.estherserver.profession_invalid": "Unknown profession: %s (fishing/farming/mining/cooking)",
   "message.estherserver.profession_admin_setlevel": "[Profession] Set %s's %s level to %s.",
-  "message.estherserver.profession_admin_addxp": "[Profession] Added %s xp to %s. (Target: %s)"
+  "message.estherserver.profession_admin_addxp": "[Profession] Added %s xp to %s. (Target: %s)",
+
+  "message.estherserver.farming_own_claim_only": "You can only farm in chunks you own!"
 }

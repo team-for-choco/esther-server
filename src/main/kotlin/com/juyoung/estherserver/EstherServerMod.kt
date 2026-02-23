@@ -41,6 +41,7 @@ import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.DeferredRegister
+import com.juyoung.estherserver.claim.ChunkClaimManager
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
@@ -704,6 +705,29 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
             val profBonus = com.juyoung.estherserver.profession.ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
             event.newSpeed = tierSpeed * (1.0f + profBonus)
+        }
+    }
+
+    @SubscribeEvent
+    fun onCropGrowPost(event: CropGrowEvent.Post) {
+        val serverLevel = event.level as? net.minecraft.server.level.ServerLevel ?: return
+        val pos = event.pos
+        val currentState = serverLevel.getBlockState(pos)
+        val block = currentState.block as? CustomCropBlock ?: return
+
+        val chunkPos = net.minecraft.world.level.ChunkPos(pos)
+        val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
+        val owner = serverLevel.server?.playerList?.getPlayer(claim.ownerUUID) ?: return
+
+        val farmingLevel = ProfessionHandler.getLevel(owner, com.juyoung.estherserver.profession.Profession.FARMING)
+        if (farmingLevel <= 0) return
+
+        if (serverLevel.random.nextFloat() < farmingLevel * 0.01f) {
+            val ageProperty = net.minecraft.world.level.block.state.properties.BlockStateProperties.AGE_7
+            val currentAge: Int = currentState.getValue(ageProperty)
+            if (currentAge < 7) {
+                serverLevel.setBlock(pos, block.getStateForAge(currentAge + 1), 2)
+            }
         }
     }
 

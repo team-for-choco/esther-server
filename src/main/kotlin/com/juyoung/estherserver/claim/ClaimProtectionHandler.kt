@@ -1,5 +1,7 @@
 package com.juyoung.estherserver.claim
 
+import com.juyoung.estherserver.block.CustomCropBlock
+import com.juyoung.estherserver.block.SpecialFarmlandBlock
 import com.juyoung.estherserver.collection.CollectionPedestalBlock
 import com.juyoung.estherserver.cooking.CookingStationBlock
 import net.minecraft.network.chat.Component
@@ -53,6 +55,21 @@ object ClaimProtectionHandler {
         val serverPlayer = entity as? ServerPlayer ?: return
 
         val chunkPos = ChunkPos(event.pos)
+
+        // 농사 블록(특수 농지, 커스텀 작물)은 자기 클레임에서만 설치 가능
+        val placedBlock = event.placedBlock.block
+        if (placedBlock is SpecialFarmlandBlock || placedBlock is CustomCropBlock) {
+            val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos)
+            if (claim == null || claim.ownerUUID != serverPlayer.uuid) {
+                event.isCanceled = true
+                serverPlayer.inventoryMenu.sendAllDataToRemote()
+                serverPlayer.displayClientMessage(
+                    Component.translatable("message.estherserver.farming_own_claim_only"), true
+                )
+            }
+            return
+        }
+
         if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
 
         val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
