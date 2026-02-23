@@ -225,8 +225,22 @@
 
   "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s",
 
-  "message.estherserver.double_mine_drop": "광물이 2배로 떨어졌습니다!",
   "message.estherserver.double_fish": "물고기를 한 마리 더 낚았습니다!",
-  "message.estherserver.seed_preserved": "씨앗이 보존되었습니다!",
-  "message.estherserver.ingredient_saved": "재료가 절약되었습니다!"
+
+  "item.estherserver.watering_can": "물뿌리개",
+  "message.estherserver.watering_can_need_hoe": "물뿌리개를 사용하려면 Lv%s 이상의 특수 호미가 필요합니다.",
+  "message.estherserver.watering_can_empty": "물뿌리개에 물이 없습니다.",
+  "message.estherserver.watering_can_filled": "물뿌리개에 물을 채웠습니다. (%s/%s)",
+  "message.estherserver.watering_can_used": "수분을 보충했습니다. (%s/%s)",
+  "tooltip.estherserver.watering_can_charges": "\uD83D\uDCA7 %s/%s",
+
+  "message.estherserver.cooking_started": "요리를 시작합니다! (%s초)",
+  "message.estherserver.cooking_in_progress": "요리가 진행 중입니다...",
+  "message.estherserver.cooking_max_stations": "동시에 %s개의 조리대만 사용할 수 있습니다.",
+
+  "key.estherserver.prof_inventory": "전문 보관함",
+  "gui.estherserver.prof_inventory.title": "전문 보관함",
+  "gui.estherserver.prof_inventory.tab.general": "일반",
+  "gui.estherserver.prof_inventory.overview": "전문 분야 보관함 현황",
+  "gui.estherserver.prof_inventory.slots": "칸"
 }

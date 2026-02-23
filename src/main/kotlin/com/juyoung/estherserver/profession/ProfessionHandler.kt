@@ -93,9 +93,7 @@ object ProfessionHandler {
 
         if (currentLevel >= Profession.MAX_LEVEL) return
 
-        val multiplier = ProfessionBonusHelper.getXpMultiplier(currentLevel)
-        val actualAmount = (amount * multiplier).toInt().coerceAtLeast(amount)
-        var currentXp = data.getXp(profession) + actualAmount
+        var currentXp = data.getXp(profession) + amount
         var level = currentLevel
         var leveledUp = false
 
@@ -120,7 +118,7 @@ object ProfessionHandler {
             Component.translatable(
                 "message.estherserver.profession_xp",
                 Component.translatable(profession.translationKey),
-                actualAmount,
+                amount,
                 currentXp,
                 requiredForNext
             ),

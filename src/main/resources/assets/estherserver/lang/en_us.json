@@ -225,8 +225,22 @@
 
   "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s",
 
-  "message.estherserver.double_mine_drop": "Minerals dropped double!",
   "message.estherserver.double_fish": "Caught an extra fish!",
-  "message.estherserver.seed_preserved": "Seed preserved!",
-  "message.estherserver.ingredient_saved": "Ingredient saved!"
+
+  "item.estherserver.watering_can": "Watering Can",
+  "message.estherserver.watering_can_need_hoe": "Requires Special Hoe Lv%s+ to use Watering Can.",
+  "message.estherserver.watering_can_empty": "Watering Can is empty.",
+  "message.estherserver.watering_can_filled": "Watering Can filled. (%s/%s)",
+  "message.estherserver.watering_can_used": "Moisturized soil. (%s/%s)",
+  "tooltip.estherserver.watering_can_charges": "\uD83D\uDCA7 %s/%s",
+
+  "message.estherserver.cooking_started": "Cooking started! (%ss)",
+  "message.estherserver.cooking_in_progress": "Cooking in progress...",
+  "message.estherserver.cooking_max_stations": "You can only use %s cooking station(s) at once.",
+
+  "key.estherserver.prof_inventory": "Profession Inventory",
+  "gui.estherserver.prof_inventory.title": "Profession Inventory",
+  "gui.estherserver.prof_inventory.tab.general": "General",
+  "gui.estherserver.prof_inventory.overview": "Profession Inventory Overview",
+  "gui.estherserver.prof_inventory.slots": " Slots"
 }

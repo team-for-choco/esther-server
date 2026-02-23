@@ -1,6 +1,8 @@
 package com.juyoung.estherserver.sitting
 
 import com.juyoung.estherserver.collection.CollectionScreen
+import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
+import com.juyoung.estherserver.inventory.ProfessionInventoryScreen
 import com.juyoung.estherserver.profession.ProfessionScreen
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.KeyMapping
@@ -33,6 +35,13 @@ object ModKeyBindings {
         "key.categories.estherserver"
     )
 
+    val PROFESSION_INVENTORY_KEY = KeyMapping(
+        "key.estherserver.prof_inventory",
+        InputConstants.Type.KEYSYM,
+        GLFW.GLFW_KEY_R,
+        "key.categories.estherserver"
+    )
+
     @SubscribeEvent
     fun onClientTick(event: ClientTickEvent.Post) {
         while (SIT_KEY.consumeClick()) {
@@ -43,6 +52,10 @@ object ModKeyBindings {
         }
         while (PROFESSION_KEY.consumeClick()) {
             Minecraft.getInstance().setScreen(ProfessionScreen())
+        }
+        while (PROFESSION_INVENTORY_KEY.consumeClick()) {
+            PacketDistributor.sendToServer(ProfessionInventoryPayload.OpenPayload())
+            Minecraft.getInstance().setScreen(ProfessionInventoryScreen())
         }
     }
 }

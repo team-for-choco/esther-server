@@ -31,6 +31,8 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
 import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.EnumProperty
@@ -41,6 +43,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         val CODEC: MapCodec<CookingStationBlock> = simpleCodec(::CookingStationBlock)
         val FACING: EnumProperty<Direction> = HorizontalDirectionalBlock.FACING
         private const val MAX_INGREDIENTS = 4
+        private const val BASE_COOKING_TIME_SECONDS = 5.0f
 
         val COOKING_INGREDIENT_TAG: TagKey<Item> = TagKey.create(
             Registries.ITEM,
@@ -68,6 +71,17 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
 
     override fun getRenderShape(state: BlockState): RenderShape = RenderShape.MODEL
 
+    override fun <T : BlockEntity> getTicker(
+        level: Level,
+        state: BlockState,
+        type: BlockEntityType<T>
+    ): BlockEntityTicker<T>? {
+        if (level.isClientSide) return null
+        return createTickerHelper(type, ModCooking.COOKING_STATION_BLOCK_ENTITY.get()) { lvl, pos, st, be ->
+            CookingStationBlockEntity.serverTick(lvl, pos, st, be)
+        }
+    }
+
     override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
@@ -80,12 +94,11 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         if (stack.isEmpty) return InteractionResult.TRY_WITH_EMPTY_HAND
         if (level.isClientSide) return InteractionResult.SUCCESS
 
-        // Cooking tool → perform cooking
+        // Cooking tool -> perform cooking
         if (stack.item === EstherServerMod.SPECIAL_COOKING_TOOL.get()) {
-            return performCooking(level, pos, player)
+            return performCooking(level, pos, player, stack)
         }
 
-        // 요리 재료 태그 검증
         if (!stack.`is`(COOKING_INGREDIENT_TAG)) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_not_ingredient"), true
@@ -98,6 +111,14 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
 
         val playerUUID = player.uuid
 
+        // Don't allow adding ingredients while cooking is in progress
+        if (blockEntity.hasCookingTask(playerUUID)) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.cooking_in_progress"), true
+            )
+            return InteractionResult.FAIL
+        }
+
         if (blockEntity.getIngredientCount(playerUUID) >= MAX_INGREDIENTS) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_station_full"), true
@@ -105,15 +126,12 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
             return InteractionResult.FAIL
         }
 
-        // Store the ingredient (with quality data)
         val ingredientCopy = stack.copy()
         ingredientCopy.count = 1
         blockEntity.addIngredient(playerUUID, ingredientCopy)
 
-        // Consume one item from player
         stack.shrink(1)
 
-        // Feedback: particle + sound
         val serverLevel = level as ServerLevel
         serverLevel.sendParticles(
             ParticleTypes.SMOKE,
@@ -144,6 +162,13 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
 
         val playerUUID = player.uuid
 
+        if (blockEntity.hasCookingTask(playerUUID)) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.cooking_in_progress"), true
+            )
+            return InteractionResult.SUCCESS
+        }
+
         if (blockEntity.getIngredientCount(playerUUID) > 0) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_need_tool"), true
@@ -153,91 +178,82 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         return InteractionResult.PASS
     }
 
-    private fun performCooking(level: Level, pos: BlockPos, player: Player): InteractionResult {
+    private fun performCooking(level: Level, pos: BlockPos, player: Player, toolStack: ItemStack): InteractionResult {
         val blockEntity = level.getBlockEntity(pos) as? CookingStationBlockEntity
             ?: return InteractionResult.FAIL
 
         val playerUUID = player.uuid
+        val serverPlayer = player as? ServerPlayer
+
+        // Already cooking at this station
+        if (blockEntity.hasCookingTask(playerUUID)) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.cooking_in_progress"), true
+            )
+            return InteractionResult.FAIL
+        }
 
         if (blockEntity.getIngredientCount(playerUUID) == 0) {
             return InteractionResult.PASS
         }
 
         val serverLevel = level as ServerLevel
+        val equipLevel = toolStack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
+
+        // Check concurrent cooking station limit
+        val maxStations = CookingStationTracker.getMaxConcurrentStations(equipLevel)
+        val activeCount = CookingStationTracker.getActiveCookingCount(playerUUID)
+        if (activeCount >= maxStations) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.cooking_max_stations", maxStations), true
+            )
+            return InteractionResult.FAIL
+        }
+
         val recipeResult = CookingRecipeMatcher.findMatchingRecipe(level, blockEntity.getIngredients(playerUUID))
 
         if (recipeResult != null) {
-            // Calculate profession + equipment bonuses
-            val serverPlayer = player as? ServerPlayer
-            var fineBonus = 0
-            var rareBonus = 0
-            if (serverPlayer != null) {
-                val profLevel = ProfessionHandler.getLevel(serverPlayer, Profession.COOKING)
-                val equipLevel = EnhancementHandler.getEquipmentLevel(serverPlayer, Profession.COOKING)
-                fineBonus = ProfessionBonusHelper.getFineQualityBonus(profLevel)
-                rareBonus = ProfessionBonusHelper.getRareQualityBonus(profLevel) +
-                    ProfessionBonusHelper.getCookingRareBonus(equipLevel)
-            }
-
-            // Success: determine quality and spawn result
+            // Quality is purely based on ingredient quality
             val quality = CookingQualityCalculator.calculateQuality(
-                blockEntity.getIngredients(playerUUID), level.random, fineBonus, rareBonus
+                blockEntity.getIngredients(playerUUID), level.random
             )
             val resultStack = recipeResult.copy()
             resultStack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
 
-            // Spawn the item
-            val itemEntity = ItemEntity(
-                level,
-                pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
-                resultStack
-            )
-            itemEntity.setDefaultPickUpDelay()
-            level.addFreshEntity(itemEntity)
+            // Lv4 cooking tool: 5% chance for double result
+            if (equipLevel >= 4 && level.random.nextFloat() < 0.05f) {
+                resultStack.count = 2
+            }
 
-            // Success effects
-            serverLevel.sendParticles(
-                ParticleTypes.HAPPY_VILLAGER,
-                pos.x + 0.5, pos.y + 1.2, pos.z + 0.5,
-                15, 0.3, 0.2, 0.3, 0.05
-            )
-            level.playSound(null, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7f, 1.5f)
+            // Calculate cooking time (base 5s - profession reduction)
+            val profLevel = if (serverPlayer != null) ProfessionHandler.getLevel(serverPlayer, Profession.COOKING) else 0
+            val reduction = ProfessionBonusHelper.getCookingTimeReduction(profLevel)
+            val cookingTimeSeconds = (BASE_COOKING_TIME_SECONDS - reduction).coerceAtLeast(1.0f)
+            val cookingTicks = (cookingTimeSeconds * 20).toInt()
 
-            // Grant cooking profession XP
+            // Start cooking task (deferred completion)
+            blockEntity.startCookingTask(playerUUID, resultStack, cookingTicks)
+            CookingStationTracker.addActiveCooking(playerUUID, pos)
+
+            // Grant cooking profession XP immediately
             if (serverPlayer != null) {
                 val xp = ProfessionHandler.getXpForQuality(quality)
                 ProfessionHandler.addExperience(serverPlayer, Profession.COOKING, xp)
             }
 
-            // Lv50: 25% chance to preserve one random ingredient
-            if (serverPlayer != null) {
-                val profLevel = ProfessionHandler.getLevel(serverPlayer, Profession.COOKING)
-                if (ProfessionBonusHelper.shouldSaveIngredient(profLevel, level.random)) {
-                    val ingredients = blockEntity.getIngredients(playerUUID)
-                    if (ingredients.isNotEmpty()) {
-                        val savedIngredient = ingredients[level.random.nextInt(ingredients.size)].copy()
-                        savedIngredient.count = 1
-                        if (!player.inventory.add(savedIngredient)) {
-                            val savedEntity = ItemEntity(
-                                level,
-                                pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
-                                savedIngredient
-                            )
-                            savedEntity.setDefaultPickUpDelay()
-                            level.addFreshEntity(savedEntity)
-                        }
-                        player.displayClientMessage(
-                            Component.translatable("message.estherserver.ingredient_saved"), false
-                        )
-                    }
-                }
-            }
+            // Starting effects
+            serverLevel.sendParticles(
+                ParticleTypes.SMOKE,
+                pos.x + 0.5, pos.y + 1.1, pos.z + 0.5,
+                10, 0.2, 0.1, 0.2, 0.01
+            )
+            level.playSound(null, pos, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.8f, 1.0f)
 
             player.displayClientMessage(
-                Component.translatable("message.estherserver.cooking_success"), true
+                Component.translatable("message.estherserver.cooking_started", String.format("%.1f", cookingTimeSeconds)), true
             )
         } else {
-            // Failure: ingredients lost
+            // Failure: ingredients lost immediately
             serverLevel.sendParticles(
                 ParticleTypes.LARGE_SMOKE,
                 pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,

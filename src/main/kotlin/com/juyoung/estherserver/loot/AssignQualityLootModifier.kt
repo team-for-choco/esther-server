@@ -11,9 +11,9 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.tags.TagKey
 import net.minecraft.world.entity.projectile.FishingHook
@@ -35,23 +35,45 @@ class AssignQualityLootModifier(
 
         val relevantProfessions = mutableSetOf<Profession>()
         val extraDrops = mutableListOf<ItemStack>()
+        val toRemove = mutableListOf<ItemStack>()
 
+        // --- Fish grade filtering: remove custom fish that exceed rod's enhancement level ---
+        if (player != null && isCorrectToolForProfession(tool, Profession.FISHING)) {
+            val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FISHING)
+            for (stack in generatedLoot) {
+                val fishGrade = ProfessionBonusHelper.getFishGrade(BuiltInRegistries.ITEM.getKey(stack.item))
+                if (fishGrade != null) {
+                    if (!ProfessionBonusHelper.canCatchCustomFish(equipLevel) ||
+                        fishGrade > ProfessionBonusHelper.getMaxFishGrade(equipLevel)) {
+                        toRemove.add(stack)
+                    }
+                }
+            }
+        }
+
+        // --- Crop grade filtering: remove custom crops that exceed hoe's enhancement level ---
+        if (player != null && isCorrectToolForProfession(tool, Profession.FARMING)) {
+            val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FARMING)
+            for (stack in generatedLoot) {
+                val cropGrade = ProfessionBonusHelper.getCropGrade(BuiltInRegistries.ITEM.getKey(stack.item))
+                if (cropGrade != null) {
+                    if (!ProfessionBonusHelper.canHarvestCustomCrops(equipLevel) ||
+                        cropGrade > ProfessionBonusHelper.getMaxCropGrade(equipLevel)) {
+                        toRemove.add(stack)
+                    }
+                }
+            }
+        }
+
+        generatedLoot.removeAll(toRemove.toSet())
+
+        // --- Assign quality + XP ---
         for (stack in generatedLoot) {
             if (stack.`is`(HAS_QUALITY_TAG)) {
-                // Calculate quality bonuses from profession level
-                var fineBonus = 0
-                var rareBonus = 0
                 val profession = ProfessionHandler.getProfessionForItem(stack)
-                if (player != null && profession != null && isCorrectToolForProfession(tool, profession)) {
-                    val profLevel = ProfessionHandler.getLevel(player, profession)
-                    fineBonus = ProfessionBonusHelper.getFineQualityBonus(profLevel)
-                    rareBonus = ProfessionBonusHelper.getRareQualityBonus(profLevel)
-                }
-
-                val quality = ItemQuality.randomQualityWithBonus(context.random, fineBonus, rareBonus)
+                val quality = ItemQuality.randomQuality(context.random)
                 stack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
 
-                // Grant profession XP only with correct special tool
                 if (player != null && profession != null && isCorrectToolForProfession(tool, profession)) {
                     val xp = ProfessionHandler.getXpForQuality(quality)
                     ProfessionHandler.addExperience(player, profession, xp)
@@ -71,39 +93,27 @@ class AssignQualityLootModifier(
             }
         }
 
-        // Enhancement stone drop (fishing/mining with Lv4+ equipment)
+        // --- Equipment effects (no XP to prevent loops) ---
         if (player != null) {
-            for (prof in relevantProfessions) {
-                if (prof != Profession.FISHING && prof != Profession.MINING) continue
-                val equipLevel = EnhancementHandler.getEquipmentLevel(player, prof)
-                if (equipLevel >= 4 && context.random.nextFloat() < EnhancementHandler.ENHANCEMENT_STONE_DROP_RATE) {
-                    extraDrops.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
-                    break
-                }
-            }
-        }
-
-        // --- Lv50 & Equipment bonus effects (extra drops, no XP to prevent loops) ---
-        if (player != null) {
-            // Mining Lv50: 30% double drop
+            // Pickaxe Lv4+: enhancement stone drop based on ore grade
             if (Profession.MINING in relevantProfessions) {
-                val profLevel = ProfessionHandler.getLevel(player, Profession.MINING)
-                if (ProfessionBonusHelper.shouldDoubleMineDrop(profLevel, context.random)) {
+                val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.MINING)
+                if (equipLevel >= 4) {
                     for (stack in generatedLoot) {
-                        if (stack.`is`(HAS_QUALITY_TAG) || ProfessionHandler.getVanillaMiningXp(stack) != null) {
-                            extraDrops.add(stack.copy())
+                        val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
+                        val oreGrade = ProfessionBonusHelper.getOreGrade(itemId)
+                        if (oreGrade != null && context.random.nextFloat() < oreGrade.enhancementStoneDropRate) {
+                            extraDrops.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
+                            break
                         }
                     }
-                    player.displayClientMessage(
-                        Component.translatable("message.estherserver.double_mine_drop"), false
-                    )
                 }
             }
 
-            // Fishing Lv50: 25% double fish
+            // Fishing rod Lv3: 5% double fish
             if (Profession.FISHING in relevantProfessions) {
-                val profLevel = ProfessionHandler.getLevel(player, Profession.FISHING)
-                if (ProfessionBonusHelper.shouldDoubleFish(profLevel, context.random)) {
+                val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FISHING)
+                if (equipLevel >= 3 && context.random.nextFloat() < 0.05f) {
                     for (stack in generatedLoot) {
                         if (stack.`is`(HAS_QUALITY_TAG)) {
                             val bonusCopy = stack.copy()
@@ -116,32 +126,20 @@ class AssignQualityLootModifier(
                         Component.translatable("message.estherserver.double_fish"), false
                     )
                 }
+
+                // Fishing rod Lv4: 1% enhancement stone drop
+                if (equipLevel >= 4 && context.random.nextFloat() < ProfessionBonusHelper.FISHING_ENHANCEMENT_STONE_DROP_RATE) {
+                    extraDrops.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
+                }
             }
 
-            // Farming equipment Lv3+: extra harvest chance
+            // Hoe Lv4: 5% extra harvest
             if (Profession.FARMING in relevantProfessions) {
                 val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FARMING)
-                val extraChance = ProfessionBonusHelper.getExtraHarvestChance(equipLevel)
-                if (extraChance > 0f && context.random.nextFloat() < extraChance) {
+                if (equipLevel >= 4 && context.random.nextFloat() < 0.05f) {
                     for (stack in generatedLoot) {
                         if (stack.`is`(HAS_QUALITY_TAG) && ProfessionHandler.getProfessionForItem(stack) == Profession.FARMING) {
                             extraDrops.add(stack.copy())
-                        }
-                    }
-                }
-
-                // Farming Lv50: 30% seed preservation
-                val profLevel = ProfessionHandler.getLevel(player, Profession.FARMING)
-                if (ProfessionBonusHelper.shouldPreserveSeed(profLevel, context.random)) {
-                    val blockState = context.getOptionalParameter(LootContextParams.BLOCK_STATE)
-                    if (blockState != null) {
-                        val blockId = BuiltInRegistries.BLOCK.getKey(blockState.block)
-                        val seedStack = ProfessionHandler.getSeedForCrop(blockId)
-                        if (seedStack != null) {
-                            extraDrops.add(seedStack)
-                            player.displayClientMessage(
-                                Component.translatable("message.estherserver.seed_preserved"), false
-                            )
                         }
                     }
                 }

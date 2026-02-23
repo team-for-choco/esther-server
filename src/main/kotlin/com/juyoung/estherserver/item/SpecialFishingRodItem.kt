@@ -1,8 +1,11 @@
 package com.juyoung.estherserver.item
 
+import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.profession.ProfessionBonusHelper
+import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.stats.Stats
@@ -48,10 +51,16 @@ class SpecialFishingRodItem(properties: Properties) : FishingRodItem(properties)
                 val lureEnchant = (EnchantmentHelper.getFishingTimeReduction(level, itemstack, player) * 20.0f).toInt()
                 val luckEnchant = EnchantmentHelper.getFishingLuckBonus(level, itemstack, player)
 
-                // Add equipment enhancement lure bonus
+                // Add profession level lure reduction
+                val serverPlayer = player as? ServerPlayer
+                val profLevel = if (serverPlayer != null) ProfessionHandler.getLevel(serverPlayer, Profession.FISHING) else 0
+                val lureReduction = ProfessionBonusHelper.getFishingLureReduction(profLevel)
+
+                // Lv5 rod: rain bonus (add 100 ticks lure when not raining, simulating rain bonus)
                 val equipLevel = itemstack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
-                val lureBonus = ProfessionBonusHelper.getFishingLureBonus(equipLevel)
-                val totalLure = lureEnchant + lureBonus
+                val rainBonus = if (equipLevel >= 5 && !level.isRaining) 100 else 0
+
+                val totalLure = lureEnchant + lureReduction + rainBonus
 
                 Projectile.spawnProjectile(
                     FishingHook(player, level, luckEnchant, totalLure),

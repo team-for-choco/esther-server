@@ -21,17 +21,10 @@ object CookingQualityCalculator {
 
     fun calculateQuality(
         ingredients: List<ItemStack>,
-        random: RandomSource,
-        fineBonus: Int = 0,
-        rareBonus: Int = 0
+        random: RandomSource
     ): ItemQuality {
         val avgScore = calculateAverageScore(ingredients)
         val weights = interpolateWeights(avgScore)
-        if (fineBonus > 0 || rareBonus > 0) {
-            weights[0] = maxOf(10, weights[0] - fineBonus - rareBonus)
-            weights[1] = weights[1] + fineBonus
-            weights[2] = weights[2] + rareBonus
-        }
         return rollQuality(weights, random)
     }
 
