@@ -686,6 +686,14 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 return
             }
 
+            // Enhancement level determines base mining speed (matches vanilla pickaxe tiers)
+            val tierSpeed = when {
+                enhLevel >= 3 -> 8.0f  // diamond
+                enhLevel >= 2 -> 6.0f  // iron
+                enhLevel >= 1 -> 4.0f  // stone
+                else -> 2.0f           // wood
+            }
+
             // Profession level mining speed bonus (+1% per level)
             val profLevel = when {
                 event.entity is net.minecraft.server.level.ServerPlayer ->
@@ -695,7 +703,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 else -> 0
             }
             val profBonus = com.juyoung.estherserver.profession.ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
-            event.newSpeed = event.originalSpeed * (1.0f + profBonus)
+            event.newSpeed = tierSpeed * (1.0f + profBonus)
         }
     }
 
