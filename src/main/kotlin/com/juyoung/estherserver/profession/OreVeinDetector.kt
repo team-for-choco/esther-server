@@ -5,7 +5,7 @@ import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
-import net.minecraft.server.level.ServerLevel
+import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.tags.BlockTags
 import net.neoforged.bus.api.SubscribeEvent
@@ -50,11 +50,16 @@ object OreVeinDetector {
                         state.`is`(BlockTags.LAPIS_ORES) ||
                         state.`is`(BlockTags.REDSTONE_ORES)
                     ) {
-                        level.sendParticles(
+                        val packet = ClientboundLevelParticlesPacket(
                             ParticleTypes.ENCHANT,
-                            pos.x + 0.5, pos.y + 0.5, pos.z + 0.5,
-                            2, 0.2, 0.2, 0.2, 0.01
+                            false, // overrideLimiter
+                            false, // alwaysShow
+                            pos.x.toDouble() + 0.5, pos.y.toDouble() + 0.5, pos.z.toDouble() + 0.5,
+                            0.2f, 0.2f, 0.2f,
+                            0.01f,
+                            2
                         )
+                        player.connection.send(packet)
                     }
                 }
             }

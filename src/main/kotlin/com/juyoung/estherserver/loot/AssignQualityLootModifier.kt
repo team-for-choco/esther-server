@@ -114,17 +114,21 @@ class AssignQualityLootModifier(
             if (Profession.FISHING in relevantProfessions) {
                 val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FISHING)
                 if (equipLevel >= 3 && context.random.nextFloat() < 0.05f) {
+                    var doubled = false
                     for (stack in generatedLoot) {
-                        if (stack.`is`(HAS_QUALITY_TAG)) {
+                        if (stack.`is`(HAS_QUALITY_TAG) && ProfessionHandler.getProfessionForItem(stack) == Profession.FISHING) {
                             val bonusCopy = stack.copy()
                             val bonusQuality = ItemQuality.randomQuality(context.random)
                             bonusCopy.set(ModDataComponents.ITEM_QUALITY.get(), bonusQuality)
                             extraDrops.add(bonusCopy)
+                            doubled = true
                         }
                     }
-                    player.displayClientMessage(
-                        Component.translatable("message.estherserver.double_fish"), false
-                    )
+                    if (doubled) {
+                        player.displayClientMessage(
+                            Component.translatable("message.estherserver.double_fish"), false
+                        )
+                    }
                 }
 
                 // Fishing rod Lv4: 1% enhancement stone drop

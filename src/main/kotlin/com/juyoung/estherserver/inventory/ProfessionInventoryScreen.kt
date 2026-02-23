@@ -163,9 +163,7 @@ class ProfessionInventoryScreen : Screen(Component.translatable("gui.estherserve
                 val item = invData.getItem(profession, slot)
                 if (!item.isEmpty) {
                     guiGraphics.renderItem(item, slotX + 1, slotY + 1)
-                    if (item.count > 1) {
-                        guiGraphics.drawString(font, "${item.count}", slotX + 10, slotY + 9, 0xFFFFFFFF.toInt())
-                    }
+                    guiGraphics.renderItemDecorations(font, item, slotX + 1, slotY + 1)
                 }
             } else {
                 // Locked slot (greyed out)

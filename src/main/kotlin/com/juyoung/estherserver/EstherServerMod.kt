@@ -654,7 +654,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             val enhLevel = stack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
 
             // Check if pickaxe enhancement level is sufficient for this block's tier
-            val tierTag = com.juyoung.estherserver.profession.ProfessionBonusHelper.getPickaxeMiningTier(enhLevel)
             val blockState = event.state
             val canMine = when {
                 blockState.`is`(BlockTags.NEEDS_DIAMOND_TOOL) -> enhLevel >= 3

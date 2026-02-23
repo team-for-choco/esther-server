@@ -87,6 +87,12 @@ object ProfessionInventoryHandler {
 
         if (toSlot >= toAvailable || fromSlot >= fromAvailable) return
 
+        // Validate item-profession compatibility for cross-tab moves
+        if (fromProf != toProf) {
+            if (!fromItem.isEmpty && getProfessionForItem(fromItem) != null && getProfessionForItem(fromItem) != toProf) return
+            if (!toItem.isEmpty && getProfessionForItem(toItem) != null && getProfessionForItem(toItem) != fromProf) return
+        }
+
         // Swap items
         data.setItem(fromProf, fromSlot, toItem)
         data.setItem(toProf, toSlot, fromItem)

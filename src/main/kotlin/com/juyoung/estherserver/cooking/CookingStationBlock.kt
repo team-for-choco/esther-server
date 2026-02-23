@@ -235,12 +235,6 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
             blockEntity.startCookingTask(playerUUID, resultStack, cookingTicks)
             CookingStationTracker.addActiveCooking(playerUUID, pos)
 
-            // Grant cooking profession XP immediately
-            if (serverPlayer != null) {
-                val xp = ProfessionHandler.getXpForQuality(quality)
-                ProfessionHandler.addExperience(serverPlayer, Profession.COOKING, xp)
-            }
-
             // Starting effects
             serverLevel.sendParticles(
                 ParticleTypes.SMOKE,

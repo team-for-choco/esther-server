@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.entity.item.ItemEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -82,6 +83,18 @@ class CookingStationBlockEntity(
                     )
                     itemEntity.setDefaultPickUpDelay()
                     level.addFreshEntity(itemEntity)
+
+                    // Grant cooking profession XP on completion
+                    val player = serverLevel.server.playerList.getPlayer(uuid)
+                    if (player is ServerPlayer) {
+                        val quality = task.resultStack.get(com.juyoung.estherserver.quality.ModDataComponents.ITEM_QUALITY.get())
+                        if (quality != null) {
+                            val xp = com.juyoung.estherserver.profession.ProfessionHandler.getXpForQuality(quality)
+                            com.juyoung.estherserver.profession.ProfessionHandler.addExperience(
+                                player, com.juyoung.estherserver.profession.Profession.COOKING, xp
+                            )
+                        }
+                    }
 
                     // Completion effects
                     serverLevel.sendParticles(
