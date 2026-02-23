@@ -242,5 +242,11 @@
   "gui.estherserver.prof_inventory.title": "Profession Inventory",
   "gui.estherserver.prof_inventory.tab.general": "General",
   "gui.estherserver.prof_inventory.overview": "Profession Inventory Overview",
-  "gui.estherserver.prof_inventory.slots": " Slots"
+  "gui.estherserver.prof_inventory.slots": " Slots",
+
+  "message.estherserver.profession_status_header": "=== Profession Status ===",
+  "message.estherserver.profession_status_entry": "  %s: Lv%s (%s/%s xp)",
+  "message.estherserver.profession_invalid": "Unknown profession: %s (fishing/farming/mining/cooking)",
+  "message.estherserver.profession_admin_setlevel": "[Profession] Set %s's %s level to %s.",
+  "message.estherserver.profession_admin_addxp": "[Profession] Added %s xp to %s. (Target: %s)"
 }

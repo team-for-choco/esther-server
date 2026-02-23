@@ -75,6 +75,7 @@ import com.juyoung.estherserver.enhancement.EnhanceItemPayload
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.ModProfession
 import com.juyoung.estherserver.profession.ProfessionClientHandler
+import com.juyoung.estherserver.profession.ProfessionCommand
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.profession.ProfessionSyncPayload
 import com.juyoung.estherserver.merchant.SellItemPayload
@@ -569,6 +570,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ClaimCommand.register(event.dispatcher)
         MoneyCommand.register(event.dispatcher)
         ShopCommand.register(event.dispatcher)
+        ProfessionCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent

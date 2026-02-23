@@ -242,5 +242,11 @@
   "gui.estherserver.prof_inventory.title": "전문 보관함",
   "gui.estherserver.prof_inventory.tab.general": "일반",
   "gui.estherserver.prof_inventory.overview": "전문 분야 보관함 현황",
-  "gui.estherserver.prof_inventory.slots": "칸"
+  "gui.estherserver.prof_inventory.slots": "칸",
+
+  "message.estherserver.profession_status_header": "=== 전문 분야 현황 ===",
+  "message.estherserver.profession_status_entry": "  %s: Lv%s (%s/%s xp)",
+  "message.estherserver.profession_invalid": "알 수 없는 전문 분야: %s (fishing/farming/mining/cooking)",
+  "message.estherserver.profession_admin_setlevel": "[전문] %s님의 %s 레벨을 %s(으)로 설정했습니다.",
+  "message.estherserver.profession_admin_addxp": "[전문] %s xp를 %s에 추가했습니다. (대상: %s)"
 }
