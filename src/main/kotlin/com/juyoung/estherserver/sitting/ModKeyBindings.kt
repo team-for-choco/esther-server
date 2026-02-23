@@ -2,7 +2,6 @@ package com.juyoung.estherserver.sitting
 
 import com.juyoung.estherserver.collection.CollectionScreen
 import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
-import com.juyoung.estherserver.inventory.ProfessionInventoryScreen
 import com.juyoung.estherserver.profession.ProfessionScreen
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.KeyMapping
@@ -55,7 +54,6 @@ object ModKeyBindings {
         }
         while (PROFESSION_INVENTORY_KEY.consumeClick()) {
             PacketDistributor.sendToServer(ProfessionInventoryPayload.OpenPayload())
-            Minecraft.getInstance().setScreen(ProfessionInventoryScreen())
         }
     }
 }

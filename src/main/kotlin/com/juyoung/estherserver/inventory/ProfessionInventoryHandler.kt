@@ -52,7 +52,7 @@ object ProfessionInventoryHandler {
     }
 
     /** Determine which profession an item belongs to (for auto-sorting) */
-    private fun getProfessionForItem(stack: ItemStack): Profession? {
+    fun getProfessionForItem(stack: ItemStack): Profession? {
         val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
         // Check fish
         if (ProfessionBonusHelper.getFishGrade(itemId) != null) return Profession.FISHING
@@ -69,35 +69,4 @@ object ProfessionInventoryHandler {
         PacketDistributor.sendToPlayer(player, ProfessionInventoryPayload.SyncPayload(data))
     }
 
-    /** Handle slot move request from client */
-    fun handleSlotMove(player: ServerPlayer, fromProfession: Int, fromSlot: Int, toProfession: Int, toSlot: Int) {
-        val data = getData(player)
-
-        val fromProf = if (fromProfession >= 0 && fromProfession < Profession.entries.size) Profession.entries[fromProfession] else null
-        val toProf = if (toProfession >= 0 && toProfession < Profession.entries.size) Profession.entries[toProfession] else null
-
-        if (fromProf == null || toProf == null) return
-
-        val fromItem = data.getItem(fromProf, fromSlot)
-        val toItem = data.getItem(toProf, toSlot)
-
-        // Check slot availability
-        val toAvailable = getAvailableSlots(player, toProf)
-        val fromAvailable = getAvailableSlots(player, fromProf)
-
-        if (toSlot >= toAvailable || fromSlot >= fromAvailable) return
-
-        // Validate item-profession compatibility for cross-tab moves
-        if (fromProf != toProf) {
-            if (!fromItem.isEmpty && getProfessionForItem(fromItem) != null && getProfessionForItem(fromItem) != toProf) return
-            if (!toItem.isEmpty && getProfessionForItem(toItem) != null && getProfessionForItem(toItem) != fromProf) return
-        }
-
-        // Swap items
-        data.setItem(fromProf, fromSlot, toItem)
-        data.setItem(toProf, toSlot, fromItem)
-
-        saveData(player, data)
-        syncToClient(player)
-    }
 }

@@ -8,10 +8,12 @@ object ProfessionInventoryClientHandler {
 
     fun handleSync(payload: ProfessionInventoryPayload.SyncPayload) {
         cachedData = payload.data
-        // Refresh screen if open
+    }
+
+    fun handleTabSync(payload: ProfessionInventoryPayload.TabSyncPayload) {
         val screen = Minecraft.getInstance().screen
-        if (screen is ProfessionInventoryScreen) {
-            screen.refreshData()
+        if (screen is ProfessionInventoryContainerScreen) {
+            screen.handleTabSync(payload.tab, payload.unlockedSlots)
         }
     }
 }

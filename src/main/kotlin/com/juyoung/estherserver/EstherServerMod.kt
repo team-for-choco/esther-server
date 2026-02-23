@@ -61,7 +61,9 @@ import com.juyoung.estherserver.cooking.CookingStationBlock
 import com.juyoung.estherserver.cooking.ModCooking
 import com.juyoung.estherserver.inventory.ModInventory
 import com.juyoung.estherserver.inventory.ProfessionInventoryClientHandler
+import com.juyoung.estherserver.inventory.ProfessionInventoryContainerScreen
 import com.juyoung.estherserver.inventory.ProfessionInventoryHandler
+import com.juyoung.estherserver.inventory.ProfessionInventoryMenu
 import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
 import com.juyoung.estherserver.daylight.DaylightHandler
 import com.juyoung.estherserver.economy.BalanceHudOverlay
@@ -441,6 +443,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModEconomy.ATTACHMENT_TYPES.register(modEventBus)
         ModProfession.ATTACHMENT_TYPES.register(modEventBus)
         ModInventory.ATTACHMENT_TYPES.register(modEventBus)
+        ModInventory.MENU_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -530,12 +533,23 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 context.enqueueWork {
                     val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
                     ProfessionInventoryHandler.syncToClient(player)
+                    player.openMenu(object : net.minecraft.world.MenuProvider {
+                        override fun getDisplayName() = Component.translatable("gui.estherserver.prof_inventory.title")
+                        override fun createMenu(containerId: Int, inv: net.minecraft.world.entity.player.Inventory, p: net.minecraft.world.entity.player.Player) =
+                            ProfessionInventoryMenu(containerId, inv)
+                    })
                 }
             }
-            .playToServer(ProfessionInventoryPayload.MovePayload.TYPE, ProfessionInventoryPayload.MovePayload.STREAM_CODEC) { payload, context ->
+            .playToServer(ProfessionInventoryPayload.TabSwitchPayload.TYPE, ProfessionInventoryPayload.TabSwitchPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
                     val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
-                    ProfessionInventoryHandler.handleSlotMove(player, payload.fromProfession, payload.fromSlot, payload.toProfession, payload.toSlot)
+                    val menu = player.containerMenu as? ProfessionInventoryMenu ?: return@enqueueWork
+                    menu.switchTab(payload.tabIndex)
+                }
+            }
+            .playToClient(ProfessionInventoryPayload.TabSyncPayload.TYPE, ProfessionInventoryPayload.TabSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    ProfessionInventoryClientHandler.handleTabSync(payload)
                 }
             }
     }
@@ -595,6 +609,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             event.register(ModKeyBindings.COLLECTION_KEY)
             event.register(ModKeyBindings.PROFESSION_KEY)
             event.register(ModKeyBindings.PROFESSION_INVENTORY_KEY)
+        }
+
+        @SubscribeEvent
+        fun onRegisterMenuScreens(event: net.neoforged.neoforge.client.event.RegisterMenuScreensEvent) {
+            event.register(ModInventory.PROFESSION_INVENTORY_MENU.get(), ::ProfessionInventoryContainerScreen)
         }
 
         @SubscribeEvent
@@ -688,6 +707,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     @SubscribeEvent
     fun onItemPickup(event: net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent.Pre) {
         val player = event.player as? net.minecraft.server.level.ServerPlayer ?: return
+        if (player.containerMenu is ProfessionInventoryMenu) return
         val stack = event.itemEntity.item
         if (stack.isEmpty) return
 

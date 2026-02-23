@@ -6,9 +6,9 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.resources.ResourceLocation
 
-/** Server -> Client: sync profession inventory data */
 class ProfessionInventoryPayload {
 
+    /** Server -> Client: sync full profession inventory data (for overview/cached data) */
     class SyncPayload(val data: ProfessionInventoryData) : CustomPacketPayload {
         override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
@@ -47,36 +47,46 @@ class ProfessionInventoryPayload {
         }
     }
 
-    /** Client -> Server: move item between slots */
-    class MovePayload(
-        val fromProfession: Int,
-        val fromSlot: Int,
-        val toProfession: Int,
-        val toSlot: Int
-    ) : CustomPacketPayload {
+    /** Client -> Server: request to switch tab */
+    class TabSwitchPayload(val tabIndex: Int) : CustomPacketPayload {
         override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
         companion object {
-            val TYPE = CustomPacketPayload.Type<MovePayload>(
-                ResourceLocation.fromNamespaceAndPath("estherserver", "prof_inv_move")
+            val TYPE = CustomPacketPayload.Type<TabSwitchPayload>(
+                ResourceLocation.fromNamespaceAndPath("estherserver", "prof_inv_tab_switch")
             )
 
-            val STREAM_CODEC: StreamCodec<FriendlyByteBuf, MovePayload> =
-                object : StreamCodec<FriendlyByteBuf, MovePayload> {
-                    override fun decode(buf: FriendlyByteBuf): MovePayload {
-                        return MovePayload(
-                            buf.readVarInt(),
-                            buf.readVarInt(),
-                            buf.readVarInt(),
-                            buf.readVarInt()
-                        )
+            val STREAM_CODEC: StreamCodec<FriendlyByteBuf, TabSwitchPayload> =
+                object : StreamCodec<FriendlyByteBuf, TabSwitchPayload> {
+                    override fun decode(buf: FriendlyByteBuf): TabSwitchPayload {
+                        return TabSwitchPayload(buf.readVarInt())
                     }
 
-                    override fun encode(buf: FriendlyByteBuf, value: MovePayload) {
-                        buf.writeVarInt(value.fromProfession)
-                        buf.writeVarInt(value.fromSlot)
-                        buf.writeVarInt(value.toProfession)
-                        buf.writeVarInt(value.toSlot)
+                    override fun encode(buf: FriendlyByteBuf, value: TabSwitchPayload) {
+                        buf.writeVarInt(value.tabIndex)
+                    }
+                }
+        }
+    }
+
+    /** Server -> Client: sync tab state (current tab + unlocked slots) */
+    class TabSyncPayload(val tab: Int, val unlockedSlots: Int) : CustomPacketPayload {
+        override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
+
+        companion object {
+            val TYPE = CustomPacketPayload.Type<TabSyncPayload>(
+                ResourceLocation.fromNamespaceAndPath("estherserver", "prof_inv_tab_sync")
+            )
+
+            val STREAM_CODEC: StreamCodec<FriendlyByteBuf, TabSyncPayload> =
+                object : StreamCodec<FriendlyByteBuf, TabSyncPayload> {
+                    override fun decode(buf: FriendlyByteBuf): TabSyncPayload {
+                        return TabSyncPayload(buf.readVarInt(), buf.readVarInt())
+                    }
+
+                    override fun encode(buf: FriendlyByteBuf, value: TabSyncPayload) {
+                        buf.writeVarInt(value.tab)
+                        buf.writeVarInt(value.unlockedSlots)
                     }
                 }
         }
