@@ -687,8 +687,13 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
 
             // Profession level mining speed bonus (+1% per level)
-            val serverPlayer = event.entity as? net.minecraft.server.level.ServerPlayer
-            val profLevel = if (serverPlayer != null) ProfessionHandler.getLevel(serverPlayer, com.juyoung.estherserver.profession.Profession.MINING) else 0
+            val profLevel = when {
+                event.entity is net.minecraft.server.level.ServerPlayer ->
+                    ProfessionHandler.getLevel(event.entity as net.minecraft.server.level.ServerPlayer, com.juyoung.estherserver.profession.Profession.MINING)
+                event.entity.level().isClientSide ->
+                    ProfessionClientHandler.cachedData.getLevel(com.juyoung.estherserver.profession.Profession.MINING)
+                else -> 0
+            }
             val profBonus = com.juyoung.estherserver.profession.ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
             event.newSpeed = event.originalSpeed * (1.0f + profBonus)
         }
