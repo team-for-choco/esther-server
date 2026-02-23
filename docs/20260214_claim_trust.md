@@ -22,8 +22,8 @@
 - [x] ./gradlew build 성공
 
 ## 인게임 테스트
-- [ ] `/claim trust add <player>` → 해당 플레이어가 소유자의 모든 청크에서 파괴/설치/상호작용 가능
-- [ ] `/claim trust remove <player>` → 접근 해제
-- [ ] `/claim trust list` → 신뢰 목록 표시
-- [ ] 자기 자신 초대 방지
-- [ ] 기존 데이터 하위 호환성
+- [x] `/claim trust add <player>` → 해당 플레이어가 소유자의 모든 청크에서 파괴/설치/상호작용 가능
+- [x] `/claim trust remove <player>` → 접근 해제
+- [x] `/claim trust list` → 신뢰 목록 표시
+- [x] 자기 자신 초대 방지
+- [x] 기존 데이터 하위 호환성

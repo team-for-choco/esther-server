@@ -141,7 +141,7 @@ object MoneyCommand {
             Component.translatable("message.estherserver.money_pay_sent", amount, target.displayName)
         }, false)
         target.sendSystemMessage(
-            Component.translatable("message.estherserver.money_pay_received", amount, sender.displayName)
+            Component.translatable("message.estherserver.money_pay_received", sender.displayName, amount)
         )
         return 1
     }
