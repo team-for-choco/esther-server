@@ -162,7 +162,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             guiGraphics.fill(cellX + 1, cellY + 1, cellX + CELL_WIDTH - 1, cellY + CELL_HEIGHT - 1, bgColor)
 
             // Grade border
-            val gradeBorder = when (ProfessionBonusHelper.getContentGradeForItem(entry.itemId)) {
+            val gradeBorder = when (ProfessionBonusHelper.getDisplayGradeForItem(entry.itemId)) {
                 ProfessionBonusHelper.ContentGrade.ADVANCED -> GuiTheme.GRADE_FINE
                 ProfessionBonusHelper.ContentGrade.RARE -> GuiTheme.GRADE_RARE
                 else -> null
@@ -218,7 +218,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
 
             // Grade border
             val sellItemId = BuiltInRegistries.ITEM.getKey(slot.stack.item)
-            val sellGradeBorder = when (ProfessionBonusHelper.getContentGradeForItem(sellItemId)) {
+            val sellGradeBorder = when (ProfessionBonusHelper.getDisplayGradeForItem(sellItemId)) {
                 ProfessionBonusHelper.ContentGrade.ADVANCED -> GuiTheme.GRADE_FINE
                 ProfessionBonusHelper.ContentGrade.RARE -> GuiTheme.GRADE_RARE
                 else -> null
