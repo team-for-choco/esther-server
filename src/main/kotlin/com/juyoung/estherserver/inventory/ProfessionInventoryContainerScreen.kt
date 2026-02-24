@@ -1,9 +1,11 @@
 package com.juyoung.estherserver.inventory
 
 import com.juyoung.estherserver.gui.GuiTheme
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
 import net.neoforged.neoforge.network.PacketDistributor
@@ -101,7 +103,28 @@ class ProfessionInventoryContainerScreen(
                 leftPos + slot.x + 16, topPos + slot.y + 16,
                 innerColor
             )
+
+            // Grade border for ADVANCED (green) and RARE (cyan) items
+            if (slot.hasItem()) {
+                val itemId = BuiltInRegistries.ITEM.getKey(slot.item.item)
+                val borderColor = when (ProfessionBonusHelper.getContentGradeForItem(itemId)) {
+                    ProfessionBonusHelper.ContentGrade.ADVANCED -> GuiTheme.GRADE_FINE
+                    ProfessionBonusHelper.ContentGrade.RARE -> GuiTheme.GRADE_RARE
+                    else -> null
+                }
+                if (borderColor != null) {
+                    guiGraphics.renderOutline(
+                        leftPos + slot.x - 1, topPos + slot.y - 1,
+                        18, 18, borderColor
+                    )
+                }
+            }
         }
+    }
+
+    override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick)
+        renderTooltip(guiGraphics, mouseX, mouseY)
     }
 
     override fun renderLabels(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
