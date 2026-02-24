@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.levelgen.Heightmap
 import java.util.EnumSet
-import net.minecraft.world.entity.RelativeMovement
+import net.minecraft.world.entity.Relative
 
 object WildTeleportHelper {
 
@@ -45,7 +45,7 @@ object WildTeleportHelper {
             safePos.x.toDouble() + 0.5,
             safePos.y.toDouble(),
             safePos.z.toDouble() + 0.5,
-            EnumSet.noneOf(RelativeMovement::class.java),
+            EnumSet.noneOf(Relative::class.java),
             player.yRot,
             player.xRot,
             false
@@ -95,7 +95,7 @@ object WildTeleportHelper {
             targetX,
             targetY,
             targetZ,
-            EnumSet.noneOf(RelativeMovement::class.java),
+            EnumSet.noneOf(Relative::class.java),
             targetYaw,
             targetPitch,
             false

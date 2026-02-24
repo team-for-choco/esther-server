@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.Level
 import java.util.EnumSet
-import net.minecraft.world.entity.RelativeMovement
+import net.minecraft.world.entity.Relative
 import net.minecraft.world.level.storage.LevelResource
 
 object WildCommand {
@@ -47,7 +47,7 @@ object WildCommand {
                         returnData.x,
                         returnData.y,
                         returnData.z,
-                        EnumSet.noneOf(RelativeMovement::class.java),
+                        EnumSet.noneOf(Relative::class.java),
                         returnData.yaw,
                         returnData.pitch,
                         false
@@ -59,7 +59,7 @@ object WildCommand {
                         spawn.x.toDouble() + 0.5,
                         spawn.y.toDouble(),
                         spawn.z.toDouble() + 0.5,
-                        EnumSet.noneOf(RelativeMovement::class.java),
+                        EnumSet.noneOf(Relative::class.java),
                         player.yRot,
                         player.xRot,
                         false
