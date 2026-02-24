@@ -190,23 +190,28 @@ object CollectibleRegistry {
         }
     }
 
+    private val excludedItems by lazy {
+        setOf(
+            Items.COMMAND_BLOCK,
+            Items.CHAIN_COMMAND_BLOCK,
+            Items.REPEATING_COMMAND_BLOCK,
+            Items.COMMAND_BLOCK_MINECART,
+            Items.BARRIER,
+            Items.STRUCTURE_BLOCK,
+            Items.STRUCTURE_VOID,
+            Items.JIGSAW,
+            Items.LIGHT,
+            Items.DEBUG_STICK,
+            Items.KNOWLEDGE_BOOK,
+            Items.BUNDLE
+        )
+    }
+
     private fun isExcludedItem(item: Item): Boolean {
-        return item is SpawnEggItem ||
+        return item in excludedItems ||
+            item is SpawnEggItem ||
             item is GameMasterBlockItem ||
-            item is AirItem ||
-            item === Items.AIR ||
-            item === Items.COMMAND_BLOCK ||
-            item === Items.CHAIN_COMMAND_BLOCK ||
-            item === Items.REPEATING_COMMAND_BLOCK ||
-            item === Items.COMMAND_BLOCK_MINECART ||
-            item === Items.BARRIER ||
-            item === Items.STRUCTURE_BLOCK ||
-            item === Items.STRUCTURE_VOID ||
-            item === Items.JIGSAW ||
-            item === Items.LIGHT ||
-            item === Items.DEBUG_STICK ||
-            item === Items.KNOWLEDGE_BOOK ||
-            item === Items.BUNDLE // 빈 번들은 제외
+            item is AirItem
     }
 
     private fun classifyItem(item: Item): CollectionCategory {

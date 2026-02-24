@@ -31,6 +31,7 @@
   "gui.estherserver.collection.category.minerals": "광물",
   "gui.estherserver.collection.category.cooking": "요리",
   "gui.estherserver.collection.progress": "진행도: %s/%s (%s%%)",
+  "gui.estherserver.collection.progress_fraction": "%s/%s",
   "message.estherserver.collection_registered": "[도감] %s을(를) 등록했습니다! (%s/%s)",
   "message.estherserver.collection_not_collectible": "이 아이템은 도감에 등록할 수 없습니다.",
   "message.estherserver.collection_already_registered": "이미 등록된 아이템입니다.",

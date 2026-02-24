@@ -31,6 +31,7 @@
   "gui.estherserver.collection.category.minerals": "Minerals",
   "gui.estherserver.collection.category.cooking": "Cooking",
   "gui.estherserver.collection.progress": "Progress: %s/%s (%s%%)",
+  "gui.estherserver.collection.progress_fraction": "%s/%s",
   "message.estherserver.collection_registered": "[Collection] Registered %s! (%s/%s)",
   "message.estherserver.collection_not_collectible": "This item cannot be registered.",
   "message.estherserver.collection_already_registered": "Already registered.",

@@ -20,11 +20,18 @@ class TitleScreen : Screen(Component.translatable("gui.estherserver.title.title"
     private var guiLeft = 0
     private var guiTop = 0
     private var scroll = 0
+    private var cachedUnlocked: List<Milestone> = emptyList()
 
     override fun init() {
         super.init()
         guiLeft = (width - GUI_WIDTH) / 2
         guiTop = (height - GUI_HEIGHT) / 2
+        refreshCache()
+    }
+
+    private fun refreshCache() {
+        val data = CollectionClientHandler.cachedData
+        cachedUnlocked = Milestone.entries.filter { it.id in data.unlockedMilestones }
     }
 
     override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
@@ -41,9 +48,9 @@ class TitleScreen : Screen(Component.translatable("gui.estherserver.title.title"
         )
 
         val data = CollectionClientHandler.cachedData
-        val unlockedMilestones = Milestone.entries.filter { it.id in data.unlockedMilestones }
+        refreshCache()
 
-        if (unlockedMilestones.isEmpty()) {
+        if (cachedUnlocked.isEmpty()) {
             guiGraphics.drawCenteredString(
                 font,
                 Component.translatable("gui.estherserver.title.empty"),
@@ -57,8 +64,8 @@ class TitleScreen : Screen(Component.translatable("gui.estherserver.title.title"
 
         val contentWidth = GUI_WIDTH - PADDING * 2
         val visibleTop = guiTop + CONTENT_TOP
-        val visibleHeight = GUI_HEIGHT - CONTENT_TOP - 28 // bottom area for current title
-        val totalHeight = unlockedMilestones.size * ROW_HEIGHT
+        val visibleHeight = GUI_HEIGHT - CONTENT_TOP - 28
+        val totalHeight = cachedUnlocked.size * ROW_HEIGHT
         val maxScroll = (totalHeight - visibleHeight).coerceAtLeast(0)
         scroll = scroll.coerceIn(0, maxScroll)
 
@@ -70,7 +77,7 @@ class TitleScreen : Screen(Component.translatable("gui.estherserver.title.title"
         val startX = guiLeft + PADDING
         val startY = visibleTop - scroll
 
-        for ((index, milestone) in unlockedMilestones.withIndex()) {
+        for ((index, milestone) in cachedUnlocked.withIndex()) {
             val rowY = startY + index * ROW_HEIGHT
             if (rowY + ROW_HEIGHT <= visibleTop || rowY >= visibleTop + visibleHeight) continue
 
@@ -132,7 +139,6 @@ class TitleScreen : Screen(Component.translatable("gui.estherserver.title.title"
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (button == 0) {
             val data = CollectionClientHandler.cachedData
-            val unlockedMilestones = Milestone.entries.filter { it.id in data.unlockedMilestones }
             val contentWidth = GUI_WIDTH - PADDING * 2
             val startX = guiLeft + PADDING
             val visibleTop = guiTop + CONTENT_TOP
@@ -140,7 +146,7 @@ class TitleScreen : Screen(Component.translatable("gui.estherserver.title.title"
             val startY = visibleTop - scroll
 
             if (mouseY >= visibleTop && mouseY < visibleTop + visibleHeight) {
-                for ((index, milestone) in unlockedMilestones.withIndex()) {
+                for ((index, milestone) in cachedUnlocked.withIndex()) {
                     val rowY = startY + index * ROW_HEIGHT
                     if (mouseX >= startX && mouseX < startX + contentWidth &&
                         mouseY >= rowY && mouseY < rowY + ROW_HEIGHT - 2
@@ -156,10 +162,8 @@ class TitleScreen : Screen(Component.translatable("gui.estherserver.title.title"
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, scrollX: Double, scrollY: Double): Boolean {
-        val data = CollectionClientHandler.cachedData
-        val unlockedMilestones = Milestone.entries.filter { it.id in data.unlockedMilestones }
         val visibleHeight = GUI_HEIGHT - CONTENT_TOP - 28
-        val totalHeight = unlockedMilestones.size * ROW_HEIGHT
+        val totalHeight = cachedUnlocked.size * ROW_HEIGHT
         val maxScroll = (totalHeight - visibleHeight).coerceAtLeast(0)
         if (maxScroll > 0) {
             scroll = (scroll - (scrollY * 12).toInt()).coerceIn(0, maxScroll)

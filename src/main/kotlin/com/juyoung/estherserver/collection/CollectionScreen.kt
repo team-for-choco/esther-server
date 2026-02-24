@@ -346,7 +346,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
                 // 미달성: 진행률
                 val progress = milestone.progressProvider?.invoke(data)
                 if (progress != null) {
-                    val progressText = Component.literal("${progress.first}/${progress.second}")
+                    val progressText = Component.translatable("gui.estherserver.collection.progress_fraction", progress.first, progress.second)
                     guiGraphics.drawString(font, progressText, buttonX, buttonY + 3, GuiTheme.TEXT_MUTED)
                 }
             }
