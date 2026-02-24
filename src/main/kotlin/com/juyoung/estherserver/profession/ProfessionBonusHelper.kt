@@ -49,7 +49,7 @@ object ProfessionBonusHelper {
     private val oreGradeMap = mutableMapOf<ResourceLocation, OreGrade>()
 
     fun initOreGrades() {
-        // Common ores
+        // Common ores (vanilla)
         registerOreGrade("minecraft:coal", OreGrade.COMMON)
         registerOreGrade("minecraft:raw_copper", OreGrade.COMMON)
         registerOreGrade("minecraft:redstone", OreGrade.COMMON)
@@ -58,16 +58,13 @@ object ProfessionBonusHelper {
         registerOreGrade("minecraft:quartz", OreGrade.COMMON)
         registerOreGrade("minecraft:amethyst_shard", OreGrade.COMMON)
 
-        // Advanced ores
+        // Advanced ores (vanilla)
         registerOreGrade("minecraft:raw_gold", OreGrade.ADVANCED)
         registerOreGrade("minecraft:diamond", OreGrade.ADVANCED)
         registerOreGrade("minecraft:emerald", OreGrade.ADVANCED)
-
-        // Rare ores (custom)
-        registerOreGrade("estherserver:test_ore_raw", OreGrade.RARE)
     }
 
-    private fun registerOreGrade(item: String, grade: OreGrade) {
+    fun registerOreGrade(item: String, grade: OreGrade) {
         oreGradeMap[ResourceLocation.parse(item)] = grade
     }
 
@@ -84,28 +81,30 @@ object ProfessionBonusHelper {
 
     private val fishGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
     private val cropGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
+    private val recipeGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
 
     fun initContentGrades() {
-        // Fish grades (to be expanded)
-        registerFishGrade("estherserver:test_fish", ContentGrade.COMMON)
-
-        // Crop grades (to be expanded)
-        registerCropGrade("estherserver:test_harvest", ContentGrade.COMMON)
+        // Crop grades (existing)
         registerCropGrade("estherserver:rice", ContentGrade.COMMON)
         registerCropGrade("estherserver:red_pepper", ContentGrade.COMMON)
         registerCropGrade("estherserver:spinach", ContentGrade.COMMON)
     }
 
-    private fun registerFishGrade(item: String, grade: ContentGrade) {
+    fun registerFishGrade(item: String, grade: ContentGrade) {
         fishGradeMap[ResourceLocation.parse(item)] = grade
     }
 
-    private fun registerCropGrade(item: String, grade: ContentGrade) {
+    fun registerCropGrade(item: String, grade: ContentGrade) {
         cropGradeMap[ResourceLocation.parse(item)] = grade
+    }
+
+    fun registerRecipeGrade(item: String, grade: ContentGrade) {
+        recipeGradeMap[ResourceLocation.parse(item)] = grade
     }
 
     fun getFishGrade(itemId: ResourceLocation): ContentGrade? = fishGradeMap[itemId]
     fun getCropGrade(itemId: ResourceLocation): ContentGrade? = cropGradeMap[itemId]
+    fun getRecipeGrade(itemId: ResourceLocation): ContentGrade? = recipeGradeMap[itemId]
 
     /** Max fish grade the fishing rod can catch based on enhancement level */
     fun getMaxFishGrade(equipLevel: Int): ContentGrade = when {

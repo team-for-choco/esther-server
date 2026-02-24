@@ -1,13 +1,6 @@
 {
   "replace": false,
   "values": [
-    "estherserver:test_fish",
-    "estherserver:cooked_test_fish",
-    "estherserver:test_seeds",
-    "estherserver:test_harvest",
-    "estherserver:cooked_test_harvest",
-    "estherserver:test_ore_raw",
-    "estherserver:test_ore_ingot",
     "estherserver:rice_seeds",
     "estherserver:rice",
     "estherserver:cooked_rice",
@@ -17,7 +10,6 @@
     "estherserver:spinach",
     "estherserver:spinach_bibimbap",
     "estherserver:fish_stew",
-    "estherserver:gimbap",
-    "estherserver:harvest_bibimbap"
+    "estherserver:gimbap"
   ]
 }

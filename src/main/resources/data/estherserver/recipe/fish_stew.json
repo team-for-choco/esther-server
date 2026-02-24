@@ -1,9 +1,9 @@
 {
   "type": "estherserver:cooking_station",
   "ingredients": [
-    "estherserver:cooked_test_fish",
     "estherserver:red_pepper",
-    "estherserver:spinach"
+    "estherserver:spinach",
+    "estherserver:rice"
   ],
   "result": {
     "id": "estherserver:fish_stew",

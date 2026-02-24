@@ -1,8 +1,7 @@
 {
   "replace": false,
   "values": [
-    "estherserver:cooked_test_fish",
-    "estherserver:cooked_test_harvest",
+    "estherserver:rice",
     "estherserver:cooked_rice",
     "estherserver:red_pepper",
     "estherserver:spinach"

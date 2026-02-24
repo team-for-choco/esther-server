@@ -22,20 +22,12 @@ object ProfessionHandler {
     private val cropSeedMap = mutableMapOf<ResourceLocation, DeferredItem<*>>()
 
     fun init() {
-        // Fishing
-        register(EstherServerMod.TEST_FISH, Profession.FISHING)
-
-        // Farming
-        register(EstherServerMod.TEST_HARVEST, Profession.FARMING)
+        // Farming (existing crops)
         register(EstherServerMod.RICE, Profession.FARMING)
         register(EstherServerMod.RED_PEPPER, Profession.FARMING)
         register(EstherServerMod.SPINACH, Profession.FARMING)
 
-        // Mining
-        register(EstherServerMod.TEST_ORE_RAW, Profession.MINING)
-
         // Crop-to-seed mapping (for seed preservation)
-        registerCropSeed(EstherServerMod.TEST_CROP, EstherServerMod.TEST_SEEDS)
         registerCropSeed(EstherServerMod.RICE_CROP, EstherServerMod.RICE_SEEDS)
         registerCropSeed(EstherServerMod.RED_PEPPER_CROP, EstherServerMod.RED_PEPPER_SEEDS)
         registerCropSeed(EstherServerMod.SPINACH_CROP, EstherServerMod.SPINACH_SEEDS)
@@ -57,8 +49,16 @@ object ProfessionHandler {
         itemProfessionMap[item.id] = profession
     }
 
+    fun registerItemProfession(itemId: String, profession: Profession) {
+        itemProfessionMap[ResourceLocation.parse(itemId)] = profession
+    }
+
     private fun registerCropSeed(crop: DeferredBlock<Block>, seed: DeferredItem<*>) {
         cropSeedMap[crop.id] = seed
+    }
+
+    fun registerCropSeedMapping(cropId: ResourceLocation, seed: DeferredItem<*>) {
+        cropSeedMap[cropId] = seed
     }
 
     private fun registerVanillaMining(item: String, xp: Int) {

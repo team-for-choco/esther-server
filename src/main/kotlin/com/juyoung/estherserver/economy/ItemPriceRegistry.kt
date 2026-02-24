@@ -18,34 +18,22 @@ object ItemPriceRegistry {
     }
 
     private fun registerCustomItemPrices() {
-        // Fish
-        register("estherserver:test_fish", 5, ShopCategory.FOOD)
-        register("estherserver:cooked_test_fish", 8, ShopCategory.FOOD)
-
-        // Seeds (no quality)
-        register("estherserver:test_seeds", 1, ShopCategory.SEEDS)
+        // Seeds (existing)
         register("estherserver:rice_seeds", 2, ShopCategory.SEEDS)
         register("estherserver:red_pepper_seeds", 2, ShopCategory.SEEDS)
         register("estherserver:spinach_seeds", 2, ShopCategory.SEEDS)
         register("estherserver:special_farmland", 10, ShopCategory.SEEDS)
 
-        // Harvests
-        register("estherserver:test_harvest", 3, ShopCategory.FOOD)
-        register("estherserver:cooked_test_harvest", 6, ShopCategory.FOOD)
+        // Harvests (existing, no longer food)
         register("estherserver:rice", 4, ShopCategory.FOOD)
         register("estherserver:cooked_rice", 7, ShopCategory.FOOD)
         register("estherserver:red_pepper", 4, ShopCategory.FOOD)
         register("estherserver:spinach", 3, ShopCategory.FOOD)
 
-        // Minerals
-        register("estherserver:test_ore_raw", 8, ShopCategory.MINERALS)
-        register("estherserver:test_ore_ingot", 12, ShopCategory.MINERALS)
-
-        // Cooking dishes
+        // Cooking dishes (existing)
         register("estherserver:spinach_bibimbap", 20, ShopCategory.FOOD)
         register("estherserver:fish_stew", 25, ShopCategory.FOOD)
         register("estherserver:gimbap", 25, ShopCategory.FOOD)
-        register("estherserver:harvest_bibimbap", 30, ShopCategory.FOOD)
     }
 
     private fun registerVanillaItemPrices() {

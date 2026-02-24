@@ -2,8 +2,8 @@
   "type": "estherserver:cooking_station",
   "ingredients": [
     "estherserver:cooked_rice",
-    "estherserver:cooked_test_fish",
-    "estherserver:spinach"
+    "estherserver:spinach",
+    "estherserver:rice"
   ],
   "result": {
     "id": "estherserver:gimbap",

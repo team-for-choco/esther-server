@@ -136,18 +136,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
             })
 
-        // Custom fish - Test Fish
-        val TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem("test_fish", Item.Properties())
-
-        val COOKED_TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "cooked_test_fish", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(6)
-                    .saturationModifier(0.8f)
-                    .build()
-            )
-        )
-
         // Helper for crop block properties
         private fun cropProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
             .noCollission()
@@ -155,56 +143,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             .instabreak()
             .sound(SoundType.CROP)
             .pushReaction(PushReaction.DESTROY)
-
-        // Custom crop - Test Crop
-        val TEST_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("test_crop",
-            { properties -> CustomCropBlock(properties, Supplier { TEST_SEEDS.get() }) },
-            cropProperties())
-
-        val TEST_SEEDS: DeferredItem<Item> = ITEMS.registerItem("test_seeds") { properties ->
-            BlockItem(TEST_CROP.get(), properties.useItemDescriptionPrefix())
-        }
-
-        val TEST_HARVEST: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "test_harvest", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(2)
-                    .saturationModifier(0.3f)
-                    .build()
-            )
-        )
-
-        val COOKED_TEST_HARVEST: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "cooked_test_harvest", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(6)
-                    .saturationModifier(0.6f)
-                    .build()
-            )
-        )
-
-        // Custom ore - Test Ore
-        val TEST_ORE: DeferredBlock<Block> = BLOCKS.registerSimpleBlock(
-            "test_ore",
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.STONE)
-                .requiresCorrectToolForDrops()
-                .strength(3.0f, 3.0f)
-        )
-        val TEST_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("test_ore", TEST_ORE)
-
-        val DEEPSLATE_TEST_ORE: DeferredBlock<Block> = BLOCKS.registerSimpleBlock(
-            "deepslate_test_ore",
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.DEEPSLATE)
-                .requiresCorrectToolForDrops()
-                .strength(4.5f, 3.0f)
-                .sound(SoundType.DEEPSLATE)
-        )
-        val DEEPSLATE_TEST_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_test_ore", DEEPSLATE_TEST_ORE)
-
-        val TEST_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_raw", Item.Properties())
-        val TEST_ORE_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_ingot", Item.Properties())
 
         // Korean crops - Rice
         val RICE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("rice_crop",
@@ -215,23 +153,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             BlockItem(RICE_CROP.get(), properties.useItemDescriptionPrefix())
         }
 
-        val RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "rice", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(1)
-                    .saturationModifier(0.3f)
-                    .build()
-            )
-        )
+        val RICE: DeferredItem<Item> = ITEMS.registerSimpleItem("rice", Item.Properties())
 
-        val COOKED_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "cooked_rice", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(6)
-                    .saturationModifier(0.7f)
-                    .build()
-            )
-        )
+        val COOKED_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem("cooked_rice", Item.Properties())
 
         // Korean crops - Red Pepper
         val RED_PEPPER_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("red_pepper_crop",
@@ -242,14 +166,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             BlockItem(RED_PEPPER_CROP.get(), properties.useItemDescriptionPrefix())
         }
 
-        val RED_PEPPER: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "red_pepper", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(2)
-                    .saturationModifier(0.3f)
-                    .build()
-            )
-        )
+        val RED_PEPPER: DeferredItem<Item> = ITEMS.registerSimpleItem("red_pepper", Item.Properties())
 
         // Korean crops - Spinach
         val SPINACH_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("spinach_crop",
@@ -260,14 +177,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             BlockItem(SPINACH_CROP.get(), properties.useItemDescriptionPrefix())
         }
 
-        val SPINACH: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "spinach", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(2)
-                    .saturationModifier(0.4f)
-                    .build()
-            )
-        )
+        val SPINACH: DeferredItem<Item> = ITEMS.registerSimpleItem("spinach", Item.Properties())
 
         // Cooking station
         val COOKING_STATION: DeferredBlock<Block> = BLOCKS.registerBlock("cooking_station",
@@ -279,41 +189,19 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         )
         val COOKING_STATION_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("cooking_station", COOKING_STATION)
 
+        // Standard cooking FoodProperties: all dishes use same nutrition
+        private fun cookingFood(): FoodProperties = FoodProperties.Builder()
+            .nutrition(5).saturationModifier(0.6f).build()
+
         // Cooking dishes
         val SPINACH_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "spinach_bibimbap", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(10)
-                    .saturationModifier(0.8f)
-                    .build()
-            )
+            "spinach_bibimbap", Item.Properties().food(cookingFood())
         )
-
         val FISH_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "fish_stew", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(10)
-                    .saturationModifier(0.8f)
-                    .build()
-            )
+            "fish_stew", Item.Properties().food(cookingFood())
         )
-
         val GIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "gimbap", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(12)
-                    .saturationModifier(0.9f)
-                    .build()
-            )
-        )
-
-        val HARVEST_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "harvest_bibimbap", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(14)
-                    .saturationModifier(1.0f)
-                    .build()
-            )
+            "gimbap", Item.Properties().food(cookingFood())
         )
 
         // Collection pedestal
@@ -389,17 +277,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.estherserver"))
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    .icon { TEST_FISH.get().defaultInstance }
+                    .icon { COOKING_STATION.get().asItem().defaultInstance }
                     .displayItems { parameters: ItemDisplayParameters?, output: CreativeModeTab.Output ->
-                        output.accept(TEST_FISH.get())
-                        output.accept(COOKED_TEST_FISH.get())
-                        output.accept(TEST_SEEDS.get())
-                        output.accept(TEST_HARVEST.get())
-                        output.accept(COOKED_TEST_HARVEST.get())
-                        output.accept(TEST_ORE.get())
-                        output.accept(DEEPSLATE_TEST_ORE.get())
-                        output.accept(TEST_ORE_RAW.get())
-                        output.accept(TEST_ORE_INGOT.get())
+                        // Crops
                         output.accept(RICE_SEEDS.get())
                         output.accept(RICE.get())
                         output.accept(COOKED_RICE.get())
@@ -407,11 +287,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(RED_PEPPER.get())
                         output.accept(SPINACH_SEEDS.get())
                         output.accept(SPINACH.get())
+                        // Cooking
                         output.accept(COOKING_STATION.get())
                         output.accept(SPINACH_BIBIMBAP.get())
                         output.accept(FISH_STEW.get())
                         output.accept(GIMBAP.get())
-                        output.accept(HARVEST_BIBIMBAP.get())
+                        // Utility
                         output.accept(COLLECTION_PEDESTAL.get())
                         output.accept(LAND_DEED.get())
                         output.accept(SPECIAL_FISHING_ROD.get())

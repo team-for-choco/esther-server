@@ -24,33 +24,21 @@ object CollectibleRegistry {
         if (initialized) return
         initialized = true
 
-        // Fish (2 items)
-        register("estherserver:test_fish", CollectionCategory.FISH)
-        register("estherserver:cooked_test_fish", CollectionCategory.FISH)
-
-        // Crops - seeds (4 items)
-        register("estherserver:test_seeds", CollectionCategory.CROPS)
+        // Crops - seeds (3 items, existing)
         register("estherserver:rice_seeds", CollectionCategory.CROPS)
         register("estherserver:red_pepper_seeds", CollectionCategory.CROPS)
         register("estherserver:spinach_seeds", CollectionCategory.CROPS)
 
-        // Crops - produce (6 items)
-        register("estherserver:test_harvest", CollectionCategory.CROPS)
-        register("estherserver:cooked_test_harvest", CollectionCategory.CROPS)
+        // Crops - produce (4 items, existing)
         register("estherserver:rice", CollectionCategory.CROPS)
         register("estherserver:cooked_rice", CollectionCategory.CROPS)
         register("estherserver:red_pepper", CollectionCategory.CROPS)
         register("estherserver:spinach", CollectionCategory.CROPS)
 
-        // Minerals (2 items)
-        register("estherserver:test_ore_raw", CollectionCategory.MINERALS)
-        register("estherserver:test_ore_ingot", CollectionCategory.MINERALS)
-
-        // Cooking (4 items)
+        // Cooking (3 items, existing)
         register("estherserver:spinach_bibimbap", CollectionCategory.COOKING)
         register("estherserver:fish_stew", CollectionCategory.COOKING)
         register("estherserver:gimbap", CollectionCategory.COOKING)
-        register("estherserver:harvest_bibimbap", CollectionCategory.COOKING)
     }
 
     private fun register(item: String, category: CollectionCategory, requiredCount: Int = 1) {

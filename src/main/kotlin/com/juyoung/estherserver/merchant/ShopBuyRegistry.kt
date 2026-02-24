@@ -41,7 +41,6 @@ object ShopBuyRegistry {
         register("minecraft:pumpkin_seeds", 5, ShopCategory.SEEDS)
         register("minecraft:melon_seeds", 5, ShopCategory.SEEDS)
         register("minecraft:beetroot_seeds", 5, ShopCategory.SEEDS)
-        register("estherserver:test_seeds", 6, ShopCategory.SEEDS)
         register("estherserver:rice_seeds", 8, ShopCategory.SEEDS)
         register("estherserver:red_pepper_seeds", 8, ShopCategory.SEEDS)
         register("estherserver:spinach_seeds", 8, ShopCategory.SEEDS)
