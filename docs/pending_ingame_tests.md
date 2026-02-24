@@ -5,33 +5,20 @@
 
 ---
 
-## CHOCO-90 — 청크 클레임 행동 제한 설정
-> 원본: [20260214_claim_permissions.md](20260214_claim_permissions.md)
-
-- [ ] 기본값: 파괴/설치 차단, 상호작용 허용
-- [ ] `/claim settings break allow` → 비소유자 파괴 가능
-- [ ] `/claim settings interact deny` → 상호작용 차단 (조리대/도감대는 예외 유지)
-- [ ] 기존 데이터 하위 호환성
-- [ ] `/claim info` → permissions 상태 표시
-
-## CHOCO-91 — 청크 클레임 신뢰 시스템
-> 원본: [20260214_claim_trust.md](20260214_claim_trust.md)
-
-- [ ] `/claim trust add <player>` → 해당 플레이어가 소유자의 모든 청크에서 파괴/설치/상호작용 가능
-- [ ] `/claim trust remove <player>` → 접근 해제
-- [ ] `/claim trust list` → 신뢰 목록 표시
-- [ ] 자기 자신 초대 방지
-- [ ] 기존 데이터 하위 호환성
-
 ## CHOCO-92 — 화폐 시스템 (Phase 3-1)
 > 원본: [20260219_currency_system.md](20260219_currency_system.md)
 
 - [ ] `/money pay` 송금 → 양쪽 잔고 변경 (멀티플레이어 필요)
 
-## CHOCO-99 — PR #29 코드 리뷰 반영
-> 원본: [20260220_pr29_review.md](20260220_pr29_review.md)
+## CHOCO-100 — 레벨/장비 효과 재설계 + 전문 보관함 (Phase 4-3b)
+> 원본: [20260223_level_equipment_redesign.md](20260223_level_equipment_redesign.md)
 
-- [ ] 특수 곡괭이로 광석 채굴 시 속도 보너스 적용 확인
-- [ ] 특수 곡괭이로 흙/나무 채굴 시 속도 보너스 미적용 확인
-- [ ] 분무기 툴팁에 충전량 정상 표시 확인
-
+- [ ] 낚싯대 Lv0: 커스텀 어종 낚이지 않음 확인
+- [ ] 낚싯대 Lv1/2: 일반/고급 어종 해금 확인
+- [ ] 낚싯대 Lv5: 비 없이 낚시 보너스 확인
+- [ ] 호미 Lv0: 커스텀 작물 수확 불가 확인
+- [ ] 호미 Lv1/2/5: 일반/고급/희귀 작물 해금 확인
+- [ ] 호미 Lv4: 5% 다수확 확인
+- [ ] 조리도구 Lv0: 일반 등급 레시피만 사용 가능 확인
+- [ ] 조리도구 Lv2/3: 동시 조리대 2/4개 제한 확인
+- [ ] 조리도구 Lv4: 5% 결과 2개 확인

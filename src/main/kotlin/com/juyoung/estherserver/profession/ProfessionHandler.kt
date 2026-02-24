@@ -12,12 +12,15 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.network.PacketDistributor
+import net.minecraft.world.level.block.Block
+import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredItem
 
 object ProfessionHandler {
 
     private val itemProfessionMap = mutableMapOf<ResourceLocation, Profession>()
     private val vanillaMiningXpMap = mutableMapOf<ResourceLocation, Int>()
+    private val cropSeedMap = mutableMapOf<ResourceLocation, DeferredItem<*>>()
 
     fun init() {
         // Fishing
@@ -31,6 +34,12 @@ object ProfessionHandler {
 
         // Mining
         register(EstherServerMod.TEST_ORE_RAW, Profession.MINING)
+
+        // Crop-to-seed mapping (for seed preservation)
+        registerCropSeed(EstherServerMod.TEST_CROP, EstherServerMod.TEST_SEEDS)
+        registerCropSeed(EstherServerMod.RICE_CROP, EstherServerMod.RICE_SEEDS)
+        registerCropSeed(EstherServerMod.RED_PEPPER_CROP, EstherServerMod.RED_PEPPER_SEEDS)
+        registerCropSeed(EstherServerMod.SPINACH_CROP, EstherServerMod.SPINACH_SEEDS)
 
         // Vanilla mining XP (fixed amount per ore type, no quality)
         registerVanillaMining("minecraft:coal", 1)
@@ -49,6 +58,10 @@ object ProfessionHandler {
         itemProfessionMap[item.id] = profession
     }
 
+    private fun registerCropSeed(crop: DeferredBlock<Block>, seed: DeferredItem<*>) {
+        cropSeedMap[crop.id] = seed
+    }
+
     private fun registerVanillaMining(item: String, xp: Int) {
         vanillaMiningXpMap[ResourceLocation.parse(item)] = xp
     }
@@ -61,6 +74,11 @@ object ProfessionHandler {
     fun getProfessionForItem(stack: ItemStack): Profession? {
         val key = BuiltInRegistries.ITEM.getKey(stack.item)
         return itemProfessionMap[key]
+    }
+
+    fun getSeedForCrop(blockId: ResourceLocation): ItemStack? {
+        val seed = cropSeedMap[blockId] ?: return null
+        return ItemStack(seed.get())
     }
 
     fun getXpForQuality(quality: ItemQuality): Int = when (quality) {

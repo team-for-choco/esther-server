@@ -223,5 +223,29 @@
   "message.estherserver.sprayer_filled": "Sprayer filled. (%s/%s)",
   "message.estherserver.sprayer_used": "Moisturized soil. (%s/%s)",
 
-  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s"
+  "tooltip.estherserver.sprayer_charges": "\uD83D\uDCA7 %s/%s",
+
+  "message.estherserver.double_fish": "Caught an extra fish!",
+
+  "item.estherserver.watering_can": "Watering Can",
+  "message.estherserver.watering_can_need_hoe": "Requires Special Hoe Lv%s+ to use Watering Can.",
+  "message.estherserver.watering_can_empty": "Watering Can is empty.",
+  "message.estherserver.watering_can_filled": "Watering Can filled. (%s/%s)",
+  "message.estherserver.watering_can_used": "Moisturized soil. (%s/%s)",
+  "tooltip.estherserver.watering_can_charges": "\uD83D\uDCA7 %s/%s",
+
+  "message.estherserver.cooking_started": "Cooking started! (%ss)",
+  "message.estherserver.cooking_in_progress": "Cooking in progress...",
+  "message.estherserver.cooking_max_stations": "You can only use %s cooking station(s) at once.",
+
+  "key.estherserver.prof_inventory": "Profession Inventory",
+  "gui.estherserver.prof_inventory.title": "Profession Inventory",
+
+  "message.estherserver.profession_status_header": "=== Profession Status ===",
+  "message.estherserver.profession_status_entry": "  %s: Lv%s (%s/%s xp)",
+  "message.estherserver.profession_invalid": "Unknown profession: %s (fishing/farming/mining/cooking)",
+  "message.estherserver.profession_admin_setlevel": "[Profession] Set %s's %s level to %s.",
+  "message.estherserver.profession_admin_addxp": "[Profession] Added %s xp to %s. (Target: %s)",
+
+  "message.estherserver.farming_own_claim_only": "You can only farm in chunks you own!"
 }

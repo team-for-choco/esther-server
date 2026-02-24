@@ -30,8 +30,8 @@
 - [x] 빌드 성공 확인
 
 ## 인게임 테스트
-- [ ] 기본값: 파괴/설치 차단, 상호작용 허용
-- [ ] `/claim settings break allow` → 비소유자 파괴 가능
-- [ ] `/claim settings interact deny` → 상호작용 차단 (조리대/도감대는 예외 유지)
-- [ ] 기존 데이터 하위 호환성
-- [ ] `/claim info` → permissions 상태 표시
+- [x] 기본값: 파괴/설치 차단, 상호작용 허용
+- [x] `/claim settings break allow` → 비소유자 파괴 가능
+- [x] `/claim settings interact deny` → 상호작용 차단 (조리대/도감대는 예외 유지)
+- [x] 기존 데이터 하위 호환성
+- [x] `/claim info` → permissions 상태 표시

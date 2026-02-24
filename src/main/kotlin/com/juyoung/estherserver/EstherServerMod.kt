@@ -18,9 +18,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
 import com.juyoung.estherserver.block.CustomCropBlock
+import net.neoforged.neoforge.network.PacketDistributor
 import com.juyoung.estherserver.block.SpecialFarmlandBlock
 import com.juyoung.estherserver.item.SpecialFishingRodItem
 import com.juyoung.estherserver.item.SprayerItem
+import com.juyoung.estherserver.item.WateringCanItem
 import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.BlockTags
 import net.minecraft.world.item.component.Tool
@@ -40,6 +42,7 @@ import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.DeferredRegister
+import com.juyoung.estherserver.claim.ChunkClaimManager
 import com.juyoung.estherserver.loot.ModLootModifiers
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
@@ -58,6 +61,12 @@ import com.juyoung.estherserver.collection.TitleCommand
 import com.juyoung.estherserver.collection.TitleSelectPayload
 import com.juyoung.estherserver.cooking.CookingStationBlock
 import com.juyoung.estherserver.cooking.ModCooking
+import com.juyoung.estherserver.inventory.ModInventory
+import com.juyoung.estherserver.inventory.ProfessionInventoryClientHandler
+import com.juyoung.estherserver.inventory.ProfessionInventoryContainerScreen
+import com.juyoung.estherserver.inventory.ProfessionInventoryHandler
+import com.juyoung.estherserver.inventory.ProfessionInventoryMenu
+import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
 import com.juyoung.estherserver.daylight.DaylightHandler
 import com.juyoung.estherserver.economy.BalanceHudOverlay
 import com.juyoung.estherserver.economy.BalanceSyncPayload
@@ -70,6 +79,7 @@ import com.juyoung.estherserver.enhancement.EnhanceItemPayload
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.ModProfession
 import com.juyoung.estherserver.profession.ProfessionClientHandler
+import com.juyoung.estherserver.profession.ProfessionCommand
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.profession.ProfessionSyncPayload
 import com.juyoung.estherserver.merchant.SellItemPayload
@@ -364,6 +374,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             SprayerItem(properties.stacksTo(1))
         }
 
+        // Watering can (upgraded sprayer, requires hoe Lv3+)
+        val WATERING_CAN: DeferredItem<Item> = ITEMS.registerItem("watering_can") { properties ->
+            WateringCanItem(properties.stacksTo(1))
+        }
+
         // Enhancement stone (rare grade, used for Lv4→Lv5 enhancement)
         val ENHANCEMENT_STONE: DeferredItem<Item> = ITEMS.registerSimpleItem(
             "enhancement_stone", Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)
@@ -407,6 +422,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(ENHANCEMENT_STONE.get())
                         output.accept(SPECIAL_FARMLAND.get())
                         output.accept(SPRAYER.get())
+                        output.accept(WATERING_CAN.get())
                     }.build()
             })
     }
@@ -428,6 +444,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModCollection.ATTACHMENT_TYPES.register(modEventBus)
         ModEconomy.ATTACHMENT_TYPES.register(modEventBus)
         ModProfession.ATTACHMENT_TYPES.register(modEventBus)
+        ModInventory.ATTACHMENT_TYPES.register(modEventBus)
+        ModInventory.MENU_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -438,6 +456,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(ClaimProtectionHandler)
         NeoForge.EVENT_BUS.register(EconomyHandler)
         NeoForge.EVENT_BUS.register(ProfessionHandler)
+        NeoForge.EVENT_BUS.register(ProfessionInventoryHandler)
+        NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.OreVeinDetector)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -506,6 +526,39 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     }
                 }
             }
+            .playToClient(ProfessionInventoryPayload.SyncPayload.TYPE, ProfessionInventoryPayload.SyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    ProfessionInventoryClientHandler.handleSync(payload)
+                }
+            }
+            .playToServer(ProfessionInventoryPayload.OpenPayload.TYPE, ProfessionInventoryPayload.OpenPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    ProfessionInventoryHandler.syncToClient(player)
+                    player.openMenu(object : net.minecraft.world.MenuProvider {
+                        override fun getDisplayName() = Component.translatable("gui.estherserver.prof_inventory.title")
+                        override fun createMenu(containerId: Int, inv: net.minecraft.world.entity.player.Inventory, p: net.minecraft.world.entity.player.Player) =
+                            ProfessionInventoryMenu(containerId, inv)
+                    })
+                    // Sync initial tab data (tab 0 = MINING) to client
+                    val menu = player.containerMenu as? ProfessionInventoryMenu
+                    if (menu != null) {
+                        PacketDistributor.sendToPlayer(player, ProfessionInventoryPayload.TabSyncPayload(menu.currentTab, menu.unlockedSlots))
+                    }
+                }
+            }
+            .playToServer(ProfessionInventoryPayload.TabSwitchPayload.TYPE, ProfessionInventoryPayload.TabSwitchPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    val menu = player.containerMenu as? ProfessionInventoryMenu ?: return@enqueueWork
+                    menu.switchTab(payload.tabIndex)
+                }
+            }
+            .playToClient(ProfessionInventoryPayload.TabSyncPayload.TYPE, ProfessionInventoryPayload.TabSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    ProfessionInventoryClientHandler.handleTabSync(payload)
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
@@ -518,6 +571,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ItemPriceRegistry.init()
         ShopBuyRegistry.init()
         ProfessionHandler.init()
+        com.juyoung.estherserver.profession.ProfessionBonusHelper.initOreGrades()
+        com.juyoung.estherserver.profession.ProfessionBonusHelper.initContentGrades()
 
         if (Config.logDirtBlock) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT))
@@ -536,6 +591,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ClaimCommand.register(event.dispatcher)
         MoneyCommand.register(event.dispatcher)
         ShopCommand.register(event.dispatcher)
+        ProfessionCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent
@@ -559,6 +615,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             event.register(ModKeyBindings.SIT_KEY)
             event.register(ModKeyBindings.COLLECTION_KEY)
             event.register(ModKeyBindings.PROFESSION_KEY)
+            event.register(ModKeyBindings.PROFESSION_INVENTORY_KEY)
+        }
+
+        @SubscribeEvent
+        fun onRegisterMenuScreens(event: net.neoforged.neoforge.client.event.RegisterMenuScreensEvent) {
+            event.register(ModInventory.PROFESSION_INVENTORY_MENU.get(), ::ProfessionInventoryContainerScreen)
         }
 
         @SubscribeEvent
@@ -616,12 +678,62 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val stack = event.entity.mainHandItem
         if (stack.item === SPECIAL_PICKAXE.get() && event.state.`is`(BlockTags.MINEABLE_WITH_PICKAXE)) {
             val enhLevel = stack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
-            val multiplier = when {
-                enhLevel >= 5 -> 2.0f    // Rare (Blue): 8.0 = diamond
-                enhLevel >= 3 -> 1.5f    // Fine (Green): 6.0 = iron
-                else -> 1.0f             // Common (White): 4.0 = stone
+
+            // Check if pickaxe enhancement level is sufficient for this block's tier
+            val blockState = event.state
+            val canMine = when {
+                blockState.`is`(BlockTags.NEEDS_DIAMOND_TOOL) -> enhLevel >= 3
+                blockState.`is`(BlockTags.NEEDS_IRON_TOOL) -> enhLevel >= 2
+                blockState.`is`(BlockTags.NEEDS_STONE_TOOL) -> enhLevel >= 1
+                else -> true  // wood-tier blocks always mineable
             }
-            event.newSpeed = event.originalSpeed * multiplier
+
+            if (!canMine) {
+                event.newSpeed = 0f
+                return
+            }
+
+            // Enhancement level determines base mining speed (matches vanilla pickaxe tiers)
+            val tierSpeed = when {
+                enhLevel >= 3 -> 8.0f  // diamond
+                enhLevel >= 2 -> 6.0f  // iron
+                enhLevel >= 1 -> 4.0f  // stone
+                else -> 2.0f           // wood
+            }
+
+            // Profession level mining speed bonus (+1% per level)
+            val profLevel = when {
+                event.entity is net.minecraft.server.level.ServerPlayer ->
+                    ProfessionHandler.getLevel(event.entity as net.minecraft.server.level.ServerPlayer, com.juyoung.estherserver.profession.Profession.MINING)
+                event.entity.level().isClientSide ->
+                    ProfessionClientHandler.cachedData.getLevel(com.juyoung.estherserver.profession.Profession.MINING)
+                else -> 0
+            }
+            val profBonus = com.juyoung.estherserver.profession.ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
+            event.newSpeed = tierSpeed * (1.0f + profBonus)
+        }
+    }
+
+    @SubscribeEvent
+    fun onCropGrowPost(event: CropGrowEvent.Post) {
+        val serverLevel = event.level as? net.minecraft.server.level.ServerLevel ?: return
+        val pos = event.pos
+        val currentState = serverLevel.getBlockState(pos)
+        val block = currentState.block as? CustomCropBlock ?: return
+
+        val chunkPos = net.minecraft.world.level.ChunkPos(pos)
+        val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos) ?: return
+        val owner = serverLevel.server?.playerList?.getPlayer(claim.ownerUUID) ?: return
+
+        val farmingLevel = ProfessionHandler.getLevel(owner, com.juyoung.estherserver.profession.Profession.FARMING)
+        if (farmingLevel <= 0) return
+
+        if (serverLevel.random.nextFloat() < farmingLevel * 0.01f) {
+            val ageProperty = net.minecraft.world.level.block.state.properties.BlockStateProperties.AGE_7
+            val currentAge: Int = currentState.getValue(ageProperty)
+            if (currentAge < 7) {
+                serverLevel.setBlock(pos, block.getStateForAge(currentAge + 1), 2)
+            }
         }
     }
 
@@ -632,6 +744,35 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             if (belowState.getValue(SpecialFarmlandBlock.MOISTURE) == 0) {
                 event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW)
             }
+        }
+    }
+
+    @SubscribeEvent
+    fun onItemPickup(event: net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent.Pre) {
+        val player = event.player as? net.minecraft.server.level.ServerPlayer ?: return
+        if (player.containerMenu is ProfessionInventoryMenu) return
+        if (event.itemEntity.hasPickUpDelay()) return
+        val stack = event.itemEntity.item
+        if (stack.isEmpty) return
+
+        val countBefore = stack.count
+        if (ProfessionInventoryHandler.tryAddItem(player, stack)) {
+            val pickedUp = countBefore - stack.count
+            // 바닐라와 동일한 픽업 애니메이션 (아이템이 플레이어에게 날아감)
+            player.take(event.itemEntity, pickedUp)
+            // 바닐라와 동일한 픽업 사운드
+            player.level().playSound(
+                null, player.x, player.y, player.z,
+                net.minecraft.sounds.SoundEvents.ITEM_PICKUP,
+                net.minecraft.sounds.SoundSource.PLAYERS,
+                0.2f,
+                ((player.random.nextFloat() - player.random.nextFloat()) * 0.7f + 1.0f) * 2.0f
+            )
+            if (stack.isEmpty) {
+                event.itemEntity.discard()
+                event.setCanPickup(net.neoforged.neoforge.common.util.TriState.FALSE)
+            }
+            ProfessionInventoryHandler.syncToClient(player)
         }
     }
 }

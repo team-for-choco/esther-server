@@ -39,5 +39,19 @@ enum class ItemQuality(
             }
             return COMMON
         }
+
+        fun randomQualityWithBonus(random: RandomSource, fineBonus: Int, rareBonus: Int): ItemQuality {
+            if (fineBonus == 0 && rareBonus == 0) return randomQuality(random)
+            val commonWeight = maxOf(10, COMMON.weight - fineBonus - rareBonus)
+            val fineWeight = FINE.weight + fineBonus
+            val rareWeight = RARE.weight + rareBonus
+            val total = commonWeight + fineWeight + rareWeight
+            var roll = random.nextInt(total)
+            roll -= commonWeight
+            if (roll < 0) return COMMON
+            roll -= fineWeight
+            if (roll < 0) return FINE
+            return RARE
+        }
     }
 }
