@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/crop",
   "textures": {
-    "crop": "minecraft:block/wheat_stage4"
+    "crop": "estherserver:block/truffle_stage2"
   },
   "render_type": "minecraft:cutout"
 }
