@@ -2,6 +2,9 @@ package com.juyoung.estherserver.merchant
 
 import com.juyoung.estherserver.economy.EconomyHandler
 import com.juyoung.estherserver.economy.ItemPriceRegistry
+import com.juyoung.estherserver.enhancement.EnhancementHandler
+import com.juyoung.estherserver.profession.Profession
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -126,6 +129,23 @@ object ShopBuyRegistry {
 
         val item = BuiltInRegistries.ITEM.getValue(itemId)
         if (item === Items.AIR) return false
+
+        // Check seed grade restriction based on hoe enhancement level
+        val seedGrade = ProfessionBonusHelper.getDisplayGradeForItem(itemId)
+        if (seedGrade != null && itemId.path.endsWith("_seeds")) {
+            val cropId = ResourceLocation.fromNamespaceAndPath(itemId.namespace, itemId.path.removeSuffix("_seeds"))
+            if (ProfessionBonusHelper.getCropGrade(cropId) != null) {
+                val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FARMING)
+                if (!ProfessionBonusHelper.canHarvestCustomCrops(equipLevel.coerceAtLeast(0)) ||
+                    seedGrade > ProfessionBonusHelper.getMaxCropGrade(equipLevel.coerceAtLeast(0))
+                ) {
+                    player.sendSystemMessage(
+                        Component.translatable("message.estherserver.seed_grade_locked")
+                    )
+                    return false
+                }
+            }
+        }
 
         // Check inventory space before purchase
         if (!hasInventorySpace(player, item, quantity)) {
