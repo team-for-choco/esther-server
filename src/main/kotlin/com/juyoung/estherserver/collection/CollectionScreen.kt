@@ -2,7 +2,6 @@ package com.juyoung.estherserver.collection
 
 import com.juyoung.estherserver.gui.GuiTheme
 import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.client.renderer.RenderType
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.registries.BuiltInRegistries
@@ -79,8 +78,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        // 텍스처 배경 (198x186 영역, 256x256 캔버스)
-        guiGraphics.blit(RenderType::guiTextured, GuiTheme.COLLECTION_BG, guiLeft, guiTop, 0f, 0f, GUI_WIDTH, GUI_HEIGHT, 256, 256)
+        GuiTheme.renderPanel(guiGraphics, guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT)
     }
 
     private fun renderTitle(guiGraphics: GuiGraphics) {
