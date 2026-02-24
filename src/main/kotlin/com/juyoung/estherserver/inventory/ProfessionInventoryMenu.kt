@@ -1,8 +1,6 @@
 package com.juyoung.estherserver.inventory
 
 import com.juyoung.estherserver.profession.Profession
-import com.juyoung.estherserver.profession.ProfessionBonusHelper
-import com.juyoung.estherserver.profession.ProfessionHandler
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Inventory
@@ -64,18 +62,21 @@ class ProfessionInventoryMenu(
                 PLAYER_INV_X + col * 18,
                 HOTBAR_Y))
         }
+
+        // Load initial tab data (tab 0 = MINING)
+        loadCurrentTabFromData()
     }
 
-    fun getCurrentProfession(): Profession? = when (currentTab) {
-        1 -> Profession.MINING
-        2 -> Profession.FISHING
-        3 -> Profession.FARMING
-        4 -> Profession.COOKING
-        else -> null
+    fun getCurrentProfession(): Profession = when (currentTab) {
+        0 -> Profession.MINING
+        1 -> Profession.FISHING
+        2 -> Profession.FARMING
+        3 -> Profession.COOKING
+        else -> Profession.MINING
     }
 
     fun switchTab(newTab: Int) {
-        if (newTab < 0 || newTab > 4) return
+        if (newTab < 0 || newTab > 3) return
         if (newTab == currentTab) return
 
         saveCurrentTabToData()
@@ -94,7 +95,7 @@ class ProfessionInventoryMenu(
 
     private fun saveCurrentTabToData() {
         val serverPlayer = player as? ServerPlayer ?: return
-        val profession = getCurrentProfession() ?: return
+        val profession = getCurrentProfession()
 
         val data = ProfessionInventoryHandler.getData(serverPlayer)
         for (i in 0 until PROFESSION_SLOT_COUNT) {
@@ -107,7 +108,7 @@ class ProfessionInventoryMenu(
         val serverPlayer = player as? ServerPlayer
         val profession = getCurrentProfession()
 
-        if (serverPlayer != null && profession != null) {
+        if (serverPlayer != null) {
             unlockedSlots = ProfessionInventoryHandler.getAvailableSlots(serverPlayer, profession)
             val data = ProfessionInventoryHandler.getData(serverPlayer)
             for (i in 0 until PROFESSION_SLOT_COUNT) {
@@ -134,23 +135,9 @@ class ProfessionInventoryMenu(
                 return ItemStack.EMPTY
             }
         } else {
-            if (currentTab == 0) {
-                // General tab: auto-sort via handler into AttachmentData
-                val serverPlayer = player as? ServerPlayer
-                if (serverPlayer != null && !stack.isEmpty) {
-                    if (ProfessionInventoryHandler.tryAddItem(serverPlayer, stack)) {
-                        ProfessionInventoryHandler.syncToClient(serverPlayer)
-                    } else {
-                        return ItemStack.EMPTY
-                    }
-                } else {
-                    return ItemStack.EMPTY
-                }
-            } else {
-                // Profession tab: move to profession slots
-                if (!moveItemStackTo(stack, 0, PROFESSION_SLOT_COUNT, false)) {
-                    return ItemStack.EMPTY
-                }
+            // Profession tab: move to profession slots
+            if (!moveItemStackTo(stack, 0, PROFESSION_SLOT_COUNT, false)) {
+                return ItemStack.EMPTY
             }
         }
 

@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.profession
 
+import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.quality.ModDataComponents
@@ -148,6 +149,14 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
                 }
             }
         }
+    }
+
+    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+        if (ModKeyBindings.PROFESSION_KEY.matches(keyCode, scanCode)) {
+            onClose()
+            return true
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers)
     }
 
     override fun isPauseScreen(): Boolean = false

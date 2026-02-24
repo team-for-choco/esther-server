@@ -13,13 +13,12 @@ class ProfessionSlot(
 ) : Slot(container, index, x, y) {
 
     override fun isActive(): Boolean {
-        if (menu.currentTab == 0) return false
         return containerSlot < menu.unlockedSlots
     }
 
     override fun mayPlace(stack: ItemStack): Boolean {
         if (!isActive()) return false
-        val profession = menu.getCurrentProfession() ?: return false
+        val profession = menu.getCurrentProfession()
         val itemProfession = ProfessionInventoryHandler.getProfessionForItem(stack)
         return itemProfession == null || itemProfession == profession
     }

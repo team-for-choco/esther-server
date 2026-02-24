@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
 import com.juyoung.estherserver.block.CustomCropBlock
+import net.neoforged.neoforge.network.PacketDistributor
 import com.juyoung.estherserver.block.SpecialFarmlandBlock
 import com.juyoung.estherserver.item.SpecialFishingRodItem
 import com.juyoung.estherserver.item.SprayerItem
@@ -539,6 +540,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         override fun createMenu(containerId: Int, inv: net.minecraft.world.entity.player.Inventory, p: net.minecraft.world.entity.player.Player) =
                             ProfessionInventoryMenu(containerId, inv)
                     })
+                    // Sync initial tab data (tab 0 = MINING) to client
+                    val menu = player.containerMenu as? ProfessionInventoryMenu
+                    if (menu != null) {
+                        PacketDistributor.sendToPlayer(player, ProfessionInventoryPayload.TabSyncPayload(menu.currentTab, menu.unlockedSlots))
+                    }
                 }
             }
             .playToServer(ProfessionInventoryPayload.TabSwitchPayload.TYPE, ProfessionInventoryPayload.TabSwitchPayload.STREAM_CODEC) { payload, context ->

@@ -3,6 +3,7 @@ package com.juyoung.estherserver.collection
 import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.gui.GuiGraphics
+import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
@@ -383,6 +384,14 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             return true
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY)
+    }
+
+    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+        if (ModKeyBindings.COLLECTION_KEY.matches(keyCode, scanCode)) {
+            onClose()
+            return true
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers)
     }
 
     override fun isPauseScreen(): Boolean = false

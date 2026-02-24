@@ -240,9 +240,6 @@
 
   "key.estherserver.prof_inventory": "Profession Inventory",
   "gui.estherserver.prof_inventory.title": "Profession Inventory",
-  "gui.estherserver.prof_inventory.tab.general": "General",
-  "gui.estherserver.prof_inventory.overview": "Profession Inventory Overview",
-  "gui.estherserver.prof_inventory.slots": " Slots",
 
   "message.estherserver.profession_status_header": "=== Profession Status ===",
   "message.estherserver.profession_status_entry": "  %s: Lv%s (%s/%s xp)",

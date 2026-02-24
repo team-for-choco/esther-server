@@ -240,9 +240,6 @@
 
   "key.estherserver.prof_inventory": "전문 보관함",
   "gui.estherserver.prof_inventory.title": "전문 보관함",
-  "gui.estherserver.prof_inventory.tab.general": "일반",
-  "gui.estherserver.prof_inventory.overview": "전문 분야 보관함 현황",
-  "gui.estherserver.prof_inventory.slots": "칸",
 
   "message.estherserver.profession_status_header": "=== 전문 분야 현황 ===",
   "message.estherserver.profession_status_entry": "  %s: Lv%s (%s/%s xp)",

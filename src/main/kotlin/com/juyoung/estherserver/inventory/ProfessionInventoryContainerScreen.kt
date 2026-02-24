@@ -1,8 +1,6 @@
 package com.juyoung.estherserver.inventory
 
-import com.juyoung.estherserver.profession.Profession
-import com.juyoung.estherserver.profession.ProfessionBonusHelper
-import com.juyoung.estherserver.profession.ProfessionClientHandler
+import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.network.chat.Component
@@ -29,19 +27,10 @@ class ProfessionInventoryContainerScreen(
         private val TEXT_LIGHT = 0xFFCCCCCC.toInt()
 
         private val TABS = listOf(
-            "gui.estherserver.prof_inventory.tab.general",
             "profession.estherserver.mining",
             "profession.estherserver.fishing",
             "profession.estherserver.farming",
             "profession.estherserver.cooking"
-        )
-
-        private val TAB_PROFESSIONS = listOf(
-            null,
-            Profession.MINING,
-            Profession.FISHING,
-            Profession.FARMING,
-            Profession.COOKING
         )
     }
 
@@ -67,11 +56,7 @@ class ProfessionInventoryContainerScreen(
         renderTabs(guiGraphics)
 
         // Profession slot backgrounds
-        if (menu.currentTab == 0) {
-            renderGeneralOverlay(guiGraphics)
-        } else {
-            renderProfessionSlotBackgrounds(guiGraphics)
-        }
+        renderProfessionSlotBackgrounds(guiGraphics)
 
         // Player inventory slot backgrounds
         for (i in ProfessionInventoryMenu.PROFESSION_SLOT_COUNT until menu.slots.size) {
@@ -106,61 +91,7 @@ class ProfessionInventoryContainerScreen(
         }
     }
 
-    private fun renderGeneralOverlay(guiGraphics: GuiGraphics) {
-        // Dark overlay for all profession slots
-        for (i in 0 until ProfessionInventoryMenu.PROFESSION_SLOT_COUNT) {
-            val slot = menu.slots[i]
-            guiGraphics.fill(
-                leftPos + slot.x - 1, topPos + slot.y - 1,
-                leftPos + slot.x + 17, topPos + slot.y + 17,
-                SLOT_LOCKED
-            )
-        }
-
-        // Overview text
-        val profData = ProfessionClientHandler.cachedData
-        val invData = ProfessionInventoryClientHandler.cachedData
-        val x = leftPos + PADDING
-        var y = topPos + ProfessionInventoryMenu.PROFESSION_SLOT_Y
-
-        guiGraphics.drawString(
-            font,
-            Component.translatable("gui.estherserver.prof_inventory.overview"),
-            x, y, TEXT_COLOR
-        )
-        y += 14
-
-        for (profession in Profession.entries) {
-            val level = profData.getLevel(profession)
-            val slots = ProfessionBonusHelper.getInventorySlots(level)
-            val used = invData.getUsedSlotCount(profession)
-
-            val text = Component.translatable(profession.translationKey)
-                .append(Component.literal(": Lv$level"))
-                .append(Component.literal(" ($used/$slots)"))
-
-            guiGraphics.drawString(font, text, x + 4, y, TEXT_LIGHT)
-            y += 14
-        }
-    }
-
     private fun renderProfessionSlotBackgrounds(guiGraphics: GuiGraphics) {
-        // Profession header
-        val profession = TAB_PROFESSIONS[menu.currentTab]
-        if (profession != null) {
-            val profData = ProfessionClientHandler.cachedData
-            val level = profData.getLevel(profession)
-            val headerText = Component.translatable(profession.translationKey)
-                .append(Component.literal(" Lv$level - ${menu.unlockedSlots}"))
-                .append(Component.translatable("gui.estherserver.prof_inventory.slots"))
-            guiGraphics.drawString(
-                font, headerText,
-                leftPos + PADDING, topPos + ProfessionInventoryMenu.PROFESSION_SLOT_Y - 10,
-                TEXT_COLOR
-            )
-        }
-
-        // Slot backgrounds
         for (i in 0 until ProfessionInventoryMenu.PROFESSION_SLOT_COUNT) {
             val slot = menu.slots[i]
             val color = if (i < menu.unlockedSlots) SLOT_BG else SLOT_LOCKED
@@ -175,6 +106,14 @@ class ProfessionInventoryContainerScreen(
     override fun renderLabels(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
         guiGraphics.drawString(font, title, titleLabelX, titleLabelY, TEXT_COLOR, false)
         guiGraphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, TEXT_COLOR, false)
+    }
+
+    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+        if (ModKeyBindings.PROFESSION_INVENTORY_KEY.matches(keyCode, scanCode)) {
+            onClose()
+            return true
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers)
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
