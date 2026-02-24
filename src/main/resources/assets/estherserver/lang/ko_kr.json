@@ -368,5 +368,18 @@
   "item.estherserver.saffron_rice": "사프란밥",
   "item.estherserver.abalone_porridge": "전복죽",
   "item.estherserver.king_crab_stew": "대게찜",
-  "message.estherserver.redstone_blocked": "이 블록은 설치할 수 없습니다."
+  "message.estherserver.redstone_blocked": "이 블록은 설치할 수 없습니다.",
+
+  "block.estherserver.wild_portal": "야생 포탈",
+  "block.estherserver.return_portal": "귀환 포탈",
+  "message.estherserver.wild_teleported": "[야생] 야생 차원으로 이동했습니다! 귀환 포탈이 생성되었습니다.",
+  "message.estherserver.wild_returned": "[야생] 오버월드로 돌아왔습니다.",
+  "message.estherserver.wild_portal_wrong_dimension": "오버월드에서만 사용할 수 있습니다.",
+  "message.estherserver.return_portal_wrong_dimension": "야생 차원에서만 사용할 수 있습니다.",
+  "message.estherserver.wild_no_safe_location": "안전한 위치를 찾을 수 없습니다. 다시 시도해주세요.",
+  "message.estherserver.wild_reset_broadcast": "[야생] 야생 차원이 초기화되었습니다!",
+  "message.estherserver.wild_reset_success": "[야생] 야생 차원 초기화 완료. %s명의 플레이어를 이동시켰습니다.",
+  "message.estherserver.wild_reset_error": "[야생] 야생 차원 초기화 중 오류가 발생했습니다.",
+
+  "message.estherserver.overworld_pvp_blocked": "[거점] 거점에서는 PvP가 허용되지 않습니다."
 }

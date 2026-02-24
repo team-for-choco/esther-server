@@ -368,5 +368,18 @@
   "item.estherserver.saffron_rice": "Saffron Rice",
   "item.estherserver.abalone_porridge": "Abalone Porridge",
   "item.estherserver.king_crab_stew": "King Crab Stew",
-  "message.estherserver.redstone_blocked": "This block cannot be placed."
+  "message.estherserver.redstone_blocked": "This block cannot be placed.",
+
+  "block.estherserver.wild_portal": "Wild Portal",
+  "block.estherserver.return_portal": "Return Portal",
+  "message.estherserver.wild_teleported": "[Wild] Teleported to the wild dimension! A return portal has been created.",
+  "message.estherserver.wild_returned": "[Wild] Returned to the overworld.",
+  "message.estherserver.wild_portal_wrong_dimension": "Can only be used in the overworld.",
+  "message.estherserver.return_portal_wrong_dimension": "Can only be used in the wild dimension.",
+  "message.estherserver.wild_no_safe_location": "Could not find a safe location. Please try again.",
+  "message.estherserver.wild_reset_broadcast": "[Wild] The wild dimension has been reset!",
+  "message.estherserver.wild_reset_success": "[Wild] Wild dimension reset complete. Evacuated %s player(s).",
+  "message.estherserver.wild_reset_error": "[Wild] An error occurred while resetting the wild dimension.",
+
+  "message.estherserver.overworld_pvp_blocked": "[Base] PvP is not allowed at the base."
 }

@@ -4,6 +4,8 @@ import com.juyoung.estherserver.block.CustomCropBlock
 import com.juyoung.estherserver.block.SpecialFarmlandBlock
 import com.juyoung.estherserver.collection.CollectionPedestalBlock
 import com.juyoung.estherserver.cooking.CookingStationBlock
+import com.juyoung.estherserver.wild.WildPortalBlock
+import com.juyoung.estherserver.wild.ReturnPortalBlock
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -94,7 +96,7 @@ object ClaimProtectionHandler {
 
         // 공용 블록은 클레임과 무관하게 상호작용 허용
         val block = serverLevel.getBlockState(event.pos).block
-        if (block is CookingStationBlock || block is CollectionPedestalBlock) return
+        if (block is CookingStationBlock || block is CollectionPedestalBlock || block is WildPortalBlock || block is ReturnPortalBlock) return
 
         val chunkPos = ChunkPos(event.pos)
         if (canBypassProtection(serverPlayer, serverLevel, chunkPos)) return
