@@ -149,7 +149,7 @@ class CollectionData(
                         // Merge: keep earliest discovery time, sum counts
                         data.entries[key] = CollectionEntry(
                             firstDiscoveredAt = minOf(existing.firstDiscoveredAt, entry.firstDiscoveredAt),
-                            count = maxOf(existing.count, entry.count)
+                            count = existing.count + entry.count
                         )
                     } else {
                         data.entries[key] = entry
