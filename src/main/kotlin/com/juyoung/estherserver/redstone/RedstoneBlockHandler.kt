@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.redstone
 
+import com.juyoung.estherserver.EstherServerMod
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -12,7 +13,7 @@ object RedstoneBlockHandler {
 
     private val REDSTONE_BLOCKED = TagKey.create(
         Registries.BLOCK,
-        ResourceLocation.fromNamespaceAndPath("estherserver", "redstone_blocked")
+        ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "redstone_blocked")
     )
 
     @SubscribeEvent
