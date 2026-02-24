@@ -7,6 +7,7 @@ import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
@@ -86,7 +87,8 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        GuiTheme.renderPanel(guiGraphics, guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT)
+        // 텍스처 배경 (240x250 영역, 256x256 캔버스)
+        guiGraphics.blit(RenderType::guiTextured, GuiTheme.ENHANCEMENT_BG, guiLeft, guiTop, 0f, 0f, GUI_WIDTH, GUI_HEIGHT, 256, 256)
     }
 
     private fun renderTitle(guiGraphics: GuiGraphics) {
@@ -162,7 +164,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
         val detailWidth = GUI_WIDTH - PADDING * 2
         val detailHeight = guiTop + GUI_HEIGHT - 24 - detailY
 
-        GuiTheme.renderInnerPanel(guiGraphics, detailX, detailY, detailWidth, detailHeight)
+        // 디테일 패널 배경은 텍스처에 이미 포함됨
 
         if (selectedIndex < 0 || selectedIndex >= equipmentSlots.size) {
             guiGraphics.drawCenteredString(

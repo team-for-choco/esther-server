@@ -5,6 +5,7 @@ import com.juyoung.estherserver.economy.ItemPriceRegistry
 import com.juyoung.estherserver.gui.GuiTheme
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
@@ -92,15 +93,8 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        GuiTheme.renderPanel(guiGraphics, guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT)
-
-        val gridY = guiTop + 38
-        val gridHeight = getGridHeight()
-        GuiTheme.renderInnerPanel(
-            guiGraphics,
-            guiLeft + PADDING - 1, gridY - 1,
-            GUI_WIDTH - PADDING * 2 + 2, gridHeight + 2
-        )
+        // 텍스처 배경 (220x200 영역, 256x256 캔버스)
+        guiGraphics.blit(RenderType::guiTextured, GuiTheme.SHOP_BG, guiLeft, guiTop, 0f, 0f, GUI_WIDTH, GUI_HEIGHT, 256, 256)
     }
 
     private fun renderTitle(guiGraphics: GuiGraphics) {

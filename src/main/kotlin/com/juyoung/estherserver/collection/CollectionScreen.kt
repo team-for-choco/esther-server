@@ -2,6 +2,7 @@ package com.juyoung.estherserver.collection
 
 import com.juyoung.estherserver.gui.GuiTheme
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.renderer.RenderType
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.registries.BuiltInRegistries
@@ -78,28 +79,8 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        GuiTheme.renderPanel(guiGraphics, guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT)
-
-        if (!showTitleTab) {
-            val gridY = guiTop + 38
-            val gridHeight = getVisibleDefinitions().size.let { count ->
-                val rows = (count + COLUMNS - 1) / COLUMNS
-                rows.coerceAtLeast(1) * SLOT_SIZE + 4
-            }
-            GuiTheme.renderInnerPanel(
-                guiGraphics,
-                guiLeft + PADDING - 1, gridY - 1,
-                COLUMNS * SLOT_SIZE + 3, gridHeight + 3
-            )
-        } else {
-            val contentY = guiTop + 38
-            val visibleHeight = guiTop + GUI_HEIGHT - 8 - contentY
-            GuiTheme.renderInnerPanel(
-                guiGraphics,
-                guiLeft + PADDING - 1, contentY - 1,
-                GUI_WIDTH - PADDING * 2 + 2, visibleHeight + 2
-            )
-        }
+        // 텍스처 배경 (198x186 영역, 256x256 캔버스)
+        guiGraphics.blit(RenderType::guiTextured, GuiTheme.COLLECTION_BG, guiLeft, guiTop, 0f, 0f, GUI_WIDTH, GUI_HEIGHT, 256, 256)
     }
 
     private fun renderTitle(guiGraphics: GuiGraphics) {
