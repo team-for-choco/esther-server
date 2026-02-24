@@ -22,6 +22,8 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         private const val TAB_HEIGHT = 16
         private const val TAB_GAP = 2
 
+        private const val GRID_VISIBLE_ROWS = 6
+
         private const val MILESTONE_ROW_HEIGHT = 24
         private const val MILESTONE_PADDING = 4
 
@@ -43,6 +45,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     private var guiTop = 0
     private var selectedCategory: CollectionCategory? = null
     private var showTitleTab = false
+    private var gridScroll = 0
     private var milestoneScroll = 0
     private val itemCache = mutableMapOf<CollectionKey, ItemStack>()
 
@@ -116,6 +119,12 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
 
             tabX += tabWidth + TAB_GAP
         }
+    }
+
+    private fun getGridMaxScroll(): Int {
+        val defs = getVisibleDefinitions()
+        val totalRows = (defs.size + COLUMNS - 1) / COLUMNS
+        return (totalRows - GRID_VISIBLE_ROWS).coerceAtLeast(0)
     }
 
     private fun getMilestoneVisibleTop(): Int = guiTop + 38
@@ -198,12 +207,22 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         val data = CollectionClientHandler.cachedData
         val startX = guiLeft + PADDING
         val startY = guiTop + 38
+        val visibleHeight = GRID_VISIBLE_ROWS * SLOT_SIZE
+
+        gridScroll = gridScroll.coerceIn(0, getGridMaxScroll())
+
+        guiGraphics.enableScissor(
+            guiLeft + PADDING, startY,
+            guiLeft + GUI_WIDTH - PADDING, startY + visibleHeight
+        )
 
         for ((index, def) in defs.withIndex()) {
             val col = index % COLUMNS
             val row = index / COLUMNS
             val slotX = startX + col * SLOT_SIZE
-            val slotY = startY + row * SLOT_SIZE
+            val slotY = startY + (row - gridScroll) * SLOT_SIZE
+
+            if (slotY + SLOT_SIZE < startY || slotY > startY + visibleHeight) continue
 
             val isDiscovered = data.isComplete(def.key)
 
@@ -221,6 +240,19 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
                 guiGraphics.drawCenteredString(font, "?", slotX + 9, slotY + 5, GuiTheme.TEXT_MUTED)
             }
         }
+
+        guiGraphics.disableScissor()
+
+        // Scrollbar
+        val maxScroll = getGridMaxScroll()
+        if (maxScroll > 0) {
+            val totalRows = (defs.size + COLUMNS - 1) / COLUMNS
+            val scrollbarX = guiLeft + GUI_WIDTH - PADDING - 3
+            val scrollbarHeight = (GRID_VISIBLE_ROWS.toFloat() / totalRows * visibleHeight).toInt().coerceAtLeast(8)
+            val scrollbarY = startY + (gridScroll.toFloat() / maxScroll * (visibleHeight - scrollbarHeight)).toInt()
+            guiGraphics.fill(scrollbarX, startY, scrollbarX + 3, startY + visibleHeight, GuiTheme.SCROLLBAR_BG)
+            guiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + 3, scrollbarY + scrollbarHeight, GuiTheme.SCROLLBAR_THUMB)
+        }
     }
 
     private fun renderProgress(guiGraphics: GuiGraphics) {
@@ -229,9 +261,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         val completed = data.getCompletedCount()
         val percentage = if (total > 0) completed * 100 / total else 0
 
-        val defs = getVisibleDefinitions()
-        val rows = (defs.size + COLUMNS - 1) / COLUMNS
-        val progressY = guiTop + 38 + rows.coerceAtLeast(1) * SLOT_SIZE + 8
+        val progressY = guiTop + 38 + GRID_VISIBLE_ROWS * SLOT_SIZE + 4
 
         val barX = guiLeft + PADDING
         val barWidth = COLUMNS * SLOT_SIZE
@@ -251,12 +281,17 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         val data = CollectionClientHandler.cachedData
         val startX = guiLeft + PADDING
         val startY = guiTop + 38
+        val visibleHeight = GRID_VISIBLE_ROWS * SLOT_SIZE
+
+        if (mouseY < startY || mouseY >= startY + visibleHeight) return
 
         for ((index, def) in defs.withIndex()) {
             val col = index % COLUMNS
             val row = index / COLUMNS
             val slotX = startX + col * SLOT_SIZE
-            val slotY = startY + row * SLOT_SIZE
+            val slotY = startY + (row - gridScroll) * SLOT_SIZE
+
+            if (slotY + SLOT_SIZE <= startY || slotY >= startY + visibleHeight) continue
 
             if (mouseX >= slotX && mouseX < slotX + SLOT_SIZE &&
                 mouseY >= slotY && mouseY < slotY + SLOT_SIZE
@@ -297,6 +332,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
                     } else {
                         showTitleTab = false
                         selectedCategory = tab.category
+                        gridScroll = 0
                     }
                     return true
                 }
@@ -334,6 +370,11 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     override fun mouseScrolled(mouseX: Double, mouseY: Double, scrollX: Double, scrollY: Double): Boolean {
         if (showTitleTab) {
             milestoneScroll = (milestoneScroll - (scrollY * 12).toInt()).coerceIn(0, getMilestoneMaxScroll())
+            return true
+        }
+        val maxScroll = getGridMaxScroll()
+        if (maxScroll > 0) {
+            gridScroll = (gridScroll - scrollY.toInt()).coerceIn(0, maxScroll)
             return true
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY)
