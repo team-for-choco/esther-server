@@ -33,3 +33,6 @@ repo
 
 # generated files
 *.pdf
+
+# local tool config
+.mcp.json
