@@ -42,7 +42,6 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
     companion object {
         val CODEC: MapCodec<CookingStationBlock> = simpleCodec(::CookingStationBlock)
         val FACING: EnumProperty<Direction> = HorizontalDirectionalBlock.FACING
-        private const val MAX_INGREDIENTS = 4
         private const val BASE_COOKING_TIME_SECONDS = 5.0f
 
         val COOKING_INGREDIENT_TAG: TagKey<Item> = TagKey.create(
@@ -115,13 +114,6 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         if (blockEntity.hasCookingTask(playerUUID)) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_in_progress"), true
-            )
-            return InteractionResult.FAIL
-        }
-
-        if (blockEntity.getIngredientCount(playerUUID) >= MAX_INGREDIENTS) {
-            player.displayClientMessage(
-                Component.translatable("message.estherserver.cooking_station_full"), true
             )
             return InteractionResult.FAIL
         }

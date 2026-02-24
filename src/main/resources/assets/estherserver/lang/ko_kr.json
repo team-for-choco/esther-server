@@ -31,7 +31,6 @@
   "item.estherserver.gimbap": "김밥",
   "item.estherserver.harvest_bibimbap": "수확물비빔밥",
   "message.estherserver.ingredient_added": "재료 투입 (%s개)",
-  "message.estherserver.cooking_station_full": "더 이상 재료를 넣을 수 없습니다!",
   "message.estherserver.cooking_success": "요리 완성!",
   "message.estherserver.cooking_failed": "요리에 실패했습니다...",
   "block.estherserver.collection_pedestal": "도감대",
