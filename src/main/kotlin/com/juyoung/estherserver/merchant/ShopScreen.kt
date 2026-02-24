@@ -2,8 +2,10 @@ package com.juyoung.estherserver.merchant
 
 import com.juyoung.estherserver.economy.EconomyClientHandler
 import com.juyoung.estherserver.economy.ItemPriceRegistry
+import com.juyoung.estherserver.gui.GuiTheme
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
@@ -24,13 +26,6 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
         private const val PADDING = 10
         private const val TAB_HEIGHT = 16
         private const val TAB_GAP = 2
-
-        private val BG_COLOR = 0xFFC6C6C6.toInt()
-        private val BG_DARK = 0xFF8B8B8B.toInt()
-        private val CELL_BG = 0xFF4A4A4A.toInt()
-        private val CELL_HOVER = 0xFF5A5A5A.toInt()
-        private val GOLD_COLOR = 0xFFFFD700.toInt()
-        private val INSUFFICIENT_COLOR = 0xFFFF6666.toInt()
     }
 
     private enum class ShopMode(val translationKey: String) {
@@ -98,16 +93,8 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        guiGraphics.fill(guiLeft, guiTop, guiLeft + GUI_WIDTH, guiTop + GUI_HEIGHT, BG_COLOR)
-        guiGraphics.renderOutline(guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT, 0xFF000000.toInt())
-
-        val gridY = guiTop + 38
-        val gridHeight = getGridHeight()
-        guiGraphics.fill(
-            guiLeft + PADDING - 1, gridY - 1,
-            guiLeft + GUI_WIDTH - PADDING + 1, gridY + gridHeight + 1,
-            BG_DARK
-        )
+        // 텍스처 배경 (220x200 영역, 256x256 캔버스)
+        guiGraphics.blit(RenderType::guiTextured, GuiTheme.SHOP_BG, guiLeft, guiTop, 0f, 0f, GUI_WIDTH, GUI_HEIGHT, 256, 256)
     }
 
     private fun renderTitle(guiGraphics: GuiGraphics) {
@@ -116,7 +103,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             Component.translatable("gui.estherserver.shop.title.${merchantType.name.lowercase()}"),
             guiLeft + GUI_WIDTH / 2,
             guiTop + 6,
-            0xFF404040.toInt()
+            GuiTheme.TEXT_TITLE
         )
     }
 
@@ -133,16 +120,15 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
                 mouseY >= tabY && mouseY < tabY + TAB_HEIGHT
 
             val bgColor = when {
-                isSelected -> 0xFFFFFFFF.toInt()
-                isHovered -> 0xFFDDDDDD.toInt()
-                else -> 0xFFAAAAAA.toInt()
+                isSelected -> GuiTheme.TAB_ACTIVE
+                isHovered -> GuiTheme.TAB_HOVER
+                else -> GuiTheme.TAB_INACTIVE
             }
             guiGraphics.fill(tabX, tabY, tabX + tabWidth, tabY + TAB_HEIGHT, bgColor)
-            guiGraphics.renderOutline(tabX, tabY, tabWidth, TAB_HEIGHT, 0xFF000000.toInt())
             guiGraphics.drawString(
                 font, label,
                 tabX + 4, tabY + 4,
-                if (isSelected) 0xFF000000.toInt() else 0xFF404040.toInt()
+                if (isSelected) GuiTheme.TEXT_WHITE else GuiTheme.TEXT_BODY
             )
             tabX += tabWidth + TAB_GAP
         }
@@ -173,7 +159,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
                 mouseY >= cellY && mouseY < cellY + CELL_HEIGHT &&
                 mouseY >= startY && mouseY < startY + visibleHeight
 
-            val bgColor = if (isHovered) CELL_HOVER else CELL_BG
+            val bgColor = if (isHovered) GuiTheme.CELL_HOVER else GuiTheme.CELL_BG
             guiGraphics.fill(cellX + 1, cellY + 1, cellX + CELL_WIDTH - 1, cellY + CELL_HEIGHT - 1, bgColor)
 
             val stack = buyItemCache[entry.itemId.toString()]
@@ -182,7 +168,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             }
 
             val priceText = "${entry.buyPrice} 기운"
-            val priceColor = if (balance >= entry.buyPrice) GOLD_COLOR else INSUFFICIENT_COLOR
+            val priceColor = if (balance >= entry.buyPrice) GuiTheme.TEXT_GOLD else GuiTheme.TEXT_INSUFFICIENT
             val priceWidth = font.width(priceText)
             guiGraphics.drawString(
                 font, priceText,
@@ -218,18 +204,17 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
                 mouseY >= cellY && mouseY < cellY + CELL_HEIGHT &&
                 mouseY >= startY && mouseY < startY + visibleHeight
 
-            val bgColor = if (isHovered) CELL_HOVER else CELL_BG
+            val bgColor = if (isHovered) GuiTheme.CELL_HOVER else GuiTheme.CELL_BG
             guiGraphics.fill(cellX + 1, cellY + 1, cellX + CELL_WIDTH - 1, cellY + CELL_HEIGHT - 1, bgColor)
 
             guiGraphics.renderItem(slot.stack, cellX + (CELL_WIDTH - 16) / 2, cellY + 2)
 
-            // Show count overlay
             if (slot.stack.count > 1) {
                 val countStr = slot.stack.count.toString()
                 guiGraphics.drawString(
                     font, countStr,
                     cellX + CELL_WIDTH - 4 - font.width(countStr), cellY + 2,
-                    0xFFFFFFFF.toInt()
+                    GuiTheme.TEXT_WHITE
                 )
             }
 
@@ -238,7 +223,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             guiGraphics.drawString(
                 font, priceText,
                 cellX + (CELL_WIDTH - priceWidth) / 2, cellY + CELL_HEIGHT - 12,
-                GOLD_COLOR
+                GuiTheme.TEXT_GOLD
             )
         }
 
@@ -256,8 +241,8 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             val scrollbarY = if (maxScroll > 0) {
                 startY + (scrollOffset.toFloat() / maxScroll * (visibleHeight - scrollbarHeight)).toInt()
             } else startY
-            guiGraphics.fill(scrollbarX, startY, scrollbarX + 3, startY + visibleHeight, 0xFF555555.toInt())
-            guiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + 3, scrollbarY + scrollbarHeight, 0xFFAAAAAA.toInt())
+            guiGraphics.fill(scrollbarX, startY, scrollbarX + 3, startY + visibleHeight, GuiTheme.SCROLLBAR_BG)
+            guiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + 3, scrollbarY + scrollbarHeight, GuiTheme.SCROLLBAR_THUMB)
         }
     }
 
@@ -268,7 +253,7 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             font, balanceText,
             guiLeft + GUI_WIDTH / 2,
             guiTop + GUI_HEIGHT - 16,
-            GOLD_COLOR
+            GuiTheme.TEXT_GOLD
         )
     }
 
@@ -348,7 +333,6 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (button == 0) {
-            // Mode tab click
             var tabX = guiLeft + PADDING
             val tabY = guiTop + 19
 
@@ -371,7 +355,6 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
                 tabX += tabWidth + TAB_GAP
             }
 
-            // Grid item click
             when (currentMode) {
                 ShopMode.BUY -> return handleBuyClick(mouseX, mouseY)
                 ShopMode.SELL -> return handleSellClick(mouseX, mouseY)
@@ -426,7 +409,6 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
                 val quantity = if (hasShiftDown()) slot.stack.count else 1
                 PacketDistributor.sendToServer(SellItemPayload(entityId, slot.slotIndex, quantity))
 
-                // Optimistic UI update
                 val newCount = slot.stack.count - quantity
                 if (newCount <= 0) {
                     sellableSlots = sellableSlots.toMutableList().also { it.removeAt(index) }

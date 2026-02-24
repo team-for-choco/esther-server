@@ -1,7 +1,9 @@
 package com.juyoung.estherserver.inventory
 
+import com.juyoung.estherserver.gui.GuiTheme
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
@@ -17,14 +19,6 @@ class ProfessionInventoryContainerScreen(
         private const val TAB_WIDTH = 50
         private const val TAB_HEIGHT = 18
         private const val PADDING = 8
-
-        private val BG_COLOR = 0xFFC6C6C6.toInt()
-        private val TAB_ACTIVE = 0xFFAAAAAA.toInt()
-        private val TAB_INACTIVE = 0xFF888888.toInt()
-        private val SLOT_BG = 0xFF8B8B8B.toInt()
-        private val SLOT_LOCKED = 0xFF555555.toInt()
-        private val TEXT_COLOR = 0xFF404040.toInt()
-        private val TEXT_LIGHT = 0xFFCCCCCC.toInt()
 
         private val TABS = listOf(
             "profession.estherserver.mining",
@@ -48,9 +42,8 @@ class ProfessionInventoryContainerScreen(
     }
 
     override fun renderBg(guiGraphics: GuiGraphics, partialTick: Float, mouseX: Int, mouseY: Int) {
-        // Background panel
-        guiGraphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, BG_COLOR)
-        guiGraphics.renderOutline(leftPos, topPos, imageWidth, imageHeight, 0xFF000000.toInt())
+        // Background panel (280x222 영역, 512x256 캔버스)
+        guiGraphics.blit(RenderType::guiTextured, GuiTheme.PROFESSION_INVENTORY_BG, leftPos, topPos, 0f, 0f, imageWidth, imageHeight, 512, 256)
 
         // Tabs
         renderTabs(guiGraphics)
@@ -64,7 +57,12 @@ class ProfessionInventoryContainerScreen(
             guiGraphics.fill(
                 leftPos + slot.x - 1, topPos + slot.y - 1,
                 leftPos + slot.x + 17, topPos + slot.y + 17,
-                SLOT_BG
+                GuiTheme.SLOT_BG
+            )
+            guiGraphics.fill(
+                leftPos + slot.x, topPos + slot.y,
+                leftPos + slot.x + 16, topPos + slot.y + 16,
+                GuiTheme.SLOT_INNER
             )
         }
     }
@@ -74,10 +72,9 @@ class ProfessionInventoryContainerScreen(
         for (i in TABS.indices) {
             val tabX = leftPos + PADDING + i * (TAB_WIDTH + 2)
             val isActive = i == menu.currentTab
-            val color = if (isActive) TAB_ACTIVE else TAB_INACTIVE
 
+            val color = if (isActive) GuiTheme.TAB_ACTIVE else GuiTheme.TAB_INACTIVE
             guiGraphics.fill(tabX, tabY, tabX + TAB_WIDTH, tabY + TAB_HEIGHT, color)
-            guiGraphics.renderOutline(tabX, tabY, TAB_WIDTH, TAB_HEIGHT, 0xFF000000.toInt())
 
             val label = Component.translatable(TABS[i])
             val labelWidth = font.width(label)
@@ -86,7 +83,7 @@ class ProfessionInventoryContainerScreen(
                 label,
                 tabX + (TAB_WIDTH - labelWidth) / 2,
                 tabY + 5,
-                if (isActive) TEXT_COLOR else TEXT_LIGHT
+                if (isActive) GuiTheme.TEXT_WHITE else GuiTheme.TEXT_BODY
             )
         }
     }
@@ -94,18 +91,24 @@ class ProfessionInventoryContainerScreen(
     private fun renderProfessionSlotBackgrounds(guiGraphics: GuiGraphics) {
         for (i in 0 until ProfessionInventoryMenu.PROFESSION_SLOT_COUNT) {
             val slot = menu.slots[i]
-            val color = if (i < menu.unlockedSlots) SLOT_BG else SLOT_LOCKED
+            val color = if (i < menu.unlockedSlots) GuiTheme.SLOT_BG else GuiTheme.SLOT_LOCKED
             guiGraphics.fill(
                 leftPos + slot.x - 1, topPos + slot.y - 1,
                 leftPos + slot.x + 17, topPos + slot.y + 17,
                 color
             )
+            val innerColor = if (i < menu.unlockedSlots) GuiTheme.SLOT_INNER else GuiTheme.SLOT_LOCKED
+            guiGraphics.fill(
+                leftPos + slot.x, topPos + slot.y,
+                leftPos + slot.x + 16, topPos + slot.y + 16,
+                innerColor
+            )
         }
     }
 
     override fun renderLabels(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
-        guiGraphics.drawString(font, title, titleLabelX, titleLabelY, TEXT_COLOR, false)
-        guiGraphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, TEXT_COLOR, false)
+        guiGraphics.drawString(font, title, titleLabelX, titleLabelY, GuiTheme.TEXT_TITLE, false)
+        guiGraphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, GuiTheme.TEXT_BODY, false)
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {

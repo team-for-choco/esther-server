@@ -2,11 +2,12 @@ package com.juyoung.estherserver.enhancement
 
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyClientHandler
+import com.juyoung.estherserver.gui.GuiTheme
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.quality.ModDataComponents
-import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
@@ -21,20 +22,6 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
         private const val GUI_HEIGHT = 250
         private const val ROW_HEIGHT = 30
         private const val PADDING = 10
-
-        private val BG_COLOR = 0xFFC6C6C6.toInt()
-        private val ROW_BG = 0xFF4A4A4A.toInt()
-        private val ROW_HOVER = 0xFF5A5A5A.toInt()
-        private val ROW_SELECTED = 0xFF3A5A3A.toInt()
-        private val GOLD_COLOR = 0xFFFFD700.toInt()
-        private val INSUFFICIENT_COLOR = 0xFFFF6666.toInt()
-        private val COMMON_COLOR = 0xFFFFFFFF.toInt()
-        private val FINE_COLOR = 0xFF55FF55.toInt()
-        private val RARE_COLOR = 0xFF5555FF.toInt()
-        private val BUTTON_COLOR = 0xFF55AA55.toInt()
-        private val BUTTON_HOVER = 0xFF66BB66.toInt()
-        private val BUTTON_DISABLED = 0xFF888888.toInt()
-        private val DETAIL_BG = 0xFF3A3A3A.toInt()
     }
 
     data class EquipmentSlot(
@@ -100,8 +87,8 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        guiGraphics.fill(guiLeft, guiTop, guiLeft + GUI_WIDTH, guiTop + GUI_HEIGHT, BG_COLOR)
-        guiGraphics.renderOutline(guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT, 0xFF000000.toInt())
+        // 텍스처 배경 (240x250 영역, 256x256 캔버스)
+        guiGraphics.blit(RenderType::guiTextured, GuiTheme.ENHANCEMENT_BG, guiLeft, guiTop, 0f, 0f, GUI_WIDTH, GUI_HEIGHT, 256, 256)
     }
 
     private fun renderTitle(guiGraphics: GuiGraphics) {
@@ -110,7 +97,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
             Component.translatable("gui.estherserver.enhancement.title"),
             guiLeft + GUI_WIDTH / 2,
             guiTop + 6,
-            0xFF404040.toInt()
+            GuiTheme.TEXT_TITLE
         )
     }
 
@@ -126,9 +113,9 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
             val isSelected = selectedIndex == index
 
             val bgColor = when {
-                isSelected -> ROW_SELECTED
-                isHovered -> ROW_HOVER
-                else -> ROW_BG
+                isSelected -> GuiTheme.ROW_SELECTED
+                isHovered -> GuiTheme.ROW_HOVER
+                else -> GuiTheme.ROW_BG
             }
 
             guiGraphics.fill(startX, rowY, startX + rowWidth, rowY + ROW_HEIGHT - 2, bgColor)
@@ -144,7 +131,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
             guiGraphics.renderItem(iconStack, startX + 4, rowY + (ROW_HEIGHT - 2 - 16) / 2)
 
             // Equipment name
-            val nameColor = if (slot.level >= 0) getGradeColor(slot.level) else 0xFFAAAAAA.toInt()
+            val nameColor = if (slot.level >= 0) getGradeColor(slot.level) else GuiTheme.TEXT_MUTED
             guiGraphics.drawString(
                 font,
                 Component.translatable(slot.item.descriptionId),
@@ -159,13 +146,13 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                     .append(" (")
                     .append(Component.translatable(gradeKey))
                     .append(")")
-                guiGraphics.drawString(font, levelText, startX + 24, rowY + 16, 0xFFCCCCCC.toInt())
+                guiGraphics.drawString(font, levelText, startX + 24, rowY + 16, GuiTheme.TEXT_BODY)
             } else {
                 guiGraphics.drawString(
                     font,
                     Component.translatable("gui.estherserver.enhancement.not_owned"),
                     startX + 24, rowY + 16,
-                    0xFF999999.toInt()
+                    GuiTheme.TEXT_MUTED
                 )
             }
         }
@@ -177,8 +164,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
         val detailWidth = GUI_WIDTH - PADDING * 2
         val detailHeight = guiTop + GUI_HEIGHT - 24 - detailY
 
-        guiGraphics.fill(detailX, detailY, detailX + detailWidth, detailY + detailHeight, DETAIL_BG)
-        guiGraphics.renderOutline(detailX, detailY, detailWidth, detailHeight, 0xFF000000.toInt())
+        // 디테일 패널 배경은 텍스처에 이미 포함됨
 
         if (selectedIndex < 0 || selectedIndex >= equipmentSlots.size) {
             guiGraphics.drawCenteredString(
@@ -186,7 +172,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 Component.translatable("gui.estherserver.enhancement.select_equipment"),
                 guiLeft + GUI_WIDTH / 2,
                 detailY + detailHeight / 2 - 4,
-                0xFF999999.toInt()
+                GuiTheme.TEXT_MUTED
             )
             return
         }
@@ -195,15 +181,14 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
         val balance = EconomyClientHandler.cachedBalance
 
         if (slot.level < 0) {
-            // Not owned - show buy info
             val buyPrice = EnhancementHandler.EQUIPMENT_BUY_PRICE
             guiGraphics.drawString(
                 font,
                 Component.translatable("gui.estherserver.enhancement.buy_info"),
                 detailX + 6, detailY + 6,
-                COMMON_COLOR
+                GuiTheme.TEXT_WHITE
             )
-            val priceColor = if (balance >= buyPrice) GOLD_COLOR else INSUFFICIENT_COLOR
+            val priceColor = if (balance >= buyPrice) GuiTheme.TEXT_GOLD else GuiTheme.TEXT_INSUFFICIENT
             guiGraphics.drawString(
                 font,
                 Component.translatable("gui.estherserver.enhancement.buy_price", buyPrice),
@@ -211,7 +196,6 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 priceColor
             )
 
-            // Buy button
             renderActionButton(
                 guiGraphics, mouseX, mouseY,
                 detailX + detailWidth / 2 - 35, detailY + 36, 70, 16,
@@ -219,16 +203,14 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 balance >= buyPrice
             )
         } else if (slot.level >= EnhancementHandler.MAX_LEVEL) {
-            // Max level
             guiGraphics.drawCenteredString(
                 font,
                 Component.translatable("gui.estherserver.enhancement.max_level"),
                 guiLeft + GUI_WIDTH / 2,
                 detailY + detailHeight / 2 - 4,
-                RARE_COLOR
+                GuiTheme.GRADE_RARE
             )
         } else {
-            // Can enhance
             val cost = EnhancementHandler.ENHANCEMENT_TABLE[slot.level] ?: return
             val nextLevel = slot.level + 1
             val successPercent = (cost.successRate * 100).toInt()
@@ -237,10 +219,10 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 font,
                 Component.translatable("gui.estherserver.enhancement.enhance_info", slot.level, nextLevel),
                 detailX + 6, detailY + 4,
-                COMMON_COLOR
+                GuiTheme.TEXT_WHITE
             )
 
-            val priceColor = if (balance >= cost.cost) GOLD_COLOR else INSUFFICIENT_COLOR
+            val priceColor = if (balance >= cost.cost) GuiTheme.TEXT_GOLD else GuiTheme.TEXT_INSUFFICIENT
             guiGraphics.drawString(
                 font,
                 Component.translatable("gui.estherserver.enhancement.cost", cost.cost),
@@ -252,13 +234,13 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 font,
                 Component.translatable("gui.estherserver.enhancement.rate", successPercent),
                 detailX + 6, detailY + 28,
-                0xFFCCCCCC.toInt()
+                GuiTheme.TEXT_BODY
             )
 
             var buttonY = detailY + 42
             if (cost.requiresStone) {
                 val hasStone = hasEnhancementStone()
-                val stoneColor = if (hasStone) FINE_COLOR else INSUFFICIENT_COLOR
+                val stoneColor = if (hasStone) GuiTheme.GRADE_FINE else GuiTheme.TEXT_INSUFFICIENT
                 guiGraphics.drawString(
                     font,
                     Component.translatable("gui.estherserver.enhancement.requires_stone"),
@@ -286,14 +268,18 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
     ) {
         val isHovered = mouseX >= x && mouseX < x + w && mouseY >= y && mouseY < y + h
         val bgColor = when {
-            !enabled -> BUTTON_DISABLED
-            isHovered -> BUTTON_HOVER
-            else -> BUTTON_COLOR
+            !enabled -> GuiTheme.BUTTON_DISABLED
+            isHovered -> GuiTheme.BUTTON_HOVER
+            else -> GuiTheme.BUTTON
         }
 
         guiGraphics.fill(x, y, x + w, y + h, bgColor)
-        guiGraphics.renderOutline(x, y, w, h, 0xFF000000.toInt())
-        guiGraphics.drawCenteredString(font, label, x + w / 2, y + 4, COMMON_COLOR)
+        // 3D button border
+        guiGraphics.fill(x, y, x + w, y + 1, GuiTheme.PANEL_BORDER_LIGHT)
+        guiGraphics.fill(x, y, x + 1, y + h, GuiTheme.PANEL_BORDER_LIGHT)
+        guiGraphics.fill(x, y + h - 1, x + w, y + h, GuiTheme.PANEL_BORDER_DARK)
+        guiGraphics.fill(x + w - 1, y, x + w, y + h, GuiTheme.PANEL_BORDER_DARK)
+        guiGraphics.drawCenteredString(font, label, x + w / 2, y + 4, GuiTheme.TEXT_WHITE)
     }
 
     private fun renderBalance(guiGraphics: GuiGraphics) {
@@ -303,7 +289,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
             font, balanceText,
             guiLeft + GUI_WIDTH / 2,
             guiTop + GUI_HEIGHT - 16,
-            GOLD_COLOR
+            GuiTheme.TEXT_GOLD
         )
     }
 
@@ -338,7 +324,6 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (button == 0) {
-            // Equipment row click
             val startX = guiLeft + PADDING
             val startY = guiTop + 20
             val rowWidth = GUI_WIDTH - PADDING * 2
@@ -353,7 +338,6 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 }
             }
 
-            // Action button click
             if (selectedIndex in equipmentSlots.indices) {
                 val slot = equipmentSlots[selectedIndex]
                 val detailX = guiLeft + PADDING
@@ -364,7 +348,6 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 val buttonH = 16
 
                 if (slot.level < 0) {
-                    // Buy button
                     val buttonY = detailY + 36
                     if (mouseX >= buttonX && mouseX < buttonX + buttonW &&
                         mouseY >= buttonY && mouseY < buttonY + buttonH
@@ -379,7 +362,6 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                         return true
                     }
                 } else if (slot.level < EnhancementHandler.MAX_LEVEL) {
-                    // Enhance button
                     val cost = EnhancementHandler.ENHANCEMENT_TABLE[slot.level] ?: return true
                     var buttonY = detailY + 42
                     if (cost.requiresStone) buttonY = detailY + 54
@@ -412,8 +394,8 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
     }
 
     private fun getGradeColor(level: Int): Int = when {
-        level >= 5 -> RARE_COLOR
-        level >= 3 -> FINE_COLOR
-        else -> COMMON_COLOR
+        level >= 5 -> GuiTheme.GRADE_RARE
+        level >= 3 -> GuiTheme.GRADE_FINE
+        else -> GuiTheme.GRADE_COMMON
     }
 }
