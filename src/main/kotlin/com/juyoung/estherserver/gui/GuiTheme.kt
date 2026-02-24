@@ -59,11 +59,9 @@ object GuiTheme {
     // ── 텍스트 ──
     val TEXT_WHITE = 0xFFFFFFFF.toInt()
     val TEXT_TITLE = 0xFFA0E8FF.toInt()          // 밝은 시안 제목
-    val TEXT_ACCENT = 0xFFA0E8FF.toInt()         // 강조 텍스트
     val TEXT_GOLD = 0xFFFFD700.toInt()            // 화폐 골드
     val TEXT_MUTED = 0xFF888899.toInt()           // 비활성
     val TEXT_BODY = 0xFFCCCCDD.toInt()            // 본문
-    val TEXT_DARK = 0xFFA0E8FF.toInt()            // 패널 위 제목 (밝은 시안)
     val TEXT_INSUFFICIENT = 0xFFFF6666.toInt()    // 잔액 부족
 
     // ── 등급 ──
