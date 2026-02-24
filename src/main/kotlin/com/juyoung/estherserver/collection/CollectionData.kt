@@ -146,10 +146,10 @@ class CollectionData(
 
                     val existing = data.entries[key]
                     if (existing != null) {
-                        // Merge: keep earliest discovery time, sum counts
+                        // Merge: keep earliest discovery time, keep highest count
                         data.entries[key] = CollectionEntry(
                             firstDiscoveredAt = minOf(existing.firstDiscoveredAt, entry.firstDiscoveredAt),
-                            count = existing.count + entry.count
+                            count = maxOf(existing.count, entry.count)
                         )
                     } else {
                         data.entries[key] = entry
