@@ -367,5 +367,6 @@
   "item.estherserver.matsutake_soup": "송이탕",
   "item.estherserver.saffron_rice": "사프란밥",
   "item.estherserver.abalone_porridge": "전복죽",
-  "item.estherserver.king_crab_stew": "대게찜"
+  "item.estherserver.king_crab_stew": "대게찜",
+  "message.estherserver.redstone_blocked": "이 블록은 설치할 수 없습니다."
 }

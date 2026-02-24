@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:remove_features",
+  "biomes": "#c:is_overworld",
+  "features": [
+    "minecraft:ore_redstone",
+    "minecraft:ore_redstone_lower"
+  ],
+  "step": "underground_ores"
+}

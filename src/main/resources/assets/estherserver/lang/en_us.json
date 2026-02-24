@@ -367,5 +367,6 @@
   "item.estherserver.matsutake_soup": "Matsutake Soup",
   "item.estherserver.saffron_rice": "Saffron Rice",
   "item.estherserver.abalone_porridge": "Abalone Porridge",
-  "item.estherserver.king_crab_stew": "King Crab Stew"
+  "item.estherserver.king_crab_stew": "King Crab Stew",
+  "message.estherserver.redstone_blocked": "This block cannot be placed."
 }
