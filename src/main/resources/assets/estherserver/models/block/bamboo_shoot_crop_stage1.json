@@ -1,7 +1,1 @@
-{
-  "parent": "minecraft:block/crop",
-  "textures": {
-    "crop": "minecraft:block/wheat_stage2"
-  },
-  "render_type": "minecraft:cutout"
-}
+{"type":"minecraft:crop","crop":"estherserver:block/bamboo_shoot_stage1","render_type":"minecraft:cutout"}

@@ -1,8 +1,1 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "minecraft:block/crafting_table_top",
-    "front": "minecraft:block/crafting_table_front",
-    "side": "minecraft:block/crafting_table_side"
-  }
-}
+{"parent":"minecraft:block/orientable","textures":{"top":"estherserver:block/cooking_station_top","front":"estherserver:block/cooking_station_front","side":"estherserver:block/cooking_station_side"}}

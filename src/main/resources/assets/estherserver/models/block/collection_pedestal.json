@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "minecraft:block/lodestone_top"
-  }
-}
+{"parent":"minecraft:block/orientable","textures":{"top":"estherserver:block/collection_pedestal_top","front":"estherserver:block/collection_pedestal_front","side":"estherserver:block/collection_pedestal_side"}}

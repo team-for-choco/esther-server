@@ -4,12 +4,14 @@ import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyHandler
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.quality.ModDataComponents
+import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.component.CustomModelData
 import net.neoforged.neoforge.registries.DeferredItem
 
 object EnhancementHandler {
@@ -76,6 +78,7 @@ object EnhancementHandler {
 
         val stack = ItemStack(equipItem.get())
         stack.set(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
+        syncCustomModelData(stack, 0)
 
         if (!player.inventory.add(stack)) {
             EconomyHandler.addBalance(player, EQUIPMENT_BUY_PRICE)
@@ -148,6 +151,7 @@ object EnhancementHandler {
         if (roll < cost.successRate) {
             val newLevel = currentLevel + 1
             stack.set(ModDataComponents.ENHANCEMENT_LEVEL.get(), newLevel)
+            syncCustomModelData(stack, newLevel)
             player.sendSystemMessage(
                 Component.translatable(
                     "message.estherserver.enhance_success",
@@ -177,6 +181,18 @@ object EnhancementHandler {
             }
         }
         return -1
+    }
+
+    private fun syncCustomModelData(stack: ItemStack, enhancementLevel: Int) {
+        val gradeFloat = when {
+            enhancementLevel >= 5 -> 2.0f  // rare
+            enhancementLevel >= 3 -> 1.0f  // fine
+            else -> 0.0f                   // common
+        }
+        stack.set(
+            DataComponents.CUSTOM_MODEL_DATA,
+            CustomModelData(listOf(gradeFloat), listOf(), listOf(), listOf())
+        )
     }
 
     fun getGradeTranslationKey(level: Int): String = when {
