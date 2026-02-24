@@ -236,7 +236,6 @@
 
   "message.estherserver.farming_own_claim_only": "You can only farm in chunks you own!",
 
-<<<<<<< HEAD
   "block.estherserver.green_onion_crop": "Green Onion Crop",
   "item.estherserver.green_onion_seeds": "Green Onion Seeds",
   "item.estherserver.green_onion": "Green Onion",
@@ -380,5 +379,7 @@
   "message.estherserver.wild_no_safe_location": "Could not find a safe location. Please try again.",
   "message.estherserver.wild_reset_broadcast": "[Wild] The wild dimension has been reset!",
   "message.estherserver.wild_reset_success": "[Wild] Wild dimension reset complete. Evacuated %s player(s).",
-  "message.estherserver.wild_reset_error": "[Wild] An error occurred while resetting the wild dimension."
+  "message.estherserver.wild_reset_error": "[Wild] An error occurred while resetting the wild dimension.",
+
+  "message.estherserver.overworld_pvp_blocked": "[Base] PvP is not allowed at the base."
 }
