@@ -23,13 +23,13 @@ object AutoFishHandler {
 
         if (!(hook as FishingHookAccessor).`estherserver$isBiting`()) return
 
-        val rod = player.mainHandItem
-        if (rod.item !== EstherServerMod.SPECIAL_FISHING_ROD.get()) return
-
-        val enhLevel = rod.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
-        if (enhLevel < 5) return
+        val rod = listOf(player.mainHandItem, player.offHandItem).firstOrNull {
+            it.item === EstherServerMod.SPECIAL_FISHING_ROD.get() &&
+            it.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0) >= 5
+        } ?: return
 
         hook.retrieve(rod)
+        player.gameEvent(net.minecraft.world.level.gameevent.GameEvent.ITEM_INTERACT_FINISH)
 
         player.level().playSound(
             null, player.x, player.y, player.z,
