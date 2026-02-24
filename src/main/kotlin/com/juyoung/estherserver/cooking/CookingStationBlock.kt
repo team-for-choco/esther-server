@@ -118,6 +118,21 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
             return InteractionResult.FAIL
         }
 
+        // Check concurrent station limit on first ingredient
+        if (blockEntity.getIngredientCount(playerUUID) == 0) {
+            val serverPlayer = player as? ServerPlayer
+            val equipLevel = if (serverPlayer != null) EnhancementHandler.getEquipmentLevel(serverPlayer, Profession.COOKING) else 0
+            val maxStations = CookingStationTracker.getMaxConcurrentStations(equipLevel.coerceAtLeast(0))
+            val activeCount = CookingStationTracker.getActiveCookingCount(playerUUID)
+            if (activeCount >= maxStations) {
+                player.displayClientMessage(
+                    Component.translatable("message.estherserver.cooking_max_stations", maxStations), true
+                )
+                return InteractionResult.FAIL
+            }
+            CookingStationTracker.addActiveCooking(playerUUID, pos)
+        }
+
         val ingredientCopy = stack.copy()
         ingredientCopy.count = 1
         blockEntity.addIngredient(playerUUID, ingredientCopy)
@@ -192,16 +207,6 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         val serverLevel = level as ServerLevel
         val equipLevel = toolStack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
 
-        // Check concurrent cooking station limit
-        val maxStations = CookingStationTracker.getMaxConcurrentStations(equipLevel)
-        val activeCount = CookingStationTracker.getActiveCookingCount(playerUUID)
-        if (activeCount >= maxStations) {
-            player.displayClientMessage(
-                Component.translatable("message.estherserver.cooking_max_stations", maxStations), true
-            )
-            return InteractionResult.FAIL
-        }
-
         val recipeResult = CookingRecipeMatcher.findMatchingRecipe(level, blockEntity.getIngredients(playerUUID))
 
         if (recipeResult != null) {
@@ -220,7 +225,6 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
 
             // Start cooking task (deferred completion)
             blockEntity.startCookingTask(playerUUID, resultStack, cookingTicks)
-            CookingStationTracker.addActiveCooking(playerUUID, pos)
 
             // Starting effects
             serverLevel.sendParticles(
@@ -245,6 +249,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_failed"), true
             )
+            CookingStationTracker.removeActiveCooking(playerUUID, pos)
         }
 
         blockEntity.clearIngredients(playerUUID)
