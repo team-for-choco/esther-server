@@ -136,18 +136,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
             })
 
-        // Custom fish - Test Fish
-        val TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem("test_fish", Item.Properties())
-
-        val COOKED_TEST_FISH: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "cooked_test_fish", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(6)
-                    .saturationModifier(0.8f)
-                    .build()
-            )
-        )
-
         // Helper for crop block properties
         private fun cropProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
             .noCollission()
@@ -155,56 +143,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             .instabreak()
             .sound(SoundType.CROP)
             .pushReaction(PushReaction.DESTROY)
-
-        // Custom crop - Test Crop
-        val TEST_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("test_crop",
-            { properties -> CustomCropBlock(properties, Supplier { TEST_SEEDS.get() }) },
-            cropProperties())
-
-        val TEST_SEEDS: DeferredItem<Item> = ITEMS.registerItem("test_seeds") { properties ->
-            BlockItem(TEST_CROP.get(), properties.useItemDescriptionPrefix())
-        }
-
-        val TEST_HARVEST: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "test_harvest", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(2)
-                    .saturationModifier(0.3f)
-                    .build()
-            )
-        )
-
-        val COOKED_TEST_HARVEST: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "cooked_test_harvest", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(6)
-                    .saturationModifier(0.6f)
-                    .build()
-            )
-        )
-
-        // Custom ore - Test Ore
-        val TEST_ORE: DeferredBlock<Block> = BLOCKS.registerSimpleBlock(
-            "test_ore",
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.STONE)
-                .requiresCorrectToolForDrops()
-                .strength(3.0f, 3.0f)
-        )
-        val TEST_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("test_ore", TEST_ORE)
-
-        val DEEPSLATE_TEST_ORE: DeferredBlock<Block> = BLOCKS.registerSimpleBlock(
-            "deepslate_test_ore",
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.DEEPSLATE)
-                .requiresCorrectToolForDrops()
-                .strength(4.5f, 3.0f)
-                .sound(SoundType.DEEPSLATE)
-        )
-        val DEEPSLATE_TEST_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_test_ore", DEEPSLATE_TEST_ORE)
-
-        val TEST_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_raw", Item.Properties())
-        val TEST_ORE_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("test_ore_ingot", Item.Properties())
 
         // Korean crops - Rice
         val RICE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("rice_crop",
@@ -215,23 +153,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             BlockItem(RICE_CROP.get(), properties.useItemDescriptionPrefix())
         }
 
-        val RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "rice", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(1)
-                    .saturationModifier(0.3f)
-                    .build()
-            )
-        )
+        val RICE: DeferredItem<Item> = ITEMS.registerSimpleItem("rice", Item.Properties())
 
-        val COOKED_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "cooked_rice", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(6)
-                    .saturationModifier(0.7f)
-                    .build()
-            )
-        )
+        val COOKED_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem("cooked_rice", Item.Properties())
 
         // Korean crops - Red Pepper
         val RED_PEPPER_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("red_pepper_crop",
@@ -242,14 +166,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             BlockItem(RED_PEPPER_CROP.get(), properties.useItemDescriptionPrefix())
         }
 
-        val RED_PEPPER: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "red_pepper", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(2)
-                    .saturationModifier(0.3f)
-                    .build()
-            )
-        )
+        val RED_PEPPER: DeferredItem<Item> = ITEMS.registerSimpleItem("red_pepper", Item.Properties())
 
         // Korean crops - Spinach
         val SPINACH_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("spinach_crop",
@@ -260,14 +177,208 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             BlockItem(SPINACH_CROP.get(), properties.useItemDescriptionPrefix())
         }
 
-        val SPINACH: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "spinach", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(2)
-                    .saturationModifier(0.4f)
-                    .build()
-            )
-        )
+        val SPINACH: DeferredItem<Item> = ITEMS.registerSimpleItem("spinach", Item.Properties())
+
+        // New crops - Common
+        val GREEN_ONION_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("green_onion_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GREEN_ONION_SEEDS.get() }) }, cropProperties())
+        val GREEN_ONION_SEEDS: DeferredItem<Item> = ITEMS.registerItem("green_onion_seeds") { properties ->
+            BlockItem(GREEN_ONION_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GREEN_ONION: DeferredItem<Item> = ITEMS.registerSimpleItem("green_onion")
+
+        val GARLIC_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("garlic_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GARLIC_SEEDS.get() }) }, cropProperties())
+        val GARLIC_SEEDS: DeferredItem<Item> = ITEMS.registerItem("garlic_seeds") { properties ->
+            BlockItem(GARLIC_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GARLIC: DeferredItem<Item> = ITEMS.registerSimpleItem("garlic")
+
+        val CABBAGE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("cabbage_crop",
+            { properties -> CustomCropBlock(properties, Supplier { CABBAGE_SEEDS.get() }) }, cropProperties())
+        val CABBAGE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("cabbage_seeds") { properties ->
+            BlockItem(CABBAGE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val CABBAGE: DeferredItem<Item> = ITEMS.registerSimpleItem("cabbage")
+
+        val SOYBEAN_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("soybean_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SOYBEAN_SEEDS.get() }) }, cropProperties())
+        val SOYBEAN_SEEDS: DeferredItem<Item> = ITEMS.registerItem("soybean_seeds") { properties ->
+            BlockItem(SOYBEAN_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SOYBEAN: DeferredItem<Item> = ITEMS.registerSimpleItem("soybean")
+
+        val SESAME_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("sesame_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SESAME_SEEDS.get() }) }, cropProperties())
+        val SESAME_SEEDS: DeferredItem<Item> = ITEMS.registerItem("sesame_seeds") { properties ->
+            BlockItem(SESAME_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SESAME: DeferredItem<Item> = ITEMS.registerSimpleItem("sesame")
+
+        // New crops - Advanced
+        val GINGER_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("ginger_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GINGER_SEEDS.get() }) }, cropProperties())
+        val GINGER_SEEDS: DeferredItem<Item> = ITEMS.registerItem("ginger_seeds") { properties ->
+            BlockItem(GINGER_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GINGER: DeferredItem<Item> = ITEMS.registerSimpleItem("ginger")
+
+        val PERILLA_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("perilla_crop",
+            { properties -> CustomCropBlock(properties, Supplier { PERILLA_SEEDS.get() }) }, cropProperties())
+        val PERILLA_SEEDS: DeferredItem<Item> = ITEMS.registerItem("perilla_seeds") { properties ->
+            BlockItem(PERILLA_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val PERILLA: DeferredItem<Item> = ITEMS.registerSimpleItem("perilla")
+
+        val LOTUS_ROOT_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("lotus_root_crop",
+            { properties -> CustomCropBlock(properties, Supplier { LOTUS_ROOT_SEEDS.get() }) }, cropProperties())
+        val LOTUS_ROOT_SEEDS: DeferredItem<Item> = ITEMS.registerItem("lotus_root_seeds") { properties ->
+            BlockItem(LOTUS_ROOT_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val LOTUS_ROOT: DeferredItem<Item> = ITEMS.registerSimpleItem("lotus_root")
+
+        val SHIITAKE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("shiitake_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SHIITAKE_SEEDS.get() }) }, cropProperties())
+        val SHIITAKE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("shiitake_seeds") { properties ->
+            BlockItem(SHIITAKE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SHIITAKE: DeferredItem<Item> = ITEMS.registerSimpleItem("shiitake")
+
+        val BAMBOO_SHOOT_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("bamboo_shoot_crop",
+            { properties -> CustomCropBlock(properties, Supplier { BAMBOO_SHOOT_SEEDS.get() }) }, cropProperties())
+        val BAMBOO_SHOOT_SEEDS: DeferredItem<Item> = ITEMS.registerItem("bamboo_shoot_seeds") { properties ->
+            BlockItem(BAMBOO_SHOOT_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val BAMBOO_SHOOT: DeferredItem<Item> = ITEMS.registerSimpleItem("bamboo_shoot")
+
+        val WASABI_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("wasabi_crop",
+            { properties -> CustomCropBlock(properties, Supplier { WASABI_SEEDS.get() }) }, cropProperties())
+        val WASABI_SEEDS: DeferredItem<Item> = ITEMS.registerItem("wasabi_seeds") { properties ->
+            BlockItem(WASABI_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val WASABI: DeferredItem<Item> = ITEMS.registerSimpleItem("wasabi")
+
+        // New crops - Rare
+        val GINSENG_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("ginseng_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GINSENG_SEEDS.get() }) }, cropProperties())
+        val GINSENG_SEEDS: DeferredItem<Item> = ITEMS.registerItem("ginseng_seeds") { properties ->
+            BlockItem(GINSENG_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GINSENG: DeferredItem<Item> = ITEMS.registerSimpleItem("ginseng")
+
+        val TRUFFLE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("truffle_crop",
+            { properties -> CustomCropBlock(properties, Supplier { TRUFFLE_SEEDS.get() }) }, cropProperties())
+        val TRUFFLE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("truffle_seeds") { properties ->
+            BlockItem(TRUFFLE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val TRUFFLE: DeferredItem<Item> = ITEMS.registerSimpleItem("truffle")
+
+        val SAFFRON_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("saffron_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SAFFRON_SEEDS.get() }) }, cropProperties())
+        val SAFFRON_SEEDS: DeferredItem<Item> = ITEMS.registerItem("saffron_seeds") { properties ->
+            BlockItem(SAFFRON_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SAFFRON: DeferredItem<Item> = ITEMS.registerSimpleItem("saffron")
+
+        val MATSUTAKE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("matsutake_crop",
+            { properties -> CustomCropBlock(properties, Supplier { MATSUTAKE_SEEDS.get() }) }, cropProperties())
+        val MATSUTAKE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("matsutake_seeds") { properties ->
+            BlockItem(MATSUTAKE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val MATSUTAKE: DeferredItem<Item> = ITEMS.registerSimpleItem("matsutake")
+
+        val YUZU_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("yuzu_crop",
+            { properties -> CustomCropBlock(properties, Supplier { YUZU_SEEDS.get() }) }, cropProperties())
+        val YUZU_SEEDS: DeferredItem<Item> = ITEMS.registerItem("yuzu_seeds") { properties ->
+            BlockItem(YUZU_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val YUZU: DeferredItem<Item> = ITEMS.registerSimpleItem("yuzu")
+
+        val GREEN_TEA_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("green_tea_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GREEN_TEA_SEEDS.get() }) }, cropProperties())
+        val GREEN_TEA_SEEDS: DeferredItem<Item> = ITEMS.registerItem("green_tea_seeds") { properties ->
+            BlockItem(GREEN_TEA_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GREEN_TEA: DeferredItem<Item> = ITEMS.registerSimpleItem("green_tea")
+
+        // Fish - Common
+        val CRUCIAN_CARP: DeferredItem<Item> = ITEMS.registerSimpleItem("crucian_carp")
+        val SWEETFISH: DeferredItem<Item> = ITEMS.registerSimpleItem("sweetfish")
+        val MACKEREL: DeferredItem<Item> = ITEMS.registerSimpleItem("mackerel")
+        val SQUID_CATCH: DeferredItem<Item> = ITEMS.registerSimpleItem("squid_catch")
+        val ANCHOVY: DeferredItem<Item> = ITEMS.registerSimpleItem("anchovy")
+        val SHRIMP: DeferredItem<Item> = ITEMS.registerSimpleItem("shrimp")
+        val CLAM: DeferredItem<Item> = ITEMS.registerSimpleItem("clam")
+
+        // Fish - Advanced
+        val SALMON_CATCH: DeferredItem<Item> = ITEMS.registerSimpleItem("salmon_catch")
+        val SEA_BREAM: DeferredItem<Item> = ITEMS.registerSimpleItem("sea_bream")
+        val EEL: DeferredItem<Item> = ITEMS.registerSimpleItem("eel")
+        val OCTOPUS: DeferredItem<Item> = ITEMS.registerSimpleItem("octopus")
+        val HAIRTAIL: DeferredItem<Item> = ITEMS.registerSimpleItem("hairtail")
+        val YELLOWTAIL: DeferredItem<Item> = ITEMS.registerSimpleItem("yellowtail")
+
+        // Fish - Rare
+        val BLUEFIN_TUNA: DeferredItem<Item> = ITEMS.registerSimpleItem("bluefin_tuna")
+        val BLOWFISH: DeferredItem<Item> = ITEMS.registerSimpleItem("blowfish")
+        val ABALONE: DeferredItem<Item> = ITEMS.registerSimpleItem("abalone")
+        val KING_CRAB: DeferredItem<Item> = ITEMS.registerSimpleItem("king_crab")
+        val SEA_URCHIN: DeferredItem<Item> = ITEMS.registerSimpleItem("sea_urchin")
+        val STURGEON: DeferredItem<Item> = ITEMS.registerSimpleItem("sturgeon")
+
+        // Minerals - Common ores
+        val TIN_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("tin_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE))
+        val DEEPSLATE_TIN_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_tin_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE))
+        val TIN_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("tin_ore", TIN_ORE)
+        val DEEPSLATE_TIN_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_tin_ore", DEEPSLATE_TIN_ORE)
+        val TIN_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("tin_ore_raw")
+        val TIN_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("tin_ingot")
+
+        val ZINC_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("zinc_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE))
+        val DEEPSLATE_ZINC_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_zinc_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE))
+        val ZINC_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("zinc_ore", ZINC_ORE)
+        val DEEPSLATE_ZINC_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_zinc_ore", DEEPSLATE_ZINC_ORE)
+        val ZINC_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("zinc_ore_raw")
+        val ZINC_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("zinc_ingot")
+
+        val JADE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("jade_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE))
+        val DEEPSLATE_JADE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_jade_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE))
+        val JADE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("jade_ore", JADE_ORE)
+        val DEEPSLATE_JADE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_jade_ore", DEEPSLATE_JADE_ORE)
+        val JADE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("jade_raw")
+
+        // Minerals - Advanced ores
+        val SILVER_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("silver_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_SILVER_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_silver_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val SILVER_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("silver_ore", SILVER_ORE)
+        val DEEPSLATE_SILVER_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_silver_ore", DEEPSLATE_SILVER_ORE)
+        val SILVER_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("silver_ore_raw")
+        val SILVER_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("silver_ingot")
+
+        val RUBY_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("ruby_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_RUBY_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_ruby_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val RUBY_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("ruby_ore", RUBY_ORE)
+        val DEEPSLATE_RUBY_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_ruby_ore", DEEPSLATE_RUBY_ORE)
+        val RUBY_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("ruby_raw")
+
+        val SAPPHIRE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("sapphire_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_SAPPHIRE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_sapphire_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val SAPPHIRE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("sapphire_ore", SAPPHIRE_ORE)
+        val DEEPSLATE_SAPPHIRE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_sapphire_ore", DEEPSLATE_SAPPHIRE_ORE)
+        val SAPPHIRE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("sapphire_raw")
+
+        val TITANIUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("titanium_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_TITANIUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_titanium_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val TITANIUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("titanium_ore", TITANIUM_ORE)
+        val DEEPSLATE_TITANIUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_titanium_ore", DEEPSLATE_TITANIUM_ORE)
+        val TITANIUM_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("titanium_ore_raw")
+        val TITANIUM_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("titanium_ingot")
+
+        // Minerals - Rare ores
+        val PLATINUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("platinum_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE))
+        val DEEPSLATE_PLATINUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_platinum_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_DIAMOND_ORE))
+        val PLATINUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("platinum_ore", PLATINUM_ORE)
+        val DEEPSLATE_PLATINUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_platinum_ore", DEEPSLATE_PLATINUM_ORE)
+        val PLATINUM_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("platinum_ore_raw")
+        val PLATINUM_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("platinum_ingot")
+
+        val OPAL_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("opal_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE))
+        val DEEPSLATE_OPAL_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_opal_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_DIAMOND_ORE))
+        val OPAL_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("opal_ore", OPAL_ORE)
+        val DEEPSLATE_OPAL_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_opal_ore", DEEPSLATE_OPAL_ORE)
+        val OPAL_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("opal_raw")
+
+        val TANZANITE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("tanzanite_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE))
+        val DEEPSLATE_TANZANITE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_tanzanite_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_DIAMOND_ORE))
+        val TANZANITE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("tanzanite_ore", TANZANITE_ORE)
+        val DEEPSLATE_TANZANITE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_tanzanite_ore", DEEPSLATE_TANZANITE_ORE)
+        val TANZANITE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("tanzanite_raw")
+
+        // Obsidian shard (smelted from obsidian)
+        val OBSIDIAN_SHARD: DeferredItem<Item> = ITEMS.registerSimpleItem("obsidian_shard")
 
         // Cooking station
         val COOKING_STATION: DeferredBlock<Block> = BLOCKS.registerBlock("cooking_station",
@@ -279,42 +390,67 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         )
         val COOKING_STATION_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("cooking_station", COOKING_STATION)
 
-        // Cooking dishes
+        // Standard cooking FoodProperties: all dishes use same nutrition
+        private fun cookingFood(): FoodProperties = FoodProperties.Builder()
+            .nutrition(5).saturationModifier(0.6f).build()
+
+        // Cooking ingredients (no food properties, acquire method TBD)
+        val SEAWEED: DeferredItem<Item> = ITEMS.registerSimpleItem("seaweed")
+        val NOODLES: DeferredItem<Item> = ITEMS.registerSimpleItem("noodles")
+
+        // Cooking dishes - Common
         val SPINACH_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "spinach_bibimbap", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(10)
-                    .saturationModifier(0.8f)
-                    .build()
-            )
-        )
-
+            "spinach_bibimbap", Item.Properties().food(cookingFood()))
         val FISH_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "fish_stew", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(10)
-                    .saturationModifier(0.8f)
-                    .build()
-            )
-        )
-
+            "fish_stew", Item.Properties().food(cookingFood()))
         val GIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "gimbap", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(12)
-                    .saturationModifier(0.9f)
-                    .build()
-            )
-        )
+            "gimbap", Item.Properties().food(cookingFood()))
+        val KIMCHI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "kimchi", Item.Properties().food(cookingFood()))
+        val KIMCHI_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "kimchi_stew", Item.Properties().food(cookingFood()))
+        val MISO_SOUP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "miso_soup", Item.Properties().food(cookingFood()))
+        val GRILLED_MACKEREL: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "grilled_mackerel", Item.Properties().food(cookingFood()))
+        val EGG_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "egg_rice", Item.Properties().food(cookingFood()))
 
-        val HARVEST_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "harvest_bibimbap", Item.Properties().food(
-                FoodProperties.Builder()
-                    .nutrition(14)
-                    .saturationModifier(1.0f)
-                    .build()
-            )
-        )
+        // Cooking dishes - Advanced
+        val SASHIMI_PLATTER: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sashimi_platter", Item.Properties().food(cookingFood()))
+        val EEL_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "eel_rice", Item.Properties().food(cookingFood()))
+        val DUMPLING: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "dumpling", Item.Properties().food(cookingFood()))
+        val JAPCHAE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "japchae", Item.Properties().food(cookingFood()))
+        val RAMEN: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "ramen", Item.Properties().food(cookingFood()))
+        val MAPO_TOFU: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "mapo_tofu", Item.Properties().food(cookingFood()))
+        val SEAFOOD_PANCAKE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "seafood_pancake", Item.Properties().food(cookingFood()))
+        val LOTUS_SALAD: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "lotus_salad", Item.Properties().food(cookingFood()))
+
+        // Cooking dishes - Rare
+        val GINSENG_CHICKEN: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "ginseng_chicken", Item.Properties().food(cookingFood()))
+        val TRUFFLE_RISOTTO: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "truffle_risotto", Item.Properties().food(cookingFood()))
+        val BLOWFISH_SASHIMI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "blowfish_sashimi", Item.Properties().food(cookingFood()))
+        val ROYAL_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "royal_bibimbap", Item.Properties().food(cookingFood()))
+        val MATSUTAKE_SOUP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "matsutake_soup", Item.Properties().food(cookingFood()))
+        val SAFFRON_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "saffron_rice", Item.Properties().food(cookingFood()))
+        val ABALONE_PORRIDGE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "abalone_porridge", Item.Properties().food(cookingFood()))
+        val KING_CRAB_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "king_crab_stew", Item.Properties().food(cookingFood()))
 
         // Collection pedestal
         val COLLECTION_PEDESTAL: DeferredBlock<Block> = BLOCKS.registerBlock("collection_pedestal",
@@ -389,17 +525,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.estherserver"))
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    .icon { TEST_FISH.get().defaultInstance }
+                    .icon { COOKING_STATION.get().asItem().defaultInstance }
                     .displayItems { parameters: ItemDisplayParameters?, output: CreativeModeTab.Output ->
-                        output.accept(TEST_FISH.get())
-                        output.accept(COOKED_TEST_FISH.get())
-                        output.accept(TEST_SEEDS.get())
-                        output.accept(TEST_HARVEST.get())
-                        output.accept(COOKED_TEST_HARVEST.get())
-                        output.accept(TEST_ORE.get())
-                        output.accept(DEEPSLATE_TEST_ORE.get())
-                        output.accept(TEST_ORE_RAW.get())
-                        output.accept(TEST_ORE_INGOT.get())
+                        // Crops
                         output.accept(RICE_SEEDS.get())
                         output.accept(RICE.get())
                         output.accept(COOKED_RICE.get())
@@ -407,11 +535,130 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(RED_PEPPER.get())
                         output.accept(SPINACH_SEEDS.get())
                         output.accept(SPINACH.get())
+                        // New crops
+                        output.accept(GREEN_ONION_SEEDS.get())
+                        output.accept(GREEN_ONION.get())
+                        output.accept(GARLIC_SEEDS.get())
+                        output.accept(GARLIC.get())
+                        output.accept(CABBAGE_SEEDS.get())
+                        output.accept(CABBAGE.get())
+                        output.accept(SOYBEAN_SEEDS.get())
+                        output.accept(SOYBEAN.get())
+                        output.accept(SESAME_SEEDS.get())
+                        output.accept(SESAME.get())
+                        output.accept(GINGER_SEEDS.get())
+                        output.accept(GINGER.get())
+                        output.accept(PERILLA_SEEDS.get())
+                        output.accept(PERILLA.get())
+                        output.accept(LOTUS_ROOT_SEEDS.get())
+                        output.accept(LOTUS_ROOT.get())
+                        output.accept(SHIITAKE_SEEDS.get())
+                        output.accept(SHIITAKE.get())
+                        output.accept(BAMBOO_SHOOT_SEEDS.get())
+                        output.accept(BAMBOO_SHOOT.get())
+                        output.accept(WASABI_SEEDS.get())
+                        output.accept(WASABI.get())
+                        output.accept(GINSENG_SEEDS.get())
+                        output.accept(GINSENG.get())
+                        output.accept(TRUFFLE_SEEDS.get())
+                        output.accept(TRUFFLE.get())
+                        output.accept(SAFFRON_SEEDS.get())
+                        output.accept(SAFFRON.get())
+                        output.accept(MATSUTAKE_SEEDS.get())
+                        output.accept(MATSUTAKE.get())
+                        output.accept(YUZU_SEEDS.get())
+                        output.accept(YUZU.get())
+                        output.accept(GREEN_TEA_SEEDS.get())
+                        output.accept(GREEN_TEA.get())
+                        // Fish
+                        output.accept(CRUCIAN_CARP.get())
+                        output.accept(SWEETFISH.get())
+                        output.accept(MACKEREL.get())
+                        output.accept(SQUID_CATCH.get())
+                        output.accept(ANCHOVY.get())
+                        output.accept(SHRIMP.get())
+                        output.accept(CLAM.get())
+                        output.accept(SALMON_CATCH.get())
+                        output.accept(SEA_BREAM.get())
+                        output.accept(EEL.get())
+                        output.accept(OCTOPUS.get())
+                        output.accept(HAIRTAIL.get())
+                        output.accept(YELLOWTAIL.get())
+                        output.accept(BLUEFIN_TUNA.get())
+                        output.accept(BLOWFISH.get())
+                        output.accept(ABALONE.get())
+                        output.accept(KING_CRAB.get())
+                        output.accept(SEA_URCHIN.get())
+                        output.accept(STURGEON.get())
+                        // Minerals - Common
+                        output.accept(TIN_ORE.get())
+                        output.accept(DEEPSLATE_TIN_ORE.get())
+                        output.accept(TIN_ORE_RAW.get())
+                        output.accept(TIN_INGOT.get())
+                        output.accept(ZINC_ORE.get())
+                        output.accept(DEEPSLATE_ZINC_ORE.get())
+                        output.accept(ZINC_ORE_RAW.get())
+                        output.accept(ZINC_INGOT.get())
+                        output.accept(JADE_ORE.get())
+                        output.accept(DEEPSLATE_JADE_ORE.get())
+                        output.accept(JADE_RAW.get())
+                        // Minerals - Advanced
+                        output.accept(SILVER_ORE.get())
+                        output.accept(DEEPSLATE_SILVER_ORE.get())
+                        output.accept(SILVER_ORE_RAW.get())
+                        output.accept(SILVER_INGOT.get())
+                        output.accept(RUBY_ORE.get())
+                        output.accept(DEEPSLATE_RUBY_ORE.get())
+                        output.accept(RUBY_RAW.get())
+                        output.accept(SAPPHIRE_ORE.get())
+                        output.accept(DEEPSLATE_SAPPHIRE_ORE.get())
+                        output.accept(SAPPHIRE_RAW.get())
+                        output.accept(TITANIUM_ORE.get())
+                        output.accept(DEEPSLATE_TITANIUM_ORE.get())
+                        output.accept(TITANIUM_ORE_RAW.get())
+                        output.accept(TITANIUM_INGOT.get())
+                        // Minerals - Rare
+                        output.accept(PLATINUM_ORE.get())
+                        output.accept(DEEPSLATE_PLATINUM_ORE.get())
+                        output.accept(PLATINUM_ORE_RAW.get())
+                        output.accept(PLATINUM_INGOT.get())
+                        output.accept(OPAL_ORE.get())
+                        output.accept(DEEPSLATE_OPAL_ORE.get())
+                        output.accept(OPAL_RAW.get())
+                        output.accept(TANZANITE_ORE.get())
+                        output.accept(DEEPSLATE_TANZANITE_ORE.get())
+                        output.accept(TANZANITE_RAW.get())
+                        output.accept(OBSIDIAN_SHARD.get())
+                        // Cooking ingredients
+                        output.accept(SEAWEED.get())
+                        output.accept(NOODLES.get())
+                        // Cooking dishes
                         output.accept(COOKING_STATION.get())
                         output.accept(SPINACH_BIBIMBAP.get())
                         output.accept(FISH_STEW.get())
                         output.accept(GIMBAP.get())
-                        output.accept(HARVEST_BIBIMBAP.get())
+                        output.accept(KIMCHI.get())
+                        output.accept(KIMCHI_STEW.get())
+                        output.accept(MISO_SOUP.get())
+                        output.accept(GRILLED_MACKEREL.get())
+                        output.accept(EGG_RICE.get())
+                        output.accept(SASHIMI_PLATTER.get())
+                        output.accept(EEL_RICE.get())
+                        output.accept(DUMPLING.get())
+                        output.accept(JAPCHAE.get())
+                        output.accept(RAMEN.get())
+                        output.accept(MAPO_TOFU.get())
+                        output.accept(SEAFOOD_PANCAKE.get())
+                        output.accept(LOTUS_SALAD.get())
+                        output.accept(GINSENG_CHICKEN.get())
+                        output.accept(TRUFFLE_RISOTTO.get())
+                        output.accept(BLOWFISH_SASHIMI.get())
+                        output.accept(ROYAL_BIBIMBAP.get())
+                        output.accept(MATSUTAKE_SOUP.get())
+                        output.accept(SAFFRON_RICE.get())
+                        output.accept(ABALONE_PORRIDGE.get())
+                        output.accept(KING_CRAB_STEW.get())
+                        // Utility
                         output.accept(COLLECTION_PEDESTAL.get())
                         output.accept(LAND_DEED.get())
                         output.accept(SPECIAL_FISHING_ROD.get())

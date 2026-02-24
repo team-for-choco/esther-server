@@ -1,7 +1,7 @@
 {
   "replace": false,
   "entries": [
-    "estherserver:add_test_fish",
+    "estherserver:add_custom_fish",
     "estherserver:profession_loot"
   ]
 }

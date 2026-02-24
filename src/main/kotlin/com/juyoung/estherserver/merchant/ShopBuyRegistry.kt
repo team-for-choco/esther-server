@@ -41,10 +41,29 @@ object ShopBuyRegistry {
         register("minecraft:pumpkin_seeds", 5, ShopCategory.SEEDS)
         register("minecraft:melon_seeds", 5, ShopCategory.SEEDS)
         register("minecraft:beetroot_seeds", 5, ShopCategory.SEEDS)
-        register("estherserver:test_seeds", 6, ShopCategory.SEEDS)
+        // Custom seeds - Common
         register("estherserver:rice_seeds", 8, ShopCategory.SEEDS)
         register("estherserver:red_pepper_seeds", 8, ShopCategory.SEEDS)
         register("estherserver:spinach_seeds", 8, ShopCategory.SEEDS)
+        register("estherserver:green_onion_seeds", 8, ShopCategory.SEEDS)
+        register("estherserver:garlic_seeds", 8, ShopCategory.SEEDS)
+        register("estherserver:cabbage_seeds", 8, ShopCategory.SEEDS)
+        register("estherserver:soybean_seeds", 8, ShopCategory.SEEDS)
+        register("estherserver:sesame_seeds", 8, ShopCategory.SEEDS)
+        // Custom seeds - Advanced
+        register("estherserver:ginger_seeds", 15, ShopCategory.SEEDS)
+        register("estherserver:perilla_seeds", 15, ShopCategory.SEEDS)
+        register("estherserver:lotus_root_seeds", 15, ShopCategory.SEEDS)
+        register("estherserver:shiitake_seeds", 15, ShopCategory.SEEDS)
+        register("estherserver:bamboo_shoot_seeds", 15, ShopCategory.SEEDS)
+        register("estherserver:wasabi_seeds", 15, ShopCategory.SEEDS)
+        // Custom seeds - Rare
+        register("estherserver:ginseng_seeds", 30, ShopCategory.SEEDS)
+        register("estherserver:truffle_seeds", 30, ShopCategory.SEEDS)
+        register("estherserver:saffron_seeds", 30, ShopCategory.SEEDS)
+        register("estherserver:matsutake_seeds", 30, ShopCategory.SEEDS)
+        register("estherserver:yuzu_seeds", 30, ShopCategory.SEEDS)
+        register("estherserver:green_tea_seeds", 30, ShopCategory.SEEDS)
         register("estherserver:special_farmland", 20, ShopCategory.SEEDS)
         register("estherserver:sprayer", 100, ShopCategory.SEEDS)
     }
@@ -57,6 +76,10 @@ object ShopBuyRegistry {
         register("minecraft:bread", 10, ShopCategory.FOOD)
         register("minecraft:sugar_cane", 10, ShopCategory.FOOD)
         register("minecraft:cooked_cod", 15, ShopCategory.FOOD)
+        // Vanilla cooking ingredients
+        register("minecraft:egg", 5, ShopCategory.FOOD)
+        register("minecraft:chicken", 8, ShopCategory.FOOD)
+        register("minecraft:wheat", 4, ShopCategory.FOOD)
     }
 
     private fun registerMinerals() {

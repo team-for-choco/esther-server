@@ -1,7 +1,13 @@
 {
   "replace": false,
   "values": [
-    "estherserver:test_ore",
-    "estherserver:deepslate_test_ore"
+    "estherserver:silver_ore",
+    "estherserver:deepslate_silver_ore",
+    "estherserver:ruby_ore",
+    "estherserver:deepslate_ruby_ore",
+    "estherserver:sapphire_ore",
+    "estherserver:deepslate_sapphire_ore",
+    "estherserver:titanium_ore",
+    "estherserver:deepslate_titanium_ore"
   ]
 }

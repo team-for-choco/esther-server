@@ -22,23 +22,83 @@ object ProfessionHandler {
     private val cropSeedMap = mutableMapOf<ResourceLocation, DeferredItem<*>>()
 
     fun init() {
-        // Fishing
-        register(EstherServerMod.TEST_FISH, Profession.FISHING)
+        // Fishing (19 fish species)
+        register(EstherServerMod.CRUCIAN_CARP, Profession.FISHING)
+        register(EstherServerMod.SWEETFISH, Profession.FISHING)
+        register(EstherServerMod.MACKEREL, Profession.FISHING)
+        register(EstherServerMod.SQUID_CATCH, Profession.FISHING)
+        register(EstherServerMod.ANCHOVY, Profession.FISHING)
+        register(EstherServerMod.SHRIMP, Profession.FISHING)
+        register(EstherServerMod.CLAM, Profession.FISHING)
+        register(EstherServerMod.SALMON_CATCH, Profession.FISHING)
+        register(EstherServerMod.SEA_BREAM, Profession.FISHING)
+        register(EstherServerMod.EEL, Profession.FISHING)
+        register(EstherServerMod.OCTOPUS, Profession.FISHING)
+        register(EstherServerMod.HAIRTAIL, Profession.FISHING)
+        register(EstherServerMod.YELLOWTAIL, Profession.FISHING)
+        register(EstherServerMod.BLUEFIN_TUNA, Profession.FISHING)
+        register(EstherServerMod.BLOWFISH, Profession.FISHING)
+        register(EstherServerMod.ABALONE, Profession.FISHING)
+        register(EstherServerMod.KING_CRAB, Profession.FISHING)
+        register(EstherServerMod.SEA_URCHIN, Profession.FISHING)
+        register(EstherServerMod.STURGEON, Profession.FISHING)
 
-        // Farming
-        register(EstherServerMod.TEST_HARVEST, Profession.FARMING)
+        // Farming (20 crops)
         register(EstherServerMod.RICE, Profession.FARMING)
         register(EstherServerMod.RED_PEPPER, Profession.FARMING)
         register(EstherServerMod.SPINACH, Profession.FARMING)
-
-        // Mining
-        register(EstherServerMod.TEST_ORE_RAW, Profession.MINING)
+        register(EstherServerMod.GREEN_ONION, Profession.FARMING)
+        register(EstherServerMod.GARLIC, Profession.FARMING)
+        register(EstherServerMod.CABBAGE, Profession.FARMING)
+        register(EstherServerMod.SOYBEAN, Profession.FARMING)
+        register(EstherServerMod.SESAME, Profession.FARMING)
+        register(EstherServerMod.GINGER, Profession.FARMING)
+        register(EstherServerMod.PERILLA, Profession.FARMING)
+        register(EstherServerMod.LOTUS_ROOT, Profession.FARMING)
+        register(EstherServerMod.SHIITAKE, Profession.FARMING)
+        register(EstherServerMod.BAMBOO_SHOOT, Profession.FARMING)
+        register(EstherServerMod.WASABI, Profession.FARMING)
+        register(EstherServerMod.GINSENG, Profession.FARMING)
+        register(EstherServerMod.TRUFFLE, Profession.FARMING)
+        register(EstherServerMod.SAFFRON, Profession.FARMING)
+        register(EstherServerMod.MATSUTAKE, Profession.FARMING)
+        register(EstherServerMod.YUZU, Profession.FARMING)
+        register(EstherServerMod.GREEN_TEA, Profession.FARMING)
 
         // Crop-to-seed mapping (for seed preservation)
-        registerCropSeed(EstherServerMod.TEST_CROP, EstherServerMod.TEST_SEEDS)
         registerCropSeed(EstherServerMod.RICE_CROP, EstherServerMod.RICE_SEEDS)
         registerCropSeed(EstherServerMod.RED_PEPPER_CROP, EstherServerMod.RED_PEPPER_SEEDS)
         registerCropSeed(EstherServerMod.SPINACH_CROP, EstherServerMod.SPINACH_SEEDS)
+        registerCropSeed(EstherServerMod.GREEN_ONION_CROP, EstherServerMod.GREEN_ONION_SEEDS)
+        registerCropSeed(EstherServerMod.GARLIC_CROP, EstherServerMod.GARLIC_SEEDS)
+        registerCropSeed(EstherServerMod.CABBAGE_CROP, EstherServerMod.CABBAGE_SEEDS)
+        registerCropSeed(EstherServerMod.SOYBEAN_CROP, EstherServerMod.SOYBEAN_SEEDS)
+        registerCropSeed(EstherServerMod.SESAME_CROP, EstherServerMod.SESAME_SEEDS)
+        registerCropSeed(EstherServerMod.GINGER_CROP, EstherServerMod.GINGER_SEEDS)
+        registerCropSeed(EstherServerMod.PERILLA_CROP, EstherServerMod.PERILLA_SEEDS)
+        registerCropSeed(EstherServerMod.LOTUS_ROOT_CROP, EstherServerMod.LOTUS_ROOT_SEEDS)
+        registerCropSeed(EstherServerMod.SHIITAKE_CROP, EstherServerMod.SHIITAKE_SEEDS)
+        registerCropSeed(EstherServerMod.BAMBOO_SHOOT_CROP, EstherServerMod.BAMBOO_SHOOT_SEEDS)
+        registerCropSeed(EstherServerMod.WASABI_CROP, EstherServerMod.WASABI_SEEDS)
+        registerCropSeed(EstherServerMod.GINSENG_CROP, EstherServerMod.GINSENG_SEEDS)
+        registerCropSeed(EstherServerMod.TRUFFLE_CROP, EstherServerMod.TRUFFLE_SEEDS)
+        registerCropSeed(EstherServerMod.SAFFRON_CROP, EstherServerMod.SAFFRON_SEEDS)
+        registerCropSeed(EstherServerMod.MATSUTAKE_CROP, EstherServerMod.MATSUTAKE_SEEDS)
+        registerCropSeed(EstherServerMod.YUZU_CROP, EstherServerMod.YUZU_SEEDS)
+        registerCropSeed(EstherServerMod.GREEN_TEA_CROP, EstherServerMod.GREEN_TEA_SEEDS)
+
+        // Mining (custom ores → raw items)
+        register(EstherServerMod.TIN_ORE_RAW, Profession.MINING)
+        register(EstherServerMod.ZINC_ORE_RAW, Profession.MINING)
+        register(EstherServerMod.JADE_RAW, Profession.MINING)
+        register(EstherServerMod.SILVER_ORE_RAW, Profession.MINING)
+        register(EstherServerMod.RUBY_RAW, Profession.MINING)
+        register(EstherServerMod.SAPPHIRE_RAW, Profession.MINING)
+        register(EstherServerMod.TITANIUM_ORE_RAW, Profession.MINING)
+        register(EstherServerMod.PLATINUM_ORE_RAW, Profession.MINING)
+        register(EstherServerMod.OPAL_RAW, Profession.MINING)
+        register(EstherServerMod.TANZANITE_RAW, Profession.MINING)
+        register(EstherServerMod.OBSIDIAN_SHARD, Profession.MINING)
 
         // Vanilla mining XP (fixed amount per ore type, no quality)
         registerVanillaMining("minecraft:coal", 1)
@@ -57,8 +117,16 @@ object ProfessionHandler {
         itemProfessionMap[item.id] = profession
     }
 
+    fun registerItemProfession(itemId: String, profession: Profession) {
+        itemProfessionMap[ResourceLocation.parse(itemId)] = profession
+    }
+
     private fun registerCropSeed(crop: DeferredBlock<Block>, seed: DeferredItem<*>) {
         cropSeedMap[crop.id] = seed
+    }
+
+    fun registerCropSeedMapping(cropId: ResourceLocation, seed: DeferredItem<*>) {
+        cropSeedMap[cropId] = seed
     }
 
     private fun registerVanillaMining(item: String, xp: Int) {
