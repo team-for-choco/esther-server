@@ -31,7 +31,6 @@
   "item.estherserver.gimbap": "Gimbap",
   "item.estherserver.harvest_bibimbap": "Harvest Bibimbap",
   "message.estherserver.ingredient_added": "Ingredient added (%s)",
-  "message.estherserver.cooking_station_full": "Cannot add more ingredients!",
   "message.estherserver.cooking_success": "Cooking complete!",
   "message.estherserver.cooking_failed": "Cooking failed...",
   "block.estherserver.collection_pedestal": "Collection Pedestal",
