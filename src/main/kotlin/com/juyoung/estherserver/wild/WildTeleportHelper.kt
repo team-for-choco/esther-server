@@ -1,6 +1,7 @@
 package com.juyoung.estherserver.wild
 
 import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -45,8 +46,8 @@ object WildTeleportHelper {
             false
         )
 
-        // 착지 위치에 귀환 포탈 배치
-        val portalPos = BlockPos(safePos.x, safePos.y, safePos.z)
+        // 착지 위치 아래에 귀환 포탈 배치 (발밑 블록 교체)
+        val portalPos = BlockPos(safePos.x, safePos.y - 1, safePos.z)
         val returnPortalBlock = com.juyoung.estherserver.EstherServerMod.RETURN_PORTAL.get()
         wildLevel.setBlock(portalPos, returnPortalBlock.defaultBlockState(), 3)
 
@@ -123,7 +124,7 @@ object WildTeleportHelper {
             val feetState = level.getBlockState(pos)
             val headState = level.getBlockState(pos.above())
 
-            if (belowState.isSolid && feetState.isAir && headState.isAir) {
+            if (belowState.isFaceSturdy(level, belowPos, Direction.UP) && feetState.isAir && headState.isAir) {
                 return pos
             }
         }

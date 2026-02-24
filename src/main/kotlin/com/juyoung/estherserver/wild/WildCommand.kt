@@ -6,9 +6,9 @@ import net.minecraft.commands.Commands
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.Level
-import java.io.File
 import java.util.EnumSet
 import net.minecraft.world.entity.RelativeMovement
+import net.minecraft.world.level.storage.LevelResource
 
 object WildCommand {
 
@@ -69,9 +69,11 @@ object WildCommand {
             }
         }
 
-        // 차원 파일 삭제
+        // 야생 차원 자동 저장 비활성화 후 파일 삭제
         try {
-            val worldDir = server.serverDirectory
+            wildLevel.noSave = true
+
+            val worldDir = server.getWorldPath(LevelResource.ROOT)
             val wildDimDir = worldDir.resolve("dimensions").resolve("estherserver").resolve("wild").toFile()
 
             if (wildDimDir.exists()) {
