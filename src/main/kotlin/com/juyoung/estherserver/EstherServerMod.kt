@@ -179,6 +179,111 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         val SPINACH: DeferredItem<Item> = ITEMS.registerSimpleItem("spinach", Item.Properties())
 
+        // New crops - Common
+        val GREEN_ONION_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("green_onion_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GREEN_ONION_SEEDS.get() }) }, cropProperties())
+        val GREEN_ONION_SEEDS: DeferredItem<Item> = ITEMS.registerItem("green_onion_seeds") { properties ->
+            BlockItem(GREEN_ONION_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GREEN_ONION: DeferredItem<Item> = ITEMS.registerSimpleItem("green_onion")
+
+        val GARLIC_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("garlic_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GARLIC_SEEDS.get() }) }, cropProperties())
+        val GARLIC_SEEDS: DeferredItem<Item> = ITEMS.registerItem("garlic_seeds") { properties ->
+            BlockItem(GARLIC_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GARLIC: DeferredItem<Item> = ITEMS.registerSimpleItem("garlic")
+
+        val CABBAGE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("cabbage_crop",
+            { properties -> CustomCropBlock(properties, Supplier { CABBAGE_SEEDS.get() }) }, cropProperties())
+        val CABBAGE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("cabbage_seeds") { properties ->
+            BlockItem(CABBAGE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val CABBAGE: DeferredItem<Item> = ITEMS.registerSimpleItem("cabbage")
+
+        val SOYBEAN_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("soybean_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SOYBEAN_SEEDS.get() }) }, cropProperties())
+        val SOYBEAN_SEEDS: DeferredItem<Item> = ITEMS.registerItem("soybean_seeds") { properties ->
+            BlockItem(SOYBEAN_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SOYBEAN: DeferredItem<Item> = ITEMS.registerSimpleItem("soybean")
+
+        val SESAME_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("sesame_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SESAME_SEEDS.get() }) }, cropProperties())
+        val SESAME_SEEDS: DeferredItem<Item> = ITEMS.registerItem("sesame_seeds") { properties ->
+            BlockItem(SESAME_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SESAME: DeferredItem<Item> = ITEMS.registerSimpleItem("sesame")
+
+        // New crops - Advanced
+        val GINGER_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("ginger_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GINGER_SEEDS.get() }) }, cropProperties())
+        val GINGER_SEEDS: DeferredItem<Item> = ITEMS.registerItem("ginger_seeds") { properties ->
+            BlockItem(GINGER_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GINGER: DeferredItem<Item> = ITEMS.registerSimpleItem("ginger")
+
+        val PERILLA_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("perilla_crop",
+            { properties -> CustomCropBlock(properties, Supplier { PERILLA_SEEDS.get() }) }, cropProperties())
+        val PERILLA_SEEDS: DeferredItem<Item> = ITEMS.registerItem("perilla_seeds") { properties ->
+            BlockItem(PERILLA_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val PERILLA: DeferredItem<Item> = ITEMS.registerSimpleItem("perilla")
+
+        val LOTUS_ROOT_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("lotus_root_crop",
+            { properties -> CustomCropBlock(properties, Supplier { LOTUS_ROOT_SEEDS.get() }) }, cropProperties())
+        val LOTUS_ROOT_SEEDS: DeferredItem<Item> = ITEMS.registerItem("lotus_root_seeds") { properties ->
+            BlockItem(LOTUS_ROOT_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val LOTUS_ROOT: DeferredItem<Item> = ITEMS.registerSimpleItem("lotus_root")
+
+        val SHIITAKE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("shiitake_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SHIITAKE_SEEDS.get() }) }, cropProperties())
+        val SHIITAKE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("shiitake_seeds") { properties ->
+            BlockItem(SHIITAKE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SHIITAKE: DeferredItem<Item> = ITEMS.registerSimpleItem("shiitake")
+
+        val BAMBOO_SHOOT_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("bamboo_shoot_crop",
+            { properties -> CustomCropBlock(properties, Supplier { BAMBOO_SHOOT_SEEDS.get() }) }, cropProperties())
+        val BAMBOO_SHOOT_SEEDS: DeferredItem<Item> = ITEMS.registerItem("bamboo_shoot_seeds") { properties ->
+            BlockItem(BAMBOO_SHOOT_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val BAMBOO_SHOOT: DeferredItem<Item> = ITEMS.registerSimpleItem("bamboo_shoot")
+
+        val WASABI_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("wasabi_crop",
+            { properties -> CustomCropBlock(properties, Supplier { WASABI_SEEDS.get() }) }, cropProperties())
+        val WASABI_SEEDS: DeferredItem<Item> = ITEMS.registerItem("wasabi_seeds") { properties ->
+            BlockItem(WASABI_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val WASABI: DeferredItem<Item> = ITEMS.registerSimpleItem("wasabi")
+
+        // New crops - Rare
+        val GINSENG_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("ginseng_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GINSENG_SEEDS.get() }) }, cropProperties())
+        val GINSENG_SEEDS: DeferredItem<Item> = ITEMS.registerItem("ginseng_seeds") { properties ->
+            BlockItem(GINSENG_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GINSENG: DeferredItem<Item> = ITEMS.registerSimpleItem("ginseng")
+
+        val TRUFFLE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("truffle_crop",
+            { properties -> CustomCropBlock(properties, Supplier { TRUFFLE_SEEDS.get() }) }, cropProperties())
+        val TRUFFLE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("truffle_seeds") { properties ->
+            BlockItem(TRUFFLE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val TRUFFLE: DeferredItem<Item> = ITEMS.registerSimpleItem("truffle")
+
+        val SAFFRON_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("saffron_crop",
+            { properties -> CustomCropBlock(properties, Supplier { SAFFRON_SEEDS.get() }) }, cropProperties())
+        val SAFFRON_SEEDS: DeferredItem<Item> = ITEMS.registerItem("saffron_seeds") { properties ->
+            BlockItem(SAFFRON_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val SAFFRON: DeferredItem<Item> = ITEMS.registerSimpleItem("saffron")
+
+        val MATSUTAKE_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("matsutake_crop",
+            { properties -> CustomCropBlock(properties, Supplier { MATSUTAKE_SEEDS.get() }) }, cropProperties())
+        val MATSUTAKE_SEEDS: DeferredItem<Item> = ITEMS.registerItem("matsutake_seeds") { properties ->
+            BlockItem(MATSUTAKE_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val MATSUTAKE: DeferredItem<Item> = ITEMS.registerSimpleItem("matsutake")
+
+        val YUZU_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("yuzu_crop",
+            { properties -> CustomCropBlock(properties, Supplier { YUZU_SEEDS.get() }) }, cropProperties())
+        val YUZU_SEEDS: DeferredItem<Item> = ITEMS.registerItem("yuzu_seeds") { properties ->
+            BlockItem(YUZU_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val YUZU: DeferredItem<Item> = ITEMS.registerSimpleItem("yuzu")
+
+        val GREEN_TEA_CROP: DeferredBlock<Block> = BLOCKS.registerBlock("green_tea_crop",
+            { properties -> CustomCropBlock(properties, Supplier { GREEN_TEA_SEEDS.get() }) }, cropProperties())
+        val GREEN_TEA_SEEDS: DeferredItem<Item> = ITEMS.registerItem("green_tea_seeds") { properties ->
+            BlockItem(GREEN_TEA_CROP.get(), properties.useItemDescriptionPrefix()) }
+        val GREEN_TEA: DeferredItem<Item> = ITEMS.registerSimpleItem("green_tea")
+
         // Fish - Common
         val CRUCIAN_CARP: DeferredItem<Item> = ITEMS.registerSimpleItem("crucian_carp")
         val SWEETFISH: DeferredItem<Item> = ITEMS.registerSimpleItem("sweetfish")
@@ -312,6 +417,41 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(RED_PEPPER.get())
                         output.accept(SPINACH_SEEDS.get())
                         output.accept(SPINACH.get())
+                        // New crops
+                        output.accept(GREEN_ONION_SEEDS.get())
+                        output.accept(GREEN_ONION.get())
+                        output.accept(GARLIC_SEEDS.get())
+                        output.accept(GARLIC.get())
+                        output.accept(CABBAGE_SEEDS.get())
+                        output.accept(CABBAGE.get())
+                        output.accept(SOYBEAN_SEEDS.get())
+                        output.accept(SOYBEAN.get())
+                        output.accept(SESAME_SEEDS.get())
+                        output.accept(SESAME.get())
+                        output.accept(GINGER_SEEDS.get())
+                        output.accept(GINGER.get())
+                        output.accept(PERILLA_SEEDS.get())
+                        output.accept(PERILLA.get())
+                        output.accept(LOTUS_ROOT_SEEDS.get())
+                        output.accept(LOTUS_ROOT.get())
+                        output.accept(SHIITAKE_SEEDS.get())
+                        output.accept(SHIITAKE.get())
+                        output.accept(BAMBOO_SHOOT_SEEDS.get())
+                        output.accept(BAMBOO_SHOOT.get())
+                        output.accept(WASABI_SEEDS.get())
+                        output.accept(WASABI.get())
+                        output.accept(GINSENG_SEEDS.get())
+                        output.accept(GINSENG.get())
+                        output.accept(TRUFFLE_SEEDS.get())
+                        output.accept(TRUFFLE.get())
+                        output.accept(SAFFRON_SEEDS.get())
+                        output.accept(SAFFRON.get())
+                        output.accept(MATSUTAKE_SEEDS.get())
+                        output.accept(MATSUTAKE.get())
+                        output.accept(YUZU_SEEDS.get())
+                        output.accept(YUZU.get())
+                        output.accept(GREEN_TEA_SEEDS.get())
+                        output.accept(GREEN_TEA.get())
                         // Fish
                         output.accept(CRUCIAN_CARP.get())
                         output.accept(SWEETFISH.get())

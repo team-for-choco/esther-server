@@ -105,10 +105,29 @@ object ProfessionBonusHelper {
         registerFishGrade("estherserver:sea_urchin", ContentGrade.RARE)
         registerFishGrade("estherserver:sturgeon", ContentGrade.RARE)
 
-        // Crop grades (existing)
+        // Crop grades - Common
         registerCropGrade("estherserver:rice", ContentGrade.COMMON)
         registerCropGrade("estherserver:red_pepper", ContentGrade.COMMON)
         registerCropGrade("estherserver:spinach", ContentGrade.COMMON)
+        registerCropGrade("estherserver:green_onion", ContentGrade.COMMON)
+        registerCropGrade("estherserver:garlic", ContentGrade.COMMON)
+        registerCropGrade("estherserver:cabbage", ContentGrade.COMMON)
+        registerCropGrade("estherserver:soybean", ContentGrade.COMMON)
+        registerCropGrade("estherserver:sesame", ContentGrade.COMMON)
+        // Crop grades - Advanced
+        registerCropGrade("estherserver:ginger", ContentGrade.ADVANCED)
+        registerCropGrade("estherserver:perilla", ContentGrade.ADVANCED)
+        registerCropGrade("estherserver:lotus_root", ContentGrade.ADVANCED)
+        registerCropGrade("estherserver:shiitake", ContentGrade.ADVANCED)
+        registerCropGrade("estherserver:bamboo_shoot", ContentGrade.ADVANCED)
+        registerCropGrade("estherserver:wasabi", ContentGrade.ADVANCED)
+        // Crop grades - Rare
+        registerCropGrade("estherserver:ginseng", ContentGrade.RARE)
+        registerCropGrade("estherserver:truffle", ContentGrade.RARE)
+        registerCropGrade("estherserver:saffron", ContentGrade.RARE)
+        registerCropGrade("estherserver:matsutake", ContentGrade.RARE)
+        registerCropGrade("estherserver:yuzu", ContentGrade.RARE)
+        registerCropGrade("estherserver:green_tea", ContentGrade.RARE)
     }
 
     fun registerFishGrade(item: String, grade: ContentGrade) {

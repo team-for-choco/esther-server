@@ -23,6 +23,23 @@
     "estherserver:abalone",
     "estherserver:king_crab",
     "estherserver:sea_urchin",
-    "estherserver:sturgeon"
+    "estherserver:sturgeon",
+    "estherserver:green_onion",
+    "estherserver:garlic",
+    "estherserver:cabbage",
+    "estherserver:soybean",
+    "estherserver:sesame",
+    "estherserver:ginger",
+    "estherserver:perilla",
+    "estherserver:lotus_root",
+    "estherserver:shiitake",
+    "estherserver:bamboo_shoot",
+    "estherserver:wasabi",
+    "estherserver:ginseng",
+    "estherserver:truffle",
+    "estherserver:saffron",
+    "estherserver:matsutake",
+    "estherserver:yuzu",
+    "estherserver:green_tea"
   ]
 }
