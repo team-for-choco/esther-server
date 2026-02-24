@@ -1,6 +1,9 @@
 package com.juyoung.estherserver.merchant
 
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.network.syncher.EntityDataAccessor
+import net.minecraft.network.syncher.EntityDataSerializers
+import net.minecraft.network.syncher.SynchedEntityData
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionHand
@@ -18,10 +21,23 @@ import net.neoforged.neoforge.network.PacketDistributor
 class MerchantEntity(entityType: EntityType<MerchantEntity>, level: Level) :
     PathfinderMob(entityType, level) {
 
-    var merchantType: ShopCategory = ShopCategory.SEEDS
+    var merchantType: ShopCategory
+        get() = try {
+            ShopCategory.valueOf(entityData.get(DATA_MERCHANT_TYPE))
+        } catch (_: IllegalArgumentException) {
+            ShopCategory.SEEDS
+        }
+        set(value) {
+            entityData.set(DATA_MERCHANT_TYPE, value.name)
+        }
 
     init {
         isInvulnerable = true
+    }
+
+    override fun defineSynchedData(builder: SynchedEntityData.Builder) {
+        super.defineSynchedData(builder)
+        builder.define(DATA_MERCHANT_TYPE, ShopCategory.SEEDS.name)
     }
 
     override fun registerGoals() {
@@ -68,6 +84,9 @@ class MerchantEntity(entityType: EntityType<MerchantEntity>, level: Level) :
     }
 
     companion object {
+        private val DATA_MERCHANT_TYPE: EntityDataAccessor<String> =
+            SynchedEntityData.defineId(MerchantEntity::class.java, EntityDataSerializers.STRING)
+
         fun createAttributes(): AttributeSupplier.Builder = Mob.createMobAttributes()
     }
 }

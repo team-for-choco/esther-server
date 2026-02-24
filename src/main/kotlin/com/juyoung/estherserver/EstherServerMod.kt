@@ -137,7 +137,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val MERCHANT_ENTITY: DeferredHolder<EntityType<*>, EntityType<MerchantEntity>> =
             ENTITY_TYPES.register("merchant", java.util.function.Function { registryName ->
                 EntityType.Builder.of(::MerchantEntity, MobCategory.MISC)
-                    .sized(0.6f, 1.95f)
+                    .sized(0.6f, 1.8f)
                     .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
             })
 
