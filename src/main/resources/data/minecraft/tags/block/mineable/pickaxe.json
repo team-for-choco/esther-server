@@ -1,4 +1,25 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "estherserver:tin_ore",
+    "estherserver:deepslate_tin_ore",
+    "estherserver:zinc_ore",
+    "estherserver:deepslate_zinc_ore",
+    "estherserver:jade_ore",
+    "estherserver:deepslate_jade_ore",
+    "estherserver:silver_ore",
+    "estherserver:deepslate_silver_ore",
+    "estherserver:ruby_ore",
+    "estherserver:deepslate_ruby_ore",
+    "estherserver:sapphire_ore",
+    "estherserver:deepslate_sapphire_ore",
+    "estherserver:titanium_ore",
+    "estherserver:deepslate_titanium_ore",
+    "estherserver:platinum_ore",
+    "estherserver:deepslate_platinum_ore",
+    "estherserver:opal_ore",
+    "estherserver:deepslate_opal_ore",
+    "estherserver:tanzanite_ore",
+    "estherserver:deepslate_tanzanite_ore"
+  ]
 }

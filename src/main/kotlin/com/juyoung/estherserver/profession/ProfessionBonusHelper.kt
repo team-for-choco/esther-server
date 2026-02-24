@@ -62,6 +62,21 @@ object ProfessionBonusHelper {
         registerOreGrade("minecraft:raw_gold", OreGrade.ADVANCED)
         registerOreGrade("minecraft:diamond", OreGrade.ADVANCED)
         registerOreGrade("minecraft:emerald", OreGrade.ADVANCED)
+
+        // Custom ores - Common
+        registerOreGrade("estherserver:tin_ore_raw", OreGrade.COMMON)
+        registerOreGrade("estherserver:zinc_ore_raw", OreGrade.COMMON)
+        registerOreGrade("estherserver:jade_raw", OreGrade.COMMON)
+        // Custom ores - Advanced
+        registerOreGrade("estherserver:silver_ore_raw", OreGrade.ADVANCED)
+        registerOreGrade("estherserver:ruby_raw", OreGrade.ADVANCED)
+        registerOreGrade("estherserver:sapphire_raw", OreGrade.ADVANCED)
+        registerOreGrade("estherserver:titanium_ore_raw", OreGrade.ADVANCED)
+        // Custom ores - Rare
+        registerOreGrade("estherserver:platinum_ore_raw", OreGrade.RARE)
+        registerOreGrade("estherserver:opal_raw", OreGrade.RARE)
+        registerOreGrade("estherserver:tanzanite_raw", OreGrade.RARE)
+        registerOreGrade("estherserver:obsidian_shard", OreGrade.RARE)
     }
 
     fun registerOreGrade(item: String, grade: OreGrade) {

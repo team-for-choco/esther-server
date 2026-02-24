@@ -309,6 +309,77 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val SEA_URCHIN: DeferredItem<Item> = ITEMS.registerSimpleItem("sea_urchin")
         val STURGEON: DeferredItem<Item> = ITEMS.registerSimpleItem("sturgeon")
 
+        // Minerals - Common ores
+        val TIN_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("tin_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE))
+        val DEEPSLATE_TIN_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_tin_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE))
+        val TIN_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("tin_ore", TIN_ORE)
+        val DEEPSLATE_TIN_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_tin_ore", DEEPSLATE_TIN_ORE)
+        val TIN_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("tin_ore_raw")
+        val TIN_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("tin_ingot")
+
+        val ZINC_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("zinc_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE))
+        val DEEPSLATE_ZINC_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_zinc_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE))
+        val ZINC_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("zinc_ore", ZINC_ORE)
+        val DEEPSLATE_ZINC_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_zinc_ore", DEEPSLATE_ZINC_ORE)
+        val ZINC_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("zinc_ore_raw")
+        val ZINC_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("zinc_ingot")
+
+        val JADE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("jade_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE))
+        val DEEPSLATE_JADE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_jade_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE))
+        val JADE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("jade_ore", JADE_ORE)
+        val DEEPSLATE_JADE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_jade_ore", DEEPSLATE_JADE_ORE)
+        val JADE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("jade_raw")
+
+        // Minerals - Advanced ores
+        val SILVER_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("silver_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_SILVER_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_silver_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val SILVER_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("silver_ore", SILVER_ORE)
+        val DEEPSLATE_SILVER_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_silver_ore", DEEPSLATE_SILVER_ORE)
+        val SILVER_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("silver_ore_raw")
+        val SILVER_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("silver_ingot")
+
+        val RUBY_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("ruby_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_RUBY_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_ruby_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val RUBY_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("ruby_ore", RUBY_ORE)
+        val DEEPSLATE_RUBY_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_ruby_ore", DEEPSLATE_RUBY_ORE)
+        val RUBY_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("ruby_raw")
+
+        val SAPPHIRE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("sapphire_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_SAPPHIRE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_sapphire_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val SAPPHIRE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("sapphire_ore", SAPPHIRE_ORE)
+        val DEEPSLATE_SAPPHIRE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_sapphire_ore", DEEPSLATE_SAPPHIRE_ORE)
+        val SAPPHIRE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("sapphire_raw")
+
+        val TITANIUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("titanium_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_ORE))
+        val DEEPSLATE_TITANIUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_titanium_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE))
+        val TITANIUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("titanium_ore", TITANIUM_ORE)
+        val DEEPSLATE_TITANIUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_titanium_ore", DEEPSLATE_TITANIUM_ORE)
+        val TITANIUM_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("titanium_ore_raw")
+        val TITANIUM_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("titanium_ingot")
+
+        // Minerals - Rare ores
+        val PLATINUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("platinum_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE))
+        val DEEPSLATE_PLATINUM_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_platinum_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_DIAMOND_ORE))
+        val PLATINUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("platinum_ore", PLATINUM_ORE)
+        val DEEPSLATE_PLATINUM_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_platinum_ore", DEEPSLATE_PLATINUM_ORE)
+        val PLATINUM_ORE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("platinum_ore_raw")
+        val PLATINUM_INGOT: DeferredItem<Item> = ITEMS.registerSimpleItem("platinum_ingot")
+
+        val OPAL_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("opal_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE))
+        val DEEPSLATE_OPAL_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_opal_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_DIAMOND_ORE))
+        val OPAL_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("opal_ore", OPAL_ORE)
+        val DEEPSLATE_OPAL_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_opal_ore", DEEPSLATE_OPAL_ORE)
+        val OPAL_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("opal_raw")
+
+        val TANZANITE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("tanzanite_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE))
+        val DEEPSLATE_TANZANITE_ORE: DeferredBlock<Block> = BLOCKS.registerBlock("deepslate_tanzanite_ore", ::Block, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_DIAMOND_ORE))
+        val TANZANITE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("tanzanite_ore", TANZANITE_ORE)
+        val DEEPSLATE_TANZANITE_ORE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("deepslate_tanzanite_ore", DEEPSLATE_TANZANITE_ORE)
+        val TANZANITE_RAW: DeferredItem<Item> = ITEMS.registerSimpleItem("tanzanite_raw")
+
+        // Obsidian shard (smelted from obsidian)
+        val OBSIDIAN_SHARD: DeferredItem<Item> = ITEMS.registerSimpleItem("obsidian_shard")
+
         // Cooking station
         val COOKING_STATION: DeferredBlock<Block> = BLOCKS.registerBlock("cooking_station",
             { properties -> CookingStationBlock(properties) },
@@ -472,6 +543,45 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(KING_CRAB.get())
                         output.accept(SEA_URCHIN.get())
                         output.accept(STURGEON.get())
+                        // Minerals - Common
+                        output.accept(TIN_ORE.get())
+                        output.accept(DEEPSLATE_TIN_ORE.get())
+                        output.accept(TIN_ORE_RAW.get())
+                        output.accept(TIN_INGOT.get())
+                        output.accept(ZINC_ORE.get())
+                        output.accept(DEEPSLATE_ZINC_ORE.get())
+                        output.accept(ZINC_ORE_RAW.get())
+                        output.accept(ZINC_INGOT.get())
+                        output.accept(JADE_ORE.get())
+                        output.accept(DEEPSLATE_JADE_ORE.get())
+                        output.accept(JADE_RAW.get())
+                        // Minerals - Advanced
+                        output.accept(SILVER_ORE.get())
+                        output.accept(DEEPSLATE_SILVER_ORE.get())
+                        output.accept(SILVER_ORE_RAW.get())
+                        output.accept(SILVER_INGOT.get())
+                        output.accept(RUBY_ORE.get())
+                        output.accept(DEEPSLATE_RUBY_ORE.get())
+                        output.accept(RUBY_RAW.get())
+                        output.accept(SAPPHIRE_ORE.get())
+                        output.accept(DEEPSLATE_SAPPHIRE_ORE.get())
+                        output.accept(SAPPHIRE_RAW.get())
+                        output.accept(TITANIUM_ORE.get())
+                        output.accept(DEEPSLATE_TITANIUM_ORE.get())
+                        output.accept(TITANIUM_ORE_RAW.get())
+                        output.accept(TITANIUM_INGOT.get())
+                        // Minerals - Rare
+                        output.accept(PLATINUM_ORE.get())
+                        output.accept(DEEPSLATE_PLATINUM_ORE.get())
+                        output.accept(PLATINUM_ORE_RAW.get())
+                        output.accept(PLATINUM_INGOT.get())
+                        output.accept(OPAL_ORE.get())
+                        output.accept(DEEPSLATE_OPAL_ORE.get())
+                        output.accept(OPAL_RAW.get())
+                        output.accept(TANZANITE_ORE.get())
+                        output.accept(DEEPSLATE_TANZANITE_ORE.get())
+                        output.accept(TANZANITE_RAW.get())
+                        output.accept(OBSIDIAN_SHARD.get())
                         // Cooking
                         output.accept(COOKING_STATION.get())
                         output.accept(SPINACH_BIBIMBAP.get())
