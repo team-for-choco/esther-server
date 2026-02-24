@@ -5,7 +5,6 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.*
-import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.registries.DeferredItem
 
 enum class CollectionCategory(val translationKey: String) {
