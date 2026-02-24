@@ -209,7 +209,8 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         val startY = guiTop + 38
         val visibleHeight = GRID_VISIBLE_ROWS * SLOT_SIZE
 
-        gridScroll = gridScroll.coerceIn(0, getGridMaxScroll())
+        val maxScroll = getGridMaxScroll()
+        gridScroll = gridScroll.coerceIn(0, maxScroll)
 
         guiGraphics.enableScissor(
             guiLeft + PADDING, startY,
@@ -222,7 +223,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             val slotX = startX + col * SLOT_SIZE
             val slotY = startY + (row - gridScroll) * SLOT_SIZE
 
-            if (slotY + SLOT_SIZE < startY || slotY > startY + visibleHeight) continue
+            if (slotY + SLOT_SIZE <= startY || slotY >= startY + visibleHeight) continue
 
             val isDiscovered = data.isComplete(def.key)
 
@@ -244,7 +245,6 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         guiGraphics.disableScissor()
 
         // Scrollbar
-        val maxScroll = getGridMaxScroll()
         if (maxScroll > 0) {
             val totalRows = (defs.size + COLUMNS - 1) / COLUMNS
             val scrollbarX = guiLeft + GUI_WIDTH - PADDING - 3
