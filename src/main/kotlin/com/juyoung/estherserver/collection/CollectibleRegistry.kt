@@ -1,14 +1,21 @@
 package com.juyoung.estherserver.collection
 
 import com.juyoung.estherserver.EstherServerMod.Companion as Mod
+import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.*
 import net.neoforged.neoforge.registries.DeferredItem
 
 enum class CollectionCategory(val translationKey: String) {
     FISH("gui.estherserver.collection.category.fish"),
     CROPS("gui.estherserver.collection.category.crops"),
     MINERALS("gui.estherserver.collection.category.minerals"),
-    COOKING("gui.estherserver.collection.category.cooking")
+    COOKING("gui.estherserver.collection.category.cooking"),
+    BLOCKS("gui.estherserver.collection.category.blocks"),
+    EQUIPMENT("gui.estherserver.collection.category.equipment"),
+    FOOD("gui.estherserver.collection.category.food"),
+    MATERIALS("gui.estherserver.collection.category.materials")
 }
 
 data class CollectibleDefinition(
@@ -20,12 +27,29 @@ data class CollectibleDefinition(
 object CollectibleRegistry {
     private val definitions = mutableListOf<CollectibleDefinition>()
     private val keyToDefinition = mutableMapOf<CollectionKey, CollectibleDefinition>()
+    private val categoryCache = mutableMapOf<CollectionCategory, List<CollectibleDefinition>>()
     private var initialized = false
+
+    /** Phase A에 등록된 키 (Phase B에서 중복 방지용) */
+    private val phaseAKeys = mutableSetOf<CollectionKey>()
 
     fun init() {
         if (initialized) return
         initialized = true
 
+        registerPhaseA()
+        registerPhaseB()
+
+        // 카테고리 캐시 빌드
+        categoryCache.clear()
+        for (category in CollectionCategory.entries) {
+            categoryCache[category] = definitions.filter { it.category == category }
+        }
+    }
+
+    // ─── Phase A: 커스텀 아이템 명시 등록 ───
+
+    private fun registerPhaseA() {
         // Fish - Common (7)
         register(Mod.CRUCIAN_CARP, CollectionCategory.FISH)
         register(Mod.SWEETFISH, CollectionCategory.FISH)
@@ -146,11 +170,80 @@ object CollectibleRegistry {
         register(Mod.KING_CRAB_STEW, CollectionCategory.COOKING)
     }
 
+    // ─── Phase B: 바닐라+커스텀 아이템 자동 분류 ───
+
+    private fun registerPhaseB() {
+        for (entry in BuiltInRegistries.ITEM) {
+            val itemId = BuiltInRegistries.ITEM.getKey(entry)
+            val key = CollectionKey(itemId)
+
+            // Phase A에서 이미 등록됨
+            if (key in phaseAKeys) continue
+
+            // 제외 대상 클래스
+            if (isExcludedItem(entry)) continue
+
+            val category = classifyItem(entry)
+            val def = CollectibleDefinition(key, category)
+            definitions.add(def)
+            keyToDefinition[key] = def
+        }
+    }
+
+    private val excludedItems by lazy {
+        setOf(
+            Items.COMMAND_BLOCK,
+            Items.CHAIN_COMMAND_BLOCK,
+            Items.REPEATING_COMMAND_BLOCK,
+            Items.COMMAND_BLOCK_MINECART,
+            Items.BARRIER,
+            Items.STRUCTURE_BLOCK,
+            Items.STRUCTURE_VOID,
+            Items.JIGSAW,
+            Items.LIGHT,
+            Items.DEBUG_STICK,
+            Items.KNOWLEDGE_BOOK,
+            Items.BUNDLE
+        )
+    }
+
+    private fun isExcludedItem(item: Item): Boolean {
+        return item in excludedItems ||
+            item is SpawnEggItem ||
+            item is GameMasterBlockItem ||
+            item is AirItem
+    }
+
+    private fun classifyItem(item: Item): CollectionCategory {
+        // Equipment: 무기/갑옷/도구
+        if (item is SwordItem || item is DiggerItem || item is ArmorItem ||
+            item is BowItem || item is CrossbowItem || item is ShieldItem ||
+            item is TridentItem || item is MaceItem
+        ) {
+            return CollectionCategory.EQUIPMENT
+        }
+
+        // Food: DataComponents.FOOD 보유
+        val defaultStack = item.defaultInstance
+        if (defaultStack.has(DataComponents.FOOD)) {
+            return CollectionCategory.FOOD
+        }
+
+        // Blocks: BlockItem 계열
+        if (item is BlockItem) {
+            return CollectionCategory.BLOCKS
+        }
+
+        // 나머지: Materials
+        return CollectionCategory.MATERIALS
+    }
+
     private fun register(item: DeferredItem<*>, category: CollectionCategory, requiredCount: Int = 1) {
         val key = CollectionKey(item.id)
         val def = CollectibleDefinition(key, category, requiredCount)
         definitions.add(def)
         keyToDefinition[key] = def
+        phaseAKeys.add(key)
     }
 
     fun isValidKey(key: CollectionKey): Boolean = keyToDefinition.containsKey(key)
@@ -162,7 +255,7 @@ object CollectibleRegistry {
     fun getAllDefinitions(): List<CollectibleDefinition> = definitions.toList()
 
     fun getDefinitionsByCategory(category: CollectionCategory): List<CollectibleDefinition> =
-        definitions.filter { it.category == category }
+        categoryCache[category] ?: emptyList()
 
     fun getTotalCount(): Int = definitions.size
 }

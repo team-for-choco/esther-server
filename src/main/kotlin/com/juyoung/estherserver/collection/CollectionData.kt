@@ -74,7 +74,10 @@ data class CollectionEntry(
 class CollectionData(
     private val entries: MutableMap<CollectionKey, CollectionEntry> = mutableMapOf(),
     val unlockedMilestones: MutableSet<String> = mutableSetOf(),
-    var activeTitle: String? = null
+    var activeTitle: String? = null,
+    val claimedRewards: MutableSet<String> = mutableSetOf(),
+    /** 달성 알림이 이미 전송된 마일스톤 (중복 브로드캐스트 방지용) */
+    val notifiedMilestones: MutableSet<String> = mutableSetOf()
 ) {
     fun isComplete(key: CollectionKey): Boolean {
         val entry = entries[key] ?: return false
@@ -87,6 +90,11 @@ class CollectionData(
 
     fun getCompletedCount(): Int = entries.count { (key, entry) ->
         entry.count >= CollectibleRegistry.getRequiredCount(key)
+    }
+
+    fun getCompletedCountByCategory(category: CollectionCategory): Int {
+        val defs = CollectibleRegistry.getDefinitionsByCategory(category)
+        return defs.count { isComplete(it.key) }
     }
 
     fun register(key: CollectionKey, gameTick: Long): Boolean {
@@ -128,6 +136,18 @@ class CollectionData(
             tag.putString("activeTitle", activeTitle!!)
         }
 
+        val rewardList = ListTag()
+        for (reward in claimedRewards) {
+            rewardList.add(StringTag.valueOf(reward))
+        }
+        tag.put("claimedRewards", rewardList)
+
+        val notifiedList = ListTag()
+        for (ms in notifiedMilestones) {
+            notifiedList.add(StringTag.valueOf(ms))
+        }
+        tag.put("notifiedMilestones", notifiedList)
+
         return tag
     }
 
@@ -165,6 +185,18 @@ class CollectionData(
             if (tag.contains("activeTitle")) {
                 data.activeTitle = tag.getString("activeTitle")
             }
+            if (tag.contains("claimedRewards")) {
+                val rewardList = tag.getList("claimedRewards", 8) // 8 = StringTag
+                for (i in 0 until rewardList.size) {
+                    data.claimedRewards.add(rewardList.getString(i))
+                }
+            }
+            if (tag.contains("notifiedMilestones")) {
+                val notifiedList = tag.getList("notifiedMilestones", 8)
+                for (i in 0 until notifiedList.size) {
+                    data.notifiedMilestones.add(notifiedList.getString(i))
+                }
+            }
             return data
         }
 
@@ -185,6 +217,14 @@ class CollectionData(
                 if (hasActiveTitle) {
                     data.activeTitle = buf.readUtf()
                 }
+                val rewardCount = buf.readVarInt()
+                for (i in 0 until rewardCount) {
+                    data.claimedRewards.add(buf.readUtf())
+                }
+                val notifiedCount = buf.readVarInt()
+                for (i in 0 until notifiedCount) {
+                    data.notifiedMilestones.add(buf.readUtf())
+                }
                 return data
             }
 
@@ -201,6 +241,14 @@ class CollectionData(
                 buf.writeBoolean(value.activeTitle != null)
                 if (value.activeTitle != null) {
                     buf.writeUtf(value.activeTitle!!)
+                }
+                buf.writeVarInt(value.claimedRewards.size)
+                for (reward in value.claimedRewards) {
+                    buf.writeUtf(reward)
+                }
+                buf.writeVarInt(value.notifiedMilestones.size)
+                for (ms in value.notifiedMilestones) {
+                    buf.writeUtf(ms)
                 }
             }
         }
