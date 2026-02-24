@@ -36,7 +36,6 @@ object ModInventory {
                         provider: HolderLookup.Provider
                     ): CompoundTag = attachment.toNBT(provider)
                 })
-                .copyOnDeath()
                 .build()
         })
 

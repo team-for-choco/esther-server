@@ -5,8 +5,10 @@ import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionHandler
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.level.GameRules
 import net.minecraft.world.item.ItemStack
 import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.network.PacketDistributor
 
@@ -22,6 +24,23 @@ object ProfessionInventoryHandler {
     fun onPlayerChangedDimension(event: PlayerEvent.PlayerChangedDimensionEvent) {
         val player = event.entity as? ServerPlayer ?: return
         syncToClient(player)
+    }
+
+    @SubscribeEvent
+    fun onPlayerDeath(event: LivingDeathEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        if (player.server.gameRules.getBoolean(GameRules.RULE_KEEPINVENTORY)) return
+
+        val data = getData(player)
+        for (profession in Profession.entries) {
+            val items = data.getItems(profession)
+            for (stack in items) {
+                if (!stack.isEmpty) {
+                    player.drop(stack.copy(), true, false)
+                }
+            }
+        }
+        saveData(player, ProfessionInventoryData())
     }
 
     fun getAvailableSlots(player: ServerPlayer, profession: Profession): Int {
