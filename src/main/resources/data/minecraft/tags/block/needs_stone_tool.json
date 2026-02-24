@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "estherserver:tin_ore",
+    "estherserver:deepslate_tin_ore",
+    "estherserver:zinc_ore",
+    "estherserver:deepslate_zinc_ore",
+    "estherserver:jade_ore",
+    "estherserver:deepslate_jade_ore"
+  ]
+}

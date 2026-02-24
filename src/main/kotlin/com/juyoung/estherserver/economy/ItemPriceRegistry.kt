@@ -1,8 +1,10 @@
 package com.juyoung.estherserver.economy
 
+import com.juyoung.estherserver.EstherServerMod.Companion as Mod
 import com.juyoung.estherserver.merchant.ShopCategory
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.registries.DeferredItem
 
 data class PriceEntry(val price: Long, val category: ShopCategory)
 
@@ -18,34 +20,134 @@ object ItemPriceRegistry {
     }
 
     private fun registerCustomItemPrices() {
-        // Fish
-        register("estherserver:test_fish", 5, ShopCategory.FOOD)
-        register("estherserver:cooked_test_fish", 8, ShopCategory.FOOD)
+        // Fish - Common
+        register(Mod.CRUCIAN_CARP, 5, ShopCategory.FOOD)
+        register(Mod.SWEETFISH, 5, ShopCategory.FOOD)
+        register(Mod.MACKEREL, 6, ShopCategory.FOOD)
+        register(Mod.SQUID_CATCH, 6, ShopCategory.FOOD)
+        register(Mod.ANCHOVY, 4, ShopCategory.FOOD)
+        register(Mod.SHRIMP, 5, ShopCategory.FOOD)
+        register(Mod.CLAM, 5, ShopCategory.FOOD)
+        // Fish - Advanced
+        register(Mod.SALMON_CATCH, 12, ShopCategory.FOOD)
+        register(Mod.SEA_BREAM, 14, ShopCategory.FOOD)
+        register(Mod.EEL, 15, ShopCategory.FOOD)
+        register(Mod.OCTOPUS, 13, ShopCategory.FOOD)
+        register(Mod.HAIRTAIL, 12, ShopCategory.FOOD)
+        register(Mod.YELLOWTAIL, 14, ShopCategory.FOOD)
+        // Fish - Rare
+        register(Mod.BLUEFIN_TUNA, 40, ShopCategory.FOOD)
+        register(Mod.BLOWFISH, 35, ShopCategory.FOOD)
+        register(Mod.ABALONE, 38, ShopCategory.FOOD)
+        register(Mod.KING_CRAB, 45, ShopCategory.FOOD)
+        register(Mod.SEA_URCHIN, 42, ShopCategory.FOOD)
+        register(Mod.STURGEON, 50, ShopCategory.FOOD)
 
-        // Seeds (no quality)
-        register("estherserver:test_seeds", 1, ShopCategory.SEEDS)
-        register("estherserver:rice_seeds", 2, ShopCategory.SEEDS)
-        register("estherserver:red_pepper_seeds", 2, ShopCategory.SEEDS)
-        register("estherserver:spinach_seeds", 2, ShopCategory.SEEDS)
-        register("estherserver:special_farmland", 10, ShopCategory.SEEDS)
+        // Seeds - Common
+        register(Mod.RICE_SEEDS, 2, ShopCategory.SEEDS)
+        register(Mod.RED_PEPPER_SEEDS, 2, ShopCategory.SEEDS)
+        register(Mod.SPINACH_SEEDS, 2, ShopCategory.SEEDS)
+        register(Mod.GREEN_ONION_SEEDS, 2, ShopCategory.SEEDS)
+        register(Mod.GARLIC_SEEDS, 2, ShopCategory.SEEDS)
+        register(Mod.CABBAGE_SEEDS, 2, ShopCategory.SEEDS)
+        register(Mod.SOYBEAN_SEEDS, 2, ShopCategory.SEEDS)
+        register(Mod.SESAME_SEEDS, 2, ShopCategory.SEEDS)
+        // Seeds - Advanced
+        register(Mod.GINGER_SEEDS, 5, ShopCategory.SEEDS)
+        register(Mod.PERILLA_SEEDS, 5, ShopCategory.SEEDS)
+        register(Mod.LOTUS_ROOT_SEEDS, 5, ShopCategory.SEEDS)
+        register(Mod.SHIITAKE_SEEDS, 5, ShopCategory.SEEDS)
+        register(Mod.BAMBOO_SHOOT_SEEDS, 5, ShopCategory.SEEDS)
+        register(Mod.WASABI_SEEDS, 5, ShopCategory.SEEDS)
+        // Seeds - Rare
+        register(Mod.GINSENG_SEEDS, 12, ShopCategory.SEEDS)
+        register(Mod.TRUFFLE_SEEDS, 12, ShopCategory.SEEDS)
+        register(Mod.SAFFRON_SEEDS, 12, ShopCategory.SEEDS)
+        register(Mod.MATSUTAKE_SEEDS, 12, ShopCategory.SEEDS)
+        register(Mod.YUZU_SEEDS, 12, ShopCategory.SEEDS)
+        register(Mod.GREEN_TEA_SEEDS, 12, ShopCategory.SEEDS)
+        register(Mod.SPECIAL_FARMLAND_ITEM, 10, ShopCategory.SEEDS)
 
-        // Harvests
-        register("estherserver:test_harvest", 3, ShopCategory.FOOD)
-        register("estherserver:cooked_test_harvest", 6, ShopCategory.FOOD)
-        register("estherserver:rice", 4, ShopCategory.FOOD)
-        register("estherserver:cooked_rice", 7, ShopCategory.FOOD)
-        register("estherserver:red_pepper", 4, ShopCategory.FOOD)
-        register("estherserver:spinach", 3, ShopCategory.FOOD)
+        // Harvests - Common
+        register(Mod.RICE, 4, ShopCategory.FOOD)
+        register(Mod.COOKED_RICE, 7, ShopCategory.FOOD)
+        register(Mod.RED_PEPPER, 4, ShopCategory.FOOD)
+        register(Mod.SPINACH, 3, ShopCategory.FOOD)
+        register(Mod.GREEN_ONION, 3, ShopCategory.FOOD)
+        register(Mod.GARLIC, 3, ShopCategory.FOOD)
+        register(Mod.CABBAGE, 4, ShopCategory.FOOD)
+        register(Mod.SOYBEAN, 3, ShopCategory.FOOD)
+        register(Mod.SESAME, 3, ShopCategory.FOOD)
+        // Harvests - Advanced
+        register(Mod.GINGER, 8, ShopCategory.FOOD)
+        register(Mod.PERILLA, 7, ShopCategory.FOOD)
+        register(Mod.LOTUS_ROOT, 9, ShopCategory.FOOD)
+        register(Mod.SHIITAKE, 8, ShopCategory.FOOD)
+        register(Mod.BAMBOO_SHOOT, 8, ShopCategory.FOOD)
+        register(Mod.WASABI, 10, ShopCategory.FOOD)
+        // Harvests - Rare
+        register(Mod.GINSENG, 25, ShopCategory.FOOD)
+        register(Mod.TRUFFLE, 30, ShopCategory.FOOD)
+        register(Mod.SAFFRON, 35, ShopCategory.FOOD)
+        register(Mod.MATSUTAKE, 28, ShopCategory.FOOD)
+        register(Mod.YUZU, 20, ShopCategory.FOOD)
+        register(Mod.GREEN_TEA, 22, ShopCategory.FOOD)
 
-        // Minerals
-        register("estherserver:test_ore_raw", 8, ShopCategory.MINERALS)
-        register("estherserver:test_ore_ingot", 12, ShopCategory.MINERALS)
+        // Minerals - Common (raw)
+        register(Mod.TIN_ORE_RAW, 4, ShopCategory.MINERALS)
+        register(Mod.ZINC_ORE_RAW, 4, ShopCategory.MINERALS)
+        register(Mod.JADE_RAW, 5, ShopCategory.MINERALS)
+        // Minerals - Common (ingot)
+        register(Mod.TIN_INGOT, 8, ShopCategory.MINERALS)
+        register(Mod.ZINC_INGOT, 8, ShopCategory.MINERALS)
+        // Minerals - Advanced (raw)
+        register(Mod.SILVER_ORE_RAW, 10, ShopCategory.MINERALS)
+        register(Mod.RUBY_RAW, 15, ShopCategory.MINERALS)
+        register(Mod.SAPPHIRE_RAW, 15, ShopCategory.MINERALS)
+        register(Mod.TITANIUM_ORE_RAW, 12, ShopCategory.MINERALS)
+        // Minerals - Advanced (ingot)
+        register(Mod.SILVER_INGOT, 20, ShopCategory.MINERALS)
+        register(Mod.TITANIUM_INGOT, 25, ShopCategory.MINERALS)
+        // Minerals - Rare (raw)
+        register(Mod.PLATINUM_ORE_RAW, 30, ShopCategory.MINERALS)
+        register(Mod.OPAL_RAW, 35, ShopCategory.MINERALS)
+        register(Mod.TANZANITE_RAW, 40, ShopCategory.MINERALS)
+        // Minerals - Rare (ingot)
+        register(Mod.PLATINUM_INGOT, 60, ShopCategory.MINERALS)
+        // Special
+        register(Mod.OBSIDIAN_SHARD, 25, ShopCategory.MINERALS)
 
-        // Cooking dishes
-        register("estherserver:spinach_bibimbap", 20, ShopCategory.FOOD)
-        register("estherserver:fish_stew", 25, ShopCategory.FOOD)
-        register("estherserver:gimbap", 25, ShopCategory.FOOD)
-        register("estherserver:harvest_bibimbap", 30, ShopCategory.FOOD)
+        // Cooking ingredients
+        register(Mod.SEAWEED, 5, ShopCategory.FOOD)
+        register(Mod.NOODLES, 5, ShopCategory.FOOD)
+
+        // Cooking dishes - Common
+        register(Mod.SPINACH_BIBIMBAP, 20, ShopCategory.FOOD)
+        register(Mod.FISH_STEW, 25, ShopCategory.FOOD)
+        register(Mod.GIMBAP, 25, ShopCategory.FOOD)
+        register(Mod.KIMCHI, 20, ShopCategory.FOOD)
+        register(Mod.KIMCHI_STEW, 22, ShopCategory.FOOD)
+        register(Mod.MISO_SOUP, 18, ShopCategory.FOOD)
+        register(Mod.GRILLED_MACKEREL, 22, ShopCategory.FOOD)
+        register(Mod.EGG_RICE, 20, ShopCategory.FOOD)
+        // Cooking dishes - Advanced
+        register(Mod.SASHIMI_PLATTER, 45, ShopCategory.FOOD)
+        register(Mod.EEL_RICE, 40, ShopCategory.FOOD)
+        register(Mod.DUMPLING, 35, ShopCategory.FOOD)
+        register(Mod.JAPCHAE, 35, ShopCategory.FOOD)
+        register(Mod.RAMEN, 35, ShopCategory.FOOD)
+        register(Mod.MAPO_TOFU, 38, ShopCategory.FOOD)
+        register(Mod.SEAFOOD_PANCAKE, 40, ShopCategory.FOOD)
+        register(Mod.LOTUS_SALAD, 30, ShopCategory.FOOD)
+        // Cooking dishes - Rare
+        register(Mod.GINSENG_CHICKEN, 80, ShopCategory.FOOD)
+        register(Mod.TRUFFLE_RISOTTO, 85, ShopCategory.FOOD)
+        register(Mod.BLOWFISH_SASHIMI, 90, ShopCategory.FOOD)
+        register(Mod.ROYAL_BIBIMBAP, 75, ShopCategory.FOOD)
+        register(Mod.MATSUTAKE_SOUP, 80, ShopCategory.FOOD)
+        register(Mod.SAFFRON_RICE, 70, ShopCategory.FOOD)
+        register(Mod.ABALONE_PORRIDGE, 85, ShopCategory.FOOD)
+        register(Mod.KING_CRAB_STEW, 90, ShopCategory.FOOD)
     }
 
     private fun registerVanillaItemPrices() {
@@ -99,6 +201,10 @@ object ItemPriceRegistry {
         register("minecraft:phantom_membrane", 8, ShopCategory.SPECIAL)
         register("minecraft:ink_sac", 2, ShopCategory.SPECIAL)
         register("minecraft:glow_ink_sac", 5, ShopCategory.SPECIAL)
+    }
+
+    private fun register(item: DeferredItem<*>, price: Long, category: ShopCategory) {
+        prices[item.id] = PriceEntry(price, category)
     }
 
     private fun register(item: String, price: Long, category: ShopCategory) {

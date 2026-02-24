@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "estherserver:platinum_ore",
+    "estherserver:deepslate_platinum_ore",
+    "estherserver:opal_ore",
+    "estherserver:deepslate_opal_ore",
+    "estherserver:tanzanite_ore",
+    "estherserver:deepslate_tanzanite_ore"
+  ]
+}

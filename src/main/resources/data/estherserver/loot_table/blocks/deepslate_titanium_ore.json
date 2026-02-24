@@ -1,0 +1,1 @@
+{"type":"minecraft:block","pools":[{"rolls":1,"bonus_rolls":0,"conditions":[{"condition":"minecraft:match_tool","predicate":{"items":"estherserver:special_pickaxe"}}],"entries":[{"type":"minecraft:item","name":"estherserver:titanium_ore_raw"}]}]}
