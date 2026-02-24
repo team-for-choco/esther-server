@@ -172,8 +172,8 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             val stack = itemCache[def.key]
 
             if (isDiscovered) {
-                // 등록 아이템: 밝은 슬롯 + 아이콘 + 체크마크
-                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, GuiTheme.SLOT_BG)
+                // 등록 아이템: 밝은 시안 테두리 + 아이콘 + 체크마크
+                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, GuiTheme.BAR_FILL_BRIGHT)
                 guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, GuiTheme.SLOT_INNER)
                 if (stack != null) {
                     guiGraphics.renderItem(stack, slotX + 1, slotY + 1)
@@ -255,18 +255,9 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             if (mouseX >= slotX && mouseX < slotX + SLOT_SIZE &&
                 mouseY >= slotY && mouseY < slotY + SLOT_SIZE
             ) {
-                val isDiscovered = data.isComplete(def.key)
-                if (isDiscovered) {
-                    val stack = itemCache[def.key]
-                    if (stack != null) {
-                        guiGraphics.renderTooltip(font, listOf(stack.hoverName), Optional.empty(), mouseX, mouseY)
-                    }
-                } else {
-                    guiGraphics.renderTooltip(
-                        font,
-                        Component.translatable("gui.estherserver.collection.undiscovered"),
-                        mouseX, mouseY
-                    )
+                val stack = itemCache[def.key]
+                if (stack != null) {
+                    guiGraphics.renderTooltip(font, listOf(stack.hoverName), Optional.empty(), mouseX, mouseY)
                 }
                 break
             }
