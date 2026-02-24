@@ -28,9 +28,6 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
             Profession.COOKING to EstherServerMod.SPECIAL_COOKING_TOOL
         )
 
-        private val MULTIPLIER_TABLE = mapOf(
-            0 to 1.0, 1 to 1.2, 2 to 1.5, 3 to 2.0, 4 to 2.5, 5 to 3.5
-        )
     }
 
     private var guiLeft = 0
@@ -117,15 +114,13 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
                     val enhanceLevel = equipStack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
                     val gradeColor = getGradeColor(enhanceLevel)
                     val gradeKey = EnhancementHandler.getGradeTranslationKey(enhanceLevel)
-                    val multiplier = MULTIPLIER_TABLE[enhanceLevel] ?: 1.0
 
                     guiGraphics.renderItem(equipStack, startX + 4, equipY - 4)
                     guiGraphics.drawString(
                         font,
                         Component.translatable("gui.estherserver.profession.equip_status",
                             enhanceLevel,
-                            Component.translatable(gradeKey))
-                            .append(Component.literal(" x$multiplier").withStyle { it.withColor(GuiTheme.TEXT_GOLD) }),
+                            Component.translatable(gradeKey)),
                         startX + 24, equipY,
                         gradeColor
                     )
