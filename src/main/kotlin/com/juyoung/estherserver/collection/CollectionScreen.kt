@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.collection
 
+import com.juyoung.estherserver.gui.GuiTheme
 import net.minecraft.client.gui.GuiGraphics
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.screens.Screen
@@ -23,13 +24,6 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
 
         private const val MILESTONE_ROW_HEIGHT = 24
         private const val MILESTONE_PADDING = 4
-
-        private val BG_COLOR = 0xFFC6C6C6.toInt()
-        private val BG_DARK = 0xFF8B8B8B.toInt()
-        private val SLOT_BG = 0xFF8B8B8B.toInt()
-        private val SLOT_INNER = 0xFF373737.toInt()
-        private val UNDISCOVERED_BG = 0xFF555555.toInt()
-        private val SLOT_BORDER = 0xFFAAAAAA.toInt()
 
         private const val TITLE_TAB_KEY = "gui.estherserver.collection.tab.title"
     }
@@ -84,8 +78,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     }
 
     private fun renderPanel(guiGraphics: GuiGraphics) {
-        guiGraphics.fill(guiLeft, guiTop, guiLeft + GUI_WIDTH, guiTop + GUI_HEIGHT, BG_COLOR)
-        guiGraphics.renderOutline(guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT, 0xFF000000.toInt())
+        GuiTheme.renderPanel(guiGraphics, guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT)
 
         if (!showTitleTab) {
             val gridY = guiTop + 38
@@ -93,18 +86,18 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
                 val rows = (count + COLUMNS - 1) / COLUMNS
                 rows.coerceAtLeast(1) * SLOT_SIZE + 4
             }
-            guiGraphics.fill(
+            GuiTheme.renderInnerPanel(
+                guiGraphics,
                 guiLeft + PADDING - 1, gridY - 1,
-                guiLeft + PADDING + COLUMNS * SLOT_SIZE + 1, gridY + gridHeight + 1,
-                BG_DARK
+                COLUMNS * SLOT_SIZE + 3, gridHeight + 3
             )
         } else {
             val contentY = guiTop + 38
             val visibleHeight = guiTop + GUI_HEIGHT - 8 - contentY
-            guiGraphics.fill(
+            GuiTheme.renderInnerPanel(
+                guiGraphics,
                 guiLeft + PADDING - 1, contentY - 1,
-                guiLeft + GUI_WIDTH - PADDING + 1, contentY + visibleHeight + 1,
-                BG_DARK
+                GUI_WIDTH - PADDING * 2 + 2, visibleHeight + 2
             )
         }
     }
@@ -115,7 +108,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             Component.translatable("gui.estherserver.collection.title"),
             guiLeft + GUI_WIDTH / 2,
             guiTop + 6,
-            0xFF404040.toInt()
+            GuiTheme.TEXT_TITLE
         )
     }
 
@@ -131,16 +124,15 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
                 mouseY >= tabY && mouseY < tabY + TAB_HEIGHT
 
             val bgColor = when {
-                isSelected -> 0xFFFFFFFF.toInt()
-                isHovered -> 0xFFDDDDDD.toInt()
-                else -> 0xFFAAAAAA.toInt()
+                isSelected -> GuiTheme.TAB_ACTIVE
+                isHovered -> GuiTheme.TAB_HOVER
+                else -> GuiTheme.TAB_INACTIVE
             }
             guiGraphics.fill(tabX, tabY, tabX + tabWidth, tabY + TAB_HEIGHT, bgColor)
-            guiGraphics.renderOutline(tabX, tabY, tabWidth, TAB_HEIGHT, 0xFF000000.toInt())
             guiGraphics.drawString(
                 font, label,
                 tabX + 4, tabY + 4,
-                if (isSelected) 0xFF000000.toInt() else 0xFF404040.toInt()
+                if (isSelected) GuiTheme.TEXT_WHITE else GuiTheme.TEXT_BODY
             )
 
             tabX += tabWidth + TAB_GAP
@@ -159,10 +151,8 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         val visibleHeight = getMilestoneVisibleHeight()
         val contentWidth = GUI_WIDTH - PADDING * 2
 
-        // Clamp scroll
         milestoneScroll = milestoneScroll.coerceIn(0, getMilestoneMaxScroll())
 
-        // Scissor to clip content within visible area
         guiGraphics.enableScissor(
             guiLeft + PADDING, visibleTop,
             guiLeft + GUI_WIDTH - PADDING, visibleTop + visibleHeight
@@ -179,35 +169,35 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
                 mouseY >= visibleTop && mouseY < visibleTop + visibleHeight
 
             val rowBg = when {
-                isActive -> 0xFF4A7A4A.toInt()
-                unlocked && isHovered -> 0xFF5A5A5A.toInt()
-                unlocked -> 0xFF4A4A4A.toInt()
-                else -> 0xFF3A3A3A.toInt()
+                isActive -> GuiTheme.MILESTONE_ACTIVE
+                unlocked && isHovered -> GuiTheme.MILESTONE_UNLOCKED_HOVER
+                unlocked -> GuiTheme.MILESTONE_UNLOCKED
+                else -> GuiTheme.MILESTONE_LOCKED
             }
             guiGraphics.fill(startX, rowY, startX + contentWidth, rowY + MILESTONE_ROW_HEIGHT - 2, rowBg)
 
             val starText = if (unlocked) "\u2605" else "\u2606"
-            val starColor = if (unlocked) 0xFFFFD700.toInt() else 0xFF666666.toInt()
+            val starColor = if (unlocked) GuiTheme.TEXT_GOLD else GuiTheme.TEXT_MUTED
             guiGraphics.drawString(font, starText, startX + 3, rowY + 3, starColor)
 
             val titleName = Component.translatable(milestone.titleKey)
-            val titleColor = if (unlocked) 0xFFFFFFFF.toInt() else 0xFF888888.toInt()
+            val titleColor = if (unlocked) GuiTheme.TEXT_WHITE else GuiTheme.TEXT_MUTED
             guiGraphics.drawString(font, titleName, startX + 14, rowY + 3, titleColor)
 
             if (unlocked) {
                 val condText = Component.translatable(milestone.descriptionKey)
-                guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFFAAAAAA.toInt())
+                guiGraphics.drawString(font, condText, startX + 14, rowY + 13, GuiTheme.TEXT_BODY)
             } else {
                 val progress = milestone.progressProvider?.invoke(data)
                 val condText = Component.translatable(milestone.descriptionKey)
                 if (progress != null) {
                     condText.append(Component.literal(" (${progress.first}/${progress.second})"))
                 }
-                guiGraphics.drawString(font, condText, startX + 14, rowY + 13, 0xFF777777.toInt())
+                guiGraphics.drawString(font, condText, startX + 14, rowY + 13, GuiTheme.TEXT_MUTED)
             }
 
             if (isActive) {
-                guiGraphics.drawString(font, "\u2714", startX + contentWidth - 12, rowY + 7, 0xFF55FF55.toInt())
+                guiGraphics.drawString(font, "\u2714", startX + contentWidth - 12, rowY + 7, GuiTheme.BAR_FILL_BRIGHT)
             }
         }
 
@@ -219,8 +209,8 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             val scrollbarX = guiLeft + GUI_WIDTH - PADDING - 3
             val scrollbarHeight = (visibleHeight.toFloat() / getMilestoneTotalHeight() * visibleHeight).toInt().coerceAtLeast(8)
             val scrollbarY = visibleTop + (milestoneScroll.toFloat() / maxScroll * (visibleHeight - scrollbarHeight)).toInt()
-            guiGraphics.fill(scrollbarX, visibleTop, scrollbarX + 3, visibleTop + visibleHeight, 0xFF555555.toInt())
-            guiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + 3, scrollbarY + scrollbarHeight, 0xFFAAAAAA.toInt())
+            guiGraphics.fill(scrollbarX, visibleTop, scrollbarX + 3, visibleTop + visibleHeight, GuiTheme.SCROLLBAR_BG)
+            guiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + 3, scrollbarY + scrollbarHeight, GuiTheme.SCROLLBAR_THUMB)
         }
     }
 
@@ -239,17 +229,17 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             val isDiscovered = data.isComplete(def.key)
 
             if (isDiscovered) {
-                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, SLOT_BORDER)
-                guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, SLOT_INNER)
+                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, GuiTheme.SLOT_BG)
+                guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, GuiTheme.SLOT_INNER)
 
                 val stack = itemCache[def.key]
                 if (stack != null) {
                     guiGraphics.renderItem(stack, slotX + 1, slotY + 1)
                 }
             } else {
-                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, 0xFF666666.toInt())
-                guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, UNDISCOVERED_BG)
-                guiGraphics.drawCenteredString(font, "?", slotX + 9, slotY + 5, 0xFF888888.toInt())
+                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, GuiTheme.PANEL_BORDER_DARK)
+                guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, GuiTheme.UNDISCOVERED_BG)
+                guiGraphics.drawCenteredString(font, "?", slotX + 9, slotY + 5, GuiTheme.TEXT_MUTED)
             }
         }
     }
@@ -266,15 +256,15 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
 
         val barX = guiLeft + PADDING
         val barWidth = COLUMNS * SLOT_SIZE
-        guiGraphics.fill(barX, progressY, barX + barWidth, progressY + 10, BG_DARK)
+        guiGraphics.fill(barX, progressY, barX + barWidth, progressY + 10, GuiTheme.BAR_BG)
 
         val fillWidth = if (total > 0) barWidth * completed / total else 0
-        guiGraphics.fill(barX, progressY, barX + fillWidth, progressY + 10, 0xFF55AA55.toInt())
+        guiGraphics.fill(barX, progressY, barX + fillWidth, progressY + 10, GuiTheme.BAR_FILL)
 
         val progressText = Component.translatable(
             "gui.estherserver.collection.progress", completed, total, percentage
         )
-        guiGraphics.drawCenteredString(font, progressText, guiLeft + GUI_WIDTH / 2, progressY + 14, 0xFFFFFFFF.toInt())
+        guiGraphics.drawCenteredString(font, progressText, guiLeft + GUI_WIDTH / 2, progressY + 14, GuiTheme.TEXT_WHITE)
     }
 
     private fun renderTooltips(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
@@ -312,7 +302,6 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (button == 0) {
-            // Tab click handling
             var tabX = guiLeft + PADDING
             val tabY = guiTop + 19
 
@@ -335,7 +324,6 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
                 tabX += tabWidth + TAB_GAP
             }
 
-            // Milestone row click handling (title tab)
             if (showTitleTab) {
                 val data = CollectionClientHandler.cachedData
                 val startX = guiLeft + PADDING

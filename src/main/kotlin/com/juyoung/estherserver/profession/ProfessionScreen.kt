@@ -3,6 +3,7 @@ package com.juyoung.estherserver.profession
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.enhancement.EnhancementHandler
+import com.juyoung.estherserver.gui.GuiTheme
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -19,15 +20,6 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
         private const val PADDING = 10
         private const val ROW_HEIGHT = 50
         private const val BAR_HEIGHT = 6
-
-        private val BG_COLOR = 0xFFC6C6C6.toInt()
-        private val ROW_BG = 0xFF4A4A4A.toInt()
-        private val BAR_BG = 0xFF222222.toInt()
-        private val BAR_FILL = 0xFF55CC55.toInt()
-        private val COMMON_COLOR = 0xFFFFFFFF.toInt()
-        private val FINE_COLOR = 0xFF55FF55.toInt()
-        private val RARE_COLOR = 0xFF5555FF.toInt()
-        private val GOLD_COLOR = 0xFFFFD700.toInt()
 
         private val EQUIPMENT_MAP = mapOf(
             Profession.FISHING to EstherServerMod.SPECIAL_FISHING_ROD,
@@ -54,8 +46,7 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
         super.render(guiGraphics, mouseX, mouseY, partialTick)
 
         // Panel
-        guiGraphics.fill(guiLeft, guiTop, guiLeft + GUI_WIDTH, guiTop + GUI_HEIGHT, BG_COLOR)
-        guiGraphics.renderOutline(guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT, 0xFF000000.toInt())
+        GuiTheme.renderPanel(guiGraphics, guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT)
 
         // Title
         guiGraphics.drawCenteredString(
@@ -63,7 +54,7 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
             Component.translatable("gui.estherserver.profession.title"),
             guiLeft + GUI_WIDTH / 2,
             guiTop + 6,
-            0xFF404040.toInt()
+            GuiTheme.TEXT_TITLE
         )
 
         val data = ProfessionClientHandler.cachedData
@@ -74,7 +65,7 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
         for ((index, profession) in Profession.entries.withIndex()) {
             val rowY = guiTop + 22 + index * ROW_HEIGHT
 
-            guiGraphics.fill(startX, rowY, startX + contentWidth, rowY + ROW_HEIGHT - 2, ROW_BG)
+            GuiTheme.renderInnerPanel(guiGraphics, startX, rowY, contentWidth, ROW_HEIGHT - 2)
 
             val level = data.getLevel(profession)
             val xp = data.getXp(profession)
@@ -85,35 +76,34 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
                 font,
                 Component.translatable(profession.translationKey),
                 startX + 6, rowY + 4,
-                GOLD_COLOR
+                GuiTheme.TEXT_GOLD
             )
             guiGraphics.drawString(
                 font,
                 Component.translatable("gui.estherserver.profession.level_display", level),
                 startX + 50, rowY + 4,
-                COMMON_COLOR
+                GuiTheme.TEXT_WHITE
             )
 
             // Line 2: XP progress bar
             val barX = startX + 6
             val barY = rowY + 16
             val barWidth = contentWidth - 12
-            guiGraphics.fill(barX, barY, barX + barWidth, barY + BAR_HEIGHT, BAR_BG)
+            guiGraphics.fill(barX, barY, barX + barWidth, barY + BAR_HEIGHT, GuiTheme.BAR_BG)
 
             if (level < Profession.MAX_LEVEL && requiredXp > 0) {
                 val fillWidth = ((xp.toFloat() / requiredXp) * barWidth).toInt().coerceIn(0, barWidth)
-                guiGraphics.fill(barX, barY, barX + fillWidth, barY + BAR_HEIGHT, BAR_FILL)
+                guiGraphics.fill(barX, barY, barX + fillWidth, barY + BAR_HEIGHT, GuiTheme.BAR_FILL)
 
-                // XP text
                 val xpText = "$xp / $requiredXp xp"
-                guiGraphics.drawString(font, xpText, barX, barY + BAR_HEIGHT + 2, 0xFFCCCCCC.toInt())
+                guiGraphics.drawString(font, xpText, barX, barY + BAR_HEIGHT + 2, GuiTheme.TEXT_BODY)
             } else {
-                guiGraphics.fill(barX, barY, barX + barWidth, barY + BAR_HEIGHT, BAR_FILL)
+                guiGraphics.fill(barX, barY, barX + barWidth, barY + BAR_HEIGHT, GuiTheme.BAR_FILL_BRIGHT)
                 guiGraphics.drawString(
                     font,
                     Component.translatable("gui.estherserver.profession.max_level"),
                     barX, barY + BAR_HEIGHT + 2,
-                    GOLD_COLOR
+                    GuiTheme.TEXT_GOLD
                 )
             }
 
@@ -135,7 +125,7 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
                         Component.translatable("gui.estherserver.profession.equip_status",
                             enhanceLevel,
                             Component.translatable(gradeKey))
-                            .append(Component.literal(" x$multiplier").withStyle { it.withColor(GOLD_COLOR) }),
+                            .append(Component.literal(" x$multiplier").withStyle { it.withColor(GuiTheme.TEXT_GOLD) }),
                         startX + 24, equipY,
                         gradeColor
                     )
@@ -144,7 +134,7 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
                         font,
                         Component.translatable("gui.estherserver.profession.equip_none"),
                         startX + 6, equipY,
-                        0xFF999999.toInt()
+                        GuiTheme.TEXT_MUTED
                     )
                 }
             }
@@ -172,8 +162,8 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
     }
 
     private fun getGradeColor(level: Int): Int = when {
-        level >= 5 -> RARE_COLOR
-        level >= 3 -> FINE_COLOR
-        else -> COMMON_COLOR
+        level >= 5 -> GuiTheme.GRADE_RARE
+        level >= 3 -> GuiTheme.GRADE_FINE
+        else -> GuiTheme.GRADE_COMMON
     }
 }
