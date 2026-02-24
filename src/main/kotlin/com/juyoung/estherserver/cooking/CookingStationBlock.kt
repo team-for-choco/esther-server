@@ -213,12 +213,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         val recipeResult = CookingRecipeMatcher.findMatchingRecipe(level, blockEntity.getIngredients(playerUUID))
 
         if (recipeResult != null) {
-            // Quality is purely based on ingredient quality
-            val quality = CookingQualityCalculator.calculateQuality(
-                blockEntity.getIngredients(playerUUID), level.random
-            )
             val resultStack = recipeResult.copy()
-            resultStack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
 
             // Lv4 cooking tool: 5% chance for double result
             if (equipLevel >= 4 && level.random.nextFloat() < 0.05f) {

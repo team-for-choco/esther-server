@@ -44,7 +44,6 @@ import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.DeferredRegister
 import com.juyoung.estherserver.claim.ChunkClaimManager
 import com.juyoung.estherserver.loot.ModLootModifiers
-import com.juyoung.estherserver.quality.ItemQuality
 import com.juyoung.estherserver.quality.ModDataComponents
 import com.juyoung.estherserver.claim.ClaimCommand
 import com.juyoung.estherserver.claim.ClaimProtectionHandler
@@ -642,15 +641,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     private fun onItemTooltip(event: ItemTooltipEvent) {
         if (event.toolTip.isEmpty()) return
 
-        // Quality display
-        val quality = event.itemStack.get(ModDataComponents.ITEM_QUALITY.get())
-        if (quality != null) {
-            if (quality != ItemQuality.COMMON) {
-                event.toolTip[0] = event.toolTip[0].copy().withStyle(quality.color)
-            }
-            event.toolTip.add(1, Component.translatable(quality.translationKey).withStyle(quality.color))
-        }
-
         // Enhancement level display
         val enhancementLevel = event.itemStack.get(ModDataComponents.ENHANCEMENT_LEVEL.get())
         if (enhancementLevel != null) {
@@ -662,9 +652,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             if (gradeColor != net.minecraft.ChatFormatting.WHITE) {
                 event.toolTip[0] = event.toolTip[0].copy().withStyle(gradeColor)
             }
-            val insertIndex = if (quality != null) 2 else 1
             val gradeKey = EnhancementHandler.getGradeTranslationKey(enhancementLevel)
-            event.toolTip.add(insertIndex,
+            event.toolTip.add(1,
                 Component.translatable("tooltip.estherserver.enhancement_level", enhancementLevel)
                     .append(" (")
                     .append(Component.translatable(gradeKey))

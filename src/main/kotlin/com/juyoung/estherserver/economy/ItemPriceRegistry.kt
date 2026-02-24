@@ -1,8 +1,6 @@
 package com.juyoung.estherserver.economy
 
 import com.juyoung.estherserver.merchant.ShopCategory
-import com.juyoung.estherserver.quality.ItemQuality
-import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 
@@ -111,19 +109,8 @@ object ItemPriceRegistry {
 
     fun getPrice(stack: ItemStack): Long? {
         val itemId = stack.itemHolder.unwrapKey().orElse(null)?.location() ?: return null
-        val basePrice = prices[itemId]?.price ?: return null
-        val quality = stack.get(ModDataComponents.ITEM_QUALITY.get())
-        val multiplier = getQualityMultiplier(quality)
-        return (basePrice * multiplier).toLong()
+        return prices[itemId]?.price
     }
 
     fun getCategory(itemId: ResourceLocation): ShopCategory? = prices[itemId]?.category
-
-    private fun getQualityMultiplier(quality: ItemQuality?): Double {
-        return when (quality) {
-            ItemQuality.FINE -> 1.5
-            ItemQuality.RARE -> 3.0
-            else -> 1.0
-        }
-    }
 }

@@ -2,6 +2,6 @@
   "replace": false,
   "entries": [
     "estherserver:add_test_fish",
-    "estherserver:assign_quality"
+    "estherserver:profession_loot"
   ]
 }

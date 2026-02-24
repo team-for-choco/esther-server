@@ -20,9 +20,6 @@
   "block.estherserver.spinach_crop": "시금치",
   "item.estherserver.spinach_seeds": "시금치 씨앗",
   "item.estherserver.spinach": "시금치",
-  "quality.estherserver.common": "일반",
-  "quality.estherserver.fine": "고급",
-  "quality.estherserver.rare": "희귀",
   "message.estherserver.player_sleeping": "%s님이 잠자리에 들었습니다 (%s/%s)",
   "message.estherserver.good_morning": "좋은 아침입니다!",
   "entity.estherserver.seat": "좌석",
@@ -48,7 +45,6 @@
   "gui.estherserver.collection.progress": "진행도: %s/%s (%s%%)",
   "message.estherserver.collection_registered": "[도감] %s을(를) 등록했습니다! (%s/%s)",
   "message.estherserver.collection_not_collectible": "이 아이템은 도감에 등록할 수 없습니다.",
-  "message.estherserver.collection_invalid_quality": "등급이 없는 아이템은 등록할 수 없습니다.",
   "message.estherserver.collection_already_registered": "이미 등록된 아이템입니다.",
 
   "gui.estherserver.collection.tab.title": "칭호",
@@ -199,6 +195,9 @@
   "gui.estherserver.enhancement.requires_stone": "강화석 x1 필요",
   "gui.estherserver.enhancement.profession_label": "분야: %s",
 
+  "enhancement.estherserver.grade.common": "일반",
+  "enhancement.estherserver.grade.fine": "고급",
+  "enhancement.estherserver.grade.rare": "희귀",
   "tooltip.estherserver.enhancement_level": "강화 Lv%s",
 
   "message.estherserver.enhance_buy_success": "[대장장이] %s을(를) %s 기운에 구매했습니다.",

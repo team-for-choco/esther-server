@@ -20,9 +20,6 @@
   "block.estherserver.spinach_crop": "Spinach Crop",
   "item.estherserver.spinach_seeds": "Spinach Seeds",
   "item.estherserver.spinach": "Spinach",
-  "quality.estherserver.common": "Common",
-  "quality.estherserver.fine": "Fine",
-  "quality.estherserver.rare": "Rare",
   "message.estherserver.player_sleeping": "%s is now sleeping (%s/%s)",
   "message.estherserver.good_morning": "Good morning!",
   "entity.estherserver.seat": "Seat",
@@ -48,7 +45,6 @@
   "gui.estherserver.collection.progress": "Progress: %s/%s (%s%%)",
   "message.estherserver.collection_registered": "[Collection] Registered %s! (%s/%s)",
   "message.estherserver.collection_not_collectible": "This item cannot be registered.",
-  "message.estherserver.collection_invalid_quality": "This item has no quality grade.",
   "message.estherserver.collection_already_registered": "Already registered.",
 
   "gui.estherserver.collection.tab.title": "Titles",
@@ -199,6 +195,9 @@
   "gui.estherserver.enhancement.requires_stone": "Enhancement Stone x1 required",
   "gui.estherserver.enhancement.profession_label": "Profession: %s",
 
+  "enhancement.estherserver.grade.common": "Common",
+  "enhancement.estherserver.grade.fine": "Fine",
+  "enhancement.estherserver.grade.rare": "Rare",
   "tooltip.estherserver.enhancement_level": "Enhancement Lv%s",
 
   "message.estherserver.enhance_buy_success": "[Blacksmith] Purchased %s for %s Essence.",
