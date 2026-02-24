@@ -57,6 +57,7 @@ import com.juyoung.estherserver.collection.CollectionSyncPayload
 import com.juyoung.estherserver.collection.CollectionUpdatePayload
 import com.juyoung.estherserver.collection.ModCollection
 import com.juyoung.estherserver.collection.TitleCommand
+import com.juyoung.estherserver.collection.RewardClaimPayload
 import com.juyoung.estherserver.collection.TitleSelectPayload
 import com.juyoung.estherserver.cooking.CookingStationBlock
 import com.juyoung.estherserver.cooking.ModCooking
@@ -763,6 +764,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     CollectionHandler.handleTitleSelect(player, payload.milestoneId)
                 }
             }
+            .playToServer(RewardClaimPayload.TYPE, RewardClaimPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    CollectionHandler.handleRewardClaim(player, payload.milestoneId)
+                }
+            }
             .playToClient(BalanceSyncPayload.TYPE, BalanceSyncPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
                     EconomyClientHandler.handleSync(payload)
@@ -892,6 +899,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             event.register(ModKeyBindings.COLLECTION_KEY)
             event.register(ModKeyBindings.PROFESSION_KEY)
             event.register(ModKeyBindings.PROFESSION_INVENTORY_KEY)
+            event.register(ModKeyBindings.TITLE_KEY)
         }
 
         @SubscribeEvent

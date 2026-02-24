@@ -36,7 +36,8 @@ object CollectionHandler {
     }
 
     fun tryRegisterItem(player: ServerPlayer, stack: ItemStack): Boolean {
-        if (!stack.`is`(ModCollection.COLLECTIBLE_TAG)) {
+        // 제외 태그 확인
+        if (stack.`is`(ModCollection.COLLECTION_EXCLUDED_TAG)) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.collection_not_collectible"), true
             )
@@ -57,6 +58,11 @@ object CollectionHandler {
         if (data.isComplete(key)) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.collection_already_registered"), true
+            )
+            player.level().playSound(
+                null, player.blockPosition(),
+                SoundEvents.VILLAGER_NO, SoundSource.PLAYERS,
+                1.0f, 1.0f
             )
             return false
         }
@@ -80,12 +86,6 @@ object CollectionHandler {
                 itemName, completed, total
             ),
             false
-        )
-
-        player.level().playSound(
-            null, player.blockPosition(),
-            SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS,
-            1.0f, 1.0f
         )
 
         checkMilestones(player, data)
@@ -122,6 +122,55 @@ object CollectionHandler {
             player.setData(ModCollection.COLLECTION_DATA.get(), data)
             syncToClient(player)
         }
+    }
+
+    fun handleRewardClaim(player: ServerPlayer, milestoneId: String) {
+        val data = player.getData(ModCollection.COLLECTION_DATA.get())
+        val milestone = Milestone.byId(milestoneId) ?: return
+
+        // 달성 여부 확인
+        if (!milestone.check(data)) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.reward_not_achieved"), true
+            )
+            return
+        }
+
+        // 이미 수령 확인
+        if (milestoneId in data.claimedRewards) {
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.reward_already_claimed"), true
+            )
+            return
+        }
+
+        // 칭호 보상
+        val reward = milestone.reward
+        if (reward.titleKey != null && milestoneId !in data.unlockedMilestones) {
+            data.unlockedMilestones.add(milestoneId)
+        }
+
+        // 아이템 보상
+        for (itemStack in reward.items) {
+            val copy = itemStack.copy()
+            if (!player.inventory.add(copy)) {
+                player.drop(copy, false)
+            }
+        }
+
+        data.claimedRewards.add(milestoneId)
+        player.setData(ModCollection.COLLECTION_DATA.get(), data)
+        syncToClient(player)
+
+        player.displayClientMessage(
+            Component.translatable("message.estherserver.reward_claimed"), false
+        )
+
+        player.level().playSound(
+            null, player.blockPosition(),
+            SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS,
+            1.0f, 1.5f
+        )
     }
 
     fun handleTitleSelect(player: ServerPlayer, milestoneId: String) {

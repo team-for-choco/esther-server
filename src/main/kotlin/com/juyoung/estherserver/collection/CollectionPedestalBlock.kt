@@ -2,7 +2,11 @@ package com.juyoung.estherserver.collection
 
 import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
+import net.minecraft.core.particles.ParticleTypes
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.sounds.SoundEvents
+import net.minecraft.sounds.SoundSource
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
@@ -36,8 +40,43 @@ class CollectionPedestalBlock(properties: Properties) : Block(properties) {
 
         if (registered) {
             stack.shrink(1)
+            spawnSuccessEffects(level, pos)
         }
 
         return InteractionResult.SUCCESS
+    }
+
+    private fun spawnSuccessEffects(level: Level, pos: BlockPos) {
+        val serverLevel = level as? ServerLevel ?: return
+
+        // 사운드
+        level.playSound(
+            null, pos,
+            SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS,
+            1.0f, 1.2f
+        )
+
+        // 파티클: enchant + happy_villager
+        val cx = pos.x + 0.5
+        val cy = pos.y + 1.2
+        val cz = pos.z + 0.5
+        for (i in 0 until 15) {
+            serverLevel.sendParticles(
+                ParticleTypes.ENCHANT,
+                cx, cy, cz,
+                1,
+                0.3, 0.5, 0.3,
+                0.1
+            )
+        }
+        for (i in 0 until 8) {
+            serverLevel.sendParticles(
+                ParticleTypes.HAPPY_VILLAGER,
+                cx, cy, cz,
+                1,
+                0.4, 0.3, 0.4,
+                0.0
+            )
+        }
     }
 }

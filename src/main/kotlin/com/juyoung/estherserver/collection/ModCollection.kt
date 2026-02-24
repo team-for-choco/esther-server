@@ -42,4 +42,9 @@ object ModCollection {
         Registries.ITEM,
         ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "collectible")
     )
+
+    val COLLECTION_EXCLUDED_TAG: TagKey<Item> = TagKey.create(
+        Registries.ITEM,
+        ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "collection_excluded")
+    )
 }

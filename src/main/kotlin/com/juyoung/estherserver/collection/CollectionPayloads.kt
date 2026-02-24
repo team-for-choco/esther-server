@@ -55,3 +55,24 @@ class CollectionUpdatePayload(
             }
     }
 }
+
+class RewardClaimPayload(val milestoneId: String) : CustomPacketPayload {
+    override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
+
+    companion object {
+        val TYPE = CustomPacketPayload.Type<RewardClaimPayload>(
+            ResourceLocation.fromNamespaceAndPath("estherserver", "reward_claim")
+        )
+
+        val STREAM_CODEC: StreamCodec<FriendlyByteBuf, RewardClaimPayload> =
+            object : StreamCodec<FriendlyByteBuf, RewardClaimPayload> {
+                override fun decode(buf: FriendlyByteBuf): RewardClaimPayload {
+                    return RewardClaimPayload(buf.readUtf())
+                }
+
+                override fun encode(buf: FriendlyByteBuf, value: RewardClaimPayload) {
+                    buf.writeUtf(value.milestoneId)
+                }
+            }
+    }
+}
