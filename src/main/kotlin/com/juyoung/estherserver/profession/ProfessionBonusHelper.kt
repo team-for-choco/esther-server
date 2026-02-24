@@ -84,6 +84,27 @@ object ProfessionBonusHelper {
     private val recipeGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
 
     fun initContentGrades() {
+        // Fish grades
+        registerFishGrade("estherserver:crucian_carp", ContentGrade.COMMON)
+        registerFishGrade("estherserver:sweetfish", ContentGrade.COMMON)
+        registerFishGrade("estherserver:mackerel", ContentGrade.COMMON)
+        registerFishGrade("estherserver:squid_catch", ContentGrade.COMMON)
+        registerFishGrade("estherserver:anchovy", ContentGrade.COMMON)
+        registerFishGrade("estherserver:shrimp", ContentGrade.COMMON)
+        registerFishGrade("estherserver:clam", ContentGrade.COMMON)
+        registerFishGrade("estherserver:salmon_catch", ContentGrade.ADVANCED)
+        registerFishGrade("estherserver:sea_bream", ContentGrade.ADVANCED)
+        registerFishGrade("estherserver:eel", ContentGrade.ADVANCED)
+        registerFishGrade("estherserver:octopus", ContentGrade.ADVANCED)
+        registerFishGrade("estherserver:hairtail", ContentGrade.ADVANCED)
+        registerFishGrade("estherserver:yellowtail", ContentGrade.ADVANCED)
+        registerFishGrade("estherserver:bluefin_tuna", ContentGrade.RARE)
+        registerFishGrade("estherserver:blowfish", ContentGrade.RARE)
+        registerFishGrade("estherserver:abalone", ContentGrade.RARE)
+        registerFishGrade("estherserver:king_crab", ContentGrade.RARE)
+        registerFishGrade("estherserver:sea_urchin", ContentGrade.RARE)
+        registerFishGrade("estherserver:sturgeon", ContentGrade.RARE)
+
         // Crop grades (existing)
         registerCropGrade("estherserver:rice", ContentGrade.COMMON)
         registerCropGrade("estherserver:red_pepper", ContentGrade.COMMON)

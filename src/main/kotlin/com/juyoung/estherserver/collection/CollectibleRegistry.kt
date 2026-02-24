@@ -24,6 +24,31 @@ object CollectibleRegistry {
         if (initialized) return
         initialized = true
 
+        // Fish - Common (7)
+        register("estherserver:crucian_carp", CollectionCategory.FISH)
+        register("estherserver:sweetfish", CollectionCategory.FISH)
+        register("estherserver:mackerel", CollectionCategory.FISH)
+        register("estherserver:squid_catch", CollectionCategory.FISH)
+        register("estherserver:anchovy", CollectionCategory.FISH)
+        register("estherserver:shrimp", CollectionCategory.FISH)
+        register("estherserver:clam", CollectionCategory.FISH)
+
+        // Fish - Advanced (6)
+        register("estherserver:salmon_catch", CollectionCategory.FISH)
+        register("estherserver:sea_bream", CollectionCategory.FISH)
+        register("estherserver:eel", CollectionCategory.FISH)
+        register("estherserver:octopus", CollectionCategory.FISH)
+        register("estherserver:hairtail", CollectionCategory.FISH)
+        register("estherserver:yellowtail", CollectionCategory.FISH)
+
+        // Fish - Rare (6)
+        register("estherserver:bluefin_tuna", CollectionCategory.FISH)
+        register("estherserver:blowfish", CollectionCategory.FISH)
+        register("estherserver:abalone", CollectionCategory.FISH)
+        register("estherserver:king_crab", CollectionCategory.FISH)
+        register("estherserver:sea_urchin", CollectionCategory.FISH)
+        register("estherserver:sturgeon", CollectionCategory.FISH)
+
         // Crops - seeds (3 items, existing)
         register("estherserver:rice_seeds", CollectionCategory.CROPS)
         register("estherserver:red_pepper_seeds", CollectionCategory.CROPS)

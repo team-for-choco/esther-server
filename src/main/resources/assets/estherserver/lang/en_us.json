@@ -234,5 +234,25 @@
   "message.estherserver.profession_admin_setlevel": "[Profession] Set %s's %s level to %s.",
   "message.estherserver.profession_admin_addxp": "[Profession] Added %s xp to %s. (Target: %s)",
 
-  "message.estherserver.farming_own_claim_only": "You can only farm in chunks you own!"
+  "message.estherserver.farming_own_claim_only": "You can only farm in chunks you own!",
+
+  "item.estherserver.crucian_carp": "Crucian Carp",
+  "item.estherserver.sweetfish": "Sweetfish",
+  "item.estherserver.mackerel": "Mackerel",
+  "item.estherserver.squid_catch": "Squid",
+  "item.estherserver.anchovy": "Anchovy",
+  "item.estherserver.shrimp": "Shrimp",
+  "item.estherserver.clam": "Clam",
+  "item.estherserver.salmon_catch": "Salmon",
+  "item.estherserver.sea_bream": "Sea Bream",
+  "item.estherserver.eel": "Eel",
+  "item.estherserver.octopus": "Octopus",
+  "item.estherserver.hairtail": "Hairtail",
+  "item.estherserver.yellowtail": "Yellowtail",
+  "item.estherserver.bluefin_tuna": "Bluefin Tuna",
+  "item.estherserver.blowfish": "Blowfish",
+  "item.estherserver.abalone": "Abalone",
+  "item.estherserver.king_crab": "King Crab",
+  "item.estherserver.sea_urchin": "Sea Urchin",
+  "item.estherserver.sturgeon": "Sturgeon"
 }

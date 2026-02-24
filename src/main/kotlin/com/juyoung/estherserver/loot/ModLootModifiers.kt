@@ -13,5 +13,6 @@ object ModLootModifiers {
 
     val ADD_ITEM = LOOT_MODIFIERS.register("add_item", Supplier { AddItemLootModifier.CODEC })
     val REPLACE_ITEM = LOOT_MODIFIERS.register("replace_item", Supplier { ReplaceItemLootModifier.CODEC })
+    val WEIGHTED_FISH = LOOT_MODIFIERS.register("weighted_fish", Supplier { WeightedFishLootModifier.CODEC })
     val PROFESSION_LOOT = LOOT_MODIFIERS.register("profession_loot", Supplier { ProfessionLootModifier.CODEC })
 }

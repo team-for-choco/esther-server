@@ -18,6 +18,29 @@ object ItemPriceRegistry {
     }
 
     private fun registerCustomItemPrices() {
+        // Fish - Common
+        register("estherserver:crucian_carp", 5, ShopCategory.FOOD)
+        register("estherserver:sweetfish", 5, ShopCategory.FOOD)
+        register("estherserver:mackerel", 6, ShopCategory.FOOD)
+        register("estherserver:squid_catch", 6, ShopCategory.FOOD)
+        register("estherserver:anchovy", 4, ShopCategory.FOOD)
+        register("estherserver:shrimp", 5, ShopCategory.FOOD)
+        register("estherserver:clam", 5, ShopCategory.FOOD)
+        // Fish - Advanced
+        register("estherserver:salmon_catch", 12, ShopCategory.FOOD)
+        register("estherserver:sea_bream", 14, ShopCategory.FOOD)
+        register("estherserver:eel", 15, ShopCategory.FOOD)
+        register("estherserver:octopus", 13, ShopCategory.FOOD)
+        register("estherserver:hairtail", 12, ShopCategory.FOOD)
+        register("estherserver:yellowtail", 14, ShopCategory.FOOD)
+        // Fish - Rare
+        register("estherserver:bluefin_tuna", 40, ShopCategory.FOOD)
+        register("estherserver:blowfish", 35, ShopCategory.FOOD)
+        register("estherserver:abalone", 38, ShopCategory.FOOD)
+        register("estherserver:king_crab", 45, ShopCategory.FOOD)
+        register("estherserver:sea_urchin", 42, ShopCategory.FOOD)
+        register("estherserver:sturgeon", 50, ShopCategory.FOOD)
+
         // Seeds (existing)
         register("estherserver:rice_seeds", 2, ShopCategory.SEEDS)
         register("estherserver:red_pepper_seeds", 2, ShopCategory.SEEDS)

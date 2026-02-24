@@ -179,6 +179,31 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         val SPINACH: DeferredItem<Item> = ITEMS.registerSimpleItem("spinach", Item.Properties())
 
+        // Fish - Common
+        val CRUCIAN_CARP: DeferredItem<Item> = ITEMS.registerSimpleItem("crucian_carp")
+        val SWEETFISH: DeferredItem<Item> = ITEMS.registerSimpleItem("sweetfish")
+        val MACKEREL: DeferredItem<Item> = ITEMS.registerSimpleItem("mackerel")
+        val SQUID_CATCH: DeferredItem<Item> = ITEMS.registerSimpleItem("squid_catch")
+        val ANCHOVY: DeferredItem<Item> = ITEMS.registerSimpleItem("anchovy")
+        val SHRIMP: DeferredItem<Item> = ITEMS.registerSimpleItem("shrimp")
+        val CLAM: DeferredItem<Item> = ITEMS.registerSimpleItem("clam")
+
+        // Fish - Advanced
+        val SALMON_CATCH: DeferredItem<Item> = ITEMS.registerSimpleItem("salmon_catch")
+        val SEA_BREAM: DeferredItem<Item> = ITEMS.registerSimpleItem("sea_bream")
+        val EEL: DeferredItem<Item> = ITEMS.registerSimpleItem("eel")
+        val OCTOPUS: DeferredItem<Item> = ITEMS.registerSimpleItem("octopus")
+        val HAIRTAIL: DeferredItem<Item> = ITEMS.registerSimpleItem("hairtail")
+        val YELLOWTAIL: DeferredItem<Item> = ITEMS.registerSimpleItem("yellowtail")
+
+        // Fish - Rare
+        val BLUEFIN_TUNA: DeferredItem<Item> = ITEMS.registerSimpleItem("bluefin_tuna")
+        val BLOWFISH: DeferredItem<Item> = ITEMS.registerSimpleItem("blowfish")
+        val ABALONE: DeferredItem<Item> = ITEMS.registerSimpleItem("abalone")
+        val KING_CRAB: DeferredItem<Item> = ITEMS.registerSimpleItem("king_crab")
+        val SEA_URCHIN: DeferredItem<Item> = ITEMS.registerSimpleItem("sea_urchin")
+        val STURGEON: DeferredItem<Item> = ITEMS.registerSimpleItem("sturgeon")
+
         // Cooking station
         val COOKING_STATION: DeferredBlock<Block> = BLOCKS.registerBlock("cooking_station",
             { properties -> CookingStationBlock(properties) },
@@ -287,6 +312,26 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(RED_PEPPER.get())
                         output.accept(SPINACH_SEEDS.get())
                         output.accept(SPINACH.get())
+                        // Fish
+                        output.accept(CRUCIAN_CARP.get())
+                        output.accept(SWEETFISH.get())
+                        output.accept(MACKEREL.get())
+                        output.accept(SQUID_CATCH.get())
+                        output.accept(ANCHOVY.get())
+                        output.accept(SHRIMP.get())
+                        output.accept(CLAM.get())
+                        output.accept(SALMON_CATCH.get())
+                        output.accept(SEA_BREAM.get())
+                        output.accept(EEL.get())
+                        output.accept(OCTOPUS.get())
+                        output.accept(HAIRTAIL.get())
+                        output.accept(YELLOWTAIL.get())
+                        output.accept(BLUEFIN_TUNA.get())
+                        output.accept(BLOWFISH.get())
+                        output.accept(ABALONE.get())
+                        output.accept(KING_CRAB.get())
+                        output.accept(SEA_URCHIN.get())
+                        output.accept(STURGEON.get())
                         // Cooking
                         output.accept(COOKING_STATION.get())
                         output.accept(SPINACH_BIBIMBAP.get())
