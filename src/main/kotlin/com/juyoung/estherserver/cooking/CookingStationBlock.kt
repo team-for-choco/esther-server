@@ -42,7 +42,6 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
     companion object {
         val CODEC: MapCodec<CookingStationBlock> = simpleCodec(::CookingStationBlock)
         val FACING: EnumProperty<Direction> = HorizontalDirectionalBlock.FACING
-        private const val MAX_INGREDIENTS = 4
         private const val BASE_COOKING_TIME_SECONDS = 5.0f
 
         val COOKING_INGREDIENT_TAG: TagKey<Item> = TagKey.create(
@@ -115,13 +114,6 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         if (blockEntity.hasCookingTask(playerUUID)) {
             player.displayClientMessage(
                 Component.translatable("message.estherserver.cooking_in_progress"), true
-            )
-            return InteractionResult.FAIL
-        }
-
-        if (blockEntity.getIngredientCount(playerUUID) >= MAX_INGREDIENTS) {
-            player.displayClientMessage(
-                Component.translatable("message.estherserver.cooking_station_full"), true
             )
             return InteractionResult.FAIL
         }
@@ -213,12 +205,7 @@ class CookingStationBlock(properties: Properties) : BaseEntityBlock(properties) 
         val recipeResult = CookingRecipeMatcher.findMatchingRecipe(level, blockEntity.getIngredients(playerUUID))
 
         if (recipeResult != null) {
-            // Quality is purely based on ingredient quality
-            val quality = CookingQualityCalculator.calculateQuality(
-                blockEntity.getIngredients(playerUUID), level.random
-            )
             val resultStack = recipeResult.copy()
-            resultStack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
 
             // Lv4 cooking tool: 5% chance for double result
             if (equipLevel >= 4 && level.random.nextFloat() < 0.05f) {

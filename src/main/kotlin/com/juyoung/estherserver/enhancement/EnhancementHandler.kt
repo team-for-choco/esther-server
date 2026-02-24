@@ -180,8 +180,8 @@ object EnhancementHandler {
     }
 
     fun getGradeTranslationKey(level: Int): String = when {
-        level >= 5 -> "quality.estherserver.rare"
-        level >= 3 -> "quality.estherserver.fine"
-        else -> "quality.estherserver.common"
+        level >= 5 -> "enhancement.estherserver.grade.rare"
+        level >= 3 -> "enhancement.estherserver.grade.fine"
+        else -> "enhancement.estherserver.grade.common"
     }
 }

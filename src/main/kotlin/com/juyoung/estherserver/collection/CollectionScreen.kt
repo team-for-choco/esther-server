@@ -1,7 +1,5 @@
 package com.juyoung.estherserver.collection
 
-import com.juyoung.estherserver.quality.ItemQuality
-import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.gui.GuiGraphics
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.screens.Screen
@@ -31,6 +29,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         private val SLOT_BG = 0xFF8B8B8B.toInt()
         private val SLOT_INNER = 0xFF373737.toInt()
         private val UNDISCOVERED_BG = 0xFF555555.toInt()
+        private val SLOT_BORDER = 0xFFAAAAAA.toInt()
 
         private const val TITLE_TAB_KEY = "gui.estherserver.collection.tab.title"
     }
@@ -65,11 +64,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
         for (def in CollectibleRegistry.getAllDefinitions()) {
             val item = BuiltInRegistries.ITEM.getValue(def.key.item)
             if (item !== Items.AIR) {
-                val stack = ItemStack(item)
-                if (def.key.quality != null) {
-                    stack.set(ModDataComponents.ITEM_QUALITY.get(), def.key.quality)
-                }
-                itemCache[def.key] = stack
+                itemCache[def.key] = ItemStack(item)
             }
         }
     }
@@ -244,8 +239,7 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             val isDiscovered = data.isComplete(def.key)
 
             if (isDiscovered) {
-                val qualityColor = getQualityColor(def.key.quality)
-                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, qualityColor)
+                guiGraphics.fill(slotX, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, SLOT_BORDER)
                 guiGraphics.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, SLOT_INNER)
 
                 val stack = itemCache[def.key]
@@ -300,18 +294,10 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             ) {
                 val isDiscovered = data.isComplete(def.key)
                 if (isDiscovered) {
-                    val tooltipLines = mutableListOf<Component>()
                     val stack = itemCache[def.key]
                     if (stack != null) {
-                        tooltipLines.add(stack.hoverName)
+                        guiGraphics.renderTooltip(font, listOf(stack.hoverName), Optional.empty(), mouseX, mouseY)
                     }
-                    if (def.key.quality != null) {
-                        tooltipLines.add(
-                            Component.translatable(def.key.quality.translationKey)
-                                .withStyle(def.key.quality.color)
-                        )
-                    }
-                    guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY)
                 } else {
                     guiGraphics.renderTooltip(
                         font,
@@ -399,11 +385,5 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
     private fun getVisibleDefinitions(): List<CollectibleDefinition> {
         val category = selectedCategory ?: return CollectibleRegistry.getAllDefinitions()
         return CollectibleRegistry.getDefinitionsByCategory(category)
-    }
-
-    private fun getQualityColor(quality: ItemQuality?): Int {
-        if (quality == null) return 0xFFAAAAAA.toInt()
-        val colorValue = quality.color.getColor() ?: return 0xFFAAAAAA.toInt()
-        return (0xFF shl 24) or colorValue
     }
 }

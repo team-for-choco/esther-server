@@ -296,37 +296,6 @@ class KoreanCropTest {
     }
 
     @Nested
-    @DisplayName("등급 태그 테스트")
-    inner class QualityTagTests {
-
-        @Test
-        @DisplayName("has_quality 태그에 한국식 작물 수확물이 포함되어야 함")
-        fun hasQualityTagIncludesKoreanCrops() {
-            val tag = loadJsonResource("data/estherserver/tags/item/has_quality.json")
-
-            assertFalse(tag.get("replace").asBoolean, "replace가 false여야 함")
-
-            val values = tag.getAsJsonArray("values").map { it.asString }
-
-            assertTrue(values.contains("estherserver:rice"), "rice가 포함되어야 함")
-            assertTrue(values.contains("estherserver:cooked_rice"), "cooked_rice가 포함되어야 함")
-            assertTrue(values.contains("estherserver:red_pepper"), "red_pepper가 포함되어야 함")
-            assertTrue(values.contains("estherserver:spinach"), "spinach가 포함되어야 함")
-        }
-
-        @Test
-        @DisplayName("씨앗은 등급 태그에 포함되지 않아야 함")
-        fun seedsShouldNotHaveQuality() {
-            val tag = loadJsonResource("data/estherserver/tags/item/has_quality.json")
-            val values = tag.getAsJsonArray("values").map { it.asString }
-
-            assertFalse(values.contains("estherserver:rice_seeds"), "rice_seeds는 포함되지 않아야 함")
-            assertFalse(values.contains("estherserver:red_pepper_seeds"), "red_pepper_seeds는 포함되지 않아야 함")
-            assertFalse(values.contains("estherserver:spinach_seeds"), "spinach_seeds는 포함되지 않아야 함")
-        }
-    }
-
-    @Nested
     @DisplayName("언어 파일 테스트")
     inner class LanguageTests {
 
