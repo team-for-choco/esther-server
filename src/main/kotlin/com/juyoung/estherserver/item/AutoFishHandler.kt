@@ -23,7 +23,7 @@ object AutoFishHandler {
 
         if (!(hook as FishingHookAccessor).`estherserver$isBiting`()) return
 
-        val rod = listOf(player.mainHandItem, player.offHandItem).firstOrNull {
+        val rod = listOf(player.mainHandItem, player.getItemInHand(net.minecraft.world.InteractionHand.OFF_HAND)).firstOrNull {
             it.item === EstherServerMod.SPECIAL_FISHING_ROD.get() &&
             it.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0) >= 5
         } ?: return
