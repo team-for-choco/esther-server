@@ -61,11 +61,12 @@ class ProfessionLootModifier(
 
         generatedLoot.removeAll(toRemove.toSet())
 
-        // --- XP for custom item drops ---
+        // --- XP for custom item drops (grade-based: common=1, advanced=3, rare=5) ---
         for (stack in generatedLoot) {
             val profession = ProfessionHandler.getProfessionForItem(stack)
             if (player != null && profession != null && isCorrectToolForProfession(tool, profession)) {
-                ProfessionHandler.addExperience(player, profession, 1)
+                val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
+                ProfessionHandler.addExperience(player, profession, ProfessionBonusHelper.getGradeXp(itemId))
                 relevantProfessions.add(profession)
             }
         }

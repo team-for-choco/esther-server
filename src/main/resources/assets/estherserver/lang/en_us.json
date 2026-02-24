@@ -264,6 +264,7 @@
   "message.estherserver.profession_admin_addxp": "[Profession] Added %s xp to %s. (Target: %s)",
 
   "message.estherserver.farming_own_claim_only": "You can only farm in chunks you own!",
+  "message.estherserver.seed_grade_locked": "Your hoe level is too low for this seed grade.",
 
   "block.estherserver.green_onion_crop": "Green Onion Crop",
   "item.estherserver.green_onion_seeds": "Green Onion Seeds",

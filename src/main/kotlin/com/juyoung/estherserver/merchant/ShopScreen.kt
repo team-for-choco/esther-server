@@ -3,6 +3,7 @@ package com.juyoung.estherserver.merchant
 import com.juyoung.estherserver.economy.EconomyClientHandler
 import com.juyoung.estherserver.economy.ItemPriceRegistry
 import com.juyoung.estherserver.gui.GuiTheme
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
@@ -160,6 +161,16 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
             val bgColor = if (isHovered) GuiTheme.CELL_HOVER else GuiTheme.CELL_BG
             guiGraphics.fill(cellX + 1, cellY + 1, cellX + CELL_WIDTH - 1, cellY + CELL_HEIGHT - 1, bgColor)
 
+            // Grade border
+            val gradeBorder = when (ProfessionBonusHelper.getDisplayGradeForItem(entry.itemId)) {
+                ProfessionBonusHelper.ContentGrade.ADVANCED -> GuiTheme.GRADE_FINE
+                ProfessionBonusHelper.ContentGrade.RARE -> GuiTheme.GRADE_RARE
+                else -> null
+            }
+            if (gradeBorder != null) {
+                guiGraphics.renderOutline(cellX + 1, cellY + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2, gradeBorder)
+            }
+
             val stack = buyItemCache[entry.itemId.toString()]
             if (stack != null) {
                 guiGraphics.renderItem(stack, cellX + (CELL_WIDTH - 16) / 2, cellY + 2)
@@ -204,6 +215,17 @@ class ShopScreen(private val merchantType: ShopCategory, private val entityId: I
 
             val bgColor = if (isHovered) GuiTheme.CELL_HOVER else GuiTheme.CELL_BG
             guiGraphics.fill(cellX + 1, cellY + 1, cellX + CELL_WIDTH - 1, cellY + CELL_HEIGHT - 1, bgColor)
+
+            // Grade border
+            val sellItemId = BuiltInRegistries.ITEM.getKey(slot.stack.item)
+            val sellGradeBorder = when (ProfessionBonusHelper.getDisplayGradeForItem(sellItemId)) {
+                ProfessionBonusHelper.ContentGrade.ADVANCED -> GuiTheme.GRADE_FINE
+                ProfessionBonusHelper.ContentGrade.RARE -> GuiTheme.GRADE_RARE
+                else -> null
+            }
+            if (sellGradeBorder != null) {
+                guiGraphics.renderOutline(cellX + 1, cellY + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2, sellGradeBorder)
+            }
 
             guiGraphics.renderItem(slot.stack, cellX + (CELL_WIDTH - 16) / 2, cellY + 2)
 

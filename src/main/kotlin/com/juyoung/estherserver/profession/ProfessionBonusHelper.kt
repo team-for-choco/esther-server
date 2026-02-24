@@ -189,6 +189,29 @@ object ProfessionBonusHelper {
     fun getCropGrade(itemId: ResourceLocation): ContentGrade? = cropGradeMap[itemId]
     fun getRecipeGrade(itemId: ResourceLocation): ContentGrade? = recipeGradeMap[itemId]
 
+    /** Get the content grade for any custom item (fish, crop, or recipe) */
+    fun getContentGradeForItem(itemId: ResourceLocation): ContentGrade? =
+        fishGradeMap[itemId] ?: cropGradeMap[itemId] ?: recipeGradeMap[itemId]
+
+    /** Get display grade including seeds (seed inherits its crop's grade) */
+    fun getDisplayGradeForItem(itemId: ResourceLocation): ContentGrade? {
+        getContentGradeForItem(itemId)?.let { return it }
+        val path = itemId.path
+        if (path.endsWith("_seeds")) {
+            val cropId = ResourceLocation.fromNamespaceAndPath(itemId.namespace, path.removeSuffix("_seeds"))
+            return cropGradeMap[cropId]
+        }
+        return null
+    }
+
+    /** XP reward by grade: COMMON→1, ADVANCED→3, RARE→5 */
+    fun getGradeXp(itemId: ResourceLocation): Int = when (getContentGradeForItem(itemId)) {
+        ContentGrade.COMMON -> 1
+        ContentGrade.ADVANCED -> 3
+        ContentGrade.RARE -> 5
+        null -> 1
+    }
+
     /** Max fish grade the fishing rod can catch based on enhancement level */
     fun getMaxFishGrade(equipLevel: Int): ContentGrade = when {
         equipLevel >= 2 -> ContentGrade.ADVANCED
