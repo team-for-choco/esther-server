@@ -3,7 +3,6 @@ package com.juyoung.estherserver.item
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionHandler
-import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
@@ -56,11 +55,7 @@ class SpecialFishingRodItem(properties: Properties) : FishingRodItem(properties)
                 val profLevel = if (serverPlayer != null) ProfessionHandler.getLevel(serverPlayer, Profession.FISHING) else 0
                 val lureReduction = ProfessionBonusHelper.getFishingLureReduction(profLevel)
 
-                // Lv5 rod: rain bonus (add 100 ticks lure when not raining, simulating rain bonus)
-                val equipLevel = itemstack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
-                val rainBonus = if (equipLevel >= 5 && !level.isRaining) 100 else 0
-
-                val totalLure = lureEnchant + lureReduction + rainBonus
+                val totalLure = lureEnchant + lureReduction
 
                 Projectile.spawnProjectile(
                     FishingHook(player, level, luckEnchant, totalLure),

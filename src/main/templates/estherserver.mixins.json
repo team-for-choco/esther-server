@@ -4,7 +4,8 @@
   "package": "com.juyoung.estherserver.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "EstherServerMixin"
+    "EstherServerMixin",
+    "FishingHookAccessor"
   ],
   "server": [],
   "client": [],

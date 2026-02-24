@@ -457,6 +457,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(ProfessionHandler)
         NeoForge.EVENT_BUS.register(ProfessionInventoryHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.OreVeinDetector)
+        NeoForge.EVENT_BUS.register(com.juyoung.estherserver.item.AutoFishHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
