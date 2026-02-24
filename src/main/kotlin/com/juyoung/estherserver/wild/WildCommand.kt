@@ -69,6 +69,9 @@ object WildCommand {
             }
         }
 
+        // 고정 스폰 위치 초기화 (다음 진입 시 새 위치 생성)
+        WildSpawnData.get(server).clearSpawn()
+
         // 야생 차원 자동 저장 비활성화 후 파일 삭제
         try {
             wildLevel.noSave = true

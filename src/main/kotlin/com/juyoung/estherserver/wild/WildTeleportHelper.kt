@@ -31,8 +31,13 @@ object WildTeleportHelper {
         )
         player.setData(ModWild.RETURN_DATA.get(), returnData)
 
-        // 야생에서 안전한 랜덤 위치 탐색
-        val safePos = findSafeLocation(wildLevel) ?: return false
+        // 고정 스폰 위치 조회 (없으면 생성 후 저장)
+        val spawnData = WildSpawnData.get(server)
+        val safePos = spawnData.getSpawnPos() ?: run {
+            val newPos = findSafeLocation(wildLevel) ?: return false
+            spawnData.setSpawnPos(newPos)
+            newPos
+        }
 
         // 텔레포트
         player.teleportTo(
