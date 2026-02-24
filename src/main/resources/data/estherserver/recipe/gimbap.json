@@ -1,12 +1,1 @@
-{
-  "type": "estherserver:cooking_station",
-  "ingredients": [
-    "estherserver:cooked_rice",
-    "estherserver:spinach",
-    "estherserver:rice"
-  ],
-  "result": {
-    "id": "estherserver:gimbap",
-    "count": 1
-  }
-}
+{"type":"estherserver:cooking_station","ingredients":["estherserver:rice","estherserver:seaweed","estherserver:anchovy","estherserver:spinach"],"result":{"id":"estherserver:gimbap","count":1}}

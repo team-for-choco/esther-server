@@ -76,6 +76,10 @@ object ShopBuyRegistry {
         register("minecraft:bread", 10, ShopCategory.FOOD)
         register("minecraft:sugar_cane", 10, ShopCategory.FOOD)
         register("minecraft:cooked_cod", 15, ShopCategory.FOOD)
+        // Vanilla cooking ingredients
+        register("minecraft:egg", 5, ShopCategory.FOOD)
+        register("minecraft:chicken", 8, ShopCategory.FOOD)
+        register("minecraft:wheat", 4, ShopCategory.FOOD)
     }
 
     private fun registerMinerals() {

@@ -143,6 +143,34 @@ object ProfessionBonusHelper {
         registerCropGrade("estherserver:matsutake", ContentGrade.RARE)
         registerCropGrade("estherserver:yuzu", ContentGrade.RARE)
         registerCropGrade("estherserver:green_tea", ContentGrade.RARE)
+
+        // Recipe grades - Common
+        registerRecipeGrade("estherserver:spinach_bibimbap", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:fish_stew", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:gimbap", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:kimchi", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:kimchi_stew", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:miso_soup", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:grilled_mackerel", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:egg_rice", ContentGrade.COMMON)
+        // Recipe grades - Advanced
+        registerRecipeGrade("estherserver:sashimi_platter", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:eel_rice", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:dumpling", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:japchae", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:ramen", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:mapo_tofu", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:seafood_pancake", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:lotus_salad", ContentGrade.ADVANCED)
+        // Recipe grades - Rare
+        registerRecipeGrade("estherserver:ginseng_chicken", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:truffle_risotto", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:blowfish_sashimi", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:royal_bibimbap", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:matsutake_soup", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:saffron_rice", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:abalone_porridge", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:king_crab_stew", ContentGrade.RARE)
     }
 
     fun registerFishGrade(item: String, grade: ContentGrade) {

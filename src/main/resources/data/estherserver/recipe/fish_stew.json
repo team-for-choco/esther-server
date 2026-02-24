@@ -1,12 +1,1 @@
-{
-  "type": "estherserver:cooking_station",
-  "ingredients": [
-    "estherserver:red_pepper",
-    "estherserver:spinach",
-    "estherserver:rice"
-  ],
-  "result": {
-    "id": "estherserver:fish_stew",
-    "count": 1
-  }
-}
+{"type":"estherserver:cooking_station","ingredients":["estherserver:crucian_carp","estherserver:red_pepper","estherserver:green_onion"],"result":{"id":"estherserver:fish_stew","count":1}}

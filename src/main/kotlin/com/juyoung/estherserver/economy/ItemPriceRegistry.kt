@@ -115,10 +115,37 @@ object ItemPriceRegistry {
         // Special
         register("estherserver:obsidian_shard", 25, ShopCategory.MINERALS)
 
-        // Cooking dishes (existing)
+        // Cooking ingredients
+        register("estherserver:seaweed", 5, ShopCategory.FOOD)
+        register("estherserver:noodles", 5, ShopCategory.FOOD)
+
+        // Cooking dishes - Common
         register("estherserver:spinach_bibimbap", 20, ShopCategory.FOOD)
         register("estherserver:fish_stew", 25, ShopCategory.FOOD)
         register("estherserver:gimbap", 25, ShopCategory.FOOD)
+        register("estherserver:kimchi", 20, ShopCategory.FOOD)
+        register("estherserver:kimchi_stew", 22, ShopCategory.FOOD)
+        register("estherserver:miso_soup", 18, ShopCategory.FOOD)
+        register("estherserver:grilled_mackerel", 22, ShopCategory.FOOD)
+        register("estherserver:egg_rice", 20, ShopCategory.FOOD)
+        // Cooking dishes - Advanced
+        register("estherserver:sashimi_platter", 45, ShopCategory.FOOD)
+        register("estherserver:eel_rice", 40, ShopCategory.FOOD)
+        register("estherserver:dumpling", 35, ShopCategory.FOOD)
+        register("estherserver:japchae", 35, ShopCategory.FOOD)
+        register("estherserver:ramen", 35, ShopCategory.FOOD)
+        register("estherserver:mapo_tofu", 38, ShopCategory.FOOD)
+        register("estherserver:seafood_pancake", 40, ShopCategory.FOOD)
+        register("estherserver:lotus_salad", 30, ShopCategory.FOOD)
+        // Cooking dishes - Rare
+        register("estherserver:ginseng_chicken", 80, ShopCategory.FOOD)
+        register("estherserver:truffle_risotto", 85, ShopCategory.FOOD)
+        register("estherserver:blowfish_sashimi", 90, ShopCategory.FOOD)
+        register("estherserver:royal_bibimbap", 75, ShopCategory.FOOD)
+        register("estherserver:matsutake_soup", 80, ShopCategory.FOOD)
+        register("estherserver:saffron_rice", 70, ShopCategory.FOOD)
+        register("estherserver:abalone_porridge", 85, ShopCategory.FOOD)
+        register("estherserver:king_crab_stew", 90, ShopCategory.FOOD)
     }
 
     private fun registerVanillaItemPrices() {

@@ -40,6 +40,12 @@
     "estherserver:saffron",
     "estherserver:matsutake",
     "estherserver:yuzu",
-    "estherserver:green_tea"
+    "estherserver:green_tea",
+    "estherserver:seaweed",
+    "estherserver:noodles",
+    "estherserver:kimchi",
+    "minecraft:egg",
+    "minecraft:chicken",
+    "minecraft:wheat"
   ]
 }

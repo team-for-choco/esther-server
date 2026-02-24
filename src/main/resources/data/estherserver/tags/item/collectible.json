@@ -79,6 +79,27 @@
     "estherserver:obsidian_shard",
     "estherserver:spinach_bibimbap",
     "estherserver:fish_stew",
-    "estherserver:gimbap"
+    "estherserver:gimbap",
+    "estherserver:kimchi",
+    "estherserver:kimchi_stew",
+    "estherserver:miso_soup",
+    "estherserver:grilled_mackerel",
+    "estherserver:egg_rice",
+    "estherserver:sashimi_platter",
+    "estherserver:eel_rice",
+    "estherserver:dumpling",
+    "estherserver:japchae",
+    "estherserver:ramen",
+    "estherserver:mapo_tofu",
+    "estherserver:seafood_pancake",
+    "estherserver:lotus_salad",
+    "estherserver:ginseng_chicken",
+    "estherserver:truffle_risotto",
+    "estherserver:blowfish_sashimi",
+    "estherserver:royal_bibimbap",
+    "estherserver:matsutake_soup",
+    "estherserver:saffron_rice",
+    "estherserver:abalone_porridge",
+    "estherserver:king_crab_stew"
   ]
 }

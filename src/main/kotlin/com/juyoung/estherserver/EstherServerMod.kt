@@ -394,16 +394,63 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         private fun cookingFood(): FoodProperties = FoodProperties.Builder()
             .nutrition(5).saturationModifier(0.6f).build()
 
-        // Cooking dishes
+        // Cooking ingredients (no food properties, acquire method TBD)
+        val SEAWEED: DeferredItem<Item> = ITEMS.registerSimpleItem("seaweed")
+        val NOODLES: DeferredItem<Item> = ITEMS.registerSimpleItem("noodles")
+
+        // Cooking dishes - Common
         val SPINACH_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "spinach_bibimbap", Item.Properties().food(cookingFood())
-        )
+            "spinach_bibimbap", Item.Properties().food(cookingFood()))
         val FISH_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "fish_stew", Item.Properties().food(cookingFood())
-        )
+            "fish_stew", Item.Properties().food(cookingFood()))
         val GIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
-            "gimbap", Item.Properties().food(cookingFood())
-        )
+            "gimbap", Item.Properties().food(cookingFood()))
+        val KIMCHI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "kimchi", Item.Properties().food(cookingFood()))
+        val KIMCHI_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "kimchi_stew", Item.Properties().food(cookingFood()))
+        val MISO_SOUP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "miso_soup", Item.Properties().food(cookingFood()))
+        val GRILLED_MACKEREL: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "grilled_mackerel", Item.Properties().food(cookingFood()))
+        val EGG_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "egg_rice", Item.Properties().food(cookingFood()))
+
+        // Cooking dishes - Advanced
+        val SASHIMI_PLATTER: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sashimi_platter", Item.Properties().food(cookingFood()))
+        val EEL_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "eel_rice", Item.Properties().food(cookingFood()))
+        val DUMPLING: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "dumpling", Item.Properties().food(cookingFood()))
+        val JAPCHAE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "japchae", Item.Properties().food(cookingFood()))
+        val RAMEN: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "ramen", Item.Properties().food(cookingFood()))
+        val MAPO_TOFU: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "mapo_tofu", Item.Properties().food(cookingFood()))
+        val SEAFOOD_PANCAKE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "seafood_pancake", Item.Properties().food(cookingFood()))
+        val LOTUS_SALAD: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "lotus_salad", Item.Properties().food(cookingFood()))
+
+        // Cooking dishes - Rare
+        val GINSENG_CHICKEN: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "ginseng_chicken", Item.Properties().food(cookingFood()))
+        val TRUFFLE_RISOTTO: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "truffle_risotto", Item.Properties().food(cookingFood()))
+        val BLOWFISH_SASHIMI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "blowfish_sashimi", Item.Properties().food(cookingFood()))
+        val ROYAL_BIBIMBAP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "royal_bibimbap", Item.Properties().food(cookingFood()))
+        val MATSUTAKE_SOUP: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "matsutake_soup", Item.Properties().food(cookingFood()))
+        val SAFFRON_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "saffron_rice", Item.Properties().food(cookingFood()))
+        val ABALONE_PORRIDGE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "abalone_porridge", Item.Properties().food(cookingFood()))
+        val KING_CRAB_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "king_crab_stew", Item.Properties().food(cookingFood()))
 
         // Collection pedestal
         val COLLECTION_PEDESTAL: DeferredBlock<Block> = BLOCKS.registerBlock("collection_pedestal",
@@ -582,11 +629,35 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(DEEPSLATE_TANZANITE_ORE.get())
                         output.accept(TANZANITE_RAW.get())
                         output.accept(OBSIDIAN_SHARD.get())
-                        // Cooking
+                        // Cooking ingredients
+                        output.accept(SEAWEED.get())
+                        output.accept(NOODLES.get())
+                        // Cooking dishes
                         output.accept(COOKING_STATION.get())
                         output.accept(SPINACH_BIBIMBAP.get())
                         output.accept(FISH_STEW.get())
                         output.accept(GIMBAP.get())
+                        output.accept(KIMCHI.get())
+                        output.accept(KIMCHI_STEW.get())
+                        output.accept(MISO_SOUP.get())
+                        output.accept(GRILLED_MACKEREL.get())
+                        output.accept(EGG_RICE.get())
+                        output.accept(SASHIMI_PLATTER.get())
+                        output.accept(EEL_RICE.get())
+                        output.accept(DUMPLING.get())
+                        output.accept(JAPCHAE.get())
+                        output.accept(RAMEN.get())
+                        output.accept(MAPO_TOFU.get())
+                        output.accept(SEAFOOD_PANCAKE.get())
+                        output.accept(LOTUS_SALAD.get())
+                        output.accept(GINSENG_CHICKEN.get())
+                        output.accept(TRUFFLE_RISOTTO.get())
+                        output.accept(BLOWFISH_SASHIMI.get())
+                        output.accept(ROYAL_BIBIMBAP.get())
+                        output.accept(MATSUTAKE_SOUP.get())
+                        output.accept(SAFFRON_RICE.get())
+                        output.accept(ABALONE_PORRIDGE.get())
+                        output.accept(KING_CRAB_STEW.get())
                         // Utility
                         output.accept(COLLECTION_PEDESTAL.get())
                         output.accept(LAND_DEED.get())
