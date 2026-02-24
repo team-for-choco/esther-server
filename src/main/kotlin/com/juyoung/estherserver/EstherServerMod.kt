@@ -94,6 +94,10 @@ import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
 import com.juyoung.estherserver.sitting.SitPayload
 import com.juyoung.estherserver.sleep.SleepHandler
+import com.juyoung.estherserver.wild.ModWild
+import com.juyoung.estherserver.wild.ReturnPortalBlock
+import com.juyoung.estherserver.wild.WildCommand
+import com.juyoung.estherserver.wild.WildPortalBlock
 import net.neoforged.neoforge.event.RegisterCommandsEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.minecraft.world.entity.EntityType
@@ -383,6 +387,25 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             "enhancement_stone", Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)
         )
 
+        // Wild portal blocks
+        val WILD_PORTAL: DeferredBlock<Block> = BLOCKS.registerBlock("wild_portal",
+            ::WildPortalBlock,
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_PURPLE)
+                .strength(-1.0f, 3600000.0f)
+                .noLootTable()
+                .lightLevel { 10 })
+        val WILD_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("wild_portal", WILD_PORTAL)
+
+        val RETURN_PORTAL: DeferredBlock<Block> = BLOCKS.registerBlock("return_portal",
+            ::ReturnPortalBlock,
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_CYAN)
+                .strength(-1.0f, 3600000.0f)
+                .noLootTable()
+                .lightLevel { 8 })
+        val RETURN_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("return_portal", RETURN_PORTAL)
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -422,6 +445,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(SPECIAL_FARMLAND.get())
                         output.accept(SPRAYER.get())
                         output.accept(WATERING_CAN.get())
+                        output.accept(WILD_PORTAL.get())
+                        output.accept(RETURN_PORTAL.get())
                     }.build()
             })
     }
@@ -445,6 +470,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModProfession.ATTACHMENT_TYPES.register(modEventBus)
         ModInventory.ATTACHMENT_TYPES.register(modEventBus)
         ModInventory.MENU_TYPES.register(modEventBus)
+        ModWild.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -593,6 +619,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         MoneyCommand.register(event.dispatcher)
         ShopCommand.register(event.dispatcher)
         ProfessionCommand.register(event.dispatcher)
+        WildCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent
