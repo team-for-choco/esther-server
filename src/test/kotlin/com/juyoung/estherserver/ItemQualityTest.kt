@@ -6,73 +6,29 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 /**
- * 아이템 등급 시스템 관련 리소스 파일 테스트
- *
- * 마인크래프트 환경 없이 JSON 파일 형식과 필수 필드를 검증합니다.
+ * 전문 루트 모디파이어 및 품질 시스템 제거 검증 테스트
  */
 class ItemQualityTest {
-
-    @Nested
-    @DisplayName("아이템 태그 테스트")
-    inner class TagTests {
-
-        @Test
-        @DisplayName("has_quality 태그가 올바른 형식이어야 함")
-        fun hasQualityTagIsValid() {
-            val tag = loadJsonResource("data/estherserver/tags/item/has_quality.json")
-
-            assertFalse(tag.get("replace").asBoolean, "replace가 false여야 함")
-            assertTrue(tag.has("values"), "values 필드가 있어야 함")
-
-            val values = tag.getAsJsonArray("values")
-            val valueList = values.map { it.asString }
-
-            assertTrue(valueList.contains("estherserver:test_fish"), "test_fish가 포함되어야 함")
-            assertTrue(valueList.contains("estherserver:cooked_test_fish"), "cooked_test_fish가 포함되어야 함")
-            assertTrue(valueList.contains("estherserver:test_harvest"), "test_harvest가 포함되어야 함")
-            assertTrue(valueList.contains("estherserver:cooked_test_harvest"), "cooked_test_harvest가 포함되어야 함")
-            assertTrue(valueList.contains("estherserver:test_ore_raw"), "test_ore_raw가 포함되어야 함")
-            assertTrue(valueList.contains("estherserver:test_ore_ingot"), "test_ore_ingot가 포함되어야 함")
-        }
-
-        @Test
-        @DisplayName("has_quality 태그에 제외 아이템이 없어야 함")
-        fun hasQualityTagExcludesCorrectItems() {
-            val tag = loadJsonResource("data/estherserver/tags/item/has_quality.json")
-            val values = tag.getAsJsonArray("values")
-            val valueList = values.map { it.asString }
-
-            assertFalse(valueList.contains("estherserver:test_seeds"), "test_seeds가 포함되지 않아야 함")
-        }
-
-        @Test
-        @DisplayName("has_quality 태그에 정확히 14개 아이템이 있어야 함")
-        fun hasQualityTagHasCorrectCount() {
-            val tag = loadJsonResource("data/estherserver/tags/item/has_quality.json")
-            val values = tag.getAsJsonArray("values")
-            assertEquals(14, values.size(), "등급 대상 아이템이 14개여야 함")
-        }
-    }
 
     @Nested
     @DisplayName("루트 모디파이어 테스트")
     inner class LootModifierTests {
 
         @Test
-        @DisplayName("assign_quality 루트 모디파이어가 올바른 형식이어야 함")
-        fun assignQualityModifierIsValid() {
-            val modifier = loadJsonResource("data/estherserver/loot_modifiers/assign_quality.json")
+        @DisplayName("profession_loot 루트 모디파이어가 올바른 형식이어야 함")
+        fun professionLootModifierIsValid() {
+            val modifier = loadJsonResource("data/estherserver/loot_modifiers/profession_loot.json")
 
-            assertEquals("estherserver:assign_quality", modifier.get("type").asString, "type이 올바라야 함")
+            assertEquals("estherserver:profession_loot", modifier.get("type").asString, "type이 올바라야 함")
             assertTrue(modifier.has("conditions"), "conditions 필드가 있어야 함")
 
             val conditions = modifier.getAsJsonArray("conditions")
-            assertEquals(0, conditions.size(), "conditions가 비어있어야 함 (태그로 필터링)")
+            assertEquals(0, conditions.size(), "conditions가 비어있어야 함")
         }
 
         @Test
-        @DisplayName("global_loot_modifiers에 assign_quality가 포함되어야 함")
-        fun globalLootModifiersContainsAssignQuality() {
+        @DisplayName("global_loot_modifiers에 profession_loot가 포함되어야 함")
+        fun globalLootModifiersContainsProfessionLoot() {
             val global = loadJsonResource("data/neoforge/loot_modifiers/global_loot_modifiers.json")
 
             assertFalse(global.get("replace").asBoolean, "replace가 false여야 함")
@@ -80,55 +36,56 @@ class ItemQualityTest {
             val entries = global.getAsJsonArray("entries")
             val entryList = entries.map { it.asString }
 
-            assertTrue(entryList.contains("estherserver:assign_quality"), "assign_quality가 포함되어야 함")
+            assertTrue(entryList.contains("estherserver:profession_loot"), "profession_loot가 포함되어야 함")
+            assertFalse(entryList.contains("estherserver:assign_quality"), "assign_quality가 없어야 함")
         }
 
         @Test
-        @DisplayName("assign_quality가 add_test_fish 뒤에 위치해야 함")
-        fun assignQualityIsAfterAddTestFish() {
+        @DisplayName("profession_loot가 add_test_fish 뒤에 위치해야 함")
+        fun professionLootIsAfterAddTestFish() {
             val global = loadJsonResource("data/neoforge/loot_modifiers/global_loot_modifiers.json")
             val entries = global.getAsJsonArray("entries")
             val entryList = entries.map { it.asString }
 
             val addFishIndex = entryList.indexOf("estherserver:add_test_fish")
-            val assignQualityIndex = entryList.indexOf("estherserver:assign_quality")
+            val professionLootIndex = entryList.indexOf("estherserver:profession_loot")
 
             assertTrue(addFishIndex >= 0, "add_test_fish가 있어야 함")
-            assertTrue(assignQualityIndex >= 0, "assign_quality가 있어야 함")
-            assertTrue(assignQualityIndex > addFishIndex, "assign_quality가 add_test_fish 뒤에 있어야 함")
+            assertTrue(professionLootIndex >= 0, "profession_loot가 있어야 함")
+            assertTrue(professionLootIndex > addFishIndex, "profession_loot가 add_test_fish 뒤에 있어야 함")
         }
     }
 
     @Nested
-    @DisplayName("언어 파일 테스트")
-    inner class LanguageTests {
+    @DisplayName("품질 시스템 제거 확인")
+    inner class QualityRemovedTests {
 
         @Test
-        @DisplayName("영어 등급 번역이 있어야 함")
-        fun englishQualityTranslationsExist() {
-            val lang = loadJsonResource("assets/estherserver/lang/en_us.json")
-
-            assertTrue(lang.has("quality.estherserver.common"), "common 번역이 있어야 함")
-            assertTrue(lang.has("quality.estherserver.fine"), "fine 번역이 있어야 함")
-            assertTrue(lang.has("quality.estherserver.rare"), "rare 번역이 있어야 함")
-
-            assertEquals("Common", lang.get("quality.estherserver.common").asString)
-            assertEquals("Fine", lang.get("quality.estherserver.fine").asString)
-            assertEquals("Rare", lang.get("quality.estherserver.rare").asString)
+        @DisplayName("has_quality 태그 파일이 삭제되어야 함")
+        fun hasQualityTagRemoved() {
+            val resource = javaClass.classLoader.getResource("data/estherserver/tags/item/has_quality.json")
+            assertNull(resource, "has_quality.json이 삭제되어야 함")
         }
 
         @Test
-        @DisplayName("한국어 등급 번역이 있어야 함")
-        fun koreanQualityTranslationsExist() {
-            val lang = loadJsonResource("assets/estherserver/lang/ko_kr.json")
+        @DisplayName("assign_quality 모디파이어 파일이 삭제되어야 함")
+        fun assignQualityModifierRemoved() {
+            val resource = javaClass.classLoader.getResource("data/estherserver/loot_modifiers/assign_quality.json")
+            assertNull(resource, "assign_quality.json이 삭제되어야 함")
+        }
 
-            assertTrue(lang.has("quality.estherserver.common"), "common 번역이 있어야 함")
-            assertTrue(lang.has("quality.estherserver.fine"), "fine 번역이 있어야 함")
-            assertTrue(lang.has("quality.estherserver.rare"), "rare 번역이 있어야 함")
+        @Test
+        @DisplayName("언어 파일에서 품질 번역이 제거되어야 함")
+        fun qualityTranslationsRemoved() {
+            val enLang = loadJsonResource("assets/estherserver/lang/en_us.json")
+            assertFalse(enLang.has("quality.estherserver.common"), "common 품질 번역이 없어야 함")
+            assertFalse(enLang.has("quality.estherserver.fine"), "fine 품질 번역이 없어야 함")
+            assertFalse(enLang.has("quality.estherserver.rare"), "rare 품질 번역이 없어야 함")
 
-            assertEquals("일반", lang.get("quality.estherserver.common").asString)
-            assertEquals("고급", lang.get("quality.estherserver.fine").asString)
-            assertEquals("희귀", lang.get("quality.estherserver.rare").asString)
+            val koLang = loadJsonResource("assets/estherserver/lang/ko_kr.json")
+            assertFalse(koLang.has("quality.estherserver.common"), "common 품질 한글 번역이 없어야 함")
+            assertFalse(koLang.has("quality.estherserver.fine"), "fine 품질 한글 번역이 없어야 함")
+            assertFalse(koLang.has("quality.estherserver.rare"), "rare 품질 한글 번역이 없어야 함")
         }
     }
 }

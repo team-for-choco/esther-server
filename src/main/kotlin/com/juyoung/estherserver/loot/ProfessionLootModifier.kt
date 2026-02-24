@@ -5,19 +5,13 @@ import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionHandler
-import com.juyoung.estherserver.quality.ItemQuality
-import com.juyoung.estherserver.quality.ModDataComponents
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.tags.TagKey
 import net.minecraft.world.entity.projectile.FishingHook
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.storage.loot.LootContext
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams
@@ -25,7 +19,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier
 import net.neoforged.neoforge.common.loot.LootModifier
 
-class AssignQualityLootModifier(
+class ProfessionLootModifier(
     conditions: Array<LootItemCondition>
 ) : LootModifier(conditions) {
 
@@ -67,22 +61,16 @@ class AssignQualityLootModifier(
 
         generatedLoot.removeAll(toRemove.toSet())
 
-        // --- Assign quality + XP ---
+        // --- XP for custom item drops ---
         for (stack in generatedLoot) {
-            if (stack.`is`(HAS_QUALITY_TAG)) {
-                val profession = ProfessionHandler.getProfessionForItem(stack)
-                val quality = ItemQuality.randomQuality(context.random)
-                stack.set(ModDataComponents.ITEM_QUALITY.get(), quality)
-
-                if (player != null && profession != null && isCorrectToolForProfession(tool, profession)) {
-                    val xp = ProfessionHandler.getXpForQuality(quality)
-                    ProfessionHandler.addExperience(player, profession, xp)
-                    relevantProfessions.add(profession)
-                }
+            val profession = ProfessionHandler.getProfessionForItem(stack)
+            if (player != null && profession != null && isCorrectToolForProfession(tool, profession)) {
+                ProfessionHandler.addExperience(player, profession, 1)
+                relevantProfessions.add(profession)
             }
         }
 
-        // Vanilla mining XP (no quality, fixed XP per ore type)
+        // Vanilla mining XP (fixed XP per ore type)
         if (player != null && isCorrectToolForProfession(tool, Profession.MINING)) {
             for (stack in generatedLoot) {
                 val xp = ProfessionHandler.getVanillaMiningXp(stack)
@@ -116,11 +104,8 @@ class AssignQualityLootModifier(
                 if (equipLevel >= 3 && context.random.nextFloat() < 0.05f) {
                     var doubled = false
                     for (stack in generatedLoot) {
-                        if (stack.`is`(HAS_QUALITY_TAG) && ProfessionHandler.getProfessionForItem(stack) == Profession.FISHING) {
-                            val bonusCopy = stack.copy()
-                            val bonusQuality = ItemQuality.randomQuality(context.random)
-                            bonusCopy.set(ModDataComponents.ITEM_QUALITY.get(), bonusQuality)
-                            extraDrops.add(bonusCopy)
+                        if (ProfessionHandler.getProfessionForItem(stack) == Profession.FISHING) {
+                            extraDrops.add(stack.copy())
                             doubled = true
                         }
                     }
@@ -142,7 +127,7 @@ class AssignQualityLootModifier(
                 val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FARMING)
                 if (equipLevel >= 4 && context.random.nextFloat() < 0.05f) {
                     for (stack in generatedLoot) {
-                        if (stack.`is`(HAS_QUALITY_TAG) && ProfessionHandler.getProfessionForItem(stack) == Profession.FARMING) {
+                        if (ProfessionHandler.getProfessionForItem(stack) == Profession.FARMING) {
                             extraDrops.add(stack.copy())
                         }
                     }
@@ -170,13 +155,8 @@ class AssignQualityLootModifier(
     override fun codec(): MapCodec<out IGlobalLootModifier> = CODEC
 
     companion object {
-        val HAS_QUALITY_TAG: TagKey<Item> = TagKey.create(
-            Registries.ITEM,
-            ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "has_quality")
-        )
-
-        val CODEC: MapCodec<AssignQualityLootModifier> = RecordCodecBuilder.mapCodec { inst ->
-            codecStart(inst).apply(inst, ::AssignQualityLootModifier)
+        val CODEC: MapCodec<ProfessionLootModifier> = RecordCodecBuilder.mapCodec { inst ->
+            codecStart(inst).apply(inst, ::ProfessionLootModifier)
         }
     }
 }

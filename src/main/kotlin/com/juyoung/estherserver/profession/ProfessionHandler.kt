@@ -1,7 +1,6 @@
 package com.juyoung.estherserver.profession
 
 import com.juyoung.estherserver.EstherServerMod
-import com.juyoung.estherserver.quality.ItemQuality
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -79,12 +78,6 @@ object ProfessionHandler {
     fun getSeedForCrop(blockId: ResourceLocation): ItemStack? {
         val seed = cropSeedMap[blockId] ?: return null
         return ItemStack(seed.get())
-    }
-
-    fun getXpForQuality(quality: ItemQuality): Int = when (quality) {
-        ItemQuality.COMMON -> 1
-        ItemQuality.FINE -> 3
-        ItemQuality.RARE -> 5
     }
 
     fun addExperience(player: ServerPlayer, profession: Profession, amount: Int) {

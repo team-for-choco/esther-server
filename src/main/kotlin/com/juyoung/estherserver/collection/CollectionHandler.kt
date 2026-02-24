@@ -1,6 +1,5 @@
 package com.juyoung.estherserver.collection
 
-import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
@@ -45,12 +44,11 @@ object CollectionHandler {
         }
 
         val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
-        val quality = stack.get(ModDataComponents.ITEM_QUALITY.get())
-        val key = CollectionKey(itemId, quality)
+        val key = CollectionKey(itemId)
 
         if (!CollectibleRegistry.isValidKey(key)) {
             player.displayClientMessage(
-                Component.translatable("message.estherserver.collection_invalid_quality"), true
+                Component.translatable("message.estherserver.collection_not_collectible"), true
             )
             return false
         }

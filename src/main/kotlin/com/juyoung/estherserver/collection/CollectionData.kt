@@ -1,6 +1,5 @@
 package com.juyoung.estherserver.collection
 
-import com.juyoung.estherserver.quality.ItemQuality
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.nbt.StringTag
@@ -9,41 +8,29 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 
 data class CollectionKey(
-    val item: ResourceLocation,
-    val quality: ItemQuality?
+    val item: ResourceLocation
 ) {
     fun toNBT(): CompoundTag {
         val tag = CompoundTag()
         tag.putString("item", item.toString())
-        if (quality != null) {
-            tag.putString("quality", quality.getSerializedName())
-        }
         return tag
     }
 
     companion object {
         fun fromNBT(tag: CompoundTag): CollectionKey {
             val item = ResourceLocation.parse(tag.getString("item"))
-            val quality = if (tag.contains("quality")) {
-                ItemQuality.byName(tag.getString("quality"))
-            } else null
-            return CollectionKey(item, quality)
+            // Migration: ignore quality field if present in old data
+            return CollectionKey(item)
         }
 
         val STREAM_CODEC: StreamCodec<FriendlyByteBuf, CollectionKey> = object : StreamCodec<FriendlyByteBuf, CollectionKey> {
             override fun decode(buf: FriendlyByteBuf): CollectionKey {
                 val item = buf.readResourceLocation()
-                val hasQuality = buf.readBoolean()
-                val quality = if (hasQuality) ItemQuality.entries[buf.readByte().toInt()] else null
-                return CollectionKey(item, quality)
+                return CollectionKey(item)
             }
 
             override fun encode(buf: FriendlyByteBuf, value: CollectionKey) {
                 buf.writeResourceLocation(value.item)
-                buf.writeBoolean(value.quality != null)
-                if (value.quality != null) {
-                    buf.writeByte(value.quality.ordinal)
-                }
             }
         }
     }
@@ -149,11 +136,24 @@ class CollectionData(
             val data = CollectionData()
             if (tag.contains("entries")) {
                 val list = tag.getList("entries", 10)
+                // Migration: merge entries with same item (old quality-based data)
                 for (i in 0 until list.size) {
                     val entryTag = list.getCompound(i)
-                    val key = CollectionKey.fromNBT(entryTag.getCompound("key"))
+                    val keyTag = entryTag.getCompound("key")
+                    val item = ResourceLocation.parse(keyTag.getString("item"))
+                    val key = CollectionKey(item)
                     val entry = CollectionEntry.fromNBT(entryTag.getCompound("entry"))
-                    data.entries[key] = entry
+
+                    val existing = data.entries[key]
+                    if (existing != null) {
+                        // Merge: keep earliest discovery time, sum counts
+                        data.entries[key] = CollectionEntry(
+                            firstDiscoveredAt = minOf(existing.firstDiscoveredAt, entry.firstDiscoveredAt),
+                            count = maxOf(existing.count, entry.count)
+                        )
+                    } else {
+                        data.entries[key] = entry
+                    }
                 }
             }
             if (tag.contains("milestones")) {
