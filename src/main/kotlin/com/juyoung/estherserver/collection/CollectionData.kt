@@ -75,7 +75,9 @@ class CollectionData(
     private val entries: MutableMap<CollectionKey, CollectionEntry> = mutableMapOf(),
     val unlockedMilestones: MutableSet<String> = mutableSetOf(),
     var activeTitle: String? = null,
-    val claimedRewards: MutableSet<String> = mutableSetOf()
+    val claimedRewards: MutableSet<String> = mutableSetOf(),
+    /** 달성 알림이 이미 전송된 마일스톤 (중복 브로드캐스트 방지용) */
+    val notifiedMilestones: MutableSet<String> = mutableSetOf()
 ) {
     fun isComplete(key: CollectionKey): Boolean {
         val entry = entries[key] ?: return false
@@ -140,6 +142,12 @@ class CollectionData(
         }
         tag.put("claimedRewards", rewardList)
 
+        val notifiedList = ListTag()
+        for (ms in notifiedMilestones) {
+            notifiedList.add(StringTag.valueOf(ms))
+        }
+        tag.put("notifiedMilestones", notifiedList)
+
         return tag
     }
 
@@ -183,6 +191,12 @@ class CollectionData(
                     data.claimedRewards.add(rewardList.getString(i))
                 }
             }
+            if (tag.contains("notifiedMilestones")) {
+                val notifiedList = tag.getList("notifiedMilestones", 8)
+                for (i in 0 until notifiedList.size) {
+                    data.notifiedMilestones.add(notifiedList.getString(i))
+                }
+            }
             return data
         }
 
@@ -207,6 +221,10 @@ class CollectionData(
                 for (i in 0 until rewardCount) {
                     data.claimedRewards.add(buf.readUtf())
                 }
+                val notifiedCount = buf.readVarInt()
+                for (i in 0 until notifiedCount) {
+                    data.notifiedMilestones.add(buf.readUtf())
+                }
                 return data
             }
 
@@ -227,6 +245,10 @@ class CollectionData(
                 buf.writeVarInt(value.claimedRewards.size)
                 for (reward in value.claimedRewards) {
                     buf.writeUtf(reward)
+                }
+                buf.writeVarInt(value.notifiedMilestones.size)
+                for (ms in value.notifiedMilestones) {
+                    buf.writeUtf(ms)
                 }
             }
         }

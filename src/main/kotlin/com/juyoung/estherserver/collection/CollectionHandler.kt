@@ -96,10 +96,11 @@ object CollectionHandler {
     private fun checkMilestones(player: ServerPlayer, data: CollectionData) {
         var changed = false
         for (milestone in Milestone.entries) {
-            if (milestone.id in data.unlockedMilestones) continue
+            if (milestone.id in data.notifiedMilestones) continue
             if (!milestone.check(data)) continue
 
-            data.unlockedMilestones.add(milestone.id)
+            // 알림만 전송 — 칭호 해금(unlockedMilestones)은 보상 수령 시에만 수행
+            data.notifiedMilestones.add(milestone.id)
             changed = true
 
             val titleName = Component.translatable(milestone.titleKey)
