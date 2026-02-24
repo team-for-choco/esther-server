@@ -3,7 +3,6 @@ package com.juyoung.estherserver.inventory
 import com.juyoung.estherserver.gui.GuiTheme
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
@@ -42,8 +41,7 @@ class ProfessionInventoryContainerScreen(
     }
 
     override fun renderBg(guiGraphics: GuiGraphics, partialTick: Float, mouseX: Int, mouseY: Int) {
-        // Background panel (280x222 영역, 512x256 캔버스)
-        guiGraphics.blit(RenderType::guiTextured, GuiTheme.PROFESSION_INVENTORY_BG, leftPos, topPos, 0f, 0f, imageWidth, imageHeight, 512, 256)
+        GuiTheme.renderPanel(guiGraphics, leftPos, topPos, imageWidth, imageHeight)
 
         // Tabs
         renderTabs(guiGraphics)

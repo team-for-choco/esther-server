@@ -7,7 +7,6 @@ import com.juyoung.estherserver.gui.GuiTheme
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
@@ -46,8 +45,7 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
     override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
         super.render(guiGraphics, mouseX, mouseY, partialTick)
 
-        // Panel (260x230 영역, 512x256 캔버스)
-        guiGraphics.blit(RenderType::guiTextured, GuiTheme.PROFESSION_BG, guiLeft, guiTop, 0f, 0f, GUI_WIDTH, GUI_HEIGHT, 512, 256)
+        GuiTheme.renderPanel(guiGraphics, guiLeft, guiTop, GUI_WIDTH, GUI_HEIGHT)
 
         // Title
         guiGraphics.drawCenteredString(
@@ -66,7 +64,8 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
         for ((index, profession) in Profession.entries.withIndex()) {
             val rowY = guiTop + 22 + index * ROW_HEIGHT
 
-            // 행 내부는 텍스처에 이미 포함됨 — 동적 콘텐츠만 렌더링
+            // 행 배경 (오목한 내부 패널)
+            GuiTheme.renderInnerPanel(guiGraphics, startX, rowY, contentWidth, ROW_HEIGHT - 2)
 
             val level = data.getLevel(profession)
             val xp = data.getXp(profession)

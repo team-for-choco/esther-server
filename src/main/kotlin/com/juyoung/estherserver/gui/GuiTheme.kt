@@ -10,13 +10,8 @@ import net.minecraft.resources.ResourceLocation
  */
 object GuiTheme {
 
-    // ── 텍스처 ResourceLocations (텍스처 파일 추가 시 사용) ──
+    // ── 텍스처 ResourceLocations ──
     val ESTHER_ICON = ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "textures/gui/esther_icon.png")
-    val COLLECTION_BG = ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "textures/gui/collection_bg.png")
-    val SHOP_BG = ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "textures/gui/shop_bg.png")
-    val PROFESSION_BG = ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "textures/gui/profession_bg.png")
-    val ENHANCEMENT_BG = ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "textures/gui/enhancement_bg.png")
-    val PROFESSION_INVENTORY_BG = ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, "textures/gui/profession_inventory_bg.png")
 
     // ── 패널 ──
     val PANEL_BG = 0xFF2A2A3D.toInt()           // 어두운 남색
