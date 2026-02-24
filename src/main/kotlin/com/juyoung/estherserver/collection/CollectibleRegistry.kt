@@ -192,6 +192,7 @@ object CollectibleRegistry {
 
     private val excludedItems by lazy {
         setOf(
+            // 관리자 전용
             Items.COMMAND_BLOCK,
             Items.CHAIN_COMMAND_BLOCK,
             Items.REPEATING_COMMAND_BLOCK,
@@ -203,7 +204,33 @@ object CollectibleRegistry {
             Items.LIGHT,
             Items.DEBUG_STICK,
             Items.KNOWLEDGE_BOOK,
-            Items.BUNDLE
+            Items.BUNDLE,
+            // 커스텀 도구/블록 (재획득 불가)
+            Mod.SPECIAL_FISHING_ROD.get(),
+            Mod.SPECIAL_HOE.get(),
+            Mod.SPECIAL_PICKAXE.get(),
+            Mod.SPECIAL_COOKING_TOOL.get(),
+            Mod.COOKING_STATION_ITEM.get(),
+            Mod.COLLECTION_PEDESTAL_ITEM.get(),
+            Mod.WILD_PORTAL_ITEM.get(),
+            Mod.RETURN_PORTAL_ITEM.get(),
+            // 레드스톤 재료 아이템 (직접)
+            Items.REDSTONE,
+            Items.REDSTONE_TORCH,
+            Items.REPEATER,
+            Items.PISTON,
+            Items.DISPENSER,
+            Items.DROPPER,
+            Items.OBSERVER,
+            Items.NOTE_BLOCK,
+            Items.REDSTONE_LAMP,
+            Items.TARGET,
+            Items.POWERED_RAIL,
+            Items.DETECTOR_RAIL,
+            // 레드스톤 재료 아이템 (간접: 레드스톤 횃불/피스톤 경유)
+            Items.COMPARATOR,
+            Items.STICKY_PISTON,
+            Items.ACTIVATOR_RAIL
         )
     }
 
