@@ -98,14 +98,12 @@ object QuestHandler {
         val now = Instant.now()
         val currentDay = getDayNumber(now)
         val currentWeekStart = getWeekStartDay(now)
-        var changed = false
 
         // Daily reset check
         if (data.dailyResetDay != currentDay) {
             data.dailyQuests.clear()
             data.dailyBonusClaimed = false
             data.dailyResetDay = currentDay
-            changed = true
         }
 
         // Weekly reset check
@@ -113,7 +111,6 @@ object QuestHandler {
             data.weeklyQuests.clear()
             data.weeklyBonusClaimed = false
             data.weeklyResetDay = currentWeekStart
-            changed = true
         }
 
         // Daily assignment if empty
@@ -123,7 +120,6 @@ object QuestHandler {
             for (template in templates) {
                 data.dailyQuests.add(ActiveQuest(template.id))
             }
-            changed = true
             player.displayClientMessage(
                 Component.translatable("message.estherserver.quest_daily_assigned"), false
             )
@@ -135,16 +131,14 @@ object QuestHandler {
             for (template in templates) {
                 data.weeklyQuests.add(ActiveQuest(template.id))
             }
-            changed = true
             player.displayClientMessage(
                 Component.translatable("message.estherserver.quest_weekly_assigned"), false
             )
         }
 
-        if (changed) {
-            player.setData(ModQuest.QUEST_DATA.get(), data)
-            syncToClient(player)
-        }
+        // Always save and sync to ensure client has up-to-date data
+        player.setData(ModQuest.QUEST_DATA.get(), data)
+        syncToClient(player)
 
         // If holding an item, try to submit it
         if (!heldStack.isEmpty && hand == InteractionHand.MAIN_HAND) {
