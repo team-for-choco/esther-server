@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "estherserver:block/qb_side",
+    "north": "estherserver:block/qb_front_panel_bl",
+    "south": "estherserver:block/qb_back",
+    "east": "estherserver:block/qb_side",
+    "west": "estherserver:block/qb_side",
+    "up": "estherserver:block/qb_side",
+    "down": "estherserver:block/qb_side"
+  }
+}

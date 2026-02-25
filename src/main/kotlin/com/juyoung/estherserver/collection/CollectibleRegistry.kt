@@ -214,6 +214,7 @@ object CollectibleRegistry {
             Mod.COLLECTION_PEDESTAL_ITEM.get(),
             Mod.WILD_PORTAL_ITEM.get(),
             Mod.RETURN_PORTAL_ITEM.get(),
+            Mod.QUEST_BOARD_ITEM.get(),
             // 레드스톤 재료 아이템 (직접)
             Items.REDSTONE,
             Items.REDSTONE_TORCH,

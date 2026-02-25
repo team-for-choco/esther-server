@@ -79,6 +79,7 @@ import com.juyoung.estherserver.enhancement.EnhanceItemPayload
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.ModProfession
 import com.juyoung.estherserver.profession.ProfessionClientHandler
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionCommand
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.profession.ProfessionSyncPayload
@@ -90,6 +91,15 @@ import com.juyoung.estherserver.merchant.OpenShopPayload
 import com.juyoung.estherserver.merchant.ShopBuyRegistry
 import com.juyoung.estherserver.merchant.ShopClientHandler
 import com.juyoung.estherserver.merchant.ShopCommand
+import com.juyoung.estherserver.quest.ModQuest
+import com.juyoung.estherserver.quest.QuestBonusClaimPayload
+import com.juyoung.estherserver.quest.QuestClaimPayload
+import com.juyoung.estherserver.quest.QuestClientHandler
+import com.juyoung.estherserver.quest.QuestCommand
+import com.juyoung.estherserver.quest.QuestHandler
+import com.juyoung.estherserver.quest.QuestOpenScreenPayload
+import com.juyoung.estherserver.quest.QuestScreen
+import com.juyoung.estherserver.quest.QuestSyncPayload
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
@@ -543,6 +553,35 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 .lightLevel { 8 })
         val RETURN_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("return_portal", RETURN_PORTAL)
 
+        // Quest reward food - Hunter's Pot
+        val HUNTERS_POT: DeferredItem<Item> = ITEMS.registerSimpleItem("hunters_pot",
+            Item.Properties()
+                .food(FoodProperties.Builder().nutrition(8).saturationModifier(0.8f).build()))
+
+        // Draw tickets
+        val DRAW_TICKET_NORMAL: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_normal")
+        val DRAW_TICKET_FINE: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_fine")
+        val DRAW_TICKET_RARE: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_rare")
+
+        // Quest board
+        val QUEST_BOARD: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board",
+            { properties -> com.juyoung.estherserver.quest.QuestBoardBlock(properties) },
+            BlockBehaviour.Properties.of()
+                .strength(-1.0f, 3600000.0f)
+                .mapColor(MapColor.WOOD)
+                .sound(SoundType.WOOD)
+                .noOcclusion())
+        val QUEST_BOARD_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("quest_board", QUEST_BOARD)
+
+        val QUEST_BOARD_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board_dummy",
+            { properties -> com.juyoung.estherserver.quest.QuestBoardDummyBlock(properties) },
+            BlockBehaviour.Properties.of()
+                .strength(-1.0f, 3600000.0f)
+                .mapColor(MapColor.WOOD)
+                .sound(SoundType.WOOD)
+                .noOcclusion()
+                .noLootTable())
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -695,6 +734,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(WATERING_CAN.get())
                         output.accept(WILD_PORTAL.get())
                         output.accept(RETURN_PORTAL.get())
+                        // Quest
+                        output.accept(HUNTERS_POT.get())
+                        output.accept(DRAW_TICKET_NORMAL.get())
+                        output.accept(DRAW_TICKET_FINE.get())
+                        output.accept(DRAW_TICKET_RARE.get())
+                        output.accept(QUEST_BOARD_ITEM.get())
                     }.build()
             })
     }
@@ -719,6 +764,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModInventory.ATTACHMENT_TYPES.register(modEventBus)
         ModInventory.MENU_TYPES.register(modEventBus)
         ModWild.ATTACHMENT_TYPES.register(modEventBus)
+        ModQuest.ATTACHMENT_TYPES.register(modEventBus)
+        ModQuest.BLOCK_ENTITY_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -735,6 +782,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.redstone.RedstoneBlockHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.CropGradeHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.wild.OverworldProtectionHandler)
+        NeoForge.EVENT_BUS.register(QuestHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -842,6 +890,29 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     ProfessionInventoryClientHandler.handleTabSync(payload)
                 }
             }
+            .playToClient(QuestSyncPayload.TYPE, QuestSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    QuestClientHandler.handleSync(payload)
+                }
+            }
+            .playToServer(QuestClaimPayload.TYPE, QuestClaimPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    QuestHandler.handleClaimQuest(player, payload.questIndex, payload.isWeekly)
+                }
+            }
+            .playToServer(QuestBonusClaimPayload.TYPE, QuestBonusClaimPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    QuestHandler.handleBonusClaim(player, payload.isWeekly)
+                }
+            }
+            .playToClient(QuestOpenScreenPayload.TYPE, QuestOpenScreenPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    QuestClientHandler.cachedData = payload.data
+                    Minecraft.getInstance().setScreen(QuestScreen())
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
@@ -854,8 +925,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ItemPriceRegistry.init()
         ShopBuyRegistry.init()
         ProfessionHandler.init()
-        com.juyoung.estherserver.profession.ProfessionBonusHelper.initOreGrades()
-        com.juyoung.estherserver.profession.ProfessionBonusHelper.initContentGrades()
+        ProfessionBonusHelper.initOreGrades()
+        ProfessionBonusHelper.initContentGrades()
+        // QuestPool is initialized via its init block (no explicit call needed)
 
         if (Config.logDirtBlock) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT))
@@ -876,6 +948,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ShopCommand.register(event.dispatcher)
         ProfessionCommand.register(event.dispatcher)
         WildCommand.register(event.dispatcher)
+        QuestCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent
@@ -984,7 +1057,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     ProfessionClientHandler.cachedData.getLevel(com.juyoung.estherserver.profession.Profession.MINING)
                 else -> 0
             }
-            val profBonus = com.juyoung.estherserver.profession.ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
+            val profBonus = ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
             event.newSpeed = tierSpeed * (1.0f + profBonus)
         }
     }

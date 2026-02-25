@@ -68,6 +68,7 @@ class ProfessionLootModifier(
                 val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
                 ProfessionHandler.addExperience(player, profession, ProfessionBonusHelper.getGradeXp(itemId))
                 relevantProfessions.add(profession)
+
             }
         }
 
