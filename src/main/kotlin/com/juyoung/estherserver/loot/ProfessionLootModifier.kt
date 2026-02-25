@@ -68,6 +68,18 @@ class ProfessionLootModifier(
                 val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
                 ProfessionHandler.addExperience(player, profession, ProfessionBonusHelper.getGradeXp(itemId))
                 relevantProfessions.add(profession)
+
+                // Quest tracking
+                val gradeStr = ProfessionBonusHelper.getContentGradeForItem(itemId)?.name
+                val trackingType = when (profession) {
+                    Profession.FISHING -> com.juyoung.estherserver.quest.QuestTrackingType.CATCH_FISH
+                    Profession.FARMING -> com.juyoung.estherserver.quest.QuestTrackingType.HARVEST_CROP
+                    Profession.MINING -> com.juyoung.estherserver.quest.QuestTrackingType.MINE_ORE
+                    else -> null
+                }
+                if (trackingType != null) {
+                    com.juyoung.estherserver.quest.QuestHandler.trackProgress(player, trackingType, 1, gradeStr)
+                }
             }
         }
 
@@ -78,6 +90,10 @@ class ProfessionLootModifier(
                 if (xp != null) {
                     ProfessionHandler.addExperience(player, Profession.MINING, xp)
                     relevantProfessions.add(Profession.MINING)
+                    // Quest tracking for vanilla ores (no grade filter)
+                    com.juyoung.estherserver.quest.QuestHandler.trackProgress(
+                        player, com.juyoung.estherserver.quest.QuestTrackingType.MINE_ORE, 1, null
+                    )
                 }
             }
         }

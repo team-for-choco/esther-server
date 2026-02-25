@@ -90,6 +90,12 @@ import com.juyoung.estherserver.merchant.OpenShopPayload
 import com.juyoung.estherserver.merchant.ShopBuyRegistry
 import com.juyoung.estherserver.merchant.ShopClientHandler
 import com.juyoung.estherserver.merchant.ShopCommand
+import com.juyoung.estherserver.quest.ModQuest
+import com.juyoung.estherserver.quest.QuestBonusClaimPayload
+import com.juyoung.estherserver.quest.QuestClaimPayload
+import com.juyoung.estherserver.quest.QuestCommand
+import com.juyoung.estherserver.quest.QuestHandler
+import com.juyoung.estherserver.quest.QuestSyncPayload
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
@@ -543,6 +549,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 .lightLevel { 8 })
         val RETURN_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("return_portal", RETURN_PORTAL)
 
+        // Quest reward food - Hunter's Pot
+        val HUNTERS_POT: DeferredItem<Item> = ITEMS.registerSimpleItem("hunters_pot",
+            Item.Properties()
+                .food(FoodProperties.Builder().nutrition(8).saturationModifier(0.8f).build()))
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -695,6 +706,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(WATERING_CAN.get())
                         output.accept(WILD_PORTAL.get())
                         output.accept(RETURN_PORTAL.get())
+                        // Quest
+                        output.accept(HUNTERS_POT.get())
                     }.build()
             })
     }
@@ -719,6 +732,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModInventory.ATTACHMENT_TYPES.register(modEventBus)
         ModInventory.MENU_TYPES.register(modEventBus)
         ModWild.ATTACHMENT_TYPES.register(modEventBus)
+        ModQuest.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -735,6 +749,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.redstone.RedstoneBlockHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.CropGradeHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.wild.OverworldProtectionHandler)
+        NeoForge.EVENT_BUS.register(QuestHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -842,6 +857,23 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     ProfessionInventoryClientHandler.handleTabSync(payload)
                 }
             }
+            .playToClient(QuestSyncPayload.TYPE, QuestSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    com.juyoung.estherserver.quest.QuestClientHandler.handleSync(payload)
+                }
+            }
+            .playToServer(QuestClaimPayload.TYPE, QuestClaimPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    QuestHandler.handleClaimQuest(player, payload.questIndex, payload.isWeekly)
+                }
+            }
+            .playToServer(QuestBonusClaimPayload.TYPE, QuestBonusClaimPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    QuestHandler.handleBonusClaim(player, payload.isWeekly)
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
@@ -856,6 +888,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ProfessionHandler.init()
         com.juyoung.estherserver.profession.ProfessionBonusHelper.initOreGrades()
         com.juyoung.estherserver.profession.ProfessionBonusHelper.initContentGrades()
+        // QuestPool is initialized via its init block (no explicit call needed)
 
         if (Config.logDirtBlock) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT))
@@ -876,6 +909,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ShopCommand.register(event.dispatcher)
         ProfessionCommand.register(event.dispatcher)
         WildCommand.register(event.dispatcher)
+        QuestCommand.register(event.dispatcher)
     }
 
     @SubscribeEvent
@@ -901,6 +935,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             event.register(ModKeyBindings.PROFESSION_KEY)
             event.register(ModKeyBindings.PROFESSION_INVENTORY_KEY)
             event.register(ModKeyBindings.TITLE_KEY)
+            event.register(ModKeyBindings.QUEST_KEY)
         }
 
         @SubscribeEvent

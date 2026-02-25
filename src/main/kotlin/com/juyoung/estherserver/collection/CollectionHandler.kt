@@ -90,6 +90,11 @@ object CollectionHandler {
 
         checkMilestones(player, data)
 
+        // Quest tracking
+        com.juyoung.estherserver.quest.QuestHandler.trackProgress(
+            player, com.juyoung.estherserver.quest.QuestTrackingType.REGISTER_COLLECTION, 1, null
+        )
+
         return true
     }
 

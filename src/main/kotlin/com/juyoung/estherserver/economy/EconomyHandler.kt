@@ -34,11 +34,16 @@ object EconomyHandler {
         return player.getData(ModEconomy.BALANCE_DATA.get()).balance
     }
 
-    fun addBalance(player: ServerPlayer, amount: Long) {
+    fun addBalance(player: ServerPlayer, amount: Long, skipQuestTracking: Boolean = false) {
         val data = player.getData(ModEconomy.BALANCE_DATA.get())
         data.balance += amount
         player.setData(ModEconomy.BALANCE_DATA.get(), data)
         syncToClient(player)
+        if (!skipQuestTracking) {
+            com.juyoung.estherserver.quest.QuestHandler.trackProgress(
+                player, com.juyoung.estherserver.quest.QuestTrackingType.EARN_CURRENCY, amount.toInt(), null
+            )
+        }
     }
 
     fun removeBalance(player: ServerPlayer, amount: Long): Boolean {
