@@ -27,11 +27,9 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
         val PART = IntegerProperty.create("part", 0, 6)
         val CODEC: MapCodec<CatSofaDummyBlock> = simpleCodec(::CatSofaDummyBlock)
 
-        // Seat parts: part 3 (cushion-seat) and part 5 (backrest-seat)
-        // But PART property is 0-indexed from dummy (master is index 0 in positions list)
-        // part 3 in positions = PART value 2 in dummy (i-1 where i=3)
-        // part 5 in positions = PART value 4 in dummy (i-1 where i=5)
-        private val SEAT_PARTS = setOf(2, 4)
+        // Seat parts: cushion-seat and backrest-seat
+        // positions[4]=cushion → PART=3, positions[6]=backrest → PART=5
+        private val SEAT_PARTS = setOf(3, 5)
     }
 
     init {
@@ -72,7 +70,6 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
         if (player.isShiftKeyDown) return InteractionResult.PASS
         if (player.isPassenger) return InteractionResult.PASS
 
-        // Find cushion block position (part index 2 in dummy = position index 3)
         val be = level.getBlockEntity(pos)
         if (be !is CatSofaDummyBlockEntity) return InteractionResult.PASS
 
@@ -84,8 +81,8 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
         val masterBlock = masterState.block as CatSofaBlock
         val positions = masterBlock.getMultiblockPositions(masterPos, facing)
 
-        // Seat position = cushion block (index 3 = above master)
-        val seatPos = positions[3]
+        // Seat position = cushion block (positions[4] = above master, PART=3)
+        val seatPos = positions[4]
 
         // Check no existing seat
         val area = AABB(seatPos).inflate(0.0, 0.5, 0.0)

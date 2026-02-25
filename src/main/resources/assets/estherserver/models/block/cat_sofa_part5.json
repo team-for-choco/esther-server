@@ -5,8 +5,8 @@
     "particle": "estherserver:block/cat_sofa/backrest_back",
     "north": "estherserver:block/cat_sofa/inner",
     "south": "estherserver:block/cat_sofa/backrest_back",
-    "west": "estherserver:block/cat_sofa/backrest_left",
-    "east": "estherserver:block/cat_sofa/inner",
+    "west": "estherserver:block/cat_sofa/inner",
+    "east": "estherserver:block/cat_sofa/backrest_left",
     "up": "estherserver:block/cat_sofa/backrest_top",
     "down": "estherserver:block/cat_sofa/inner"
   }
