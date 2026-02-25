@@ -570,7 +570,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val QUEST_BOARD: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board",
             { properties -> com.juyoung.estherserver.quest.QuestBoardBlock(properties) },
             BlockBehaviour.Properties.of()
-                .strength(-1.0f, 3600000.0f)
+                .strength(2.5f, 6.0f)
                 .mapColor(MapColor.WOOD)
                 .sound(SoundType.WOOD)
                 .noOcclusion())
@@ -579,7 +579,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val QUEST_BOARD_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board_dummy",
             { properties -> com.juyoung.estherserver.quest.QuestBoardDummyBlock(properties) },
             BlockBehaviour.Properties.of()
-                .strength(-1.0f, 3600000.0f)
+                .strength(2.5f, 6.0f)
                 .mapColor(MapColor.WOOD)
                 .sound(SoundType.WOOD)
                 .noOcclusion()

@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.BaseEntityBlock
@@ -109,10 +110,38 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
                 val masterPos = be.masterPos
                 val masterState = level.getBlockState(masterPos)
                 if (masterState.block is CatSofaBlock) {
+                    val masterBlock = masterState.block as CatSofaBlock
+                    val facing = masterState.getValue(CatSofaBlock.FACING)
+                    val positions = masterBlock.getMultiblockPositions(masterPos, facing)
+
+                    // Remove all other dummy blocks
+                    for (i in 1 until positions.size) {
+                        if (positions[i] != pos) {
+                            removeSeatAt(level, positions[i])
+                            val blockState = level.getBlockState(positions[i])
+                            if (blockState.block is CatSofaDummyBlock) {
+                                level.destroyBlock(positions[i], false)
+                            }
+                        }
+                    }
+                    // Remove seat at current position
+                    removeSeatAt(level, pos)
+
+                    // Drop item if not creative
+                    if (!player.isCreative) {
+                        Block.popResource(level, masterPos, ItemStack(EstherServerMod.CAT_SOFA_ITEM.get()))
+                    }
+
+                    // Remove master block
                     level.destroyBlock(masterPos, false)
                 }
             }
         }
         return super.playerWillDestroy(level, pos, state, player)
+    }
+
+    private fun removeSeatAt(level: Level, pos: BlockPos) {
+        val area = AABB(pos).inflate(0.0, 0.5, 0.0)
+        level.getEntitiesOfClass(SeatEntity::class.java, area).forEach { it.discard() }
     }
 }

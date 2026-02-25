@@ -85,7 +85,27 @@ class QuestBoardDummyBlock(properties: Properties) : BaseEntityBlock(properties)
                 val masterPos = be.masterPos
                 val masterState = level.getBlockState(masterPos)
                 if (masterState.block is QuestBoardBlock) {
-                    // Delegate to master to remove entire structure
+                    val masterBlock = masterState.block as QuestBoardBlock
+                    val facing = masterState.getValue(QuestBoardBlock.FACING)
+                    val right = facing.clockWise
+                    val positions = masterBlock.getMultiblockPositions(masterPos, right)
+
+                    // Remove all other dummy blocks
+                    for (i in 1 until positions.size) {
+                        if (positions[i] != pos) {
+                            val blockState = level.getBlockState(positions[i])
+                            if (blockState.block is QuestBoardDummyBlock) {
+                                level.destroyBlock(positions[i], false)
+                            }
+                        }
+                    }
+
+                    // Drop item if not creative
+                    if (!player.isCreative) {
+                        Block.popResource(level, masterPos, ItemStack(com.juyoung.estherserver.EstherServerMod.QUEST_BOARD_ITEM.get()))
+                    }
+
+                    // Remove master block
                     level.destroyBlock(masterPos, false)
                 }
             }

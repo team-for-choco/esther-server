@@ -127,7 +127,7 @@ class QuestBoardBlock(properties: Properties) : BaseEntityBlock(properties) {
      * Index 0 is the master position (bottom-left leg).
      * Bottom-middle positions (dx=1,2 dy=0) are skipped (empty space under the board).
      */
-    private fun getMultiblockPositions(masterPos: BlockPos, right: Direction): List<BlockPos> {
+    fun getMultiblockPositions(masterPos: BlockPos, right: Direction): List<BlockPos> {
         val positions = mutableListOf<BlockPos>()
         for (dy in 0 until HEIGHT) {
             for (dx in 0 until WIDTH) {
