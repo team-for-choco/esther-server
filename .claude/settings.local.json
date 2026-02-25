@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__atlassian__searchJiraIssuesUsingJql",
+      "Bash(cat:*)",
+      "mcp__atlassian__getTransitionsForJiraIssue",
+      "mcp__atlassian__transitionJiraIssue",
+      "Bash(gh:*)",
+      "Bash(winget install:*)",
+      "Bash(export:*)",
+      "Bash(cd:*)",
+      "mcp__atlassian__createJiraIssue",
+      "Bash(echo Python3 not found, trying python...:*)",
+      "Bash(tail:*)",
+      "Bash(cd \"C:\\\\Users\\\\hajuu\\\\OneDrive\\\\바탕 화면\\\\coding\\\\esther-server\" && ./gradlew build 2>&1)",
+      "Bash(cd C:\\\\Users\\\\hajuu\\\\OneDrive\\\\바탕 화면\\\\coding\\\\esther-server:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "atlassian"
+  ]
+}
