@@ -1,13 +1,28 @@
 {
-  "parent": "minecraft:block/cube",
+  "parent": "minecraft:block/block",
   "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
   "textures": {
     "particle": "estherserver:block/cat_sofa/backrest_back",
-    "north": "estherserver:block/cat_sofa/inner",
-    "south": "estherserver:block/cat_sofa/backrest_back",
-    "west": "estherserver:block/cat_sofa/inner",
-    "east": "estherserver:block/cat_sofa/backrest_left",
-    "up": "estherserver:block/cat_sofa/backrest_top",
-    "down": "estherserver:block/cat_sofa/inner"
-  }
+    "front": "estherserver:block/cat_sofa/inner",
+    "back": "estherserver:block/cat_sofa/backrest_back",
+    "left": "estherserver:block/cat_sofa/backrest_left",
+    "right": "estherserver:block/cat_sofa/inner",
+    "top": "estherserver:block/cat_sofa/backrest_top",
+    "bottom": "estherserver:block/cat_sofa/inner"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 10],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "texture": "#front" },
+        "south": { "texture": "#back" },
+        "east":  { "texture": "#left" },
+        "west":  { "texture": "#right" },
+        "up":    { "texture": "#top" },
+        "down":  { "texture": "#bottom" }
+      }
+    }
+  ]
 }
