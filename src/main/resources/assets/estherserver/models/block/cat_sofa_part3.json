@@ -4,11 +4,8 @@
   "render_type": "minecraft:cutout",
   "ambientocclusion": false,
   "textures": {
-    "particle": "estherserver:block/cat_sofa/seat_top",
-    "inner": "estherserver:block/cat_sofa/inner",
-    "seat_top": "estherserver:block/cat_sofa/seat_top",
-    "seat_front": "estherserver:block/cat_sofa/seat_front",
-    "seat_left": "estherserver:block/cat_sofa/seat_left"
+    "particle": "estherserver:block/cat_sofa/cushion",
+    "cushion": "estherserver:block/cat_sofa/cushion"
   },
   "elements": [
     {
@@ -23,43 +20,43 @@
         16
       ],
       "faces": {
-        "south": {
-          "uv": [
-            0,
-            4.5,
-            16,
-            11.5
-          ],
-          "texture": "#seat_front",
-          "cullface": "south"
-        },
         "north": {
           "uv": [
             0,
-            4.5,
+            0,
             16,
-            11.5
+            16
           ],
-          "texture": "#inner"
+          "texture": "#cushion"
         },
-        "west": {
+        "south": {
           "uv": [
             0,
-            4.5,
+            0,
             16,
-            11.5
+            16
           ],
-          "texture": "#seat_left",
-          "cullface": "west"
+          "texture": "#cushion",
+          "cullface": "south"
         },
         "east": {
           "uv": [
             0,
-            4.5,
+            0,
             16,
-            11.5
+            16
           ],
-          "texture": "#inner"
+          "texture": "#cushion"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cushion",
+          "cullface": "west"
         },
         "up": {
           "uv": [
@@ -68,7 +65,7 @@
             16,
             16
           ],
-          "texture": "#seat_top"
+          "texture": "#cushion"
         },
         "down": {
           "uv": [
@@ -77,7 +74,7 @@
             16,
             16
           ],
-          "texture": "#inner",
+          "texture": "#cushion",
           "cullface": "down"
         }
       }
@@ -94,59 +91,59 @@
         14
       ],
       "faces": {
-        "south": {
-          "uv": [
-            2,
-            3.5,
-            14,
-            4.5
-          ],
-          "texture": "#seat_front"
-        },
         "north": {
           "uv": [
-            2,
-            3.5,
-            14,
-            4.5
+            0,
+            0,
+            16,
+            16
           ],
-          "texture": "#inner"
+          "texture": "#cushion"
         },
-        "west": {
+        "south": {
           "uv": [
-            2,
-            3.5,
-            14,
-            4.5
+            0,
+            0,
+            16,
+            16
           ],
-          "texture": "#seat_left"
+          "texture": "#cushion"
         },
         "east": {
           "uv": [
-            2,
-            3.5,
-            14,
-            4.5
+            0,
+            0,
+            16,
+            16
           ],
-          "texture": "#inner"
+          "texture": "#cushion"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cushion"
         },
         "up": {
           "uv": [
-            2,
-            2,
-            14,
-            14
+            0,
+            0,
+            16,
+            16
           ],
-          "texture": "#seat_top"
+          "texture": "#cushion"
         },
         "down": {
           "uv": [
-            2,
-            2,
-            14,
-            14
+            0,
+            0,
+            16,
+            16
           ],
-          "texture": "#inner"
+          "texture": "#cushion"
         }
       }
     }

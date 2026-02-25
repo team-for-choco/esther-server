@@ -4,13 +4,10 @@
   "render_type": "minecraft:cutout",
   "ambientocclusion": false,
   "textures": {
-    "particle": "estherserver:block/cat_sofa/frame_back",
-    "frame_front": "estherserver:block/cat_sofa/frame_front",
-    "frame_back": "estherserver:block/cat_sofa/frame_back",
-    "frame_side_front": "estherserver:block/cat_sofa/frame_side_front",
-    "frame_side_back": "estherserver:block/cat_sofa/frame_side_back",
-    "frame_top": "estherserver:block/cat_sofa/frame_top",
-    "floor": "estherserver:block/cat_sofa/floor"
+    "particle": "estherserver:block/cat_sofa/wood",
+    "wood": "estherserver:block/cat_sofa/wood",
+    "wood_top": "estherserver:block/cat_sofa/wood_top",
+    "wood_floor": "estherserver:block/cat_sofa/wood_floor"
   },
   "elements": [
     {
@@ -27,59 +24,59 @@
       "faces": {
         "north": {
           "uv": [
-            12,
+            0,
             0,
             16,
             16
           ],
-          "texture": "#frame_back",
+          "texture": "#wood",
           "cullface": "north"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#wood"
         },
         "east": {
           "uv": [
             0,
             0,
-            4,
-            16
-          ],
-          "texture": "#frame_side_back",
-          "cullface": "east"
-        },
-        "south": {
-          "uv": [
-            12,
-            0,
             16,
             16
           ],
-          "texture": "#frame_back"
+          "texture": "#wood",
+          "cullface": "east"
         },
         "west": {
           "uv": [
             0,
             0,
-            4,
+            16,
             16
           ],
-          "texture": "#frame_side_back"
+          "texture": "#wood"
         },
         "up": {
           "uv": [
-            12,
+            0,
             0,
             16,
-            4
+            16
           ],
-          "texture": "#frame_top"
+          "texture": "#wood_top"
         },
         "down": {
           "uv": [
-            12,
+            0,
             0,
             16,
-            4
+            16
           ],
-          "texture": "#floor",
+          "texture": "#wood_floor",
           "cullface": "down"
         }
       }
@@ -99,57 +96,57 @@
         "north": {
           "uv": [
             0,
-            12,
-            12,
-            15
+            0,
+            16,
+            16
           ],
-          "texture": "#frame_back",
+          "texture": "#wood",
           "cullface": "north"
         },
         "south": {
           "uv": [
             0,
-            12,
-            12,
-            15
+            0,
+            16,
+            16
           ],
-          "texture": "#frame_back"
+          "texture": "#wood"
         },
         "east": {
           "uv": [
-            1,
-            12,
-            3,
-            15
+            0,
+            0,
+            16,
+            16
           ],
-          "texture": "#frame_side_back"
+          "texture": "#wood"
         },
         "west": {
           "uv": [
-            1,
-            12,
-            3,
-            15
+            0,
+            0,
+            16,
+            16
           ],
-          "texture": "#frame_side_back"
+          "texture": "#wood"
         },
         "up": {
           "uv": [
             0,
-            1,
-            12,
-            3
+            0,
+            16,
+            16
           ],
-          "texture": "#frame_top"
+          "texture": "#wood_top"
         },
         "down": {
           "uv": [
             0,
-            1,
-            12,
-            3
+            0,
+            16,
+            16
           ],
-          "texture": "#floor"
+          "texture": "#wood_floor"
         }
       }
     },
@@ -165,60 +162,60 @@
         16
       ],
       "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#wood"
+        },
         "east": {
           "uv": [
-            4,
-            12,
+            0,
+            0,
             16,
-            15
+            16
           ],
-          "texture": "#frame_side_back",
+          "texture": "#wood",
           "cullface": "east"
         },
         "west": {
           "uv": [
-            4,
-            12,
+            0,
+            0,
             16,
-            15
+            16
           ],
-          "texture": "#frame_side_back"
-        },
-        "north": {
-          "uv": [
-            13,
-            12,
-            15,
-            15
-          ],
-          "texture": "#frame_back"
-        },
-        "south": {
-          "uv": [
-            13,
-            12,
-            15,
-            15
-          ],
-          "texture": "#frame_front"
+          "texture": "#wood"
         },
         "up": {
           "uv": [
-            13,
-            4,
-            15,
+            0,
+            0,
+            16,
             16
           ],
-          "texture": "#frame_top"
+          "texture": "#wood_top"
         },
         "down": {
           "uv": [
-            13,
-            4,
-            15,
+            0,
+            0,
+            16,
             16
           ],
-          "texture": "#floor"
+          "texture": "#wood_floor"
         }
       }
     },
@@ -239,9 +236,9 @@
             0,
             0,
             16,
-            2
+            16
           ],
-          "texture": "#frame_back",
+          "texture": "#wood",
           "cullface": "north"
         },
         "south": {
@@ -249,18 +246,18 @@
             0,
             0,
             16,
-            2
+            16
           ],
-          "texture": "#frame_front"
+          "texture": "#wood"
         },
         "east": {
           "uv": [
             0,
             0,
             16,
-            2
+            16
           ],
-          "texture": "#frame_side_back",
+          "texture": "#wood",
           "cullface": "east"
         },
         "west": {
@@ -268,9 +265,9 @@
             0,
             0,
             16,
-            2
+            16
           ],
-          "texture": "#frame_side_back"
+          "texture": "#wood"
         },
         "up": {
           "uv": [
@@ -279,7 +276,7 @@
             16,
             16
           ],
-          "texture": "#frame_top",
+          "texture": "#wood_top",
           "cullface": "up"
         },
         "down": {
@@ -289,7 +286,7 @@
             16,
             16
           ],
-          "texture": "#frame_top"
+          "texture": "#wood_top"
         }
       }
     }
