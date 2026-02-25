@@ -107,7 +107,7 @@ object QuestHandler {
             data.dailyQuests.size, data.weeklyQuests.size, data.dailyResetDay, currentDay, data.weeklyResetDay, currentWeekStart)
 
         // Daily reset check
-        if (data.dailyResetDay != currentDay) {
+        if (data.dailyResetDay != currentDay || hasInvalidTemplates(data.dailyQuests)) {
             data.dailyQuests.clear()
             data.dailyBonusClaimed = false
             data.dailyResetDay = currentDay
@@ -115,7 +115,7 @@ object QuestHandler {
         }
 
         // Weekly reset check
-        if (data.weeklyResetDay != currentWeekStart) {
+        if (data.weeklyResetDay != currentWeekStart || hasInvalidTemplates(data.weeklyQuests)) {
             data.weeklyQuests.clear()
             data.weeklyBonusClaimed = false
             data.weeklyResetDay = currentWeekStart
@@ -322,6 +322,10 @@ object QuestHandler {
         return entityTypeId == "minecraft:zombie_villager" ||
                entityTypeId == "minecraft:husk" ||
                entityTypeId == "minecraft:drowned"
+    }
+
+    private fun hasInvalidTemplates(quests: List<ActiveQuest>): Boolean {
+        return quests.any { QuestPool.getTemplate(it.templateId) == null }
     }
 
     private fun isItemInCategory(itemId: ResourceLocation, category: QuestCategory): Boolean {
