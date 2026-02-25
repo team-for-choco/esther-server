@@ -17,23 +17,25 @@ import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.phys.BlockHitResult
 
 class QuestBoardDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
 
     companion object {
         val FACING = HorizontalDirectionalBlock.FACING
+        val PART = IntegerProperty.create("part", 0, 8)
         val CODEC: MapCodec<QuestBoardDummyBlock> = simpleCodec(::QuestBoardDummyBlock)
     }
 
     init {
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH))
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PART, 0))
     }
 
     override fun codec(): MapCodec<QuestBoardDummyBlock> = CODEC
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
-        builder.add(FACING)
+        builder.add(FACING, PART)
     }
 
     override fun getStateForPlacement(context: BlockPlaceContext): BlockState? {

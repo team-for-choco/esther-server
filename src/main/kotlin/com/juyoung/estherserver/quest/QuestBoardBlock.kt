@@ -76,11 +76,11 @@ class QuestBoardBlock(properties: Properties) : BaseEntityBlock(properties) {
             }
         }
 
-        // Place dummy blocks
-        val dummyState = EstherServerMod.QUEST_BOARD_DUMMY.get().defaultBlockState()
-            .setValue(QuestBoardDummyBlock.FACING, facing)
-
+        // Place dummy blocks with part-specific state
         for (i in 1 until positions.size) {
+            val dummyState = EstherServerMod.QUEST_BOARD_DUMMY.get().defaultBlockState()
+                .setValue(QuestBoardDummyBlock.FACING, facing)
+                .setValue(QuestBoardDummyBlock.PART, i - 1)
             level.setBlock(positions[i], dummyState, 3)
             val be = level.getBlockEntity(positions[i])
             if (be is QuestBoardDummyBlockEntity) {
@@ -123,13 +123,15 @@ class QuestBoardBlock(properties: Properties) : BaseEntityBlock(properties) {
     }
 
     /**
-     * Returns all 12 positions (4 wide x 3 tall) for the multiblock.
-     * Index 0 is the master position.
+     * Returns 10 positions (4 wide x 3 tall, skipping bottom-middle 2) for the multiblock.
+     * Index 0 is the master position (bottom-left leg).
+     * Bottom-middle positions (dx=1,2 dy=0) are skipped (empty space under the board).
      */
     private fun getMultiblockPositions(masterPos: BlockPos, right: Direction): List<BlockPos> {
         val positions = mutableListOf<BlockPos>()
         for (dy in 0 until HEIGHT) {
             for (dx in 0 until WIDTH) {
+                if (dy == 0 && (dx == 1 || dx == 2)) continue
                 positions.add(masterPos.relative(right, dx).above(dy))
             }
         }
