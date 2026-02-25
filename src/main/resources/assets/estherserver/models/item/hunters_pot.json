@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"estherserver:item/hunters_pot"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "estherserver:item/hunters_pot"
+  }
+}

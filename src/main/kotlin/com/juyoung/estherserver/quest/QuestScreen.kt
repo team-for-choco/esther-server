@@ -18,6 +18,7 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         private const val CLAIM_BUTTON_H = 14
         private const val BONUS_AREA_HEIGHT = 38
         private const val SCROLLBAR_WIDTH = 6
+        private const val MAX_CLAIMS = 3
     }
 
     private var guiLeft = 0
@@ -108,7 +109,7 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
 
             val claimedCount = if (i == 0) data.getDailyClaimedCount() else data.getWeeklyClaimedCount()
             val tabKey = if (i == 0) "gui.estherserver.quest.tab_daily" else "gui.estherserver.quest.tab_weekly"
-            val label = Component.translatable(tabKey).append(" $claimedCount/3")
+            val label = Component.translatable(tabKey).append(" $claimedCount/$MAX_CLAIMS")
             guiGraphics.drawCenteredString(
                 font, label,
                 tabX + TAB_WIDTH / 2, tabY + 4,
@@ -124,7 +125,7 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
     ) {
         GuiTheme.renderInnerPanel(guiGraphics, x, y, w, BONUS_AREA_HEIGHT)
 
-        val bonusReady = claimedCount >= 3
+        val bonusReady = claimedCount >= MAX_CLAIMS
 
         // Bonus label
         val bonusLabel = Component.translatable("gui.estherserver.quest.bonus", claimedCount, 3)
@@ -207,7 +208,7 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         val canClaim = isComplete && !quest.claimed
         val data = QuestClientHandler.cachedData
         val claimedCount = if (selectedTab == 0) data.getDailyClaimedCount() else data.getWeeklyClaimedCount()
-        val maxReached = claimedCount >= 3
+        val maxReached = claimedCount >= MAX_CLAIMS
 
         val btnColor = when {
             quest.claimed -> GuiTheme.BUTTON_DISABLED
@@ -269,7 +270,7 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
             val data = QuestClientHandler.cachedData
             val claimedCount = if (selectedTab == 0) data.getDailyClaimedCount() else data.getWeeklyClaimedCount()
             val bonusClaimed = if (selectedTab == 0) data.dailyBonusClaimed else data.weeklyBonusClaimed
-            if (claimedCount >= 3 && !bonusClaimed) {
+            if (claimedCount >= MAX_CLAIMS && !bonusClaimed) {
                 PacketDistributor.sendToServer(QuestBonusClaimPayload(selectedTab == 1))
                 return true
             }

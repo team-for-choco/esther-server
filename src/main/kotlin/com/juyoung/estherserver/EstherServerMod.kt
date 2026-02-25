@@ -79,6 +79,7 @@ import com.juyoung.estherserver.enhancement.EnhanceItemPayload
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.ModProfession
 import com.juyoung.estherserver.profession.ProfessionClientHandler
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionCommand
 import com.juyoung.estherserver.profession.ProfessionHandler
 import com.juyoung.estherserver.profession.ProfessionSyncPayload
@@ -93,8 +94,11 @@ import com.juyoung.estherserver.merchant.ShopCommand
 import com.juyoung.estherserver.quest.ModQuest
 import com.juyoung.estherserver.quest.QuestBonusClaimPayload
 import com.juyoung.estherserver.quest.QuestClaimPayload
+import com.juyoung.estherserver.quest.QuestClientHandler
 import com.juyoung.estherserver.quest.QuestCommand
 import com.juyoung.estherserver.quest.QuestHandler
+import com.juyoung.estherserver.quest.QuestOpenScreenPayload
+import com.juyoung.estherserver.quest.QuestScreen
 import com.juyoung.estherserver.quest.QuestSyncPayload
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
@@ -888,7 +892,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
             .playToClient(QuestSyncPayload.TYPE, QuestSyncPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
-                    com.juyoung.estherserver.quest.QuestClientHandler.handleSync(payload)
+                    QuestClientHandler.handleSync(payload)
                 }
             }
             .playToServer(QuestClaimPayload.TYPE, QuestClaimPayload.STREAM_CODEC) { payload, context ->
@@ -903,10 +907,10 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     QuestHandler.handleBonusClaim(player, payload.isWeekly)
                 }
             }
-            .playToClient(com.juyoung.estherserver.quest.QuestOpenScreenPayload.TYPE, com.juyoung.estherserver.quest.QuestOpenScreenPayload.STREAM_CODEC) { payload, context ->
+            .playToClient(QuestOpenScreenPayload.TYPE, QuestOpenScreenPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
-                    com.juyoung.estherserver.quest.QuestClientHandler.handleSync(QuestSyncPayload(payload.data))
-                    Minecraft.getInstance().setScreen(com.juyoung.estherserver.quest.QuestScreen())
+                    QuestClientHandler.cachedData = payload.data
+                    Minecraft.getInstance().setScreen(QuestScreen())
                 }
             }
     }
@@ -921,8 +925,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ItemPriceRegistry.init()
         ShopBuyRegistry.init()
         ProfessionHandler.init()
-        com.juyoung.estherserver.profession.ProfessionBonusHelper.initOreGrades()
-        com.juyoung.estherserver.profession.ProfessionBonusHelper.initContentGrades()
+        ProfessionBonusHelper.initOreGrades()
+        ProfessionBonusHelper.initContentGrades()
         // QuestPool is initialized via its init block (no explicit call needed)
 
         if (Config.logDirtBlock) {
@@ -1053,7 +1057,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     ProfessionClientHandler.cachedData.getLevel(com.juyoung.estherserver.profession.Profession.MINING)
                 else -> 0
             }
-            val profBonus = com.juyoung.estherserver.profession.ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
+            val profBonus = ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
             event.newSpeed = tierSpeed * (1.0f + profBonus)
         }
     }

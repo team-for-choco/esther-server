@@ -4,10 +4,12 @@ object QuestPool {
 
     private val dailyPool = mutableListOf<QuestTemplate>()
     private val weeklyPool = mutableListOf<QuestTemplate>()
+    private lateinit var templateMap: Map<String, QuestTemplate>
 
     init {
         registerDailyQuests()
         registerWeeklyQuests()
+        templateMap = (dailyPool + weeklyPool).associateBy { it.id }
     }
 
     private fun registerDailyQuests() {
@@ -60,12 +62,8 @@ object QuestPool {
         weeklyPool.add(QuestTemplate("weekly_kill_any_monster", QuestTrackingType.KILL_MONSTER, QuestCategory.GENERAL, 30, targetEntityTypes = listOf("minecraft:zombie", "minecraft:skeleton", "minecraft:creeper", "minecraft:spider", "minecraft:witch", "minecraft:enderman"), currencyReward = 5000, huntersPotReward = 150, isWeekly = true))
     }
 
-    /**
-     * Select daily quests: 1 from each of 4 profession categories + 1 from GENERAL.
-     * Uses per-player seed for individual random selection.
-     */
     fun selectDailyQuests(seed: Long): List<QuestTemplate> {
-        val random = java.util.Random(seed)
+        val random = kotlin.random.Random(seed)
         val selected = mutableListOf<QuestTemplate>()
         val byCategory = dailyPool.groupBy { it.category }
 
@@ -84,12 +82,7 @@ object QuestPool {
         return selected.take(5)
     }
 
-    /**
-     * Returns all 5 fixed weekly quests.
-     */
     fun getWeeklyQuests(): List<QuestTemplate> = weeklyPool.toList()
 
-    fun getTemplate(id: String): QuestTemplate? {
-        return dailyPool.find { it.id == id } ?: weeklyPool.find { it.id == id }
-    }
+    fun getTemplate(id: String): QuestTemplate? = templateMap[id]
 }

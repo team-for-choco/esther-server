@@ -27,19 +27,14 @@ object QuestHandler {
     private val KST = ZoneId.of("Asia/Seoul")
     private const val MAX_CLAIMS = 3
 
-    // Daily rewards
-    private const val DAILY_CURRENCY = 1000
-    private const val DAILY_SOUP = 30
-    private const val DAILY_BONUS_CURRENCY = 1500
-    private const val DAILY_BONUS_SOUP = 20
-    private const val DAILY_BONUS_TICKET = 1
-
-    // Weekly rewards
-    private const val WEEKLY_CURRENCY = 5000
-    private const val WEEKLY_SOUP = 150
-    private const val WEEKLY_BONUS_CURRENCY = 7500
-    private const val WEEKLY_BONUS_SOUP = 100
-    private const val WEEKLY_BONUS_TICKET = 3
+    private object Rewards {
+        const val DAILY_BONUS_CURRENCY = 1500
+        const val DAILY_BONUS_SOUP = 20
+        const val DAILY_BONUS_TICKET = 1
+        const val WEEKLY_BONUS_CURRENCY = 7500
+        const val WEEKLY_BONUS_SOUP = 100
+        const val WEEKLY_BONUS_TICKET = 3
+    }
 
     @SubscribeEvent
     fun onPlayerLoggedIn(event: PlayerEvent.PlayerLoggedInEvent) {
@@ -150,12 +145,8 @@ object QuestHandler {
     }
 
     private fun handleItemSubmission(player: ServerPlayer, heldStack: ItemStack, data: QuestData): InteractionResult {
-        val dailyClaimedCount = data.getDailyClaimedCount()
-        val weeklyClaimedCount = data.getWeeklyClaimedCount()
-
-        // If daily quests already maxed out claims, skip daily submission
-        val dailyMaxed = dailyClaimedCount >= MAX_CLAIMS
-        val weeklyMaxed = weeklyClaimedCount >= MAX_CLAIMS
+        val dailyMaxed = data.getDailyClaimedCount() >= MAX_CLAIMS
+        val weeklyMaxed = data.getWeeklyClaimedCount() >= MAX_CLAIMS
 
         val itemKey = heldStack.itemHolder.unwrapKey().orElse(null)?.location()
             ?: return openQuestScreen(player, data)
@@ -164,58 +155,20 @@ object QuestHandler {
 
         // Try daily SUBMIT_ITEM quests (only if not maxed)
         if (!dailyMaxed) {
-            for (quest in data.dailyQuests) {
-                if (quest.claimed) continue
-                val template = QuestPool.getTemplate(quest.templateId) ?: continue
-                if (template.trackingType != QuestTrackingType.SUBMIT_ITEM) continue
-                if (quest.progress >= template.targetCount) continue
-
-                val matches = if (template.targetItemId != null) {
-                    itemId == template.targetItemId
-                } else {
-                    isItemInCategory(itemKey, template.category)
-                }
-
-                if (matches) {
-                    val needed = template.targetCount - quest.progress
-                    val toConsume = needed.coerceAtMost(heldStack.count)
-                    heldStack.shrink(toConsume)
-                    quest.progress += toConsume
-                    anySubmitted = true
-
-                    // Also count toward weekly quests of the same category (if not maxed)
-                    if (!weeklyMaxed) {
-                        incrementWeeklyProgress(data, template.category, QuestTrackingType.SUBMIT_ITEM, toConsume, itemKey)
-                    }
-
-                    if (heldStack.isEmpty) break
+            val beforeCount = heldStack.count
+            anySubmitted = trySubmitToQuests(data.dailyQuests, itemId, itemKey, heldStack)
+            // Also count toward weekly quests of the same category (if not maxed)
+            if (anySubmitted && !weeklyMaxed) {
+                val consumed = beforeCount - heldStack.count
+                if (consumed > 0) {
+                    crossCountProgress(data.weeklyQuests, itemId, itemKey, consumed)
                 }
             }
         }
 
         // If nothing matched daily, try weekly-only submission (only if not maxed)
         if (!anySubmitted && !weeklyMaxed) {
-            for (quest in data.weeklyQuests) {
-                if (quest.claimed) continue
-                val template = QuestPool.getTemplate(quest.templateId) ?: continue
-                if (template.trackingType != QuestTrackingType.SUBMIT_ITEM) continue
-                if (quest.progress >= template.targetCount) continue
-
-                val matches = if (template.targetItemId != null) {
-                    itemId == template.targetItemId
-                } else {
-                    isItemInCategory(itemKey, template.category)
-                }
-
-                if (matches) {
-                    val needed = template.targetCount - quest.progress
-                    val toConsume = needed.coerceAtMost(heldStack.count)
-                    heldStack.shrink(toConsume)
-                    quest.progress += toConsume
-                    anySubmitted = true
-                    if (heldStack.isEmpty) break
-                }
-            }
+            anySubmitted = trySubmitToQuests(data.weeklyQuests, itemId, itemKey, heldStack)
         }
 
         if (anySubmitted) {
@@ -236,23 +189,60 @@ object QuestHandler {
         return openQuestScreen(player, data)
     }
 
-    private fun incrementWeeklyProgress(data: QuestData, category: QuestCategory, trackingType: QuestTrackingType, amount: Int, itemKey: ResourceLocation) {
-        for (quest in data.weeklyQuests) {
+    /**
+     * Try to submit items to matching SUBMIT_ITEM quests in the given list.
+     * Consumes items from heldStack. Returns true if any quest was progressed.
+     */
+    private fun trySubmitToQuests(
+        quests: List<ActiveQuest>, itemId: String, itemKey: ResourceLocation, heldStack: ItemStack
+    ): Boolean {
+        var anyMatched = false
+
+        for (quest in quests) {
             if (quest.claimed) continue
             val template = QuestPool.getTemplate(quest.templateId) ?: continue
-            if (template.trackingType != trackingType) continue
-            if (template.category != category) continue
+            if (template.trackingType != QuestTrackingType.SUBMIT_ITEM) continue
             if (quest.progress >= template.targetCount) continue
 
             val matches = if (template.targetItemId != null) {
-                itemKey.toString() == template.targetItemId
+                itemId == template.targetItemId
             } else {
                 isItemInCategory(itemKey, template.category)
             }
 
             if (matches) {
-                val canAdd = (template.targetCount - quest.progress).coerceAtMost(amount)
-                quest.progress += canAdd
+                val needed = template.targetCount - quest.progress
+                val toConsume = needed.coerceAtMost(heldStack.count)
+                heldStack.shrink(toConsume)
+                quest.progress += toConsume
+                anyMatched = true
+                if (heldStack.isEmpty) break
+            }
+        }
+        return anyMatched
+    }
+
+    /**
+     * Cross-count progress to weekly quests without consuming items.
+     * Used when daily submission should also count toward matching weekly quests.
+     */
+    private fun crossCountProgress(
+        quests: List<ActiveQuest>, itemId: String, itemKey: ResourceLocation, amount: Int
+    ) {
+        for (quest in quests) {
+            if (quest.claimed) continue
+            val template = QuestPool.getTemplate(quest.templateId) ?: continue
+            if (template.trackingType != QuestTrackingType.SUBMIT_ITEM) continue
+            if (quest.progress >= template.targetCount) continue
+
+            val matches = if (template.targetItemId != null) {
+                itemId == template.targetItemId
+            } else {
+                isItemInCategory(itemKey, template.category)
+            }
+
+            if (matches) {
+                quest.progress = (quest.progress + amount).coerceAtMost(template.targetCount)
             }
         }
     }
@@ -265,53 +255,39 @@ object QuestHandler {
 
         // Daily KILL_MONSTER quests (only if not maxed)
         if (!dailyMaxed) {
-            for (quest in data.dailyQuests) {
-                if (quest.claimed) continue
-                val template = QuestPool.getTemplate(quest.templateId) ?: continue
-                if (template.trackingType != QuestTrackingType.KILL_MONSTER) continue
-                if (quest.progress >= template.targetCount) continue
-
-                val targets = template.targetEntityTypes ?: continue
-                if (entityTypeId in targets || isZombieVariant(entityTypeId, targets)) {
-                    quest.progress = (quest.progress + 1).coerceAtMost(template.targetCount)
-                    changed = true
-
-                    // Also count toward weekly KILL_MONSTER (if not maxed)
-                    if (!weeklyMaxed) {
-                        for (wQuest in data.weeklyQuests) {
-                            if (wQuest.claimed) continue
-                            val wTemplate = QuestPool.getTemplate(wQuest.templateId) ?: continue
-                            if (wTemplate.trackingType != QuestTrackingType.KILL_MONSTER) continue
-                            if (wQuest.progress >= wTemplate.targetCount) continue
-                            val wTargets = wTemplate.targetEntityTypes ?: continue
-                            if (entityTypeId in wTargets || isZombieVariant(entityTypeId, wTargets)) {
-                                wQuest.progress = (wQuest.progress + 1).coerceAtMost(wTemplate.targetCount)
-                            }
-                        }
-                    }
-                }
+            changed = tryProgressKillQuests(data.dailyQuests, entityTypeId)
+            // Also count toward weekly KILL_MONSTER (if not maxed)
+            if (changed && !weeklyMaxed) {
+                tryProgressKillQuests(data.weeklyQuests, entityTypeId)
             }
         }
 
         // Weekly-only kill matching (if no daily matched and weekly not maxed)
         if (!changed && !weeklyMaxed) {
-            for (quest in data.weeklyQuests) {
-                if (quest.claimed) continue
-                val template = QuestPool.getTemplate(quest.templateId) ?: continue
-                if (template.trackingType != QuestTrackingType.KILL_MONSTER) continue
-                if (quest.progress >= template.targetCount) continue
-                val targets = template.targetEntityTypes ?: continue
-                if (entityTypeId in targets || isZombieVariant(entityTypeId, targets)) {
-                    quest.progress = (quest.progress + 1).coerceAtMost(template.targetCount)
-                    changed = true
-                }
-            }
+            changed = tryProgressKillQuests(data.weeklyQuests, entityTypeId)
         }
 
         if (changed) {
             player.setData(ModQuest.QUEST_DATA.get(), data)
             syncToClient(player)
         }
+    }
+
+    private fun tryProgressKillQuests(quests: List<ActiveQuest>, entityTypeId: String): Boolean {
+        var anyProgressed = false
+        for (quest in quests) {
+            if (quest.claimed) continue
+            val template = QuestPool.getTemplate(quest.templateId) ?: continue
+            if (template.trackingType != QuestTrackingType.KILL_MONSTER) continue
+            if (quest.progress >= template.targetCount) continue
+
+            val targets = template.targetEntityTypes ?: continue
+            if (entityTypeId in targets || isZombieVariant(entityTypeId, targets)) {
+                quest.progress = (quest.progress + 1).coerceAtMost(template.targetCount)
+                anyProgressed = true
+            }
+        }
+        return anyProgressed
     }
 
     /**
@@ -368,15 +344,11 @@ object QuestHandler {
 
         quest.claimed = true
 
-        // Give rewards from template
-        val currency = template.currencyReward
-        val soup = template.huntersPotReward
-
-        EconomyHandler.addBalance(player, currency.toLong())
-        giveHuntersPot(player, soup)
+        EconomyHandler.addBalance(player, template.currencyReward.toLong())
+        giveHuntersPot(player, template.huntersPotReward)
 
         player.displayClientMessage(
-            Component.translatable("message.estherserver.quest_claimed", currency, soup), false
+            Component.translatable("message.estherserver.quest_claimed", template.currencyReward, template.huntersPotReward), false
         )
 
         player.level().playSound(
@@ -408,9 +380,9 @@ object QuestHandler {
             return
         }
 
-        val currency = if (isWeekly) WEEKLY_BONUS_CURRENCY else DAILY_BONUS_CURRENCY
-        val soupCount = if (isWeekly) WEEKLY_BONUS_SOUP else DAILY_BONUS_SOUP
-        val ticketCount = if (isWeekly) WEEKLY_BONUS_TICKET else DAILY_BONUS_TICKET
+        val currency = if (isWeekly) Rewards.WEEKLY_BONUS_CURRENCY else Rewards.DAILY_BONUS_CURRENCY
+        val soupCount = if (isWeekly) Rewards.WEEKLY_BONUS_SOUP else Rewards.DAILY_BONUS_SOUP
+        val ticketCount = if (isWeekly) Rewards.WEEKLY_BONUS_TICKET else Rewards.DAILY_BONUS_TICKET
 
         if (isWeekly) data.weeklyBonusClaimed = true else data.dailyBonusClaimed = true
 
