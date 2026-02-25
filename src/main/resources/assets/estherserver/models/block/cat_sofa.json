@@ -1,0 +1,297 @@
+{
+  "credit": "Cat Sofa - Master (Lower SW)",
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "estherserver:block/cat_sofa/frame_front",
+    "frame_front": "estherserver:block/cat_sofa/frame_front",
+    "frame_back": "estherserver:block/cat_sofa/frame_back",
+    "frame_side_front": "estherserver:block/cat_sofa/frame_side_front",
+    "frame_side_back": "estherserver:block/cat_sofa/frame_side_back",
+    "frame_top": "estherserver:block/cat_sofa/frame_top",
+    "floor": "estherserver:block/cat_sofa/floor"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        12
+      ],
+      "to": [
+        4,
+        16,
+        16
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            16
+          ],
+          "texture": "#frame_front",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            12,
+            0,
+            16,
+            16
+          ],
+          "texture": "#frame_side_front",
+          "cullface": "west"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            16
+          ],
+          "texture": "#frame_front"
+        },
+        "east": {
+          "uv": [
+            12,
+            0,
+            16,
+            16
+          ],
+          "texture": "#frame_side_front"
+        },
+        "up": {
+          "uv": [
+            0,
+            12,
+            4,
+            16
+          ],
+          "texture": "#frame_top"
+        },
+        "down": {
+          "uv": [
+            0,
+            12,
+            4,
+            16
+          ],
+          "texture": "#floor",
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        1,
+        13
+      ],
+      "to": [
+        16,
+        4,
+        15
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            4,
+            12,
+            16,
+            15
+          ],
+          "texture": "#frame_front",
+          "cullface": "south"
+        },
+        "north": {
+          "uv": [
+            4,
+            12,
+            16,
+            15
+          ],
+          "texture": "#frame_front"
+        },
+        "east": {
+          "uv": [
+            13,
+            12,
+            15,
+            15
+          ],
+          "texture": "#frame_side_front"
+        },
+        "west": {
+          "uv": [
+            13,
+            12,
+            15,
+            15
+          ],
+          "texture": "#frame_side_front"
+        },
+        "up": {
+          "uv": [
+            4,
+            13,
+            16,
+            15
+          ],
+          "texture": "#frame_top"
+        },
+        "down": {
+          "uv": [
+            4,
+            13,
+            16,
+            15
+          ],
+          "texture": "#floor"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        1,
+        0
+      ],
+      "to": [
+        3,
+        4,
+        12
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            12,
+            12,
+            15
+          ],
+          "texture": "#frame_side_front",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [
+            0,
+            12,
+            12,
+            15
+          ],
+          "texture": "#frame_side_front"
+        },
+        "south": {
+          "uv": [
+            1,
+            12,
+            3,
+            15
+          ],
+          "texture": "#frame_front"
+        },
+        "north": {
+          "uv": [
+            1,
+            12,
+            3,
+            15
+          ],
+          "texture": "#frame_back"
+        },
+        "up": {
+          "uv": [
+            1,
+            0,
+            3,
+            12
+          ],
+          "texture": "#frame_top"
+        },
+        "down": {
+          "uv": [
+            1,
+            0,
+            3,
+            12
+          ],
+          "texture": "#floor"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        14,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#frame_front",
+          "cullface": "south"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#frame_back"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#frame_side_front",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#frame_side_front"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#frame_top",
+          "cullface": "up"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#frame_top"
+        }
+      }
+    }
+  ]
+}

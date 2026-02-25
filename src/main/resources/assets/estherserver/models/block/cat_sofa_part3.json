@@ -1,0 +1,154 @@
+{
+  "credit": "Cat Sofa - Part3 (Upper SW, Cushion)",
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "estherserver:block/cat_sofa/seat_top",
+    "inner": "estherserver:block/cat_sofa/inner",
+    "seat_top": "estherserver:block/cat_sofa/seat_top",
+    "seat_front": "estherserver:block/cat_sofa/seat_front",
+    "seat_left": "estherserver:block/cat_sofa/seat_left"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        7,
+        16
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            4.5,
+            16,
+            11.5
+          ],
+          "texture": "#seat_front",
+          "cullface": "south"
+        },
+        "north": {
+          "uv": [
+            0,
+            4.5,
+            16,
+            11.5
+          ],
+          "texture": "#inner"
+        },
+        "west": {
+          "uv": [
+            0,
+            4.5,
+            16,
+            11.5
+          ],
+          "texture": "#seat_left",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [
+            0,
+            4.5,
+            16,
+            11.5
+          ],
+          "texture": "#inner"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#seat_top"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#inner",
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        7,
+        2
+      ],
+      "to": [
+        14,
+        8,
+        14
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            2,
+            3.5,
+            14,
+            4.5
+          ],
+          "texture": "#seat_front"
+        },
+        "north": {
+          "uv": [
+            2,
+            3.5,
+            14,
+            4.5
+          ],
+          "texture": "#inner"
+        },
+        "west": {
+          "uv": [
+            2,
+            3.5,
+            14,
+            4.5
+          ],
+          "texture": "#seat_left"
+        },
+        "east": {
+          "uv": [
+            2,
+            3.5,
+            14,
+            4.5
+          ],
+          "texture": "#inner"
+        },
+        "up": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#seat_top"
+        },
+        "down": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#inner"
+        }
+      }
+    }
+  ]
+}
