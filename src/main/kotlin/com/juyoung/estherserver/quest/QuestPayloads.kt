@@ -69,7 +69,7 @@ class QuestBonusClaimPayload(val isWeekly: Boolean) : CustomPacketPayload {
     }
 }
 
-class QuestOpenScreenPayload : CustomPacketPayload {
+class QuestOpenScreenPayload(val data: QuestData) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -80,11 +80,11 @@ class QuestOpenScreenPayload : CustomPacketPayload {
         val STREAM_CODEC: StreamCodec<FriendlyByteBuf, QuestOpenScreenPayload> =
             object : StreamCodec<FriendlyByteBuf, QuestOpenScreenPayload> {
                 override fun decode(buf: FriendlyByteBuf): QuestOpenScreenPayload {
-                    return QuestOpenScreenPayload()
+                    return QuestOpenScreenPayload(QuestData.STREAM_CODEC.decode(buf))
                 }
 
                 override fun encode(buf: FriendlyByteBuf, value: QuestOpenScreenPayload) {
-                    // No data needed
+                    QuestData.STREAM_CODEC.encode(buf, value.data)
                 }
             }
     }

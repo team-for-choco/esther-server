@@ -5,10 +5,12 @@ import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
 import net.neoforged.neoforge.network.PacketDistributor
+import org.slf4j.LoggerFactory
 
 class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title")) {
 
     companion object {
+        private val LOGGER = LoggerFactory.getLogger("QuestScreen")
         private const val GUI_WIDTH = 260
         private const val GUI_HEIGHT = 240
         private const val TAB_WIDTH = 60
@@ -62,6 +64,11 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         // Bonus area (at the top)
         renderBonusArea(guiGraphics, contentX, cursorY, contentW, claimedCount, bonusClaimed, mouseX, mouseY)
         cursorY += BONUS_AREA_HEIGHT + 4
+
+        // DEBUG: show quest data state on screen
+        guiGraphics.drawString(font,
+            "DEBUG: daily=${data.dailyQuests.size}, weekly=${data.weeklyQuests.size}, tab=$selectedTab, showing=${questList.size}",
+            guiLeft, guiTop - 12, 0xFFFF00, true)
 
         // Quest list area (scrollable)
         val listHeight = GUI_HEIGHT - (cursorY - guiTop) - 10
@@ -165,7 +172,13 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         quest: ActiveQuest, index: Int,
         mouseX: Int, mouseY: Int
     ) {
-        val template = QuestPool.getTemplate(quest.templateId) ?: return
+        val template = QuestPool.getTemplate(quest.templateId)
+        if (template == null) {
+            LOGGER.warn("[QUEST-SCREEN] getTemplate returned null for templateId='{}' at index={}", quest.templateId, index)
+            // Render error text for debugging
+            guiGraphics.drawString(font, "ERR: '${quest.templateId}' not found", x + 4, y + 3, 0xFF5555, false)
+            return
+        }
 
         // Row background
         val rowBg = if (quest.claimed) GuiTheme.ROW_SELECTED else GuiTheme.ROW_BG

@@ -159,9 +159,9 @@ object QuestHandler {
             return handleItemSubmission(player, heldStack, data)
         }
 
-        // Empty hand — open GUI
+        // Empty hand — open GUI (include data in payload to eliminate timing issues)
         LOGGER.info("[QUEST] Opening quest screen")
-        PacketDistributor.sendToPlayer(player, QuestOpenScreenPayload())
+        PacketDistributor.sendToPlayer(player, QuestOpenScreenPayload(data))
         return InteractionResult.SUCCESS
     }
 

@@ -905,6 +905,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
             .playToClient(com.juyoung.estherserver.quest.QuestOpenScreenPayload.TYPE, com.juyoung.estherserver.quest.QuestOpenScreenPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
+                    com.juyoung.estherserver.quest.QuestClientHandler.handleSync(QuestSyncPayload(payload.data))
                     Minecraft.getInstance().setScreen(com.juyoung.estherserver.quest.QuestScreen())
                 }
             }
