@@ -17,6 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.network.PacketDistributor
+import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -24,6 +25,7 @@ import java.time.temporal.ChronoField
 
 object QuestHandler {
 
+    private val LOGGER = LoggerFactory.getLogger("QuestHandler")
     private val KST = ZoneId.of("Asia/Seoul")
     private const val MAX_CLAIMS = 3
 
@@ -94,16 +96,22 @@ object QuestHandler {
      * Main interaction entry point — called when player interacts with the quest board.
      */
     fun handleBoardInteraction(player: ServerPlayer, hand: InteractionHand, heldStack: ItemStack): InteractionResult {
+        LOGGER.info("[QUEST] handleBoardInteraction called - player={}, hand={}, heldEmpty={}", player.name.string, hand, heldStack.isEmpty)
+
         val data = player.getData(ModQuest.QUEST_DATA.get())
         val now = Instant.now()
         val currentDay = getDayNumber(now)
         val currentWeekStart = getWeekStartDay(now)
+
+        LOGGER.info("[QUEST] data BEFORE: daily={}, weekly={}, dailyResetDay={}, currentDay={}, weeklyResetDay={}, currentWeekStart={}",
+            data.dailyQuests.size, data.weeklyQuests.size, data.dailyResetDay, currentDay, data.weeklyResetDay, currentWeekStart)
 
         // Daily reset check
         if (data.dailyResetDay != currentDay) {
             data.dailyQuests.clear()
             data.dailyBonusClaimed = false
             data.dailyResetDay = currentDay
+            LOGGER.info("[QUEST] Daily reset triggered")
         }
 
         // Weekly reset check
@@ -111,12 +119,14 @@ object QuestHandler {
             data.weeklyQuests.clear()
             data.weeklyBonusClaimed = false
             data.weeklyResetDay = currentWeekStart
+            LOGGER.info("[QUEST] Weekly reset triggered")
         }
 
         // Daily assignment if empty
         if (data.dailyQuests.isEmpty()) {
             val seed = player.uuid.hashCode().toLong() xor (currentDay * 31)
             val templates = QuestPool.selectDailyQuests(seed)
+            LOGGER.info("[QUEST] Assigning {} daily quests", templates.size)
             for (template in templates) {
                 data.dailyQuests.add(ActiveQuest(template.id))
             }
@@ -128,6 +138,7 @@ object QuestHandler {
         // Weekly assignment if empty
         if (data.weeklyQuests.isEmpty()) {
             val templates = QuestPool.getWeeklyQuests()
+            LOGGER.info("[QUEST] Assigning {} weekly quests", templates.size)
             for (template in templates) {
                 data.weeklyQuests.add(ActiveQuest(template.id))
             }
@@ -136,16 +147,20 @@ object QuestHandler {
             )
         }
 
+        LOGGER.info("[QUEST] data AFTER: daily={}, weekly={}", data.dailyQuests.size, data.weeklyQuests.size)
+
         // Always save and sync to ensure client has up-to-date data
         player.setData(ModQuest.QUEST_DATA.get(), data)
         syncToClient(player)
 
         // If holding an item, try to submit it
         if (!heldStack.isEmpty && hand == InteractionHand.MAIN_HAND) {
+            LOGGER.info("[QUEST] Attempting item submission")
             return handleItemSubmission(player, heldStack, data)
         }
 
         // Empty hand — open GUI
+        LOGGER.info("[QUEST] Opening quest screen")
         PacketDistributor.sendToPlayer(player, QuestOpenScreenPayload())
         return InteractionResult.SUCCESS
     }
