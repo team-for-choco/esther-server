@@ -1,27 +1,37 @@
 {
+  "credit": "Cat Sofa - top_left_front (part3: cushion-seat)",
   "parent": "minecraft:block/block",
   "render_type": "minecraft:cutout",
   "ambientocclusion": false,
+  "texture_size": [32, 32],
   "textures": {
-    "particle": "estherserver:block/cat_sofa/seat_front",
-    "north": "estherserver:block/cat_sofa/seat_front",
-    "south": "estherserver:block/cat_sofa/inner",
-    "east": "estherserver:block/cat_sofa/inner",
-    "west": "estherserver:block/cat_sofa/seat_left",
-    "up": "estherserver:block/cat_sofa/seat_top",
-    "down": "estherserver:block/cat_sofa/inner"
+    "particle": "estherserver:block/cat_sofa/inner",
+    "cushion": "estherserver:block/cat_sofa/inner",
+    "cushion_top": "estherserver:block/cat_sofa/seat_top",
+    "seat_front": "estherserver:block/cat_sofa/seat_front",
+    "seat_side": "estherserver:block/cat_sofa/seat_left"
   },
   "elements": [
     {
-      "from": [0, 0, 0],
-      "to": [16, 8, 16],
+      "from": [0, 0, 0], "to": [16, 7, 16],
       "faces": {
-        "north": { "texture": "#north" },
-        "south": { "texture": "#south" },
-        "east":  { "texture": "#east" },
-        "west":  { "texture": "#west" },
-        "up":    { "texture": "#up" },
-        "down":  { "texture": "#down" }
+        "north": { "uv": [0, 9, 16, 16], "texture": "#cushion" },
+        "south": { "uv": [0, 0, 16, 7], "texture": "#seat_front" },
+        "east":  { "uv": [0, 9, 16, 16], "texture": "#cushion" },
+        "west":  { "uv": [0, 0, 16, 7], "texture": "#seat_side" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#cushion_top" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#cushion", "cullface": "down" }
+      }
+    },
+    {
+      "from": [2, 7, 2], "to": [14, 8, 14],
+      "faces": {
+        "north": { "uv": [2, 8, 14, 9], "texture": "#cushion" },
+        "south": { "uv": [2, 8, 14, 9], "texture": "#cushion" },
+        "east":  { "uv": [2, 8, 14, 9], "texture": "#cushion" },
+        "west":  { "uv": [2, 8, 14, 9], "texture": "#cushion" },
+        "up":    { "uv": [2, 2, 14, 14], "texture": "#cushion_top" },
+        "down":  { "uv": [2, 2, 14, 14], "texture": "#cushion" }
       }
     }
   ]

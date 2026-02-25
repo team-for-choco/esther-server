@@ -1,8 +1,8 @@
 {
   "variants": {
-    "facing=north": { "model": "estherserver:block/cat_sofa" },
-    "facing=south": { "model": "estherserver:block/cat_sofa", "y": 180 },
-    "facing=west": { "model": "estherserver:block/cat_sofa", "y": 270 },
-    "facing=east": { "model": "estherserver:block/cat_sofa", "y": 90 }
+    "facing=south": { "model": "estherserver:block/cat_sofa" },
+    "facing=north": { "model": "estherserver:block/cat_sofa", "y": 180 },
+    "facing=east": { "model": "estherserver:block/cat_sofa", "y": 270 },
+    "facing=west": { "model": "estherserver:block/cat_sofa", "y": 90 }
   }
 }
