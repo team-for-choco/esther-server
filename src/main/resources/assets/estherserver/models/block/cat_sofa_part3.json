@@ -4,24 +4,24 @@
   "ambientocclusion": false,
   "textures": {
     "particle": "estherserver:block/cat_sofa/seat_front",
-    "front": "estherserver:block/cat_sofa/seat_front",
-    "back": "estherserver:block/cat_sofa/inner",
-    "left": "estherserver:block/cat_sofa/seat_left",
-    "right": "estherserver:block/cat_sofa/inner",
-    "top": "estherserver:block/cat_sofa/seat_top",
-    "bottom": "estherserver:block/cat_sofa/inner"
+    "north": "estherserver:block/cat_sofa/seat_front",
+    "south": "estherserver:block/cat_sofa/inner",
+    "east": "estherserver:block/cat_sofa/seat_left",
+    "west": "estherserver:block/cat_sofa/inner",
+    "up": "estherserver:block/cat_sofa/seat_top",
+    "down": "estherserver:block/cat_sofa/inner"
   },
   "elements": [
     {
       "from": [0, 0, 0],
       "to": [16, 8, 16],
       "faces": {
-        "north": { "texture": "#front" },
-        "south": { "texture": "#back" },
-        "east":  { "texture": "#left" },
-        "west":  { "texture": "#right" },
-        "up":    { "texture": "#top" },
-        "down":  { "texture": "#bottom" }
+        "north": { "texture": "#north" },
+        "south": { "texture": "#south" },
+        "east":  { "uv": [16, 8, 0, 16], "texture": "#east" },
+        "west":  { "texture": "#west" },
+        "up":    { "texture": "#up" },
+        "down":  { "texture": "#down" }
       }
     }
   ]
