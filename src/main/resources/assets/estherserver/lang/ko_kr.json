@@ -474,5 +474,9 @@
   "quest.estherserver.weekly_submit_any_crop": "작물 아무거나 15개 제출",
   "quest.estherserver.weekly_submit_any_ore": "광물 아무거나 15개 제출",
   "quest.estherserver.weekly_submit_any_dish": "요리 아무거나 15개 제출",
-  "quest.estherserver.weekly_kill_any_monster": "몬스터 아무거나 30마리 처치"
+  "quest.estherserver.weekly_kill_any_monster": "몬스터 아무거나 30마리 처치",
+
+  "block.estherserver.cat_sofa": "고양이 소파",
+  "block.estherserver.cat_sofa_dummy": "고양이 소파",
+  "message.estherserver.cat_sofa_no_space": "고양이 소파를 설치할 공간이 부족합니다. (2x2x2 필요)"
 }

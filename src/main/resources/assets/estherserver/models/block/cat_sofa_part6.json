@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "estherserver:block/cat_sofa/cat_back",
+    "north": "estherserver:block/cat_sofa/inner",
+    "south": "estherserver:block/cat_sofa/cat_back",
+    "west": "estherserver:block/cat_sofa/inner",
+    "east": "estherserver:block/cat_sofa/cat_side_back",
+    "up": "estherserver:block/cat_sofa/cat_top_back",
+    "down": "estherserver:block/cat_sofa/inner"
+  }
+}
