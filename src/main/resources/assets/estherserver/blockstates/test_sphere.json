@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "estherserver:block/test_sphere" }
+  }
+}
