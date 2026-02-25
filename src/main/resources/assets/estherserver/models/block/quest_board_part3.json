@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/cube",
-  "render_type": "minecraft:cutout",
   "textures": {
     "particle": "estherserver:block/qb_side",
     "north": "estherserver:block/qb_front_panel_bl",
