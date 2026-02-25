@@ -2,6 +2,7 @@
   "credit": "Cat Sofa - bottom_right_front (part0: frame-front-cat, SE)",
   "parent": "minecraft:block/block",
   "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
   "textures": {
     "particle": "estherserver:block/cat_sofa/frame_front",
     "frame_front": "estherserver:block/cat_sofa/frame_front",
@@ -44,9 +45,9 @@
         },
         "east": {
           "uv": [
+            12,
             0,
-            0,
-            4,
+            16,
             16
           ],
           "texture": "#frame_side",
@@ -54,9 +55,9 @@
         },
         "west": {
           "uv": [
+            12,
             0,
-            0,
-            4,
+            16,
             16
           ],
           "texture": "#frame_side"

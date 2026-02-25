@@ -2,6 +2,7 @@
   "credit": "Cat Sofa - bottom_right_back (part2: frame-back-cat, NE)",
   "parent": "minecraft:block/block",
   "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
   "textures": {
     "particle": "estherserver:block/cat_sofa/frame_back",
     "frame_front": "estherserver:block/cat_sofa/frame_front",
@@ -40,13 +41,13 @@
             16,
             16
           ],
-          "texture": "#frame_front"
+          "texture": "#frame_back"
         },
         "east": {
           "uv": [
-            12,
             0,
-            16,
+            0,
+            4,
             16
           ],
           "texture": "#frame_side",
@@ -54,9 +55,9 @@
         },
         "west": {
           "uv": [
-            12,
             0,
-            16,
+            0,
+            4,
             16
           ],
           "texture": "#frame_side"
@@ -111,7 +112,7 @@
             12,
             15
           ],
-          "texture": "#frame_front"
+          "texture": "#frame_back"
         },
         "east": {
           "uv": [
@@ -179,8 +180,7 @@
             15,
             15
           ],
-          "texture": "#frame_front",
-          "cullface": "south"
+          "texture": "#frame_front"
         },
         "east": {
           "uv": [
