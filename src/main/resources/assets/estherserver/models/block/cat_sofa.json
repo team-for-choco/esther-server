@@ -5,8 +5,8 @@
     "particle": "estherserver:block/cat_sofa/frame_front",
     "north": "estherserver:block/cat_sofa/frame_front",
     "south": "estherserver:block/cat_sofa/inner",
-    "east": "estherserver:block/cat_sofa/frame_side_front",
-    "west": "estherserver:block/cat_sofa/inner",
+    "east": "estherserver:block/cat_sofa/inner",
+    "west": "estherserver:block/cat_sofa/frame_side_front",
     "up": "estherserver:block/cat_sofa/frame_top",
     "down": "estherserver:block/cat_sofa/floor"
   },
@@ -17,7 +17,7 @@
       "faces": {
         "north": { "texture": "#north" },
         "south": { "texture": "#south" },
-        "east":  { "uv": [16, 0, 0, 16], "texture": "#east" },
+        "east":  { "texture": "#east" },
         "west":  { "texture": "#west" },
         "up":    { "texture": "#up" },
         "down":  { "texture": "#down" }

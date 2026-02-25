@@ -108,28 +108,25 @@ class CatSofaBlock(properties: Properties) : BaseEntityBlock(properties) {
      * Returns 8 positions for the 2x2x2 multiblock.
      * Index 0 = master (front-seat-bottom).
      *
-     * Layout (facing=NORTH, front view):
-     *   left  = WEST (facing.counterClockWise) — cat side
+     * Layout (facing=NORTH, front view from south):
+     *   right = EAST (facing.clockWise) — cat side
      *   back  = SOUTH (facing.opposite)
      *
-     * Front view: [seat(master)] [cat(left)]
-     *             (viewer LEFT)  (viewer RIGHT)
-     *
-     * dy=0: master(0,0,0), part0(left), part1(back), part2(left+back)
-     * dy=1: part3(above), part4(left+above), part5(back+above), part6(left+back+above)
+     * dy=0: master(0,0,0), part0(right), part1(back), part2(right+back)
+     * dy=1: part3(above), part4(right+above), part5(back+above), part6(right+back+above)
      */
     fun getMultiblockPositions(masterPos: BlockPos, facing: Direction): List<BlockPos> {
-        val left = facing.counterClockWise
+        val right = facing.clockWise
         val back = facing.opposite
         return listOf(
             masterPos,                                                          // master: frame-front-seat
-            masterPos.relative(left),                                           // part 0: frame-front-cat
+            masterPos.relative(right),                                          // part 0: frame-front-cat
             masterPos.relative(back),                                           // part 1: frame-back-seat
-            masterPos.relative(left).relative(back),                            // part 2: frame-back-cat
+            masterPos.relative(right).relative(back),                           // part 2: frame-back-cat
             masterPos.above(),                                                  // part 3: cushion-seat (sit)
-            masterPos.relative(left).above(),                                   // part 4: cat-front
+            masterPos.relative(right).above(),                                  // part 4: cat-front
             masterPos.relative(back).above(),                                   // part 5: backrest-seat (sit)
-            masterPos.relative(left).relative(back).above()                     // part 6: cat-back+backrest
+            masterPos.relative(right).relative(back).above()                    // part 6: cat-back+backrest
         )
     }
 
