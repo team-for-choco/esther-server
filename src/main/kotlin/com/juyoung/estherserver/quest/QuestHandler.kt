@@ -2,15 +2,20 @@ package com.juyoung.estherserver.quest
 
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyHandler
-import com.juyoung.estherserver.profession.ProfessionBonusHelper.ContentGrade
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
+import com.juyoung.estherserver.wild.WildDimensionKeys
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
 import net.minecraft.world.item.ItemStack
 import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
-import net.neoforged.neoforge.event.tick.ServerTickEvent
 import net.neoforged.neoforge.network.PacketDistributor
 import java.time.Instant
 import java.time.ZoneId
@@ -21,17 +26,24 @@ object QuestHandler {
 
     private val KST = ZoneId.of("Asia/Seoul")
     private const val MAX_CLAIMS = 3
-    private const val DAILY_BONUS_CURRENCY = 50
-    private const val WEEKLY_BONUS_CURRENCY = 200
-    private const val DAILY_BONUS_SOUP_COUNT = 1
-    private const val WEEKLY_BONUS_SOUP_COUNT = 3
 
-    private var lastCheckTick = 0L
+    // Daily rewards
+    private const val DAILY_CURRENCY = 1000
+    private const val DAILY_SOUP = 30
+    private const val DAILY_BONUS_CURRENCY = 1500
+    private const val DAILY_BONUS_SOUP = 20
+    private const val DAILY_BONUS_TICKET = 1
+
+    // Weekly rewards
+    private const val WEEKLY_CURRENCY = 5000
+    private const val WEEKLY_SOUP = 150
+    private const val WEEKLY_BONUS_CURRENCY = 7500
+    private const val WEEKLY_BONUS_SOUP = 100
+    private const val WEEKLY_BONUS_TICKET = 3
 
     @SubscribeEvent
     fun onPlayerLoggedIn(event: PlayerEvent.PlayerLoggedInEvent) {
         val player = event.entity as? ServerPlayer ?: return
-        checkAndResetQuests(player)
         syncToClient(player)
     }
 
@@ -48,15 +60,18 @@ object QuestHandler {
     }
 
     @SubscribeEvent
-    fun onServerTick(event: ServerTickEvent.Post) {
-        val server = event.server
-        lastCheckTick++
-        // Check every 60 seconds (1200 ticks)
-        if (lastCheckTick % 1200 != 0L) return
+    fun onLivingDeath(event: LivingDeathEvent) {
+        val killed = event.entity
+        val source = event.source
+        val player = source.entity as? ServerPlayer ?: return
 
-        for (player in server.playerList.players) {
-            checkAndResetQuests(player)
-        }
+        // Only count kills in the wild dimension
+        if (player.level().dimension() != WildDimensionKeys.WILD_LEVEL) return
+
+        val entityTypeKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.type)
+        val entityTypeId = entityTypeKey.toString()
+
+        onMobKilled(player, entityTypeId)
     }
 
     fun syncToClient(player: ServerPlayer) {
@@ -64,55 +79,224 @@ object QuestHandler {
         PacketDistributor.sendToPlayer(player, QuestSyncPayload(data))
     }
 
-    /**
-     * Calculate the "day number" for a given instant in KST timezone.
-     * This gives a unique number for each day, used as seed for quest selection.
-     */
     private fun getDayNumber(instant: Instant): Long {
         val kstTime = ZonedDateTime.ofInstant(instant, KST)
         return kstTime.toLocalDate().toEpochDay()
     }
 
-    /**
-     * Calculate the "week number" — epoch day of the Monday of that week.
-     */
     private fun getWeekStartDay(instant: Instant): Long {
         val kstTime = ZonedDateTime.ofInstant(instant, KST)
         val dayOfWeek = kstTime.get(ChronoField.DAY_OF_WEEK) // 1=Monday
         return kstTime.toLocalDate().toEpochDay() - (dayOfWeek - 1)
     }
 
-    fun checkAndResetQuests(player: ServerPlayer) {
+    /**
+     * Main interaction entry point — called when player interacts with the quest board.
+     */
+    fun handleBoardInteraction(player: ServerPlayer, hand: InteractionHand, heldStack: ItemStack): InteractionResult {
         val data = player.getData(ModQuest.QUEST_DATA.get())
         val now = Instant.now()
         val currentDay = getDayNumber(now)
         val currentWeekStart = getWeekStartDay(now)
         var changed = false
 
-        // Daily reset
+        // Daily reset check
         if (data.dailyResetDay != currentDay) {
             data.dailyQuests.clear()
             data.dailyBonusClaimed = false
-            val seed = currentDay * 31 + player.server.overworld().seed
-            val templates = QuestPool.selectQuests(seed, weekly = false)
-            for (template in templates) {
-                data.dailyQuests.add(ActiveQuest(template.id))
-            }
             data.dailyResetDay = currentDay
             changed = true
         }
 
-        // Weekly reset
+        // Weekly reset check
         if (data.weeklyResetDay != currentWeekStart) {
             data.weeklyQuests.clear()
             data.weeklyBonusClaimed = false
-            val seed = currentWeekStart * 53 + player.server.overworld().seed
-            val templates = QuestPool.selectQuests(seed, weekly = true)
+            data.weeklyResetDay = currentWeekStart
+            changed = true
+        }
+
+        // Daily assignment if empty
+        if (data.dailyQuests.isEmpty()) {
+            val seed = player.uuid.hashCode().toLong() xor (currentDay * 31)
+            val templates = QuestPool.selectDailyQuests(seed)
+            for (template in templates) {
+                data.dailyQuests.add(ActiveQuest(template.id))
+            }
+            changed = true
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.quest_daily_assigned"), false
+            )
+        }
+
+        // Weekly assignment if empty
+        if (data.weeklyQuests.isEmpty()) {
+            val templates = QuestPool.getWeeklyQuests()
             for (template in templates) {
                 data.weeklyQuests.add(ActiveQuest(template.id))
             }
-            data.weeklyResetDay = currentWeekStart
             changed = true
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.quest_weekly_assigned"), false
+            )
+        }
+
+        if (changed) {
+            player.setData(ModQuest.QUEST_DATA.get(), data)
+            syncToClient(player)
+        }
+
+        // If holding an item, try to submit it
+        if (!heldStack.isEmpty && hand == InteractionHand.MAIN_HAND) {
+            return handleItemSubmission(player, heldStack, data)
+        }
+
+        // Empty hand — open GUI
+        PacketDistributor.sendToPlayer(player, QuestOpenScreenPayload())
+        return InteractionResult.SUCCESS
+    }
+
+    private fun handleItemSubmission(player: ServerPlayer, heldStack: ItemStack, data: QuestData): InteractionResult {
+        val itemKey = heldStack.itemHolder.unwrapKey().orElse(null)?.location() ?: return InteractionResult.PASS
+        val itemId = itemKey.toString()
+        var anySubmitted = false
+
+        // Try daily SUBMIT_ITEM quests
+        for (quest in data.dailyQuests) {
+            if (quest.claimed) continue
+            val template = QuestPool.getTemplate(quest.templateId) ?: continue
+            if (template.trackingType != QuestTrackingType.SUBMIT_ITEM) continue
+            if (quest.progress >= template.targetCount) continue
+
+            val matches = if (template.targetItemId != null) {
+                itemId == template.targetItemId
+            } else {
+                isItemInCategory(itemKey, template.category)
+            }
+
+            if (matches) {
+                val needed = template.targetCount - quest.progress
+                val toConsume = needed.coerceAtMost(heldStack.count)
+                heldStack.shrink(toConsume)
+                quest.progress += toConsume
+                anySubmitted = true
+
+                // Also count toward weekly quests of the same category
+                incrementWeeklyProgress(data, template.category, QuestTrackingType.SUBMIT_ITEM, toConsume, itemKey)
+
+                if (heldStack.isEmpty) break
+            }
+        }
+
+        // If nothing matched daily, try weekly-only submission
+        if (!anySubmitted) {
+            for (quest in data.weeklyQuests) {
+                if (quest.claimed) continue
+                val template = QuestPool.getTemplate(quest.templateId) ?: continue
+                if (template.trackingType != QuestTrackingType.SUBMIT_ITEM) continue
+                if (quest.progress >= template.targetCount) continue
+
+                val matches = if (template.targetItemId != null) {
+                    itemId == template.targetItemId
+                } else {
+                    isItemInCategory(itemKey, template.category)
+                }
+
+                if (matches) {
+                    val needed = template.targetCount - quest.progress
+                    val toConsume = needed.coerceAtMost(heldStack.count)
+                    heldStack.shrink(toConsume)
+                    quest.progress += toConsume
+                    anySubmitted = true
+                    if (heldStack.isEmpty) break
+                }
+            }
+        }
+
+        if (anySubmitted) {
+            player.setData(ModQuest.QUEST_DATA.get(), data)
+            syncToClient(player)
+            player.displayClientMessage(
+                Component.translatable("message.estherserver.quest_submitted"), true
+            )
+            player.level().playSound(
+                null, player.blockPosition(),
+                SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS,
+                0.5f, 1.2f
+            )
+            return InteractionResult.SUCCESS
+        }
+
+        player.displayClientMessage(
+            Component.translatable("message.estherserver.quest_no_matching"), true
+        )
+        return InteractionResult.SUCCESS
+    }
+
+    private fun incrementWeeklyProgress(data: QuestData, category: QuestCategory, trackingType: QuestTrackingType, amount: Int, itemKey: ResourceLocation) {
+        for (quest in data.weeklyQuests) {
+            if (quest.claimed) continue
+            val template = QuestPool.getTemplate(quest.templateId) ?: continue
+            if (template.trackingType != trackingType) continue
+            if (template.category != category) continue
+            if (quest.progress >= template.targetCount) continue
+
+            val matches = if (template.targetItemId != null) {
+                itemKey.toString() == template.targetItemId
+            } else {
+                isItemInCategory(itemKey, template.category)
+            }
+
+            if (matches) {
+                val canAdd = (template.targetCount - quest.progress).coerceAtMost(amount)
+                quest.progress += canAdd
+            }
+        }
+    }
+
+    fun onMobKilled(player: ServerPlayer, entityTypeId: String) {
+        val data = player.getData(ModQuest.QUEST_DATA.get())
+        var changed = false
+
+        // Daily KILL_MONSTER quests
+        for (quest in data.dailyQuests) {
+            if (quest.claimed) continue
+            val template = QuestPool.getTemplate(quest.templateId) ?: continue
+            if (template.trackingType != QuestTrackingType.KILL_MONSTER) continue
+            if (quest.progress >= template.targetCount) continue
+
+            val targets = template.targetEntityTypes ?: continue
+            if (entityTypeId in targets || isZombieVariant(entityTypeId, targets)) {
+                quest.progress = (quest.progress + 1).coerceAtMost(template.targetCount)
+                changed = true
+
+                // Also count toward weekly KILL_MONSTER
+                for (wQuest in data.weeklyQuests) {
+                    if (wQuest.claimed) continue
+                    val wTemplate = QuestPool.getTemplate(wQuest.templateId) ?: continue
+                    if (wTemplate.trackingType != QuestTrackingType.KILL_MONSTER) continue
+                    if (wQuest.progress >= wTemplate.targetCount) continue
+                    val wTargets = wTemplate.targetEntityTypes ?: continue
+                    if (entityTypeId in wTargets || isZombieVariant(entityTypeId, wTargets)) {
+                        wQuest.progress = (wQuest.progress + 1).coerceAtMost(wTemplate.targetCount)
+                    }
+                }
+            }
+        }
+
+        // Weekly-only kill matching (if no daily matched)
+        if (!changed) {
+            for (quest in data.weeklyQuests) {
+                if (quest.claimed) continue
+                val template = QuestPool.getTemplate(quest.templateId) ?: continue
+                if (template.trackingType != QuestTrackingType.KILL_MONSTER) continue
+                if (quest.progress >= template.targetCount) continue
+                val targets = template.targetEntityTypes ?: continue
+                if (entityTypeId in targets || isZombieVariant(entityTypeId, targets)) {
+                    quest.progress = (quest.progress + 1).coerceAtMost(template.targetCount)
+                    changed = true
+                }
+            }
         }
 
         if (changed) {
@@ -122,40 +306,22 @@ object QuestHandler {
     }
 
     /**
-     * Track progress from various game systems.
-     * @param gradeStr grade string for grade-filtered quests: "COMMON", "ADVANCED", "RARE"
+     * Baby zombies and zombie variants count as "minecraft:zombie".
      */
-    fun trackProgress(player: ServerPlayer, trackingType: QuestTrackingType, amount: Int, gradeStr: String?) {
-        val data = player.getData(ModQuest.QUEST_DATA.get())
-        var changed = false
+    private fun isZombieVariant(entityTypeId: String, targets: List<String>): Boolean {
+        if ("minecraft:zombie" !in targets) return false
+        return entityTypeId == "minecraft:zombie_villager" ||
+               entityTypeId == "minecraft:husk" ||
+               entityTypeId == "minecraft:drowned"
+    }
 
-        val grade = gradeStr?.let {
-            try { ContentGrade.valueOf(it) } catch (_: Exception) { null }
-        }
-
-        // Track daily quests
-        for (quest in data.dailyQuests) {
-            if (quest.claimed) continue
-            val template = QuestPool.getTemplate(quest.templateId) ?: continue
-            if (template.trackingType != trackingType) continue
-            if (template.gradeFilter != null && (grade == null || grade < template.gradeFilter)) continue
-            quest.progress = (quest.progress + amount).coerceAtMost(template.targetCount)
-            changed = true
-        }
-
-        // Track weekly quests
-        for (quest in data.weeklyQuests) {
-            if (quest.claimed) continue
-            val template = QuestPool.getTemplate(quest.templateId) ?: continue
-            if (template.trackingType != trackingType) continue
-            if (template.gradeFilter != null && (grade == null || grade < template.gradeFilter)) continue
-            quest.progress = (quest.progress + amount).coerceAtMost(template.targetCount)
-            changed = true
-        }
-
-        if (changed) {
-            player.setData(ModQuest.QUEST_DATA.get(), data)
-            syncToClient(player)
+    private fun isItemInCategory(itemId: ResourceLocation, category: QuestCategory): Boolean {
+        return when (category) {
+            QuestCategory.FISHING -> ProfessionBonusHelper.getFishGrade(itemId) != null
+            QuestCategory.FARMING -> ProfessionBonusHelper.getCropGrade(itemId) != null
+            QuestCategory.MINING -> ProfessionBonusHelper.getOreGrade(itemId) != null
+            QuestCategory.COOKING -> ProfessionBonusHelper.getRecipeGrade(itemId) != null
+            QuestCategory.GENERAL -> false
         }
     }
 
@@ -184,15 +350,15 @@ object QuestHandler {
 
         quest.claimed = true
 
-        // Give rewards
-        EconomyHandler.addBalance(player, template.baseCurrencyReward.toLong(), skipQuestTracking = true)
-        giveHuntersPot(player, 1)
+        // Give rewards from template
+        val currency = template.currencyReward
+        val soup = template.huntersPotReward
+
+        EconomyHandler.addBalance(player, currency.toLong())
+        giveHuntersPot(player, soup)
 
         player.displayClientMessage(
-            Component.translatable("message.estherserver.quest_claimed",
-                template.baseCurrencyReward,
-                1
-            ), false
+            Component.translatable("message.estherserver.quest_claimed", currency, soup), false
         )
 
         player.level().playSound(
@@ -225,15 +391,17 @@ object QuestHandler {
         }
 
         val currency = if (isWeekly) WEEKLY_BONUS_CURRENCY else DAILY_BONUS_CURRENCY
-        val soupCount = if (isWeekly) WEEKLY_BONUS_SOUP_COUNT else DAILY_BONUS_SOUP_COUNT
+        val soupCount = if (isWeekly) WEEKLY_BONUS_SOUP else DAILY_BONUS_SOUP
+        val ticketCount = if (isWeekly) WEEKLY_BONUS_TICKET else DAILY_BONUS_TICKET
 
         if (isWeekly) data.weeklyBonusClaimed = true else data.dailyBonusClaimed = true
 
-        EconomyHandler.addBalance(player, currency.toLong(), skipQuestTracking = true)
+        EconomyHandler.addBalance(player, currency.toLong())
         giveHuntersPot(player, soupCount)
+        giveDrawTicket(player, ticketCount)
 
         player.displayClientMessage(
-            Component.translatable("message.estherserver.quest_bonus_claimed", currency, soupCount), false
+            Component.translatable("message.estherserver.quest_bonus_claimed", currency, soupCount, ticketCount), false
         )
 
         player.level().playSound(
@@ -253,15 +421,26 @@ object QuestHandler {
         }
     }
 
+    private fun giveDrawTicket(player: ServerPlayer, count: Int) {
+        val stack = ItemStack(EstherServerMod.DRAW_TICKET_NORMAL.get(), count)
+        if (!player.inventory.add(stack)) {
+            player.drop(stack, false)
+        }
+    }
+
     fun resetQuests(player: ServerPlayer, daily: Boolean, weekly: Boolean) {
         val data = player.getData(ModQuest.QUEST_DATA.get())
         if (daily) {
+            data.dailyQuests.clear()
             data.dailyResetDay = 0L
+            data.dailyBonusClaimed = false
         }
         if (weekly) {
+            data.weeklyQuests.clear()
             data.weeklyResetDay = 0L
+            data.weeklyBonusClaimed = false
         }
         player.setData(ModQuest.QUEST_DATA.get(), data)
-        checkAndResetQuests(player)
+        syncToClient(player)
     }
 }

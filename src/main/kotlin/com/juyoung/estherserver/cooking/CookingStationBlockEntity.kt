@@ -90,10 +90,6 @@ class CookingStationBlockEntity(
                         com.juyoung.estherserver.profession.ProfessionHandler.addExperience(
                             player, com.juyoung.estherserver.profession.Profession.COOKING, 1
                         )
-                        // Quest tracking
-                        com.juyoung.estherserver.quest.QuestHandler.trackProgress(
-                            player, com.juyoung.estherserver.quest.QuestTrackingType.COOK_DISH, 1, null
-                        )
                     }
 
                     // Completion effects

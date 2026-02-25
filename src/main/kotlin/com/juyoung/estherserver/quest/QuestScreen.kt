@@ -1,7 +1,6 @@
 package com.juyoung.estherserver.quest
 
 import com.juyoung.estherserver.gui.GuiTheme
-import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
@@ -17,7 +16,7 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         private const val QUEST_ROW_HEIGHT = 36
         private const val CLAIM_BUTTON_W = 36
         private const val CLAIM_BUTTON_H = 14
-        private const val BONUS_AREA_HEIGHT = 32
+        private const val BONUS_AREA_HEIGHT = 38
         private const val SCROLLBAR_WIDTH = 6
     }
 
@@ -132,9 +131,10 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         guiGraphics.drawString(font, bonusLabel, x + 6, y + 4, GuiTheme.TEXT_BODY, false)
 
         // Bonus reward info
-        val currency = if (selectedTab == 1) 200 else 50
-        val soupCount = if (selectedTab == 1) 3 else 1
-        val rewardInfo = Component.translatable("gui.estherserver.quest.bonus_reward", currency, soupCount)
+        val currency = if (selectedTab == 1) 7500 else 1500
+        val soupCount = if (selectedTab == 1) 100 else 20
+        val ticketCount = if (selectedTab == 1) 3 else 1
+        val rewardInfo = Component.translatable("gui.estherserver.quest.bonus_reward", currency, soupCount, ticketCount)
         guiGraphics.drawString(font, rewardInfo, x + 6, y + 16, GuiTheme.TEXT_GOLD, false)
 
         // Bonus claim button
@@ -194,8 +194,10 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         guiGraphics.drawCenteredString(font, progressText, barX + barW / 2, barY, GuiTheme.TEXT_WHITE)
 
         // Reward hint
-        val rewardText = Component.literal("${template.baseCurrencyReward}")
+        val rewardText = Component.literal("${template.currencyReward}")
             .append(Component.translatable("gui.estherserver.quest.currency_unit"))
+            .append(Component.literal(" + ${template.huntersPotReward}"))
+            .append(Component.translatable("gui.estherserver.quest.soup_unit"))
         guiGraphics.drawString(font, rewardText, x + 4, y + 24, GuiTheme.TEXT_GOLD, false)
 
         // Claim button
@@ -329,10 +331,6 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        if (keyCode == InputConstants.KEY_ESCAPE || keyCode == InputConstants.KEY_H) {
-            this.minecraft!!.setScreen(null)
-            return true
-        }
         return super.keyPressed(keyCode, scanCode, modifiers)
     }
 

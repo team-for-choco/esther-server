@@ -1,7 +1,6 @@
 package com.juyoung.estherserver.quest
 
 import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.arguments.StringArgumentType
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.EntityArgument
@@ -55,29 +54,6 @@ object QuestCommand {
                                         )
                                 )
                         )
-                        .then(
-                            Commands.literal("progress")
-                                .then(
-                                    Commands.argument("tracking_type", StringArgumentType.word())
-                                        .then(
-                                            Commands.argument("amount", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
-                                                .executes { context ->
-                                                    val player = context.source.playerOrException
-                                                    val typeStr = StringArgumentType.getString(context, "tracking_type")
-                                                    val amount = com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "amount")
-                                                    val trackingType = try {
-                                                        QuestTrackingType.valueOf(typeStr.uppercase())
-                                                    } catch (_: Exception) {
-                                                        context.source.sendFailure(Component.literal("Invalid tracking type: $typeStr"))
-                                                        return@executes 0
-                                                    }
-                                                    QuestHandler.trackProgress(player, trackingType, amount, null)
-                                                    context.source.sendSuccess({ Component.literal("Added $amount progress to $typeStr") }, true)
-                                                    1
-                                                }
-                                        )
-                                )
-                        )
                 )
                 .then(
                     Commands.literal("info")
@@ -111,7 +87,8 @@ object QuestCommand {
                 else -> "[진행중]"
             }
             val target = template?.targetCount ?: 0
-            source.sendSuccess({ Component.literal("  ${i + 1}. ${quest.templateId} ${quest.progress}/$target $status") }, false)
+            val type = template?.trackingType?.name ?: "?"
+            source.sendSuccess({ Component.literal("  ${i + 1}. ${quest.templateId} ($type) ${quest.progress}/$target $status") }, false)
         }
 
         source.sendSuccess({ Component.literal("=== 주간 퀘스트 (${data.getWeeklyClaimedCount()}/3 수령) ===") }, false)
@@ -123,7 +100,8 @@ object QuestCommand {
                 else -> "[진행중]"
             }
             val target = template?.targetCount ?: 0
-            source.sendSuccess({ Component.literal("  ${i + 1}. ${quest.templateId} ${quest.progress}/$target $status") }, false)
+            val type = template?.trackingType?.name ?: "?"
+            source.sendSuccess({ Component.literal("  ${i + 1}. ${quest.templateId} ($type) ${quest.progress}/$target $status") }, false)
         }
 
         return 1

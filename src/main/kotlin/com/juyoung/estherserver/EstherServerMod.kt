@@ -554,6 +554,30 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             Item.Properties()
                 .food(FoodProperties.Builder().nutrition(8).saturationModifier(0.8f).build()))
 
+        // Draw tickets
+        val DRAW_TICKET_NORMAL: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_normal")
+        val DRAW_TICKET_FINE: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_fine")
+        val DRAW_TICKET_RARE: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_rare")
+
+        // Quest board
+        val QUEST_BOARD: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board",
+            { properties -> com.juyoung.estherserver.quest.QuestBoardBlock(properties) },
+            BlockBehaviour.Properties.of()
+                .strength(-1.0f, 3600000.0f)
+                .mapColor(MapColor.WOOD)
+                .sound(SoundType.WOOD)
+                .noOcclusion())
+        val QUEST_BOARD_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("quest_board", QUEST_BOARD)
+
+        val QUEST_BOARD_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board_dummy",
+            { properties -> com.juyoung.estherserver.quest.QuestBoardDummyBlock(properties) },
+            BlockBehaviour.Properties.of()
+                .strength(-1.0f, 3600000.0f)
+                .mapColor(MapColor.WOOD)
+                .sound(SoundType.WOOD)
+                .noOcclusion()
+                .noLootTable())
+
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
             Supplier {
@@ -708,6 +732,10 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(RETURN_PORTAL.get())
                         // Quest
                         output.accept(HUNTERS_POT.get())
+                        output.accept(DRAW_TICKET_NORMAL.get())
+                        output.accept(DRAW_TICKET_FINE.get())
+                        output.accept(DRAW_TICKET_RARE.get())
+                        output.accept(QUEST_BOARD_ITEM.get())
                     }.build()
             })
     }
@@ -733,6 +761,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModInventory.MENU_TYPES.register(modEventBus)
         ModWild.ATTACHMENT_TYPES.register(modEventBus)
         ModQuest.ATTACHMENT_TYPES.register(modEventBus)
+        ModQuest.BLOCK_ENTITY_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -874,6 +903,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     QuestHandler.handleBonusClaim(player, payload.isWeekly)
                 }
             }
+            .playToClient(com.juyoung.estherserver.quest.QuestOpenScreenPayload.TYPE, com.juyoung.estherserver.quest.QuestOpenScreenPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    Minecraft.getInstance().setScreen(com.juyoung.estherserver.quest.QuestScreen())
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
@@ -935,7 +969,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             event.register(ModKeyBindings.PROFESSION_KEY)
             event.register(ModKeyBindings.PROFESSION_INVENTORY_KEY)
             event.register(ModKeyBindings.TITLE_KEY)
-            event.register(ModKeyBindings.QUEST_KEY)
         }
 
         @SubscribeEvent

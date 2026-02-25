@@ -68,3 +68,24 @@ class QuestBonusClaimPayload(val isWeekly: Boolean) : CustomPacketPayload {
             }
     }
 }
+
+class QuestOpenScreenPayload : CustomPacketPayload {
+    override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
+
+    companion object {
+        val TYPE = CustomPacketPayload.Type<QuestOpenScreenPayload>(
+            ResourceLocation.fromNamespaceAndPath("estherserver", "quest_open_screen")
+        )
+
+        val STREAM_CODEC: StreamCodec<FriendlyByteBuf, QuestOpenScreenPayload> =
+            object : StreamCodec<FriendlyByteBuf, QuestOpenScreenPayload> {
+                override fun decode(buf: FriendlyByteBuf): QuestOpenScreenPayload {
+                    return QuestOpenScreenPayload()
+                }
+
+                override fun encode(buf: FriendlyByteBuf, value: QuestOpenScreenPayload) {
+                    // No data needed
+                }
+            }
+    }
+}

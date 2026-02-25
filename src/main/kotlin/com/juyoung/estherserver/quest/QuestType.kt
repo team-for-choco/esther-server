@@ -1,15 +1,8 @@
 package com.juyoung.estherserver.quest
 
-import com.juyoung.estherserver.profession.ProfessionBonusHelper.ContentGrade
-
 enum class QuestTrackingType {
-    CATCH_FISH,
-    HARVEST_CROP,
-    MINE_ORE,
-    COOK_DISH,
-    SELL_ITEMS,
-    EARN_CURRENCY,
-    REGISTER_COLLECTION
+    SUBMIT_ITEM,
+    KILL_MONSTER
 }
 
 enum class QuestCategory {
@@ -25,8 +18,10 @@ data class QuestTemplate(
     val trackingType: QuestTrackingType,
     val category: QuestCategory,
     val targetCount: Int,
-    val gradeFilter: ContentGrade? = null,
-    val baseCurrencyReward: Int,
+    val targetItemId: String? = null,
+    val targetEntityTypes: List<String>? = null,
+    val currencyReward: Int,
+    val huntersPotReward: Int,
     val isWeekly: Boolean = false
 ) {
     val translationKey: String get() = "quest.estherserver.$id"

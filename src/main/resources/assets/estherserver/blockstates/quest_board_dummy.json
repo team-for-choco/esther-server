@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "estherserver:block/quest_board_dummy" },
+    "facing=south": { "model": "estherserver:block/quest_board_dummy", "y": 180 },
+    "facing=west": { "model": "estherserver:block/quest_board_dummy", "y": 270 },
+    "facing=east": { "model": "estherserver:block/quest_board_dummy", "y": 90 }
+  }
+}

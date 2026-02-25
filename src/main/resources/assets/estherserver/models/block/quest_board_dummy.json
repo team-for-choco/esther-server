@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "estherserver:block/quest_board_top",
+    "front": "estherserver:block/quest_board_front",
+    "side": "estherserver:block/quest_board_side"
+  }
+}

@@ -221,11 +221,6 @@ object ShopBuyRegistry {
         stack.shrink(sellCount)
         EconomyHandler.addBalance(player, totalPrice)
 
-        // Quest tracking
-        com.juyoung.estherserver.quest.QuestHandler.trackProgress(
-            player, com.juyoung.estherserver.quest.QuestTrackingType.SELL_ITEMS, sellCount, null
-        )
-
         player.sendSystemMessage(
             Component.translatable(
                 "message.estherserver.shop_sell_success",

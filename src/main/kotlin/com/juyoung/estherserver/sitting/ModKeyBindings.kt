@@ -4,7 +4,6 @@ import com.juyoung.estherserver.collection.CollectionScreen
 import com.juyoung.estherserver.collection.TitleScreen
 import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
 import com.juyoung.estherserver.profession.ProfessionScreen
-import com.juyoung.estherserver.quest.QuestScreen
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
@@ -50,13 +49,6 @@ object ModKeyBindings {
         "key.categories.estherserver"
     )
 
-    val QUEST_KEY = KeyMapping(
-        "key.estherserver.quest",
-        InputConstants.Type.KEYSYM,
-        GLFW.GLFW_KEY_H,
-        "key.categories.estherserver"
-    )
-
     @SubscribeEvent
     fun onClientTick(event: ClientTickEvent.Post) {
         while (SIT_KEY.consumeClick()) {
@@ -73,9 +65,6 @@ object ModKeyBindings {
         }
         while (TITLE_KEY.consumeClick()) {
             Minecraft.getInstance().setScreen(TitleScreen())
-        }
-        while (QUEST_KEY.consumeClick()) {
-            Minecraft.getInstance().setScreen(QuestScreen())
         }
     }
 }
