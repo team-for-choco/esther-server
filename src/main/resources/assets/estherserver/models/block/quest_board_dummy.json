@@ -1,8 +1,12 @@
 {
-  "parent": "minecraft:block/orientable",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "top": "estherserver:block/quest_board_top",
-    "front": "estherserver:block/quest_board_front",
-    "side": "estherserver:block/quest_board_side"
+    "particle": "estherserver:block/quest_board_side",
+    "north": "estherserver:block/quest_board_front",
+    "south": "estherserver:block/quest_board_back",
+    "east": "estherserver:block/quest_board_side",
+    "west": "estherserver:block/quest_board_side",
+    "up": "estherserver:block/quest_board_top",
+    "down": "estherserver:block/quest_board_top"
   }
 }
