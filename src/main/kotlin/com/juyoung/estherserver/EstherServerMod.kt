@@ -586,15 +586,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 .noLootTable())
 
         // Furniture - Cat sofa
-        val TEST_SPHERE: DeferredBlock<Block> = BLOCKS.registerBlock("test_sphere",
-            ::Block,
-            BlockBehaviour.Properties.of()
-                .strength(1.0f)
-                .mapColor(MapColor.COLOR_PINK)
-                .sound(SoundType.STONE)
-                .noOcclusion())
-        val TEST_SPHERE_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("test_sphere", TEST_SPHERE)
-
         val CAT_SOFA: DeferredBlock<Block> = BLOCKS.registerBlock("cat_sofa",
             { properties -> CatSofaBlock(properties) },
             BlockBehaviour.Properties.of()
@@ -772,7 +763,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(DRAW_TICKET_RARE.get())
                         output.accept(QUEST_BOARD_ITEM.get())
                         // Furniture
-                        output.accept(TEST_SPHERE_ITEM.get())
                         output.accept(CAT_SOFA_ITEM.get())
                     }.build()
             })
