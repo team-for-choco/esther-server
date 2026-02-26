@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.Mob
 import net.minecraft.world.entity.PathfinderMob
+import net.minecraft.world.entity.PlayerRideableJumping
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier
 import net.minecraft.world.entity.ai.attributes.Attributes
 import net.minecraft.world.entity.player.Player
@@ -18,11 +19,13 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
 
 class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
-    PathfinderMob(entityType, level) {
+    PathfinderMob(entityType, level), PlayerRideableJumping {
 
     var petType: PetType
         get() = PetType.fromName(entityData.get(DATA_PET_TYPE)) ?: PetType.CAT_COMMON
         set(value) { entityData.set(DATA_PET_TYPE, value.name) }
+
+    private var jumpPending = false
 
     init {
         isInvulnerable = true
@@ -53,10 +56,25 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
         return petType.grade.speed
     }
 
+    // ── Jump (PlayerRideableJumping) ──
+
+    override fun onPlayerJump(jumpPower: Int) {
+        if (onGround()) {
+            jumpPending = true
+        }
+    }
+
+    override fun canJump(): Boolean = onGround()
+
+    override fun handleStartJump(jumpPower: Int) {}
+
+    override fun handleStopJump() {}
+
+    // ── Passenger ──
+
     override fun removePassenger(passenger: Entity) {
         super.removePassenger(passenger)
         if (!level().isClientSide && passenger is Player) {
-            // Clear summoned state
             val data = passenger.getData(ModPets.PET_DATA.get())
             data.summonedPet = null
             data.summonedEntityId = -1
@@ -74,13 +92,8 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
     override fun removeWhenFarAway(distanceToClosestPlayer: Double): Boolean = false
     override fun canBeLeashed(): Boolean = false
 
-    override fun addAdditionalSaveData(compound: CompoundTag) {
-        // Not persisted
-    }
-
-    override fun readAdditionalSaveData(compound: CompoundTag) {
-        // Not persisted
-    }
+    override fun addAdditionalSaveData(compound: CompoundTag) {}
+    override fun readAdditionalSaveData(compound: CompoundTag) {}
 
     override fun tick() {
         super.tick()
@@ -91,6 +104,11 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
             xRot = rider.xRot * 0.5f
             yBodyRot = yRot
             yHeadRot = yRot
+        }
+        // Process pending jump
+        if (jumpPending && onGround()) {
+            jumpPending = false
+            deltaMovement = Vec3(deltaMovement.x, 0.42, deltaMovement.z)
         }
         if (!level().isClientSide && passengers.isEmpty()) {
             discard()
