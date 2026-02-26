@@ -271,6 +271,14 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
         }
     }
 
+    override fun onClose() {
+        // 화면이 닫힐 때 결과 메시지가 아직 안 보내졌으면 전송 (조기 종료 대응)
+        if (!resultMessageSent) {
+            sendResultChatMessage()
+        }
+        super.onClose()
+    }
+
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (animFinished) {
             onClose()
