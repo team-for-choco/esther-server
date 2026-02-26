@@ -63,12 +63,28 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
 
         // 릴 시퀀스 빌드: REEL_COUNT 개의 랜덤 엔트리 + 당첨 아이템이 중앙에 오도록
         val poolEntries = payload.entries
+
+        // 엔트리가 적은 풀(펫/가구)은 필러 아이콘 추가로 시각적 다양성 확보
+        val reelPool = if (poolEntries.size < 5) {
+            val fillers = listOf(
+                RouletteDisplayEntry("minecraft:nether_star", 1, "", false, 0),
+                RouletteDisplayEntry("minecraft:amethyst_shard", 1, "", false, 0),
+                RouletteDisplayEntry("minecraft:echo_shard", 1, "", false, 0),
+                RouletteDisplayEntry("minecraft:ender_pearl", 1, "", false, 0),
+                RouletteDisplayEntry("minecraft:heart_of_the_sea", 1, "", false, 0),
+                RouletteDisplayEntry("minecraft:totem_of_undying", 1, "", false, 0)
+            )
+            poolEntries + fillers
+        } else {
+            poolEntries
+        }
+
         val reel = mutableListOf<RouletteDisplayEntry>()
         val random = java.util.Random()
 
         // 앞 부분: 랜덤 채우기
         for (i in 0 until REEL_COUNT) {
-            reel.add(poolEntries[random.nextInt(poolEntries.size)])
+            reel.add(reelPool[random.nextInt(reelPool.size)])
         }
 
         // 당첨 아이템을 릴의 특정 위치에 배치 (스트립 중앙에 멈출 위치)
