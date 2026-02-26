@@ -94,6 +94,7 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
     @Deprecated("", level = DeprecationLevel.WARNING)
     override fun isPushedByFluid(): Boolean = false
     override fun shouldBeSaved(): Boolean = false
+    override fun saveAsPassenger(tag: CompoundTag): Boolean = false
     override fun removeWhenFarAway(distanceToClosestPlayer: Double): Boolean = false
     override fun canBeLeashed(): Boolean = false
 
