@@ -255,6 +255,8 @@
   - PathfinderMob 기반 탑승 엔티티, 코드 기반 고양이 모델
   - 등급별 이동 속도 차등 (Common 0.14), 점프 지원
   - 하차 시 자동 디스폰, 저장 안 됨, 탑승 중 낙뎀 무효
+- [x] ~~**야생 차원 요새 미생성 수정**~~ (CHOCO-120)
+  - OreFeatureMixin이 concentric_rings 배치 방해 → random_spread 커스텀 구조물 세트 추가
 
 ---
 
