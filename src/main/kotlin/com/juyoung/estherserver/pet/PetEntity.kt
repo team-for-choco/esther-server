@@ -102,14 +102,16 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
 
     override fun tick() {
         super.tick()
-        // Sync rotation with rider
+        // Sync rotation with rider + prevent fall damage
         val rider = controllingPassenger
         if (rider != null) {
             yRot = rider.yRot
             xRot = rider.xRot * 0.5f
             yBodyRot = yRot
             yHeadRot = yRot
+            rider.fallDistance = 0f
         }
+        fallDistance = 0f
         // Process pending jump
         if (jumpScale > 0f && onGround()) {
             deltaMovement = Vec3(deltaMovement.x, jumpScale.toDouble(), deltaMovement.z)
