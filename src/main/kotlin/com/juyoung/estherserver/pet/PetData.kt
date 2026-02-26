@@ -20,9 +20,6 @@ class PetData(
             list.add(StringTag.valueOf(pet.name))
         }
         tag.put("OwnedPets", list)
-        if (summonedPet != null) {
-            tag.putString("SummonedPet", summonedPet!!.name)
-        }
         return tag
     }
 
@@ -36,10 +33,7 @@ class PetData(
             if (owned.isEmpty()) {
                 owned.add(PetType.CAT_COMMON)
             }
-            val summoned = if (tag.contains("SummonedPet")) {
-                PetType.fromName(tag.getString("SummonedPet"))
-            } else null
-            return PetData(owned, summoned)
+            return PetData(owned)
         }
     }
 }

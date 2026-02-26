@@ -822,7 +822,6 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.CropGradeHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.wild.OverworldProtectionHandler)
         NeoForge.EVENT_BUS.register(QuestHandler)
-        NeoForge.EVENT_BUS.register(PetHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
