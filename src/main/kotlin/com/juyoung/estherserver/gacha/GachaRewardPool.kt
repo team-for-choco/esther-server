@@ -12,6 +12,7 @@ data class GachaRewardEntry(
     val type: RewardType,
     val weight: Int,
     val displayKey: String,
+    val displayItemId: String = "",
     val itemSupplier: Supplier<ItemStack>? = null,
     val currencyAmount: Long = 0
 )

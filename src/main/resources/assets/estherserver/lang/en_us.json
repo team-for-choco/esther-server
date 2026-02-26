@@ -507,5 +507,13 @@
   "message.estherserver.gacha_result_currency": "[Draw] Obtained %s Esther's Essence!",
   "message.estherserver.gacha_currency_100": "100 Esther's Essence",
   "message.estherserver.gacha_currency_300": "300 Esther's Essence",
-  "message.estherserver.gacha_currency_500": "500 Esther's Essence"
+  "message.estherserver.gacha_currency_500": "500 Esther's Essence",
+
+  "gui.estherserver.gacha_roulette.title": "Draw",
+  "gui.estherserver.gacha_roulette.title_pet": "Pet Draw",
+  "gui.estherserver.gacha_roulette.title_furniture": "Furniture Draw",
+  "gui.estherserver.gacha_roulette.result_item": "Obtained %s!",
+  "gui.estherserver.gacha_roulette.result_item_count": "Obtained %s x%d!",
+  "gui.estherserver.gacha_roulette.result_currency": "Obtained %d Esther's Essence!",
+  "gui.estherserver.gacha_roulette.close_hint": "Click to close"
 }

@@ -103,7 +103,10 @@ import com.juyoung.estherserver.quest.QuestHandler
 import com.juyoung.estherserver.quest.QuestOpenScreenPayload
 import com.juyoung.estherserver.quest.QuestScreen
 import com.juyoung.estherserver.quest.QuestSyncPayload
+import com.juyoung.estherserver.gacha.GachaClientHandler
 import com.juyoung.estherserver.gacha.GachaRegistry
+import com.juyoung.estherserver.gacha.GachaRoulettePayload
+import com.juyoung.estherserver.gacha.GachaRouletteScreen
 import com.juyoung.estherserver.gacha.GachaTicketItem
 import com.juyoung.estherserver.pet.ModPets
 import com.juyoung.estherserver.pet.PetClientHandler
@@ -989,6 +992,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 context.enqueueWork {
                     val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
                     PetHandler.handleSummonPet(player, payload.petName)
+                }
+            }
+            .playToClient(GachaRoulettePayload.TYPE, GachaRoulettePayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    GachaClientHandler.handleRoulettePayload(payload)
+                    Minecraft.getInstance().setScreen(GachaRouletteScreen())
                 }
             }
     }
