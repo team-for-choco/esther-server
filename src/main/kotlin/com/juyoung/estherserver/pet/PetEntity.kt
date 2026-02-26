@@ -25,7 +25,7 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
         get() = PetType.fromName(entityData.get(DATA_PET_TYPE)) ?: PetType.CAT_COMMON
         set(value) { entityData.set(DATA_PET_TYPE, value.name) }
 
-    private var jumpPending = false
+    private var jumpScale = 0f
 
     init {
         isInvulnerable = true
@@ -60,7 +60,12 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
 
     override fun onPlayerJump(jumpPower: Int) {
         if (onGround()) {
-            jumpPending = true
+            // jumpPower: 0~100 → jumpScale: 0.42 ~ 1.0
+            jumpScale = if (jumpPower >= 90) {
+                1.0f
+            } else {
+                0.42f + 0.58f * (jumpPower / 90f)
+            }
         }
     }
 
@@ -106,9 +111,9 @@ class PetEntity(entityType: EntityType<PetEntity>, level: Level) :
             yHeadRot = yRot
         }
         // Process pending jump
-        if (jumpPending && onGround()) {
-            jumpPending = false
-            deltaMovement = Vec3(deltaMovement.x, 0.42, deltaMovement.z)
+        if (jumpScale > 0f && onGround()) {
+            deltaMovement = Vec3(deltaMovement.x, jumpScale.toDouble(), deltaMovement.z)
+            jumpScale = 0f
         }
         if (!level().isClientSide && passengers.isEmpty()) {
             discard()
