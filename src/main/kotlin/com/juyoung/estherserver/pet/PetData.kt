@@ -9,7 +9,7 @@ import net.minecraft.nbt.Tag
  * 플레이어별 펫 보유 데이터.
  */
 class PetData(
-    val ownedPets: MutableList<PetType> = mutableListOf(PetType.CAT_COMMON),
+    val ownedPets: MutableList<PetType> = mutableListOf(),
     var summonedPet: PetType? = null
 ) {
     /** 런타임 전용 — NBT 저장 안 됨 */
@@ -30,9 +30,6 @@ class PetData(
             val list = tag.getList("OwnedPets", Tag.TAG_STRING.toInt())
             for (i in 0 until list.size) {
                 PetType.fromName(list.getString(i))?.let { owned.add(it) }
-            }
-            if (owned.isEmpty()) {
-                owned.add(PetType.CAT_COMMON)
             }
             return PetData(owned)
         }

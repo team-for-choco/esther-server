@@ -495,5 +495,25 @@
   "pet.estherserver.grade.common": "일반",
   "pet.estherserver.grade.fine": "고급",
   "pet.estherserver.grade.rare": "희귀",
-  "pet.estherserver.cat_common": "고양이"
+  "pet.estherserver.cat_common": "고양이",
+
+  "item.estherserver.pet_draw_ticket_normal": "일반 펫 뽑기권",
+  "item.estherserver.furniture_draw_ticket_normal": "일반 가구 뽑기권",
+  "item.estherserver.pet_token_cat_common": "펫 소환권: 고양이",
+  "tooltip.estherserver.pet_token": "우클릭으로 %s 등록",
+  "message.estherserver.pet_token_registered": "[펫] %s을(를) 펫 보관함에 등록했습니다!",
+  "message.estherserver.pet_token_duplicate": "[펫] 이미 보유 중인 %s — %s 에스더의 기운으로 전환됩니다.",
+  "message.estherserver.gacha_result_item": "[뽑기] %s을(를) 획득했습니다!",
+  "message.estherserver.gacha_result_currency": "[뽑기] %s 에스더의 기운을 획득했습니다!",
+  "message.estherserver.gacha_currency_100": "100 에스더의 기운",
+  "message.estherserver.gacha_currency_300": "300 에스더의 기운",
+  "message.estherserver.gacha_currency_500": "500 에스더의 기운",
+
+  "gui.estherserver.gacha_roulette.title": "뽑기",
+  "gui.estherserver.gacha_roulette.title_pet": "펫 뽑기",
+  "gui.estherserver.gacha_roulette.title_furniture": "가구 뽑기",
+  "gui.estherserver.gacha_roulette.result_item": "%s 획득!",
+  "gui.estherserver.gacha_roulette.result_item_count": "%s x%d 획득!",
+  "gui.estherserver.gacha_roulette.result_currency": "%d 에스더의 기운 획득!",
+  "gui.estherserver.gacha_roulette.close_hint": "클릭하여 닫기"
 }

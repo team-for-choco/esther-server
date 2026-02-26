@@ -495,5 +495,25 @@
   "pet.estherserver.grade.common": "Common",
   "pet.estherserver.grade.fine": "Fine",
   "pet.estherserver.grade.rare": "Rare",
-  "pet.estherserver.cat_common": "Cat"
+  "pet.estherserver.cat_common": "Cat",
+
+  "item.estherserver.pet_draw_ticket_normal": "Normal Pet Draw Ticket",
+  "item.estherserver.furniture_draw_ticket_normal": "Normal Furniture Draw Ticket",
+  "item.estherserver.pet_token_cat_common": "Pet Token: Cat",
+  "tooltip.estherserver.pet_token": "Right-click to register %s",
+  "message.estherserver.pet_token_registered": "[Pet] Registered %s to pet storage!",
+  "message.estherserver.pet_token_duplicate": "[Pet] Already owned %s — converted to %s Esther's Essence.",
+  "message.estherserver.gacha_result_item": "[Draw] Obtained %s!",
+  "message.estherserver.gacha_result_currency": "[Draw] Obtained %s Esther's Essence!",
+  "message.estherserver.gacha_currency_100": "100 Esther's Essence",
+  "message.estherserver.gacha_currency_300": "300 Esther's Essence",
+  "message.estherserver.gacha_currency_500": "500 Esther's Essence",
+
+  "gui.estherserver.gacha_roulette.title": "Draw",
+  "gui.estherserver.gacha_roulette.title_pet": "Pet Draw",
+  "gui.estherserver.gacha_roulette.title_furniture": "Furniture Draw",
+  "gui.estherserver.gacha_roulette.result_item": "Obtained %s!",
+  "gui.estherserver.gacha_roulette.result_item_count": "Obtained %s x%d!",
+  "gui.estherserver.gacha_roulette.result_currency": "Obtained %d Esther's Essence!",
+  "gui.estherserver.gacha_roulette.close_hint": "Click to close"
 }

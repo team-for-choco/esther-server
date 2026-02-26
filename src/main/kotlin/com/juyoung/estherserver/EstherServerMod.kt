@@ -103,6 +103,11 @@ import com.juyoung.estherserver.quest.QuestHandler
 import com.juyoung.estherserver.quest.QuestOpenScreenPayload
 import com.juyoung.estherserver.quest.QuestScreen
 import com.juyoung.estherserver.quest.QuestSyncPayload
+import com.juyoung.estherserver.gacha.GachaClientHandler
+import com.juyoung.estherserver.gacha.GachaRegistry
+import com.juyoung.estherserver.gacha.GachaRoulettePayload
+import com.juyoung.estherserver.gacha.GachaRouletteScreen
+import com.juyoung.estherserver.gacha.GachaTicketItem
 import com.juyoung.estherserver.pet.ModPets
 import com.juyoung.estherserver.pet.PetClientHandler
 import com.juyoung.estherserver.pet.PetEntity
@@ -110,6 +115,8 @@ import com.juyoung.estherserver.pet.PetEntityModel
 import com.juyoung.estherserver.pet.PetEntityRenderer
 import com.juyoung.estherserver.pet.PetHandler
 import com.juyoung.estherserver.pet.PetStorageScreen
+import com.juyoung.estherserver.pet.PetTokenItem
+import com.juyoung.estherserver.pet.PetType
 import com.juyoung.estherserver.pet.PetStorageSyncPayload
 import com.juyoung.estherserver.pet.RequestPetStoragePayload
 import com.juyoung.estherserver.pet.SummonPetPayload
@@ -580,10 +587,27 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             Item.Properties()
                 .food(FoodProperties.Builder().nutrition(8).saturationModifier(0.8f).build()))
 
-        // Draw tickets
-        val DRAW_TICKET_NORMAL: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_normal")
-        val DRAW_TICKET_FINE: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_fine")
-        val DRAW_TICKET_RARE: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_rare")
+        // Draw tickets (gacha)
+        val DRAW_TICKET_NORMAL: DeferredItem<Item> = ITEMS.registerItem("draw_ticket_normal") { properties ->
+            GachaTicketItem(properties)
+        }
+        val DRAW_TICKET_FINE: DeferredItem<Item> = ITEMS.registerItem("draw_ticket_fine") { properties ->
+            GachaTicketItem(properties)
+        }
+        val DRAW_TICKET_RARE: DeferredItem<Item> = ITEMS.registerItem("draw_ticket_rare") { properties ->
+            GachaTicketItem(properties)
+        }
+        val PET_DRAW_TICKET_NORMAL: DeferredItem<Item> = ITEMS.registerItem("pet_draw_ticket_normal") { properties ->
+            GachaTicketItem(properties)
+        }
+        val FURNITURE_DRAW_TICKET_NORMAL: DeferredItem<Item> = ITEMS.registerItem("furniture_draw_ticket_normal") { properties ->
+            GachaTicketItem(properties)
+        }
+
+        // Pet tokens
+        val PET_TOKEN_CAT_COMMON: DeferredItem<Item> = ITEMS.registerItem("pet_token_cat_common") { properties ->
+            PetTokenItem(PetType.CAT_COMMON, properties)
+        }
 
         // Quest board
         private fun questBoardProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
@@ -774,6 +798,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(DRAW_TICKET_NORMAL.get())
                         output.accept(DRAW_TICKET_FINE.get())
                         output.accept(DRAW_TICKET_RARE.get())
+                        output.accept(PET_DRAW_TICKET_NORMAL.get())
+                        output.accept(FURNITURE_DRAW_TICKET_NORMAL.get())
                         output.accept(QUEST_BOARD_ITEM.get())
                         // Furniture
                         output.accept(CAT_SOFA_ITEM.get())
@@ -970,6 +996,12 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     PetHandler.handleSummonPet(player, payload.petName)
                 }
             }
+            .playToClient(GachaRoulettePayload.TYPE, GachaRoulettePayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    GachaClientHandler.handleRoulettePayload(payload)
+                    Minecraft.getInstance().setScreen(GachaRouletteScreen())
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
@@ -982,6 +1014,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         CollectibleRegistry.init()
         ItemPriceRegistry.init()
         ShopBuyRegistry.init()
+        GachaRegistry.init()
         ProfessionHandler.init()
         ProfessionBonusHelper.initOreGrades()
         ProfessionBonusHelper.initContentGrades()

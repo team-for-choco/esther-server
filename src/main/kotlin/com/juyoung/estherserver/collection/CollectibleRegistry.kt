@@ -215,6 +215,13 @@ object CollectibleRegistry {
             Mod.WILD_PORTAL_ITEM.get(),
             Mod.RETURN_PORTAL_ITEM.get(),
             Mod.QUEST_BOARD_ITEM.get(),
+            // 뽑기권 (도감 제외)
+            Mod.DRAW_TICKET_NORMAL.get(),
+            Mod.DRAW_TICKET_FINE.get(),
+            Mod.DRAW_TICKET_RARE.get(),
+            Mod.PET_DRAW_TICKET_NORMAL.get(),
+            Mod.FURNITURE_DRAW_TICKET_NORMAL.get(),
+            Mod.PET_TOKEN_CAT_COMMON.get(),
             // 레드스톤 재료 아이템 (직접)
             Items.REDSTONE,
             Items.REDSTONE_TORCH,

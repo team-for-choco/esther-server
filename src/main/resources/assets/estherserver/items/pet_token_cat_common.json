@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "estherserver:item/pet_token_cat_common"
+  }
+}
