@@ -41,9 +41,6 @@ object PetHandler {
 
         data.summonedPet = petType
         data.summonedEntityId = pet.id
-
-        // Close GUI on client by sending updated sync
-        handleRequestStorage(player)
     }
 
     private fun dismissCurrentPet(player: ServerPlayer, data: PetData) {

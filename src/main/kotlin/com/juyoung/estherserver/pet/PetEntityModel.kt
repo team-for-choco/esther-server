@@ -17,7 +17,6 @@ import net.neoforged.api.distmarker.OnlyIn
 @OnlyIn(Dist.CLIENT)
 class PetEntityModel(root: ModelPart) : EntityModel<PetRenderState>(root) {
 
-    private val body: ModelPart = root.getChild("body")
     private val head: ModelPart = root.getChild("head")
     private val legFL: ModelPart = root.getChild("leg_front_left")
     private val legFR: ModelPart = root.getChild("leg_front_right")

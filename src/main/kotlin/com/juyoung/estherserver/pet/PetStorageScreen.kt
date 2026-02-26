@@ -37,6 +37,13 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         private const val DETAIL_LEFT = 106
         private const val DETAIL_TOP = 24
 
+        // Detail layout offsets (below preview area)
+        private const val PREVIEW_HEIGHT = 80
+        private const val INFO_GAP = 6
+        private const val NAME_HEIGHT = 14
+        private const val STAT_HEIGHT = 12
+        private const val STATUS_HEIGHT = 16
+
         // Button
         private const val BTN_WIDTH = 80
         private const val BTN_HEIGHT = 16
@@ -203,7 +210,7 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         val previewAreaX = detailX
         val previewAreaY = detailY
         val previewAreaW = panelWidth
-        val previewAreaH = 80
+        val previewAreaH = PREVIEW_HEIGHT
         GuiTheme.renderInnerPanel(guiGraphics, previewAreaX, previewAreaY, previewAreaW, previewAreaH)
 
         // Render entity preview
@@ -226,26 +233,26 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         }
 
         // ── Info area ──
-        var infoY = previewAreaY + previewAreaH + 6
+        var infoY = previewAreaY + previewAreaH + INFO_GAP
 
         // Pet name (large, grade color)
         val name = Component.translatable(pet.displayKey)
         guiGraphics.drawString(font, name, detailX + 2, infoY, pet.grade.color)
-        infoY += 14
+        infoY += NAME_HEIGHT
 
         // Grade
         val gradeLabel = Component.translatable("gui.estherserver.pet_storage.grade")
         val gradeValue = Component.translatable(pet.grade.translationKey)
         guiGraphics.drawString(font, gradeLabel, detailX + 2, infoY, GuiTheme.TEXT_MUTED)
         guiGraphics.drawString(font, gradeValue, detailX + 2 + font.width(gradeLabel) + 4, infoY, pet.grade.color)
-        infoY += 12
+        infoY += STAT_HEIGHT
 
         // Speed
         val speedLabel = Component.translatable("gui.estherserver.pet_storage.speed")
         val speedValue = String.format("%.2f", pet.grade.speed)
         guiGraphics.drawString(font, speedLabel, detailX + 2, infoY, GuiTheme.TEXT_MUTED)
         guiGraphics.drawString(font, speedValue, detailX + 2 + font.width(speedLabel) + 4, infoY, GuiTheme.TEXT_BODY)
-        infoY += 12
+        infoY += STAT_HEIGHT
 
         // Status
         val statusLabel = Component.translatable("gui.estherserver.pet_storage.status")
@@ -257,7 +264,7 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         val statusColor = if (isSummoned) GuiTheme.TEXT_GOLD else GuiTheme.TEXT_BODY
         guiGraphics.drawString(font, statusLabel, detailX + 2, infoY, GuiTheme.TEXT_MUTED)
         guiGraphics.drawString(font, statusValue, detailX + 2 + font.width(statusLabel) + 4, infoY, statusColor)
-        infoY += 16
+        infoY += STATUS_HEIGHT
 
         // ── Action button ──
         val btnX = detailX + (panelWidth - BTN_WIDTH) / 2
@@ -304,7 +311,7 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         if (selectedIndex in pets.indices) {
             val panelWidth = GUI_WIDTH - DETAIL_LEFT - 10
             val btnX = guiLeft + DETAIL_LEFT + (panelWidth - BTN_WIDTH) / 2
-            val btnY = guiTop + DETAIL_TOP + 80 + 6 + 14 + 12 + 12 + 16 // matches infoY after status
+            val btnY = guiTop + DETAIL_TOP + PREVIEW_HEIGHT + INFO_GAP + NAME_HEIGHT + STAT_HEIGHT + STAT_HEIGHT + STATUS_HEIGHT
             if (mx >= btnX && mx < btnX + BTN_WIDTH &&
                 my >= btnY && my < btnY + BTN_HEIGHT
             ) {

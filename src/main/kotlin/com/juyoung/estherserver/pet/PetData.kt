@@ -10,9 +10,10 @@ import net.minecraft.nbt.Tag
  */
 class PetData(
     val ownedPets: MutableList<PetType> = mutableListOf(PetType.CAT_COMMON),
-    var summonedPet: PetType? = null,
-    var summonedEntityId: Int = -1
+    var summonedPet: PetType? = null
 ) {
+    /** 런타임 전용 — NBT 저장 안 됨 */
+    var summonedEntityId: Int = -1
     fun toNBT(): CompoundTag {
         val tag = CompoundTag()
         val list = ListTag()
