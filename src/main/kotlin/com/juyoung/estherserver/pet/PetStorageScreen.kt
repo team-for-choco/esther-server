@@ -11,8 +11,6 @@ import net.minecraft.network.chat.Component
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.neoforge.network.PacketDistributor
-import org.joml.Quaternionf
-import org.joml.Vector3f
 
 @OnlyIn(Dist.CLIENT)
 class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_storage.title")) {
@@ -137,7 +135,7 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
                 guiGraphics.fill(slotX + SLOT_SIZE - bw, slotY, slotX + SLOT_SIZE, slotY + SLOT_SIZE, borderColor)
 
                 // Mini entity preview in slot
-                renderMiniEntity(guiGraphics, pet, slotX, slotY)
+                renderMiniEntity(guiGraphics, pet, slotX, slotY, mouseX, mouseY)
 
                 // Pet name below entity
                 val name = Component.translatable(pet.displayKey)
@@ -154,28 +152,23 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         }
     }
 
-    private fun renderMiniEntity(guiGraphics: GuiGraphics, pet: PetType, slotX: Int, slotY: Int) {
+    private fun renderMiniEntity(guiGraphics: GuiGraphics, pet: PetType, slotX: Int, slotY: Int, mouseX: Int, mouseY: Int) {
         val mc = Minecraft.getInstance()
         val level = mc.level ?: return
         val entity = PetEntity(EstherServerMod.PET_ENTITY.get(), level)
         entity.petType = pet
 
-        val centerX = slotX + SLOT_SIZE / 2
-        val centerY = slotY + 4
-
         try {
-            InventoryScreen.renderEntityInInventory(
+            InventoryScreen.renderEntityInInventoryFollowsMouse(
                 guiGraphics,
-                centerX.toFloat(),
-                centerY.toFloat(),
-                20f,
-                Vector3f(0f, 0f, 0f),
-                Quaternionf().rotateY(Math.toRadians(210.0).toFloat()),
-                null,
+                slotX + 4, slotY + 2,
+                slotX + SLOT_SIZE - 4, slotY + SLOT_SIZE - 12,
+                20,
+                0.0625f,
+                mouseX.toFloat(), mouseY.toFloat(),
                 entity
             )
         } catch (_: Exception) {
-            // Fallback: draw colored square
             guiGraphics.fill(slotX + 8, slotY + 4, slotX + SLOT_SIZE - 8, slotY + SLOT_SIZE - 14, pet.grade.color)
         }
     }
@@ -216,23 +209,19 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         // Render entity preview
         val entity = previewEntity
         if (entity != null) {
-            val previewCenterX = previewAreaX + previewAreaW / 2
-            val previewCenterY = previewAreaY + 20
-
             try {
-                InventoryScreen.renderEntityInInventory(
+                InventoryScreen.renderEntityInInventoryFollowsMouse(
                     guiGraphics,
-                    previewCenterX.toFloat(),
-                    previewCenterY.toFloat(),
-                    45f,
-                    Vector3f(0f, 0f, 0f),
-                    Quaternionf().rotateY(Math.toRadians(210.0).toFloat()),
-                    null,
+                    previewAreaX + 4, previewAreaY + 4,
+                    previewAreaX + previewAreaW - 4, previewAreaY + previewAreaH - 4,
+                    45,
+                    0.0625f,
+                    mouseX.toFloat(), mouseY.toFloat(),
                     entity
                 )
             } catch (_: Exception) {
-                // Fallback text
-                guiGraphics.drawCenteredString(font, "?", previewCenterX, previewAreaY + 30, GuiTheme.TEXT_MUTED)
+                val cx = previewAreaX + previewAreaW / 2
+                guiGraphics.drawCenteredString(font, "?", cx, previewAreaY + 30, GuiTheme.TEXT_MUTED)
             }
         }
 
