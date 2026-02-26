@@ -599,6 +599,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             GachaTicketItem(properties)
         }
 
+        // Pet tokens
+        val PET_TOKEN_CAT_COMMON: DeferredItem<Item> = ITEMS.registerItem("pet_token_cat_common") { properties ->
+            com.juyoung.estherserver.pet.PetTokenItem(com.juyoung.estherserver.pet.PetType.CAT_COMMON, properties)
+        }
+
         // Quest board
         private fun questBoardProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
             .strength(2.5f, 6.0f)

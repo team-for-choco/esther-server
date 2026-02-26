@@ -499,9 +499,11 @@
 
   "item.estherserver.pet_draw_ticket_normal": "Normal Pet Draw Ticket",
   "item.estherserver.furniture_draw_ticket_normal": "Normal Furniture Draw Ticket",
+  "item.estherserver.pet_token_cat_common": "Pet Token: Cat",
+  "tooltip.estherserver.pet_token": "Right-click to register %s",
+  "message.estherserver.pet_token_registered": "[Pet] Registered %s to pet storage!",
+  "message.estherserver.pet_token_duplicate": "[Pet] Already owned %s — converted to %s Esther's Essence.",
   "message.estherserver.gacha_result_item": "[Draw] Obtained %s!",
-  "message.estherserver.gacha_result_pet": "[Draw] Obtained pet '%s'!",
   "message.estherserver.gacha_result_currency": "[Draw] Obtained %s Esther's Essence!",
-  "message.estherserver.gacha_pet_duplicate": "[Draw] Already owned pet '%s' — converted to %s Esther's Essence.",
   "message.estherserver.gacha_currency_bonus": "Bonus Currency"
 }

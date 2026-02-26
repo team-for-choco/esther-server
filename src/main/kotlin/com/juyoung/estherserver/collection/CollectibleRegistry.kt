@@ -221,6 +221,7 @@ object CollectibleRegistry {
             Mod.DRAW_TICKET_RARE.get(),
             Mod.PET_DRAW_TICKET_NORMAL.get(),
             Mod.FURNITURE_DRAW_TICKET_NORMAL.get(),
+            Mod.PET_TOKEN_CAT_COMMON.get(),
             // 레드스톤 재료 아이템 (직접)
             Items.REDSTONE,
             Items.REDSTONE_TORCH,

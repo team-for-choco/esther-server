@@ -1,7 +1,6 @@
 package com.juyoung.estherserver.gacha
 
 import com.juyoung.estherserver.EstherServerMod.Companion as Mod
-import com.juyoung.estherserver.pet.PetType
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import java.util.function.Supplier
@@ -45,13 +44,13 @@ object GachaRegistry {
                 currencyAmount = 300
             ))
 
-        // 펫 뽑기권 → 일반 등급 펫
+        // 펫 뽑기권 → 펫 토큰 아이템
         pools[POOL_PET_NORMAL] = GachaRewardPool(POOL_PET_NORMAL)
             .addEntry(GachaRewardEntry(
-                type = RewardType.PET,
+                type = RewardType.ITEM,
                 weight = 100,
-                displayKey = "pet.estherserver.cat_common",
-                petType = PetType.CAT_COMMON
+                displayKey = "item.estherserver.pet_token_cat_common",
+                itemSupplier = Supplier { ItemStack(Mod.PET_TOKEN_CAT_COMMON.get()) }
             ))
 
         // 가구 뽑기권 → 일반 등급 가구

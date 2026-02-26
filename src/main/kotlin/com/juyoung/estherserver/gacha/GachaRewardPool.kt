@@ -1,12 +1,10 @@
 package com.juyoung.estherserver.gacha
 
-import com.juyoung.estherserver.pet.PetType
 import net.minecraft.world.item.ItemStack
 import java.util.function.Supplier
 
 enum class RewardType {
     ITEM,
-    PET,
     CURRENCY
 }
 
@@ -15,7 +13,6 @@ data class GachaRewardEntry(
     val weight: Int,
     val displayKey: String,
     val itemSupplier: Supplier<ItemStack>? = null,
-    val petType: PetType? = null,
     val currencyAmount: Long = 0
 )
 
