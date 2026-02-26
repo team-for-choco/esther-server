@@ -25,15 +25,24 @@ CHOCO-121
 | 파일 | 역할 |
 |------|------|
 | `GachaTicketItem.kt` | 우클릭 소모 아이템 |
-| `GachaRewardPool.kt` | 가중치 보상 풀 |
-| `GachaHandler.kt` | 보상 지급 + 중복 펫 처리 + 사운드 |
+| `GachaRewardPool.kt` | 가중치 보상 풀 + `displayItemId` 필드 |
+| `GachaHandler.kt` | 보상 지급 + 사운드 + 룰렛 페이로드 전송 |
 | `GachaRegistry.kt` | 풀 등록 + 아이템-풀 매핑 |
+| `GachaRoulettePayload.kt` | Server→Client 룰렛 패킷 (풀 아이템 + 당첨 인덱스) |
+| `GachaClientHandler.kt` | 클라이언트 페이로드 수신 + 데이터 캐싱 |
+| `GachaRouletteScreen.kt` | CS:GO 스타일 수평 룰렛 애니메이션 GUI |
 
 ### 수정 파일
-- `EstherServerMod.kt`: 기존 3종 → `GachaTicketItem` 변환, 신규 2종 등록, 크리에이티브 탭, `GachaRegistry.init()`
+- `EstherServerMod.kt`: 기존 3종 → `GachaTicketItem` 변환, 신규 2종 등록, 크리에이티브 탭, `GachaRegistry.init()`, 룰렛 페이로드 등록
 - `CollectibleRegistry.kt`: 뽑기권 5종 도감 제외
-- `ko_kr.json` / `en_us.json`: 신규 번역
-- 리소스: items/models/textures 신규 2종
+- `ko_kr.json` / `en_us.json`: 신규 번역 + 룰렛 UI 번역
+- 리소스: items/models/textures 신규 3종
+
+### 룰렛 애니메이션
+- 뽑기권 사용 → 서버에서 결과 확정 + 보상 즉시 지급 → `GachaRoulettePayload` 전송
+- 클라이언트: 40개 아이콘 수평 스크롤 → ease-out-cubic 감속(~3초) → 당첨 아이템 정지 + 골드 테두리 하이라이트
+- 엔트리 적은 풀(펫/가구)은 필러 아이콘 추가로 시각적 다양성 확보
+- 채팅 메시지는 룰렛 종료 시(또는 조기 닫기 시) 클라이언트에서 표시
 
 ### 중복 펫 화폐 전환 기준
 | 펫 등급 | 전환 화폐 |
@@ -49,6 +58,12 @@ CHOCO-121
 - [x] 번역 추가 (ko_kr, en_us)
 - [x] 도감 제외 처리
 - [x] `./gradlew build` 성공
+- [x] 룰렛 애니메이션 구현 (GachaRoulettePayload, GachaClientHandler, GachaRouletteScreen)
+- [x] 마커-아이콘 중앙 정렬 수정
+- [x] 결과 채팅 메시지 룰렛 종료 후 표시
+- [x] 엔트리 적은 풀 필러 아이콘 추가
+- [x] 조기 종료 시 결과 메시지 보장
+- [x] 펫/가구 뽑기권 + 펫 소환권 텍스처 제작
 
 ## 인게임 테스트
 - [ ] 크리에이티브 모드에서 뽑기권 5종 아이템 확인
@@ -57,3 +72,8 @@ CHOCO-121
 - [ ] 가구 뽑기권 우클릭 → 가구 획득
 - [ ] 사용 시 티켓 1개 소모 확인
 - [ ] 레벨업 사운드 재생 확인
+- [ ] 뽑기권 사용 시 룰렛 애니메이션 표시
+- [ ] 룰렛 감속 후 당첨 아이템에 골드 테두리
+- [ ] 룰렛 종료 후 채팅 결과 메시지 표시
+- [ ] ESC로 조기 닫기 시에도 채팅 결과 표시
+- [ ] 펫/가구 뽑기권 텍스처 인게임 확인
