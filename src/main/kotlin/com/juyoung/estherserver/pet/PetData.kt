@@ -20,9 +20,7 @@ class PetData(
             list.add(StringTag.valueOf(pet.name))
         }
         tag.put("OwnedPets", list)
-        if (summonedPet != null) {
-            tag.putString("SummonedPet", summonedPet!!.name)
-        }
+        // summonedPet/summonedEntityId는 런타임 전용 — 엔티티가 저장되지 않으므로 같이 저장하지 않음
         return tag
     }
 
@@ -36,10 +34,8 @@ class PetData(
             if (owned.isEmpty()) {
                 owned.add(PetType.CAT_COMMON)
             }
-            val summoned = if (tag.contains("SummonedPet")) {
-                PetType.fromName(tag.getString("SummonedPet"))
-            } else null
-            return PetData(owned, summoned)
+            // summonedPet은 런타임 전용 — 로드 시 항상 미소환 상태로 시작
+            return PetData(owned)
         }
     }
 }
