@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "estherserver:block/cat_sofa"
+    "model": "estherserver:block/cat_sofa_item"
   }
 }
