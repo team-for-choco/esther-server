@@ -495,5 +495,13 @@
   "pet.estherserver.grade.common": "일반",
   "pet.estherserver.grade.fine": "고급",
   "pet.estherserver.grade.rare": "희귀",
-  "pet.estherserver.cat_common": "고양이"
+  "pet.estherserver.cat_common": "고양이",
+
+  "item.estherserver.pet_draw_ticket_normal": "일반 펫 뽑기권",
+  "item.estherserver.furniture_draw_ticket_normal": "일반 가구 뽑기권",
+  "message.estherserver.gacha_result_item": "[뽑기] %s을(를) 획득했습니다!",
+  "message.estherserver.gacha_result_pet": "[뽑기] 펫 '%s'을(를) 획득했습니다!",
+  "message.estherserver.gacha_result_currency": "[뽑기] %s 에스더의 기운을 획득했습니다!",
+  "message.estherserver.gacha_pet_duplicate": "[뽑기] 이미 보유 중인 펫 '%s' — %s 에스더의 기운으로 전환됩니다.",
+  "message.estherserver.gacha_currency_bonus": "보너스 화폐"
 }

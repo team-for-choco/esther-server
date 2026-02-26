@@ -495,5 +495,13 @@
   "pet.estherserver.grade.common": "Common",
   "pet.estherserver.grade.fine": "Fine",
   "pet.estherserver.grade.rare": "Rare",
-  "pet.estherserver.cat_common": "Cat"
+  "pet.estherserver.cat_common": "Cat",
+
+  "item.estherserver.pet_draw_ticket_normal": "Normal Pet Draw Ticket",
+  "item.estherserver.furniture_draw_ticket_normal": "Normal Furniture Draw Ticket",
+  "message.estherserver.gacha_result_item": "[Draw] Obtained %s!",
+  "message.estherserver.gacha_result_pet": "[Draw] Obtained pet '%s'!",
+  "message.estherserver.gacha_result_currency": "[Draw] Obtained %s Esther's Essence!",
+  "message.estherserver.gacha_pet_duplicate": "[Draw] Already owned pet '%s' — converted to %s Esther's Essence.",
+  "message.estherserver.gacha_currency_bonus": "Bonus Currency"
 }
