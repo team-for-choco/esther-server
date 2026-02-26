@@ -53,7 +53,7 @@ object ModKeyBindings {
     val PET_KEY = KeyMapping(
         "key.estherserver.pet",
         InputConstants.Type.KEYSYM,
-        GLFW.GLFW_KEY_P,
+        GLFW.GLFW_KEY_H,
         "key.categories.estherserver"
     )
 
