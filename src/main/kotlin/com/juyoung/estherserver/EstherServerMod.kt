@@ -91,6 +91,9 @@ import com.juyoung.estherserver.merchant.OpenShopPayload
 import com.juyoung.estherserver.merchant.ShopBuyRegistry
 import com.juyoung.estherserver.merchant.ShopClientHandler
 import com.juyoung.estherserver.merchant.ShopCommand
+import com.juyoung.estherserver.furniture.CatSofaBlock
+import com.juyoung.estherserver.furniture.CatSofaDummyBlock
+import com.juyoung.estherserver.furniture.ModFurniture
 import com.juyoung.estherserver.quest.ModQuest
 import com.juyoung.estherserver.quest.QuestBonusClaimPayload
 import com.juyoung.estherserver.quest.QuestClaimPayload
@@ -564,23 +567,36 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val DRAW_TICKET_RARE: DeferredItem<Item> = ITEMS.registerSimpleItem("draw_ticket_rare")
 
         // Quest board
+        private fun questBoardProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
+            .strength(2.5f, 6.0f)
+            .mapColor(MapColor.WOOD)
+            .sound(SoundType.WOOD)
+            .noOcclusion()
+
         val QUEST_BOARD: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board",
             { properties -> com.juyoung.estherserver.quest.QuestBoardBlock(properties) },
-            BlockBehaviour.Properties.of()
-                .strength(-1.0f, 3600000.0f)
-                .mapColor(MapColor.WOOD)
-                .sound(SoundType.WOOD)
-                .noOcclusion())
+            questBoardProperties())
         val QUEST_BOARD_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("quest_board", QUEST_BOARD)
 
         val QUEST_BOARD_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("quest_board_dummy",
             { properties -> com.juyoung.estherserver.quest.QuestBoardDummyBlock(properties) },
-            BlockBehaviour.Properties.of()
-                .strength(-1.0f, 3600000.0f)
-                .mapColor(MapColor.WOOD)
-                .sound(SoundType.WOOD)
-                .noOcclusion()
-                .noLootTable())
+            questBoardProperties().noLootTable())
+
+        // Furniture - Cat sofa
+        private fun catSofaProperties(): BlockBehaviour.Properties = BlockBehaviour.Properties.of()
+            .strength(2.0f, 6.0f)
+            .mapColor(MapColor.WOOD)
+            .sound(SoundType.WOOD)
+            .noOcclusion()
+
+        val CAT_SOFA: DeferredBlock<Block> = BLOCKS.registerBlock("cat_sofa",
+            { properties -> CatSofaBlock(properties) },
+            catSofaProperties())
+        val CAT_SOFA_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("cat_sofa", CAT_SOFA)
+
+        val CAT_SOFA_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("cat_sofa_dummy",
+            { properties -> CatSofaDummyBlock(properties) },
+            catSofaProperties().noLootTable())
 
         // Creative tab
         val ESTHER_TAB: DeferredHolder<CreativeModeTab, CreativeModeTab> = CREATIVE_MODE_TABS.register("esther_tab",
@@ -740,6 +756,8 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(DRAW_TICKET_FINE.get())
                         output.accept(DRAW_TICKET_RARE.get())
                         output.accept(QUEST_BOARD_ITEM.get())
+                        // Furniture
+                        output.accept(CAT_SOFA_ITEM.get())
                     }.build()
             })
     }
@@ -766,6 +784,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModWild.ATTACHMENT_TYPES.register(modEventBus)
         ModQuest.ATTACHMENT_TYPES.register(modEventBus)
         ModQuest.BLOCK_ENTITY_TYPES.register(modEventBus)
+        ModFurniture.BLOCK_ENTITY_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)

@@ -1,12 +1,12 @@
-package com.juyoung.estherserver.quest
+package com.juyoung.estherserver.furniture
 
 import com.juyoung.estherserver.EstherServerMod
+import com.juyoung.estherserver.sitting.SeatEntity
 import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
@@ -20,23 +20,21 @@ import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.BlockHitResult
 
-class QuestBoardBlock(properties: Properties) : BaseEntityBlock(properties) {
+class CatSofaBlock(properties: Properties) : BaseEntityBlock(properties) {
 
     companion object {
         val FACING = HorizontalDirectionalBlock.FACING
-        val CODEC: MapCodec<QuestBoardBlock> = simpleCodec(::QuestBoardBlock)
-        // Multiblock: 4 wide x 3 tall (master at bottom-left)
-        const val WIDTH = 4
-        const val HEIGHT = 3
+        val CODEC: MapCodec<CatSofaBlock> = simpleCodec(::CatSofaBlock)
     }
 
     init {
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH))
     }
 
-    override fun codec(): MapCodec<QuestBoardBlock> = CODEC
+    override fun codec(): MapCodec<CatSofaBlock> = CODEC
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING)
@@ -46,44 +44,37 @@ class QuestBoardBlock(properties: Properties) : BaseEntityBlock(properties) {
         return defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
     }
 
-    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
-        return QuestBoardBlockEntity(pos, state)
-    }
+    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity? = null
 
     override fun getRenderShape(state: BlockState): RenderShape = RenderShape.MODEL
 
-    /**
-     * On placement, validate and place dummy blocks for the 4x3 multiblock.
-     */
     override fun setPlacedBy(level: Level, pos: BlockPos, state: BlockState, placer: LivingEntity?, stack: ItemStack) {
         if (level.isClientSide) return
 
         val facing = state.getValue(FACING)
-        val right = facing.clockWise  // right direction relative to facing
-        val positions = getMultiblockPositions(pos, right)
+        val positions = getMultiblockPositions(pos, facing)
 
-        // Check all positions are air (skip master pos at index 0)
+        // Check all positions are air (skip master at index 0)
         for (i in 1 until positions.size) {
             if (!level.getBlockState(positions[i]).isAir) {
-                // Cannot place — remove master block
                 level.destroyBlock(pos, true)
                 if (placer is ServerPlayer) {
                     placer.displayClientMessage(
-                        Component.translatable("message.estherserver.quest_board_no_space"), true
+                        Component.translatable("message.estherserver.cat_sofa_no_space"), true
                     )
                 }
                 return
             }
         }
 
-        // Place dummy blocks with part-specific state
+        // Place dummy blocks
         for (i in 1 until positions.size) {
-            val dummyState = EstherServerMod.QUEST_BOARD_DUMMY.get().defaultBlockState()
-                .setValue(QuestBoardDummyBlock.FACING, facing)
-                .setValue(QuestBoardDummyBlock.PART, i - 1)
+            val dummyState = EstherServerMod.CAT_SOFA_DUMMY.get().defaultBlockState()
+                .setValue(CatSofaDummyBlock.FACING, facing)
+                .setValue(CatSofaDummyBlock.PART, i - 1)
             level.setBlock(positions[i], dummyState, 3)
             val be = level.getBlockEntity(positions[i])
-            if (be is QuestBoardDummyBlockEntity) {
+            if (be is CatSofaDummyBlockEntity) {
                 be.setMasterPos(pos)
             }
         }
@@ -93,28 +84,19 @@ class QuestBoardBlock(properties: Properties) : BaseEntityBlock(properties) {
         state: BlockState, level: Level, pos: BlockPos,
         player: Player, hitResult: BlockHitResult
     ): InteractionResult {
-        if (level.isClientSide) return InteractionResult.SUCCESS
-        val serverPlayer = player as? ServerPlayer ?: return InteractionResult.PASS
-        return QuestHandler.handleBoardInteraction(serverPlayer, InteractionHand.MAIN_HAND, player.getItemInHand(InteractionHand.MAIN_HAND))
-    }
-
-    override fun useItemOn(
-        stack: ItemStack, state: BlockState, level: Level, pos: BlockPos,
-        player: Player, hand: InteractionHand, hitResult: BlockHitResult
-    ): InteractionResult {
-        if (level.isClientSide) return InteractionResult.SUCCESS
-        val serverPlayer = player as? ServerPlayer ?: return InteractionResult.PASS
-        return QuestHandler.handleBoardInteraction(serverPlayer, hand, stack)
+        // Master block is frame (bottom layer) — no sitting here
+        return InteractionResult.PASS
     }
 
     override fun playerWillDestroy(level: Level, pos: BlockPos, state: BlockState, player: Player): BlockState {
         if (!level.isClientSide) {
             val facing = state.getValue(FACING)
-            val right = facing.clockWise
-            val positions = getMultiblockPositions(pos, right)
+            val positions = getMultiblockPositions(pos, facing)
             for (i in 1 until positions.size) {
                 val blockState = level.getBlockState(positions[i])
-                if (blockState.block is QuestBoardDummyBlock) {
+                if (blockState.block is CatSofaDummyBlock) {
+                    // Remove any seat entities at upper blocks
+                    removeSeatAt(level, positions[i])
                     level.destroyBlock(positions[i], false)
                 }
             }
@@ -123,18 +105,29 @@ class QuestBoardBlock(properties: Properties) : BaseEntityBlock(properties) {
     }
 
     /**
-     * Returns 10 positions (4 wide x 3 tall, skipping bottom-middle 2) for the multiblock.
-     * Index 0 is the master position (bottom-left leg).
-     * Bottom-middle positions (dx=1,2 dy=0) are skipped (empty space under the board).
+     * Returns 8 positions for the 2x2x2 multiblock.
+     * Index 0 = master (front-seat-bottom).
+     *
+     * Model convention: front=South, cat side=East (+X).
+     * catSide = counterClockWise (facing=SOUTH → EAST, facing=NORTH → WEST)
      */
-    fun getMultiblockPositions(masterPos: BlockPos, right: Direction): List<BlockPos> {
-        val positions = mutableListOf<BlockPos>()
-        for (dy in 0 until HEIGHT) {
-            for (dx in 0 until WIDTH) {
-                if (dy == 0 && (dx == 1 || dx == 2)) continue
-                positions.add(masterPos.relative(right, dx).above(dy))
-            }
-        }
-        return positions
+    fun getMultiblockPositions(masterPos: BlockPos, facing: Direction): List<BlockPos> {
+        val catSide = facing.counterClockWise
+        val back = facing.opposite
+        return listOf(
+            masterPos,                                                          // master: frame-front-seat
+            masterPos.relative(catSide),                                          // part 0: frame-front-cat
+            masterPos.relative(back),                                           // part 1: frame-back-seat
+            masterPos.relative(catSide).relative(back),                           // part 2: frame-back-cat
+            masterPos.above(),                                                  // part 3: cushion-seat (sit)
+            masterPos.relative(catSide).above(),                                  // part 4: cat-front
+            masterPos.relative(back).above(),                                   // part 5: backrest-seat (sit)
+            masterPos.relative(catSide).relative(back).above()                    // part 6: cat-back+backrest
+        )
+    }
+
+    private fun removeSeatAt(level: Level, pos: BlockPos) {
+        val area = AABB(pos).inflate(0.0, 0.5, 0.0)
+        level.getEntitiesOfClass(SeatEntity::class.java, area).forEach { it.discard() }
     }
 }

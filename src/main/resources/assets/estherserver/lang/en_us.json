@@ -474,5 +474,9 @@
   "quest.estherserver.weekly_submit_any_crop": "Submit 15 Crops (any)",
   "quest.estherserver.weekly_submit_any_ore": "Submit 15 Ores (any)",
   "quest.estherserver.weekly_submit_any_dish": "Submit 15 Dishes (any)",
-  "quest.estherserver.weekly_kill_any_monster": "Kill 30 Monsters (any)"
+  "quest.estherserver.weekly_kill_any_monster": "Kill 30 Monsters (any)",
+
+  "block.estherserver.cat_sofa": "Cat Sofa",
+  "block.estherserver.cat_sofa_dummy": "Cat Sofa",
+  "message.estherserver.cat_sofa_no_space": "Not enough space for the cat sofa. (2x2x2 required)"
 }
