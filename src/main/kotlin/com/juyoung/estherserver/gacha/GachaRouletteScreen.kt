@@ -1,7 +1,7 @@
 package com.juyoung.estherserver.gacha
 
 import com.juyoung.estherserver.gui.GuiTheme
-import com.mojang.blaze3d.systems.RenderSystem
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.registries.BuiltInRegistries
@@ -17,7 +17,8 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
     companion object {
         private const val GUI_WIDTH = 260
         private const val GUI_HEIGHT = 110
-        private const val ICON_SIZE = 24
+        private const val ITEM_RENDER_SIZE = 16 // renderItem 실제 렌더 크기
+        private const val HIGHLIGHT_SIZE = 20   // 하이라이트 테두리 크기
         private const val SLOT_SPACING = 28
         private const val STRIP_HEIGHT = 32
         private const val REEL_COUNT = 40
@@ -37,6 +38,7 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
     // 애니메이션 상태
     private var animTick = 0
     private var animFinished = false
+    private var resultMessageSent = false
     private var scrollOffset = 0f
     private var targetOffset = 0f
 
@@ -83,6 +85,7 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
 
         animTick = 0
         animFinished = false
+        resultMessageSent = false
         scrollOffset = 0f
     }
 
@@ -105,12 +108,32 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
             animTick = ANIM_TICKS
             animFinished = true
             scrollOffset = targetOffset
+            sendResultChatMessage()
         } else {
             // ease-out-cubic: 1 - (1 - t)^3
             val t = animTick.toFloat() / ANIM_TICKS.toFloat()
             val eased = 1f - (1f - t) * (1f - t) * (1f - t)
             scrollOffset = targetOffset * eased
         }
+    }
+
+    private fun sendResultChatMessage() {
+        if (resultMessageSent) return
+        resultMessageSent = true
+
+        val entry = winnerEntry ?: return
+        val player = Minecraft.getInstance().player ?: return
+
+        val message = if (entry.isCurrency) {
+            Component.translatable(
+                "message.estherserver.gacha_result_currency",
+                entry.currencyAmount
+            )
+        } else {
+            val displayName = Component.translatable(entry.displayKey)
+            Component.translatable("message.estherserver.gacha_result_item", displayName)
+        }
+        player.displayClientMessage(message, false)
     }
 
     override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
@@ -159,40 +182,45 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
         val clipW = stripRight - stripLeft - 4
         val clipH = stripBottom - stripTop - 4
 
-        val centerX = (clipX + clipX + clipW) / 2f
-        val iconY = clipY + (clipH - ICON_SIZE) / 2
+        // 스트립의 정확한 중앙 (마커와 동일)
+        val centerX = markerX.toFloat()
+        val iconY = clipY + (clipH - ITEM_RENDER_SIZE) / 2
 
         guiGraphics.enableScissor(clipX, clipY, clipX + clipW, clipY + clipH)
 
         for (i in reelEntries.indices) {
             val stack = reelStacks.getOrNull(i) ?: continue
-            val entryX = (centerX - ICON_SIZE / 2f + (i * SLOT_SPACING) - displayOffset).toInt()
+
+            // 슬롯 i의 중앙 X 좌표
+            val slotCenterX = centerX + (i * SLOT_SPACING) - displayOffset
+            // 아이콘 렌더 위치 (16x16 기준 중앙 정렬)
+            val renderX = (slotCenterX - ITEM_RENDER_SIZE / 2f).toInt()
 
             // 화면 밖이면 스킵
-            if (entryX + ICON_SIZE < clipX || entryX > clipX + clipW) continue
+            if (renderX + ITEM_RENDER_SIZE < clipX || renderX > clipX + clipW) continue
 
             // 당첨 아이템 하이라이트 (애니메이션 완료 후)
             if (animFinished && i == winnerReelIndex) {
+                val hlX = (slotCenterX - HIGHLIGHT_SIZE / 2f).toInt()
+                val hlY = iconY + (ITEM_RENDER_SIZE - HIGHLIGHT_SIZE) / 2
                 guiGraphics.fill(
-                    entryX - 2, iconY - 2,
-                    entryX + ICON_SIZE + 2, iconY + ICON_SIZE + 2,
+                    hlX - 1, hlY - 1,
+                    hlX + HIGHLIGHT_SIZE + 1, hlY + HIGHLIGHT_SIZE + 1,
                     WINNER_BORDER
                 )
                 guiGraphics.fill(
-                    entryX - 1, iconY - 1,
-                    entryX + ICON_SIZE + 1, iconY + ICON_SIZE + 1,
+                    hlX, hlY,
+                    hlX + HIGHLIGHT_SIZE, hlY + HIGHLIGHT_SIZE,
                     GuiTheme.INNER_BG
                 )
             }
 
-            guiGraphics.renderItem(stack, entryX, iconY)
+            guiGraphics.renderItem(stack, renderX, iconY)
 
-            // 화폐인 경우 금액 표시
+            // 수량 표시
             val entry = reelEntries[i]
-            if (entry.isCurrency && animFinished && i == winnerReelIndex) {
-                // 금액은 결과 텍스트에서 표시
-            } else if (!entry.isCurrency && entry.count > 1) {
-                guiGraphics.renderItemDecorations(font, stack, entryX, iconY)
+            if (!entry.isCurrency && entry.count > 1) {
+                guiGraphics.renderItemDecorations(font, stack, renderX, iconY)
             }
         }
 
