@@ -161,7 +161,7 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         entity.petType = pet
 
         val centerX = slotX + SLOT_SIZE / 2
-        val centerY = slotY + SLOT_SIZE - 20
+        val centerY = slotY + SLOT_SIZE / 2 - 4
 
         try {
             InventoryScreen.renderEntityInInventory(
@@ -217,7 +217,7 @@ class PetStorageScreen : Screen(Component.translatable("gui.estherserver.pet_sto
         val entity = previewEntity
         if (entity != null) {
             val previewCenterX = previewAreaX + previewAreaW / 2
-            val previewCenterY = previewAreaY + previewAreaH - 30
+            val previewCenterY = previewAreaY + previewAreaH / 2 - 5
 
             try {
                 InventoryScreen.renderEntityInInventory(
