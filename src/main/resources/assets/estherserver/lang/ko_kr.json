@@ -478,5 +478,22 @@
 
   "block.estherserver.cat_sofa": "고양이 소파",
   "block.estherserver.cat_sofa_dummy": "고양이 소파",
-  "message.estherserver.cat_sofa_no_space": "고양이 소파를 설치할 공간이 부족합니다. (2x2x2 필요)"
+  "message.estherserver.cat_sofa_no_space": "고양이 소파를 설치할 공간이 부족합니다. (2x2x2 필요)",
+
+  "entity.estherserver.pet": "펫",
+  "key.estherserver.pet": "펫 보관함",
+  "gui.estherserver.pet_storage.title": "펫 보관함",
+  "gui.estherserver.pet_storage.summoned": "소환 중",
+  "gui.estherserver.pet_storage.standby": "대기",
+  "gui.estherserver.pet_storage.hint": "클릭하여 소환 / 재클릭하여 해제",
+  "gui.estherserver.pet_storage.select": "펫을 선택하세요",
+  "gui.estherserver.pet_storage.grade": "등급: ",
+  "gui.estherserver.pet_storage.speed": "속도: ",
+  "gui.estherserver.pet_storage.status": "상태: ",
+  "gui.estherserver.pet_storage.summon": "소환하기",
+  "gui.estherserver.pet_storage.dismiss": "해제하기",
+  "pet.estherserver.grade.common": "일반",
+  "pet.estherserver.grade.fine": "고급",
+  "pet.estherserver.grade.rare": "희귀",
+  "pet.estherserver.cat_common": "고양이"
 }
