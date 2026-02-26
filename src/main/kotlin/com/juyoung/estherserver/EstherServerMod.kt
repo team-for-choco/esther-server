@@ -103,6 +103,16 @@ import com.juyoung.estherserver.quest.QuestHandler
 import com.juyoung.estherserver.quest.QuestOpenScreenPayload
 import com.juyoung.estherserver.quest.QuestScreen
 import com.juyoung.estherserver.quest.QuestSyncPayload
+import com.juyoung.estherserver.pet.ModPets
+import com.juyoung.estherserver.pet.PetClientHandler
+import com.juyoung.estherserver.pet.PetEntity
+import com.juyoung.estherserver.pet.PetEntityModel
+import com.juyoung.estherserver.pet.PetEntityRenderer
+import com.juyoung.estherserver.pet.PetHandler
+import com.juyoung.estherserver.pet.PetStorageScreen
+import com.juyoung.estherserver.pet.PetStorageSyncPayload
+import com.juyoung.estherserver.pet.RequestPetStoragePayload
+import com.juyoung.estherserver.pet.SummonPetPayload
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.sitting.SeatEntity
 import com.juyoung.estherserver.sitting.SitHandler
@@ -151,6 +161,15 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             ENTITY_TYPES.register("merchant", java.util.function.Function { registryName ->
                 EntityType.Builder.of(::MerchantEntity, MobCategory.MISC)
                     .sized(0.6f, 1.8f)
+                    .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
+            })
+
+        // Pet mount entity
+        val PET_ENTITY: DeferredHolder<EntityType<*>, EntityType<PetEntity>> =
+            ENTITY_TYPES.register("pet", java.util.function.Function { registryName ->
+                EntityType.Builder.of(::PetEntity, MobCategory.CREATURE)
+                    .sized(0.6f, 0.5f)
+                    .noSummon()
                     .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
             })
 
@@ -785,6 +804,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModQuest.ATTACHMENT_TYPES.register(modEventBus)
         ModQuest.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModFurniture.BLOCK_ENTITY_TYPES.register(modEventBus)
+        ModPets.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -932,10 +952,29 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     Minecraft.getInstance().setScreen(QuestScreen())
                 }
             }
+            .playToServer(RequestPetStoragePayload.TYPE, RequestPetStoragePayload.STREAM_CODEC) { _, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    PetHandler.handleRequestStorage(player)
+                }
+            }
+            .playToClient(PetStorageSyncPayload.TYPE, PetStorageSyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    PetClientHandler.handleSync(payload)
+                    Minecraft.getInstance().setScreen(PetStorageScreen())
+                }
+            }
+            .playToServer(SummonPetPayload.TYPE, SummonPetPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    PetHandler.handleSummonPet(player, payload.petName)
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
         event.put(MERCHANT_ENTITY.get(), MerchantEntity.createAttributes().build())
+        event.put(PET_ENTITY.get(), PetEntity.createAttributes().build())
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {
@@ -993,6 +1032,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             event.register(ModKeyBindings.PROFESSION_KEY)
             event.register(ModKeyBindings.PROFESSION_INVENTORY_KEY)
             event.register(ModKeyBindings.TITLE_KEY)
+            event.register(ModKeyBindings.PET_KEY)
         }
 
         @SubscribeEvent
@@ -1013,6 +1053,14 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             event.registerEntityRenderer(MERCHANT_ENTITY.get()) { context ->
                 MerchantEntityRenderer(context)
             }
+            event.registerEntityRenderer(PET_ENTITY.get()) { context ->
+                PetEntityRenderer(context)
+            }
+        }
+
+        @SubscribeEvent
+        fun onRegisterLayerDefinitions(event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterLayerDefinitions) {
+            event.registerLayerDefinition(PetEntityModel.LAYER_LOCATION) { PetEntityModel.createBodyLayer() }
         }
     }
 

@@ -478,5 +478,15 @@
 
   "block.estherserver.cat_sofa": "Cat Sofa",
   "block.estherserver.cat_sofa_dummy": "Cat Sofa",
-  "message.estherserver.cat_sofa_no_space": "Not enough space for the cat sofa. (2x2x2 required)"
+  "message.estherserver.cat_sofa_no_space": "Not enough space for the cat sofa. (2x2x2 required)",
+
+  "entity.estherserver.pet": "Pet",
+  "key.estherserver.pet": "Pet Storage",
+  "gui.estherserver.pet_storage.title": "Pet Storage",
+  "gui.estherserver.pet_storage.summoned": "Summoned",
+  "gui.estherserver.pet_storage.hint": "Click to summon / Click again to dismiss",
+  "pet.estherserver.grade.common": "Common",
+  "pet.estherserver.grade.fine": "Fine",
+  "pet.estherserver.grade.rare": "Rare",
+  "pet.estherserver.cat_common": "Cat"
 }

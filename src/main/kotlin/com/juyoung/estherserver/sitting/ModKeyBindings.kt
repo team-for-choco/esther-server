@@ -3,6 +3,7 @@ package com.juyoung.estherserver.sitting
 import com.juyoung.estherserver.collection.CollectionScreen
 import com.juyoung.estherserver.collection.TitleScreen
 import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
+import com.juyoung.estherserver.pet.RequestPetStoragePayload
 import com.juyoung.estherserver.profession.ProfessionScreen
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.KeyMapping
@@ -49,6 +50,13 @@ object ModKeyBindings {
         "key.categories.estherserver"
     )
 
+    val PET_KEY = KeyMapping(
+        "key.estherserver.pet",
+        InputConstants.Type.KEYSYM,
+        GLFW.GLFW_KEY_P,
+        "key.categories.estherserver"
+    )
+
     @SubscribeEvent
     fun onClientTick(event: ClientTickEvent.Post) {
         while (SIT_KEY.consumeClick()) {
@@ -65,6 +73,9 @@ object ModKeyBindings {
         }
         while (TITLE_KEY.consumeClick()) {
             Minecraft.getInstance().setScreen(TitleScreen())
+        }
+        while (PET_KEY.consumeClick()) {
+            PacketDistributor.sendToServer(RequestPetStoragePayload)
         }
     }
 }
