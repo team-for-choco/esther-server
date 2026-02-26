@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.quest
 
+import com.juyoung.estherserver.EstherServerMod
 import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -102,7 +103,7 @@ class QuestBoardDummyBlock(properties: Properties) : BaseEntityBlock(properties)
 
                     // Drop item if not creative
                     if (!player.isCreative) {
-                        Block.popResource(level, masterPos, ItemStack(com.juyoung.estherserver.EstherServerMod.QUEST_BOARD_ITEM.get()))
+                        Block.popResource(level, masterPos, ItemStack(EstherServerMod.QUEST_BOARD_ITEM.get()))
                     }
 
                     // Remove master block
