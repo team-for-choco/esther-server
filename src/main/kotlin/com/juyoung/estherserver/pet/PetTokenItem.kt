@@ -18,11 +18,13 @@ class PetTokenItem(
     properties: Properties
 ) : Item(properties) {
 
-    private val duplicateCurrency = mapOf(
-        PetGrade.COMMON to 500L,
-        PetGrade.FINE to 1500L,
-        PetGrade.RARE to 5000L
-    )
+    companion object {
+        private val DUPLICATE_CURRENCY = mapOf(
+            PetGrade.COMMON to 500L,
+            PetGrade.FINE to 1500L,
+            PetGrade.RARE to 5000L
+        )
+    }
 
     override fun use(
         level: Level,
@@ -37,7 +39,7 @@ class PetTokenItem(
         val displayName = Component.translatable(petType.displayKey)
 
         if (petType in petData.ownedPets) {
-            val compensation = duplicateCurrency[petType.grade] ?: 500L
+            val compensation = DUPLICATE_CURRENCY[petType.grade] ?: 500L
             EconomyHandler.addBalance(serverPlayer, compensation)
             serverPlayer.sendSystemMessage(
                 Component.translatable(

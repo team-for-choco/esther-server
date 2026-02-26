@@ -115,6 +115,8 @@ import com.juyoung.estherserver.pet.PetEntityModel
 import com.juyoung.estherserver.pet.PetEntityRenderer
 import com.juyoung.estherserver.pet.PetHandler
 import com.juyoung.estherserver.pet.PetStorageScreen
+import com.juyoung.estherserver.pet.PetTokenItem
+import com.juyoung.estherserver.pet.PetType
 import com.juyoung.estherserver.pet.PetStorageSyncPayload
 import com.juyoung.estherserver.pet.RequestPetStoragePayload
 import com.juyoung.estherserver.pet.SummonPetPayload
@@ -604,7 +606,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         // Pet tokens
         val PET_TOKEN_CAT_COMMON: DeferredItem<Item> = ITEMS.registerItem("pet_token_cat_common") { properties ->
-            com.juyoung.estherserver.pet.PetTokenItem(com.juyoung.estherserver.pet.PetType.CAT_COMMON, properties)
+            PetTokenItem(PetType.CAT_COMMON, properties)
         }
 
         // Quest board
