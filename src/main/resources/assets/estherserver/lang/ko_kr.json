@@ -505,5 +505,7 @@
   "message.estherserver.pet_token_duplicate": "[펫] 이미 보유 중인 %s — %s 에스더의 기운으로 전환됩니다.",
   "message.estherserver.gacha_result_item": "[뽑기] %s을(를) 획득했습니다!",
   "message.estherserver.gacha_result_currency": "[뽑기] %s 에스더의 기운을 획득했습니다!",
-  "message.estherserver.gacha_currency_bonus": "보너스 화폐"
+  "message.estherserver.gacha_currency_100": "100 에스더의 기운",
+  "message.estherserver.gacha_currency_300": "300 에스더의 기운",
+  "message.estherserver.gacha_currency_500": "500 에스더의 기운"
 }

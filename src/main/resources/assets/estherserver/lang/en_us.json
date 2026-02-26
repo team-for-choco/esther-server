@@ -505,5 +505,7 @@
   "message.estherserver.pet_token_duplicate": "[Pet] Already owned %s — converted to %s Esther's Essence.",
   "message.estherserver.gacha_result_item": "[Draw] Obtained %s!",
   "message.estherserver.gacha_result_currency": "[Draw] Obtained %s Esther's Essence!",
-  "message.estherserver.gacha_currency_bonus": "Bonus Currency"
+  "message.estherserver.gacha_currency_100": "100 Esther's Essence",
+  "message.estherserver.gacha_currency_300": "300 Esther's Essence",
+  "message.estherserver.gacha_currency_500": "500 Esther's Essence"
 }

@@ -3,6 +3,7 @@ package com.juyoung.estherserver.gacha
 import com.juyoung.estherserver.EstherServerMod.Companion as Mod
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
 import java.util.function.Supplier
 
 object GachaRegistry {
@@ -23,41 +24,108 @@ object GachaRegistry {
     }
 
     private fun registerPools() {
-        // 일반 뽑기권 → 펫 뽑기권 / 가구 뽑기권 / 화폐
+        // ─── 일반 뽑기권 (합계 1000) ───
+        // 화폐 + 만년 수프: 70%
         pools[POOL_NORMAL] = GachaRewardPool(POOL_NORMAL)
             .addEntry(GachaRewardEntry(
-                type = RewardType.ITEM,
-                weight = 35,
+                type = RewardType.CURRENCY, weight = 190,
+                displayKey = "message.estherserver.gacha_currency_100",
+                currencyAmount = 100
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.CURRENCY, weight = 130,
+                displayKey = "message.estherserver.gacha_currency_300",
+                currencyAmount = 300
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.CURRENCY, weight = 50,
+                displayKey = "message.estherserver.gacha_currency_500",
+                currencyAmount = 500
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 190,
+                displayKey = "item.estherserver.hunters_pot",
+                itemSupplier = Supplier { ItemStack(Mod.HUNTERS_POT.get(), 10) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.hunters_pot",
+                itemSupplier = Supplier { ItemStack(Mod.HUNTERS_POT.get(), 30) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 40,
+                displayKey = "item.estherserver.hunters_pot",
+                itemSupplier = Supplier { ItemStack(Mod.HUNTERS_POT.get(), 50) }
+            ))
+            // 기타: 30%
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 30,
                 displayKey = "item.estherserver.pet_draw_ticket_normal",
                 itemSupplier = Supplier { ItemStack(Mod.PET_DRAW_TICKET_NORMAL.get()) }
             ))
             .addEntry(GachaRewardEntry(
-                type = RewardType.ITEM,
-                weight = 35,
+                type = RewardType.ITEM, weight = 30,
                 displayKey = "item.estherserver.furniture_draw_ticket_normal",
                 itemSupplier = Supplier { ItemStack(Mod.FURNITURE_DRAW_TICKET_NORMAL.get()) }
             ))
             .addEntry(GachaRewardEntry(
-                type = RewardType.CURRENCY,
-                weight = 30,
-                displayKey = "message.estherserver.gacha_currency_bonus",
-                currencyAmount = 300
+                type = RewardType.ITEM, weight = 45,
+                displayKey = "item.minecraft.coal",
+                itemSupplier = Supplier { ItemStack(Items.COAL, 15) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 40,
+                displayKey = "item.minecraft.raw_copper",
+                itemSupplier = Supplier { ItemStack(Items.RAW_COPPER, 15) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 35,
+                displayKey = "item.minecraft.raw_iron",
+                itemSupplier = Supplier { ItemStack(Items.RAW_IRON, 5) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 25,
+                displayKey = "item.minecraft.raw_gold",
+                itemSupplier = Supplier { ItemStack(Items.RAW_GOLD, 3) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 25,
+                displayKey = "item.minecraft.lapis_lazuli",
+                itemSupplier = Supplier { ItemStack(Items.LAPIS_LAZULI, 3) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 15,
+                displayKey = "item.minecraft.diamond",
+                itemSupplier = Supplier { ItemStack(Items.DIAMOND, 1) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 15,
+                displayKey = "item.minecraft.emerald",
+                itemSupplier = Supplier { ItemStack(Items.EMERALD, 1) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 5,
+                displayKey = "item.estherserver.enhancement_stone",
+                itemSupplier = Supplier { ItemStack(Mod.ENHANCEMENT_STONE.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 35,
+                displayKey = "item.estherserver.land_deed",
+                itemSupplier = Supplier { ItemStack(Mod.LAND_DEED.get()) }
             ))
 
-        // 펫 뽑기권 → 펫 토큰 아이템
+        // ─── 펫 뽑기권 ───
         pools[POOL_PET_NORMAL] = GachaRewardPool(POOL_PET_NORMAL)
             .addEntry(GachaRewardEntry(
-                type = RewardType.ITEM,
-                weight = 100,
+                type = RewardType.ITEM, weight = 100,
                 displayKey = "item.estherserver.pet_token_cat_common",
                 itemSupplier = Supplier { ItemStack(Mod.PET_TOKEN_CAT_COMMON.get()) }
             ))
 
-        // 가구 뽑기권 → 일반 등급 가구
+        // ─── 가구 뽑기권 ───
         pools[POOL_FURNITURE_NORMAL] = GachaRewardPool(POOL_FURNITURE_NORMAL)
             .addEntry(GachaRewardEntry(
-                type = RewardType.ITEM,
-                weight = 100,
+                type = RewardType.ITEM, weight = 100,
                 displayKey = "block.estherserver.cat_sofa",
                 itemSupplier = Supplier { ItemStack(Mod.CAT_SOFA_ITEM.get()) }
             ))
