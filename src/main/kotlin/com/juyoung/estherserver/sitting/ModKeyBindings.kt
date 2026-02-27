@@ -2,6 +2,7 @@ package com.juyoung.estherserver.sitting
 
 import com.juyoung.estherserver.collection.CollectionScreen
 import com.juyoung.estherserver.collection.TitleScreen
+import com.juyoung.estherserver.cosmetic.RequestCosmeticsPayload
 import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
 import com.juyoung.estherserver.pet.RequestPetStoragePayload
 import com.juyoung.estherserver.profession.ProfessionScreen
@@ -57,6 +58,13 @@ object ModKeyBindings {
         "key.categories.estherserver"
     )
 
+    val COSMETIC_KEY = KeyMapping(
+        "key.estherserver.cosmetic",
+        InputConstants.Type.KEYSYM,
+        GLFW.GLFW_KEY_C,
+        "key.categories.estherserver"
+    )
+
     @SubscribeEvent
     fun onClientTick(event: ClientTickEvent.Post) {
         while (SIT_KEY.consumeClick()) {
@@ -76,6 +84,9 @@ object ModKeyBindings {
         }
         while (PET_KEY.consumeClick()) {
             PacketDistributor.sendToServer(RequestPetStoragePayload)
+        }
+        while (COSMETIC_KEY.consumeClick()) {
+            PacketDistributor.sendToServer(RequestCosmeticsPayload)
         }
     }
 }

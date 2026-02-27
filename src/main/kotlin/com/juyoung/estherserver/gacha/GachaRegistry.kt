@@ -14,6 +14,7 @@ object GachaRegistry {
     const val POOL_NORMAL = "normal"
     const val POOL_PET_NORMAL = "pet_normal"
     const val POOL_FURNITURE_NORMAL = "furniture_normal"
+    const val POOL_COSMETIC_NORMAL = "cosmetic_normal"
 
     fun init() {
         if (initialized) return
@@ -148,12 +149,40 @@ object GachaRegistry {
                 displayItemId = "estherserver:cat_sofa",
                 itemSupplier = Supplier { ItemStack(Mod.CAT_SOFA_ITEM.get()) }
             ))
+
+        // ─── 치장 뽑기권 ───
+        pools[POOL_COSMETIC_NORMAL] = GachaRewardPool(POOL_COSMETIC_NORMAL)
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.cosmetic_token_cat_ears",
+                displayItemId = "estherserver:cosmetic_token_cat_ears",
+                itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_CAT_EARS.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.cosmetic_token_cat_hoodie",
+                displayItemId = "estherserver:cosmetic_token_cat_hoodie",
+                itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_CAT_HOODIE.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.cosmetic_token_cat_pants",
+                displayItemId = "estherserver:cosmetic_token_cat_pants",
+                itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_CAT_PANTS.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.cosmetic_token_cat_paws",
+                displayItemId = "estherserver:cosmetic_token_cat_paws",
+                itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_CAT_PAWS.get()) }
+            ))
     }
 
     private fun registerItemMappings() {
         itemToPool[Mod.DRAW_TICKET_NORMAL.get()] = POOL_NORMAL
         itemToPool[Mod.PET_DRAW_TICKET_NORMAL.get()] = POOL_PET_NORMAL
         itemToPool[Mod.FURNITURE_DRAW_TICKET_NORMAL.get()] = POOL_FURNITURE_NORMAL
+        itemToPool[Mod.COSMETIC_DRAW_TICKET_NORMAL.get()] = POOL_COSMETIC_NORMAL
     }
 
     fun getPoolId(item: Item): String? = itemToPool[item]
