@@ -16,7 +16,10 @@ data class CosmeticDef(
     val setId: String,
     val displayKey: String,
     val grade: CosmeticGrade = CosmeticGrade.COMMON
-)
+) {
+    /** 토큰 아이템 레지스트리 이름 (e.g., "cosmetic_token_cat_ears") */
+    val tokenItemId: String get() = "cosmetic_token_$id"
+}
 
 enum class CosmeticGrade(val translationKey: String, val color: Int) {
     COMMON("cosmetic.estherserver.grade.common", 0xFFFFFFFF.toInt()),

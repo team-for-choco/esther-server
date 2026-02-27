@@ -1,13 +1,17 @@
 package com.juyoung.estherserver.cosmetic
 
+import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.gui.GuiTheme
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.screens.inventory.InventoryScreen
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.EquipmentSlot
+import net.minecraft.world.item.ItemStack
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.neoforge.network.PacketDistributor
@@ -19,6 +23,7 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
     private var guiTop = 0
     private var selectedTab = 0 // 0=HEAD, 1=CHEST, 2=LEGS, 3=FEET
     private var scrollOffset = 0
+    private val itemStackCache = mutableMapOf<String, ItemStack>()
 
     companion object {
         private const val GUI_WIDTH = 300
@@ -151,6 +156,15 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
         }
     }
 
+    private fun getTokenStack(def: CosmeticDef): ItemStack {
+        return itemStackCache.getOrPut(def.id) {
+            val item = BuiltInRegistries.ITEM.getValue(
+                ResourceLocation.fromNamespaceAndPath(EstherServerMod.MODID, def.tokenItemId)
+            )
+            ItemStack(item)
+        }
+    }
+
     private fun renderCosmeticGrid(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
         val cosmetics = getVisibleCosmetics()
         val unlocked = CosmeticClientHandler.myUnlockedCosmetics
@@ -188,6 +202,14 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
         val removeLabel = Component.translatable("gui.estherserver.cosmetic.remove")
         guiGraphics.drawCenteredString(font, removeLabel, unequipX + CELL_SIZE / 2, unequipY + CELL_SIZE / 2 - 4, GuiTheme.TEXT_MUTED)
 
+        // Hover tooltip for unequip cell
+        if (isUnequipHovered) {
+            guiGraphics.renderTooltip(font, Component.translatable("gui.estherserver.cosmetic.remove"), mouseX, mouseY)
+        }
+
+        // 호버된 셀의 툴팁을 아이템 렌더링 후에 그리기 위해 저장
+        var hoveredTooltip: (() -> Unit)? = null
+
         // Render cosmetic cells (starting from index 1 since 0 is unequip)
         for (i in cosmetics.indices) {
             val cellIndex = i + 1 // offset by 1 for unequip button
@@ -220,39 +242,54 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
             guiGraphics.fill(cellX, cellY, cellX + bw, cellY + CELL_SIZE, borderColor)
             guiGraphics.fill(cellX + CELL_SIZE - bw, cellY, cellX + CELL_SIZE, cellY + CELL_SIZE, borderColor)
 
-            // Name
-            val name = if (isOwned) {
-                Component.translatable(def.displayKey)
-            } else {
-                Component.literal("???")
-            }
-            val nameColor = if (isOwned) def.grade.color else GuiTheme.TEXT_MUTED
-            guiGraphics.drawCenteredString(font, name, cellX + CELL_SIZE / 2, cellY + CELL_SIZE / 2 - 4, nameColor)
+            if (isOwned) {
+                // 아이템 아이콘 렌더링 (16x16, 셀 중앙)
+                val stack = getTokenStack(def)
+                val iconX = cellX + (CELL_SIZE - 16) / 2
+                val iconY = cellY + (CELL_SIZE - 16) / 2
+                guiGraphics.renderItem(stack, iconX, iconY)
 
-            // Equipped indicator
-            if (isEquipped) {
+                // Equipped indicator (좌상단 금색 마크)
+                if (isEquipped) {
+                    guiGraphics.drawString(
+                        font,
+                        Component.translatable("gui.estherserver.cosmetic.equipped_mark"),
+                        cellX + 2, cellY + 2, GuiTheme.TEXT_GOLD
+                    )
+                }
+            } else {
+                // 미해금: ??? 표시
                 guiGraphics.drawCenteredString(
-                    font,
-                    Component.translatable("gui.estherserver.cosmetic.equipped_mark"),
-                    cellX + CELL_SIZE / 2, cellY + 2, GuiTheme.TEXT_GOLD
+                    font, Component.literal("???"),
+                    cellX + CELL_SIZE / 2, cellY + CELL_SIZE / 2 - 4, GuiTheme.TEXT_MUTED
                 )
             }
 
-            // Tooltip on hover
-            if (isHovered && isOwned) {
-                val tooltipLines = mutableListOf<Component>()
-                tooltipLines.add(Component.translatable(def.displayKey).withStyle { it.withColor(def.grade.color) })
-                tooltipLines.add(Component.translatable("cosmetic.estherserver.grade_label")
-                    .append(": ")
-                    .append(Component.translatable(def.grade.translationKey)))
-                if (isEquipped) {
-                    tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_remove"))
-                } else {
-                    tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_equip"))
+            // Tooltip on hover (마지막에 그려야 다른 셀 위에 표시됨)
+            if (isHovered) {
+                hoveredTooltip = {
+                    val tooltipLines = mutableListOf<Component>()
+                    if (isOwned) {
+                        tooltipLines.add(Component.translatable(def.displayKey).withStyle { it.withColor(def.grade.color) })
+                        tooltipLines.add(Component.translatable("cosmetic.estherserver.grade_label")
+                            .append(": ")
+                            .append(Component.translatable(def.grade.translationKey)))
+                        if (isEquipped) {
+                            tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_remove"))
+                        } else {
+                            tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_equip"))
+                        }
+                    } else {
+                        tooltipLines.add(Component.literal("???").withStyle { it.withColor(GuiTheme.TEXT_MUTED) })
+                        tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.not_unlocked"))
+                    }
+                    guiGraphics.renderTooltip(font, tooltipLines, java.util.Optional.empty(), mouseX, mouseY)
                 }
-                guiGraphics.renderTooltip(font, tooltipLines, java.util.Optional.empty(), mouseX, mouseY)
             }
         }
+
+        // 툴팁은 모든 셀 렌더링 후 마지막에 그림
+        hoveredTooltip?.invoke()
     }
 
     private fun renderInfoBar(guiGraphics: GuiGraphics) {

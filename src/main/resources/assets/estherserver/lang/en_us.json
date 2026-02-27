@@ -530,6 +530,7 @@
   "gui.estherserver.cosmetic.none_equipped": "No cosmetic equipped",
   "gui.estherserver.cosmetic.click_to_equip": "Click to equip",
   "gui.estherserver.cosmetic.click_to_remove": "Click to remove",
+  "gui.estherserver.cosmetic.not_unlocked": "Not yet unlocked",
   "cosmetic.estherserver.grade_label": "Grade",
   "cosmetic.estherserver.grade.common": "Common",
   "cosmetic.estherserver.grade.fine": "Fine",

@@ -530,6 +530,7 @@
   "gui.estherserver.cosmetic.none_equipped": "착용 중인 치장 없음",
   "gui.estherserver.cosmetic.click_to_equip": "클릭하여 착용",
   "gui.estherserver.cosmetic.click_to_remove": "클릭하여 해제",
+  "gui.estherserver.cosmetic.not_unlocked": "아직 해금되지 않음",
   "cosmetic.estherserver.grade_label": "등급",
   "cosmetic.estherserver.grade.common": "일반",
   "cosmetic.estherserver.grade.fine": "고급",
