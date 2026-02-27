@@ -9,7 +9,9 @@
     "OreFeatureMixin"
   ],
   "server": [],
-  "client": [],
+  "client": [
+    "CosmeticArmorLayerMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

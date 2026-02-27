@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "estherserver:item/cosmetic_token_cat_ears"
+  }
+}

@@ -56,6 +56,7 @@ class GachaRouletteScreen : Screen(Component.translatable("gui.estherserver.gach
         poolTitle = when {
             payload.poolId.contains("pet") -> Component.translatable("gui.estherserver.gacha_roulette.title_pet").string
             payload.poolId.contains("furniture") -> Component.translatable("gui.estherserver.gacha_roulette.title_furniture").string
+            payload.poolId.contains("cosmetic") -> Component.translatable("gui.estherserver.gacha_roulette.title_cosmetic").string
             else -> Component.translatable("gui.estherserver.gacha_roulette.title").string
         }
 
