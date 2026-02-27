@@ -13,6 +13,10 @@ class CosmeticTokenItem(
     properties: Properties
 ) : Item(properties) {
 
+    companion object {
+        private const val DUPLICATE_COSMETIC_REWARD = 100
+    }
+
     override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResult {
         if (level.isClientSide) return InteractionResult.SUCCESS
 
@@ -27,9 +31,9 @@ class CosmeticTokenItem(
         }
 
         if (cosmeticId in data.unlockedCosmetics) {
-            // 이미 보유 → 보상 (화폐 100)
+            // 이미 보유 → 보상
             val balanceData = serverPlayer.getData(com.juyoung.estherserver.economy.ModEconomy.BALANCE_DATA.get())
-            balanceData.balance += 100
+            balanceData.balance += DUPLICATE_COSMETIC_REWARD
             serverPlayer.setData(com.juyoung.estherserver.economy.ModEconomy.BALANCE_DATA.get(), balanceData)
             com.juyoung.estherserver.economy.EconomyHandler.syncToClient(serverPlayer)
             serverPlayer.sendSystemMessage(

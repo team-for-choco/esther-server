@@ -103,6 +103,17 @@ import com.juyoung.estherserver.quest.QuestHandler
 import com.juyoung.estherserver.quest.QuestOpenScreenPayload
 import com.juyoung.estherserver.quest.QuestScreen
 import com.juyoung.estherserver.quest.QuestSyncPayload
+import com.juyoung.estherserver.cosmetic.CosmeticArmorItems
+import com.juyoung.estherserver.cosmetic.CosmeticBroadcastPayload
+import com.juyoung.estherserver.cosmetic.CosmeticClientHandler
+import com.juyoung.estherserver.cosmetic.CosmeticHandler
+import com.juyoung.estherserver.cosmetic.CosmeticRegistry
+import com.juyoung.estherserver.cosmetic.CosmeticScreen
+import com.juyoung.estherserver.cosmetic.CosmeticSyncPayload
+import com.juyoung.estherserver.cosmetic.CosmeticTokenItem
+import com.juyoung.estherserver.cosmetic.EquipCosmeticPayload
+import com.juyoung.estherserver.cosmetic.ModCosmetics
+import com.juyoung.estherserver.cosmetic.RequestCosmeticsPayload
 import com.juyoung.estherserver.gacha.GachaClientHandler
 import com.juyoung.estherserver.gacha.GachaRegistry
 import com.juyoung.estherserver.gacha.GachaRoulettePayload
@@ -614,43 +625,43 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         // Cosmetic tokens
         val COSMETIC_TOKEN_CAT_EARS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_cat_ears") { properties ->
-            com.juyoung.estherserver.cosmetic.CosmeticTokenItem("cat_ears", properties)
+            CosmeticTokenItem("cat_ears", properties)
         }
         val COSMETIC_TOKEN_CAT_HOODIE: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_cat_hoodie") { properties ->
-            com.juyoung.estherserver.cosmetic.CosmeticTokenItem("cat_hoodie", properties)
+            CosmeticTokenItem("cat_hoodie", properties)
         }
         val COSMETIC_TOKEN_CAT_PANTS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_cat_pants") { properties ->
-            com.juyoung.estherserver.cosmetic.CosmeticTokenItem("cat_pants", properties)
+            CosmeticTokenItem("cat_pants", properties)
         }
         val COSMETIC_TOKEN_CAT_PAWS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_cat_paws") { properties ->
-            com.juyoung.estherserver.cosmetic.CosmeticTokenItem("cat_paws", properties)
+            CosmeticTokenItem("cat_paws", properties)
         }
 
         // Cosmetic virtual armor items (rendering only, 0 defense)
         val COSMETIC_CAT_HEAD: DeferredItem<Item> = ITEMS.registerItem("cosmetic_cat_head") { properties ->
             net.minecraft.world.item.ArmorItem(
-                com.juyoung.estherserver.cosmetic.CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
+                CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
                 net.minecraft.world.item.equipment.ArmorType.HELMET,
                 properties
             )
         }
         val COSMETIC_CAT_CHEST: DeferredItem<Item> = ITEMS.registerItem("cosmetic_cat_chest") { properties ->
             net.minecraft.world.item.ArmorItem(
-                com.juyoung.estherserver.cosmetic.CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
+                CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
                 net.minecraft.world.item.equipment.ArmorType.CHESTPLATE,
                 properties
             )
         }
         val COSMETIC_CAT_LEGS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_cat_legs") { properties ->
             net.minecraft.world.item.ArmorItem(
-                com.juyoung.estherserver.cosmetic.CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
+                CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
                 net.minecraft.world.item.equipment.ArmorType.LEGGINGS,
                 properties
             )
         }
         val COSMETIC_CAT_FEET: DeferredItem<Item> = ITEMS.registerItem("cosmetic_cat_feet") { properties ->
             net.minecraft.world.item.ArmorItem(
-                com.juyoung.estherserver.cosmetic.CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
+                CosmeticArmorItems.COSMETIC_CAT_MATERIAL,
                 net.minecraft.world.item.equipment.ArmorType.BOOTS,
                 properties
             )
@@ -879,7 +890,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModQuest.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModFurniture.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModPets.ATTACHMENT_TYPES.register(modEventBus)
-        com.juyoung.estherserver.cosmetic.ModCosmetics.ATTACHMENT_TYPES.register(modEventBus)
+        ModCosmetics.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -897,7 +908,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.CropGradeHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.wild.OverworldProtectionHandler)
         NeoForge.EVENT_BUS.register(QuestHandler)
-        NeoForge.EVENT_BUS.register(com.juyoung.estherserver.cosmetic.CosmeticHandler)
+        NeoForge.EVENT_BUS.register(CosmeticHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
@@ -1052,31 +1063,31 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     Minecraft.getInstance().setScreen(GachaRouletteScreen())
                 }
             }
-            .playToServer(com.juyoung.estherserver.cosmetic.RequestCosmeticsPayload.TYPE, com.juyoung.estherserver.cosmetic.RequestCosmeticsPayload.STREAM_CODEC) { _, context ->
+            .playToServer(RequestCosmeticsPayload.TYPE, RequestCosmeticsPayload.STREAM_CODEC) { _, context ->
                 context.enqueueWork {
                     val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
-                    com.juyoung.estherserver.cosmetic.CosmeticHandler.handleRequest(player)
+                    CosmeticHandler.handleRequest(player)
                 }
             }
-            .playToClient(com.juyoung.estherserver.cosmetic.CosmeticSyncPayload.TYPE, com.juyoung.estherserver.cosmetic.CosmeticSyncPayload.STREAM_CODEC) { payload, context ->
+            .playToClient(CosmeticSyncPayload.TYPE, CosmeticSyncPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
-                    com.juyoung.estherserver.cosmetic.CosmeticClientHandler.handleSync(payload)
+                    CosmeticClientHandler.handleSync(payload)
                     // GUI가 아직 열려있지 않을 때만 오픈 (장착/해제 시 재오픈 방지)
                     val currentScreen = Minecraft.getInstance().screen
-                    if (currentScreen !is com.juyoung.estherserver.cosmetic.CosmeticScreen) {
-                        Minecraft.getInstance().setScreen(com.juyoung.estherserver.cosmetic.CosmeticScreen())
+                    if (currentScreen !is CosmeticScreen) {
+                        Minecraft.getInstance().setScreen(CosmeticScreen())
                     }
                 }
             }
-            .playToServer(com.juyoung.estherserver.cosmetic.EquipCosmeticPayload.TYPE, com.juyoung.estherserver.cosmetic.EquipCosmeticPayload.STREAM_CODEC) { payload, context ->
+            .playToServer(EquipCosmeticPayload.TYPE, EquipCosmeticPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
                     val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
-                    com.juyoung.estherserver.cosmetic.CosmeticHandler.handleEquip(player, payload.slotName, payload.cosmeticId)
+                    CosmeticHandler.handleEquip(player, payload.slotName, payload.cosmeticId)
                 }
             }
-            .playToClient(com.juyoung.estherserver.cosmetic.CosmeticBroadcastPayload.TYPE, com.juyoung.estherserver.cosmetic.CosmeticBroadcastPayload.STREAM_CODEC) { payload, context ->
+            .playToClient(CosmeticBroadcastPayload.TYPE, CosmeticBroadcastPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
-                    com.juyoung.estherserver.cosmetic.CosmeticClientHandler.handleBroadcast(payload)
+                    CosmeticClientHandler.handleBroadcast(payload)
                 }
             }
     }
@@ -1092,7 +1103,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ItemPriceRegistry.init()
         ShopBuyRegistry.init()
         GachaRegistry.init()
-        com.juyoung.estherserver.cosmetic.CosmeticRegistry.init()
+        CosmeticRegistry.init()
         ProfessionHandler.init()
         ProfessionBonusHelper.initOreGrades()
         ProfessionBonusHelper.initContentGrades()
