@@ -35,7 +35,7 @@ object CosmeticArmorItems {
             map[ArmorType.LEGGINGS] = 0
             map[ArmorType.BOOTS] = 0
         },
-        0, // enchantmentValue
+        1, // enchantmentValue (must be positive in 1.21.4)
         SoundEvents.ARMOR_EQUIP_LEATHER,
         0f, // toughness
         0f, // knockbackResistance
