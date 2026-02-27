@@ -22,8 +22,13 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.BlockHitResult
+import java.util.function.Supplier
 
-class CatSofaBlock(properties: Properties) : BaseEntityBlock(properties) {
+open class CatSofaBlock(
+    properties: Properties,
+    private val dummyBlockSupplier: Supplier<Block> = Supplier { EstherServerMod.CAT_SOFA_DUMMY.get() },
+    private val noSpaceMessageKey: String = "message.estherserver.cat_sofa_no_space"
+) : BaseEntityBlock(properties) {
 
     companion object {
         val FACING = HorizontalDirectionalBlock.FACING
@@ -34,7 +39,7 @@ class CatSofaBlock(properties: Properties) : BaseEntityBlock(properties) {
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH))
     }
 
-    override fun codec(): MapCodec<CatSofaBlock> = CODEC
+    override fun codec(): MapCodec<out CatSofaBlock> = CODEC
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING)
@@ -60,7 +65,7 @@ class CatSofaBlock(properties: Properties) : BaseEntityBlock(properties) {
                 level.destroyBlock(pos, true)
                 if (placer is ServerPlayer) {
                     placer.displayClientMessage(
-                        Component.translatable("message.estherserver.cat_sofa_no_space"), true
+                        Component.translatable(noSpaceMessageKey), true
                     )
                 }
                 return
@@ -68,13 +73,14 @@ class CatSofaBlock(properties: Properties) : BaseEntityBlock(properties) {
         }
 
         // Place dummy blocks
+        val dummyBlock = dummyBlockSupplier.get()
         for (i in 1 until positions.size) {
-            val dummyState = EstherServerMod.CAT_SOFA_DUMMY.get().defaultBlockState()
+            val dummyState = dummyBlock.defaultBlockState()
                 .setValue(CatSofaDummyBlock.FACING, facing)
                 .setValue(CatSofaDummyBlock.PART, i - 1)
             level.setBlock(positions[i], dummyState, 3)
             val be = level.getBlockEntity(positions[i])
-            if (be is CatSofaDummyBlockEntity) {
+            if (be is AbstractSofaDummyBlockEntity) {
                 be.setMasterPos(pos)
             }
         }

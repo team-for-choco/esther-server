@@ -140,6 +140,24 @@ object GachaRegistry {
                 displayItemId = "estherserver:pet_token_cat_common",
                 itemSupplier = Supplier { ItemStack(Mod.PET_TOKEN_CAT_COMMON.get()) }
             ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.pet_token_dog_common",
+                displayItemId = "estherserver:pet_token_dog_common",
+                itemSupplier = Supplier { ItemStack(Mod.PET_TOKEN_DOG_COMMON.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.pet_token_rabbit_common",
+                displayItemId = "estherserver:pet_token_rabbit_common",
+                itemSupplier = Supplier { ItemStack(Mod.PET_TOKEN_RABBIT_COMMON.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "item.estherserver.pet_token_fox_common",
+                displayItemId = "estherserver:pet_token_fox_common",
+                itemSupplier = Supplier { ItemStack(Mod.PET_TOKEN_FOX_COMMON.get()) }
+            ))
 
         // ─── 가구 뽑기권 ───
         pools[POOL_FURNITURE_NORMAL] = GachaRewardPool(POOL_FURNITURE_NORMAL)
@@ -148,6 +166,24 @@ object GachaRegistry {
                 displayKey = "block.estherserver.cat_sofa",
                 displayItemId = "estherserver:cat_sofa",
                 itemSupplier = Supplier { ItemStack(Mod.CAT_SOFA_ITEM.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "block.estherserver.dog_sofa",
+                displayItemId = "estherserver:dog_sofa",
+                itemSupplier = Supplier { ItemStack(Mod.DOG_SOFA_ITEM.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "block.estherserver.rabbit_sofa",
+                displayItemId = "estherserver:rabbit_sofa",
+                itemSupplier = Supplier { ItemStack(Mod.RABBIT_SOFA_ITEM.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 100,
+                displayKey = "block.estherserver.fox_sofa",
+                displayItemId = "estherserver:fox_sofa",
+                itemSupplier = Supplier { ItemStack(Mod.FOX_SOFA_ITEM.get()) }
             ))
 
         // ─── 치장 뽑기권 ───
@@ -176,6 +212,21 @@ object GachaRegistry {
                 displayItemId = "estherserver:cosmetic_token_cat_paws",
                 itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_CAT_PAWS.get()) }
             ))
+            // Dog cosmetics
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_dog_ears", displayItemId = "estherserver:cosmetic_token_dog_ears", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_DOG_EARS.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_dog_hoodie", displayItemId = "estherserver:cosmetic_token_dog_hoodie", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_DOG_HOODIE.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_dog_pants", displayItemId = "estherserver:cosmetic_token_dog_pants", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_DOG_PANTS.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_dog_paws", displayItemId = "estherserver:cosmetic_token_dog_paws", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_DOG_PAWS.get()) }))
+            // Rabbit cosmetics
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_rabbit_ears", displayItemId = "estherserver:cosmetic_token_rabbit_ears", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_RABBIT_EARS.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_rabbit_hoodie", displayItemId = "estherserver:cosmetic_token_rabbit_hoodie", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_RABBIT_HOODIE.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_rabbit_pants", displayItemId = "estherserver:cosmetic_token_rabbit_pants", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_RABBIT_PANTS.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_rabbit_paws", displayItemId = "estherserver:cosmetic_token_rabbit_paws", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_RABBIT_PAWS.get()) }))
+            // Fox cosmetics
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_fox_ears", displayItemId = "estherserver:cosmetic_token_fox_ears", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_FOX_EARS.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_fox_hoodie", displayItemId = "estherserver:cosmetic_token_fox_hoodie", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_FOX_HOODIE.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_fox_pants", displayItemId = "estherserver:cosmetic_token_fox_pants", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_FOX_PANTS.get()) }))
+            .addEntry(GachaRewardEntry(type = RewardType.ITEM, weight = 100, displayKey = "item.estherserver.cosmetic_token_fox_paws", displayItemId = "estherserver:cosmetic_token_fox_paws", itemSupplier = Supplier { ItemStack(Mod.COSMETIC_TOKEN_FOX_PAWS.get()) }))
     }
 
     private fun registerItemMappings() {

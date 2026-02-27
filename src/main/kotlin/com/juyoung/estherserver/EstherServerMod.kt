@@ -93,6 +93,12 @@ import com.juyoung.estherserver.merchant.ShopClientHandler
 import com.juyoung.estherserver.merchant.ShopCommand
 import com.juyoung.estherserver.furniture.CatSofaBlock
 import com.juyoung.estherserver.furniture.CatSofaDummyBlock
+import com.juyoung.estherserver.furniture.DogSofaBlock
+import com.juyoung.estherserver.furniture.DogSofaDummyBlock
+import com.juyoung.estherserver.furniture.RabbitSofaBlock
+import com.juyoung.estherserver.furniture.RabbitSofaDummyBlock
+import com.juyoung.estherserver.furniture.FoxSofaBlock
+import com.juyoung.estherserver.furniture.FoxSofaDummyBlock
 import com.juyoung.estherserver.furniture.ModFurniture
 import com.juyoung.estherserver.quest.ModQuest
 import com.juyoung.estherserver.quest.QuestBonusClaimPayload
@@ -622,6 +628,15 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val PET_TOKEN_CAT_COMMON: DeferredItem<Item> = ITEMS.registerItem("pet_token_cat_common") { properties ->
             PetTokenItem(PetType.CAT_COMMON, properties)
         }
+        val PET_TOKEN_DOG_COMMON: DeferredItem<Item> = ITEMS.registerItem("pet_token_dog_common") { properties ->
+            PetTokenItem(PetType.DOG_COMMON, properties)
+        }
+        val PET_TOKEN_RABBIT_COMMON: DeferredItem<Item> = ITEMS.registerItem("pet_token_rabbit_common") { properties ->
+            PetTokenItem(PetType.RABBIT_COMMON, properties)
+        }
+        val PET_TOKEN_FOX_COMMON: DeferredItem<Item> = ITEMS.registerItem("pet_token_fox_common") { properties ->
+            PetTokenItem(PetType.FOX_COMMON, properties)
+        }
 
         // Cosmetic tokens
         val COSMETIC_TOKEN_CAT_EARS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_cat_ears") { properties ->
@@ -635,6 +650,45 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         }
         val COSMETIC_TOKEN_CAT_PAWS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_cat_paws") { properties ->
             CosmeticTokenItem("cat_paws", properties)
+        }
+        // Dog cosmetic tokens
+        val COSMETIC_TOKEN_DOG_EARS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_dog_ears") { properties ->
+            CosmeticTokenItem("dog_ears", properties)
+        }
+        val COSMETIC_TOKEN_DOG_HOODIE: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_dog_hoodie") { properties ->
+            CosmeticTokenItem("dog_hoodie", properties)
+        }
+        val COSMETIC_TOKEN_DOG_PANTS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_dog_pants") { properties ->
+            CosmeticTokenItem("dog_pants", properties)
+        }
+        val COSMETIC_TOKEN_DOG_PAWS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_dog_paws") { properties ->
+            CosmeticTokenItem("dog_paws", properties)
+        }
+        // Rabbit cosmetic tokens
+        val COSMETIC_TOKEN_RABBIT_EARS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_rabbit_ears") { properties ->
+            CosmeticTokenItem("rabbit_ears", properties)
+        }
+        val COSMETIC_TOKEN_RABBIT_HOODIE: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_rabbit_hoodie") { properties ->
+            CosmeticTokenItem("rabbit_hoodie", properties)
+        }
+        val COSMETIC_TOKEN_RABBIT_PANTS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_rabbit_pants") { properties ->
+            CosmeticTokenItem("rabbit_pants", properties)
+        }
+        val COSMETIC_TOKEN_RABBIT_PAWS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_rabbit_paws") { properties ->
+            CosmeticTokenItem("rabbit_paws", properties)
+        }
+        // Fox cosmetic tokens
+        val COSMETIC_TOKEN_FOX_EARS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_fox_ears") { properties ->
+            CosmeticTokenItem("fox_ears", properties)
+        }
+        val COSMETIC_TOKEN_FOX_HOODIE: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_fox_hoodie") { properties ->
+            CosmeticTokenItem("fox_hoodie", properties)
+        }
+        val COSMETIC_TOKEN_FOX_PANTS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_fox_pants") { properties ->
+            CosmeticTokenItem("fox_pants", properties)
+        }
+        val COSMETIC_TOKEN_FOX_PAWS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_token_fox_paws") { properties ->
+            CosmeticTokenItem("fox_paws", properties)
         }
 
         // Cosmetic virtual armor items (rendering only, 0 defense)
@@ -665,6 +719,45 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 net.minecraft.world.item.equipment.ArmorType.BOOTS,
                 properties
             )
+        }
+        // Dog cosmetic armor
+        val COSMETIC_DOG_HEAD: DeferredItem<Item> = ITEMS.registerItem("cosmetic_dog_head") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_DOG_MATERIAL, net.minecraft.world.item.equipment.ArmorType.HELMET, properties)
+        }
+        val COSMETIC_DOG_CHEST: DeferredItem<Item> = ITEMS.registerItem("cosmetic_dog_chest") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_DOG_MATERIAL, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, properties)
+        }
+        val COSMETIC_DOG_LEGS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_dog_legs") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_DOG_MATERIAL, net.minecraft.world.item.equipment.ArmorType.LEGGINGS, properties)
+        }
+        val COSMETIC_DOG_FEET: DeferredItem<Item> = ITEMS.registerItem("cosmetic_dog_feet") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_DOG_MATERIAL, net.minecraft.world.item.equipment.ArmorType.BOOTS, properties)
+        }
+        // Rabbit cosmetic armor
+        val COSMETIC_RABBIT_HEAD: DeferredItem<Item> = ITEMS.registerItem("cosmetic_rabbit_head") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_RABBIT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.HELMET, properties)
+        }
+        val COSMETIC_RABBIT_CHEST: DeferredItem<Item> = ITEMS.registerItem("cosmetic_rabbit_chest") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_RABBIT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, properties)
+        }
+        val COSMETIC_RABBIT_LEGS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_rabbit_legs") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_RABBIT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.LEGGINGS, properties)
+        }
+        val COSMETIC_RABBIT_FEET: DeferredItem<Item> = ITEMS.registerItem("cosmetic_rabbit_feet") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_RABBIT_MATERIAL, net.minecraft.world.item.equipment.ArmorType.BOOTS, properties)
+        }
+        // Fox cosmetic armor
+        val COSMETIC_FOX_HEAD: DeferredItem<Item> = ITEMS.registerItem("cosmetic_fox_head") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_FOX_MATERIAL, net.minecraft.world.item.equipment.ArmorType.HELMET, properties)
+        }
+        val COSMETIC_FOX_CHEST: DeferredItem<Item> = ITEMS.registerItem("cosmetic_fox_chest") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_FOX_MATERIAL, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, properties)
+        }
+        val COSMETIC_FOX_LEGS: DeferredItem<Item> = ITEMS.registerItem("cosmetic_fox_legs") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_FOX_MATERIAL, net.minecraft.world.item.equipment.ArmorType.LEGGINGS, properties)
+        }
+        val COSMETIC_FOX_FEET: DeferredItem<Item> = ITEMS.registerItem("cosmetic_fox_feet") { properties ->
+            net.minecraft.world.item.ArmorItem(CosmeticArmorItems.COSMETIC_FOX_MATERIAL, net.minecraft.world.item.equipment.ArmorType.BOOTS, properties)
         }
 
         // Quest board
@@ -697,6 +790,33 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         val CAT_SOFA_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("cat_sofa_dummy",
             { properties -> CatSofaDummyBlock(properties) },
+            catSofaProperties().noLootTable())
+
+        // Furniture - Dog sofa
+        val DOG_SOFA: DeferredBlock<Block> = BLOCKS.registerBlock("dog_sofa",
+            { properties -> DogSofaBlock(properties) },
+            catSofaProperties())
+        val DOG_SOFA_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("dog_sofa", DOG_SOFA)
+        val DOG_SOFA_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("dog_sofa_dummy",
+            { properties -> DogSofaDummyBlock(properties) },
+            catSofaProperties().noLootTable())
+
+        // Furniture - Rabbit sofa
+        val RABBIT_SOFA: DeferredBlock<Block> = BLOCKS.registerBlock("rabbit_sofa",
+            { properties -> RabbitSofaBlock(properties) },
+            catSofaProperties())
+        val RABBIT_SOFA_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("rabbit_sofa", RABBIT_SOFA)
+        val RABBIT_SOFA_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("rabbit_sofa_dummy",
+            { properties -> RabbitSofaDummyBlock(properties) },
+            catSofaProperties().noLootTable())
+
+        // Furniture - Fox sofa
+        val FOX_SOFA: DeferredBlock<Block> = BLOCKS.registerBlock("fox_sofa",
+            { properties -> FoxSofaBlock(properties) },
+            catSofaProperties())
+        val FOX_SOFA_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("fox_sofa", FOX_SOFA)
+        val FOX_SOFA_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("fox_sofa_dummy",
+            { properties -> FoxSofaDummyBlock(properties) },
             catSofaProperties().noLootTable())
 
         // Creative tab
@@ -862,6 +982,13 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(QUEST_BOARD_ITEM.get())
                         // Furniture
                         output.accept(CAT_SOFA_ITEM.get())
+                        output.accept(DOG_SOFA_ITEM.get())
+                        output.accept(RABBIT_SOFA_ITEM.get())
+                        output.accept(FOX_SOFA_ITEM.get())
+                        // Pet tokens
+                        output.accept(PET_TOKEN_DOG_COMMON.get())
+                        output.accept(PET_TOKEN_RABBIT_COMMON.get())
+                        output.accept(PET_TOKEN_FOX_COMMON.get())
                     }.build()
             })
     }
@@ -1104,6 +1231,31 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ShopBuyRegistry.init()
         GachaRegistry.init()
         CosmeticRegistry.init()
+        // Register cosmetic armor sets for rendering
+        CosmeticArmorItems.registerArmorSet("cosmetic_cat", mapOf(
+            net.minecraft.world.entity.EquipmentSlot.HEAD to { COSMETIC_CAT_HEAD.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.CHEST to { COSMETIC_CAT_CHEST.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.LEGS to { COSMETIC_CAT_LEGS.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.FEET to { COSMETIC_CAT_FEET.get() as? net.minecraft.world.item.ArmorItem }
+        ))
+        CosmeticArmorItems.registerArmorSet("cosmetic_dog", mapOf(
+            net.minecraft.world.entity.EquipmentSlot.HEAD to { COSMETIC_DOG_HEAD.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.CHEST to { COSMETIC_DOG_CHEST.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.LEGS to { COSMETIC_DOG_LEGS.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.FEET to { COSMETIC_DOG_FEET.get() as? net.minecraft.world.item.ArmorItem }
+        ))
+        CosmeticArmorItems.registerArmorSet("cosmetic_rabbit", mapOf(
+            net.minecraft.world.entity.EquipmentSlot.HEAD to { COSMETIC_RABBIT_HEAD.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.CHEST to { COSMETIC_RABBIT_CHEST.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.LEGS to { COSMETIC_RABBIT_LEGS.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.FEET to { COSMETIC_RABBIT_FEET.get() as? net.minecraft.world.item.ArmorItem }
+        ))
+        CosmeticArmorItems.registerArmorSet("cosmetic_fox", mapOf(
+            net.minecraft.world.entity.EquipmentSlot.HEAD to { COSMETIC_FOX_HEAD.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.CHEST to { COSMETIC_FOX_CHEST.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.LEGS to { COSMETIC_FOX_LEGS.get() as? net.minecraft.world.item.ArmorItem },
+            net.minecraft.world.entity.EquipmentSlot.FEET to { COSMETIC_FOX_FEET.get() as? net.minecraft.world.item.ArmorItem }
+        ))
         ProfessionHandler.init()
         ProfessionBonusHelper.initOreGrades()
         ProfessionBonusHelper.initContentGrades()

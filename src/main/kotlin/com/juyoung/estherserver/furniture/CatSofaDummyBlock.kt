@@ -20,8 +20,13 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.BlockHitResult
+import java.util.function.Supplier
 
-class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
+open class CatSofaDummyBlock(
+    properties: Properties,
+    private val masterBlockClass: Class<out CatSofaBlock> = CatSofaBlock::class.java,
+    private val itemSupplier: Supplier<net.minecraft.world.item.Item> = Supplier { EstherServerMod.CAT_SOFA_ITEM.get() }
+) : BaseEntityBlock(properties) {
 
     companion object {
         val FACING = HorizontalDirectionalBlock.FACING
@@ -37,7 +42,7 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PART, 0))
     }
 
-    override fun codec(): MapCodec<CatSofaDummyBlock> = CODEC
+    override fun codec(): MapCodec<out CatSofaDummyBlock> = CODEC
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING, PART)
@@ -72,11 +77,11 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
         if (player.isPassenger) return InteractionResult.PASS
 
         val be = level.getBlockEntity(pos)
-        if (be !is CatSofaDummyBlockEntity) return InteractionResult.PASS
+        if (be !is AbstractSofaDummyBlockEntity) return InteractionResult.PASS
 
         val masterPos = be.masterPos
         val masterState = level.getBlockState(masterPos)
-        if (masterState.block !is CatSofaBlock) return InteractionResult.PASS
+        if (!masterBlockClass.isInstance(masterState.block)) return InteractionResult.PASS
 
         val facing = masterState.getValue(CatSofaBlock.FACING)
         val masterBlock = masterState.block as CatSofaBlock
@@ -106,10 +111,10 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
     override fun playerWillDestroy(level: Level, pos: BlockPos, state: BlockState, player: Player): BlockState {
         if (!level.isClientSide) {
             val be = level.getBlockEntity(pos)
-            if (be is CatSofaDummyBlockEntity) {
+            if (be is AbstractSofaDummyBlockEntity) {
                 val masterPos = be.masterPos
                 val masterState = level.getBlockState(masterPos)
-                if (masterState.block is CatSofaBlock) {
+                if (masterBlockClass.isInstance(masterState.block)) {
                     val masterBlock = masterState.block as CatSofaBlock
                     val facing = masterState.getValue(CatSofaBlock.FACING)
                     val positions = masterBlock.getMultiblockPositions(masterPos, facing)
@@ -129,7 +134,7 @@ class CatSofaDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
 
                     // Drop item if not creative
                     if (!player.isCreative) {
-                        Block.popResource(level, masterPos, ItemStack(EstherServerMod.CAT_SOFA_ITEM.get()))
+                        Block.popResource(level, masterPos, ItemStack(itemSupplier.get()))
                     }
 
                     // Remove master block
