@@ -1061,7 +1061,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             .playToClient(com.juyoung.estherserver.cosmetic.CosmeticSyncPayload.TYPE, com.juyoung.estherserver.cosmetic.CosmeticSyncPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
                     com.juyoung.estherserver.cosmetic.CosmeticClientHandler.handleSync(payload)
-                    Minecraft.getInstance().setScreen(com.juyoung.estherserver.cosmetic.CosmeticScreen())
+                    // GUI가 아직 열려있지 않을 때만 오픈 (장착/해제 시 재오픈 방지)
+                    val currentScreen = Minecraft.getInstance().screen
+                    if (currentScreen !is com.juyoung.estherserver.cosmetic.CosmeticScreen) {
+                        Minecraft.getInstance().setScreen(com.juyoung.estherserver.cosmetic.CosmeticScreen())
+                    }
                 }
             }
             .playToServer(com.juyoung.estherserver.cosmetic.EquipCosmeticPayload.TYPE, com.juyoung.estherserver.cosmetic.EquipCosmeticPayload.STREAM_CODEC) { payload, context ->

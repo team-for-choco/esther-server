@@ -38,6 +38,14 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
     @Unique
     private ItemStack estherserver$originalFeet = ItemStack.EMPTY;
     @Unique
+    private boolean estherserver$headSwapped = false;
+    @Unique
+    private boolean estherserver$chestSwapped = false;
+    @Unique
+    private boolean estherserver$legsSwapped = false;
+    @Unique
+    private boolean estherserver$feetSwapped = false;
+    @Unique
     private boolean estherserver$didSwap = false;
 
     @Inject(method = "render", at = @At("HEAD"))
@@ -46,6 +54,10 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
             S renderState, float yRot, float xRot, CallbackInfo ci
     ) {
         estherserver$didSwap = false;
+        estherserver$headSwapped = false;
+        estherserver$chestSwapped = false;
+        estherserver$legsSwapped = false;
+        estherserver$feetSwapped = false;
 
         if (!(renderState instanceof PlayerRenderState playerState)) {
             return;
@@ -56,8 +68,6 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
             return;
         }
 
-        boolean anySwapped = false;
-
         // HEAD
         String headCosmetic = CosmeticClientHandler.INSTANCE.getCosmeticForPlayer(playerUUID, EquipmentSlot.HEAD);
         if (headCosmetic != null) {
@@ -65,7 +75,7 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
             if (virtualStack != null) {
                 estherserver$originalHead = renderState.headEquipment;
                 renderState.headEquipment = virtualStack;
-                anySwapped = true;
+                estherserver$headSwapped = true;
             }
         }
 
@@ -76,7 +86,7 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
             if (virtualStack != null) {
                 estherserver$originalChest = renderState.chestEquipment;
                 renderState.chestEquipment = virtualStack;
-                anySwapped = true;
+                estherserver$chestSwapped = true;
             }
         }
 
@@ -87,7 +97,7 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
             if (virtualStack != null) {
                 estherserver$originalLegs = renderState.legsEquipment;
                 renderState.legsEquipment = virtualStack;
-                anySwapped = true;
+                estherserver$legsSwapped = true;
             }
         }
 
@@ -98,11 +108,12 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
             if (virtualStack != null) {
                 estherserver$originalFeet = renderState.feetEquipment;
                 renderState.feetEquipment = virtualStack;
-                anySwapped = true;
+                estherserver$feetSwapped = true;
             }
         }
 
-        estherserver$didSwap = anySwapped;
+        estherserver$didSwap = estherserver$headSwapped || estherserver$chestSwapped
+                || estherserver$legsSwapped || estherserver$feetSwapped;
     }
 
     @Inject(method = "render", at = @At("RETURN"))
@@ -114,24 +125,24 @@ public abstract class CosmeticArmorLayerMixin<S extends HumanoidRenderState, M e
             return;
         }
 
-        // Restore original equipment
-        if (!estherserver$originalHead.isEmpty() || renderState.headEquipment != ItemStack.EMPTY) {
+        // swap한 슬롯만 복원
+        if (estherserver$headSwapped) {
             renderState.headEquipment = estherserver$originalHead;
+            estherserver$originalHead = ItemStack.EMPTY;
         }
-        if (!estherserver$originalChest.isEmpty() || renderState.chestEquipment != ItemStack.EMPTY) {
+        if (estherserver$chestSwapped) {
             renderState.chestEquipment = estherserver$originalChest;
+            estherserver$originalChest = ItemStack.EMPTY;
         }
-        if (!estherserver$originalLegs.isEmpty() || renderState.legsEquipment != ItemStack.EMPTY) {
+        if (estherserver$legsSwapped) {
             renderState.legsEquipment = estherserver$originalLegs;
+            estherserver$originalLegs = ItemStack.EMPTY;
         }
-        if (!estherserver$originalFeet.isEmpty() || renderState.feetEquipment != ItemStack.EMPTY) {
+        if (estherserver$feetSwapped) {
             renderState.feetEquipment = estherserver$originalFeet;
+            estherserver$originalFeet = ItemStack.EMPTY;
         }
 
-        estherserver$originalHead = ItemStack.EMPTY;
-        estherserver$originalChest = ItemStack.EMPTY;
-        estherserver$originalLegs = ItemStack.EMPTY;
-        estherserver$originalFeet = ItemStack.EMPTY;
         estherserver$didSwap = false;
     }
 
