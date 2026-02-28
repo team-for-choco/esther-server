@@ -2,8 +2,8 @@
   "parent": "minecraft:block/block",
   "textures": {
     "frame": "minecraft:block/obsidian",
-    "energy": "minecraft:block/crying_obsidian",
-    "particle": "minecraft:block/crying_obsidian"
+    "energy": "minecraft:block/nether_portal",
+    "particle": "minecraft:block/nether_portal"
   },
   "elements": [
     {
