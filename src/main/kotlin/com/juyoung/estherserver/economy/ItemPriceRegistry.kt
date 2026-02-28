@@ -192,7 +192,7 @@ object ItemPriceRegistry {
         register("minecraft:diamond", 50, ShopCategory.MINERALS)
         register("minecraft:emerald", 30, ShopCategory.MINERALS)
         register("minecraft:lapis_lazuli", 5, ShopCategory.MINERALS)
-        register("minecraft:redstone", 1000, ShopCategory.MINERALS)
+        register("minecraft:redstone", 250, ShopCategory.MINERALS)
         register("minecraft:quartz", 4, ShopCategory.MINERALS)
         register("minecraft:amethyst_shard", 4, ShopCategory.MINERALS)
         register("minecraft:netherite_scrap", 100, ShopCategory.MINERALS)

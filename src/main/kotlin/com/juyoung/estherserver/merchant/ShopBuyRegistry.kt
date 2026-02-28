@@ -113,6 +113,7 @@ object ShopBuyRegistry {
         entries.find { it.itemId == itemId }
 
     fun handleBuy(player: ServerPlayer, itemIdStr: String, quantity: Int): Boolean {
+        if (quantity <= 0) return false
         val itemId = ResourceLocation.tryParse(itemIdStr) ?: return false
         val entry = getEntry(itemId) ?: return false
 
