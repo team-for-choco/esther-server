@@ -311,11 +311,14 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             var rewardX = startX + 4
             val rewardY = rowY + 14
 
-            if (reward.titleKey != null) {
-                val titleRewardText = Component.translatable("gui.estherserver.collection.reward.title_prefix")
-                    .append(Component.translatable(reward.titleKey))
-                guiGraphics.drawString(font, titleRewardText, rewardX, rewardY, GuiTheme.TEXT_BODY)
-                rewardX += font.width(titleRewardText) + 4
+            // 화폐 보상
+            if (reward.currencyReward > 0) {
+                val currencyText = Component.translatable(
+                    "gui.estherserver.collection.reward.currency",
+                    reward.currencyReward
+                )
+                guiGraphics.drawString(font, currencyText, rewardX, rewardY, 0xFFFFD700.toInt())
+                rewardX += font.width(currencyText) + 4
             }
 
             // 아이템 보상 아이콘
