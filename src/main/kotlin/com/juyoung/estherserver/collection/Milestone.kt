@@ -23,7 +23,7 @@ enum class Milestone(
         id = "first_discovery",
         titleKey = "milestone.estherserver.first_discovery.title",
         descriptionKey = "milestone.estherserver.first_discovery.desc",
-        color = ChatFormatting.GREEN,
+        color = ChatFormatting.WHITE,
         check = { data -> data.getCompletedCount() >= 1 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(1) to 1 },
         reward = MilestoneReward(
@@ -36,7 +36,7 @@ enum class Milestone(
         id = "ten_complete",
         titleKey = "milestone.estherserver.ten_complete.title",
         descriptionKey = "milestone.estherserver.ten_complete.desc",
-        color = ChatFormatting.GREEN,
+        color = ChatFormatting.WHITE,
         check = { data -> data.getCompletedCount() >= 10 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(10) to 10 },
         reward = MilestoneReward(
@@ -49,7 +49,7 @@ enum class Milestone(
         id = "twentyfive_complete",
         titleKey = "milestone.estherserver.twentyfive_complete.title",
         descriptionKey = "milestone.estherserver.twentyfive_complete.desc",
-        color = ChatFormatting.DARK_GREEN,
+        color = ChatFormatting.WHITE,
         check = { data -> data.getCompletedCount() >= 25 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(25) to 25 },
         reward = MilestoneReward(
@@ -62,7 +62,7 @@ enum class Milestone(
         id = "fifty_complete",
         titleKey = "milestone.estherserver.fifty_complete.title",
         descriptionKey = "milestone.estherserver.fifty_complete.desc",
-        color = ChatFormatting.DARK_AQUA,
+        color = ChatFormatting.GREEN,
         check = { data -> data.getCompletedCount() >= 50 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(50) to 50 },
         reward = MilestoneReward(
@@ -75,7 +75,7 @@ enum class Milestone(
         id = "fish_complete",
         titleKey = "milestone.estherserver.fish_complete.title",
         descriptionKey = "milestone.estherserver.fish_complete.desc",
-        color = ChatFormatting.AQUA,
+        color = ChatFormatting.GREEN,
         check = { data -> isCategoryComplete(data, CollectionCategory.FISH) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.FISH) },
         reward = MilestoneReward(
@@ -88,7 +88,7 @@ enum class Milestone(
         id = "crops_complete",
         titleKey = "milestone.estherserver.crops_complete.title",
         descriptionKey = "milestone.estherserver.crops_complete.desc",
-        color = ChatFormatting.DARK_GREEN,
+        color = ChatFormatting.AQUA,
         check = { data -> isCategoryComplete(data, CollectionCategory.CROPS) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.CROPS) },
         reward = MilestoneReward(
@@ -101,7 +101,7 @@ enum class Milestone(
         id = "minerals_complete",
         titleKey = "milestone.estherserver.minerals_complete.title",
         descriptionKey = "milestone.estherserver.minerals_complete.desc",
-        color = ChatFormatting.GRAY,
+        color = ChatFormatting.GREEN,
         check = { data -> isCategoryComplete(data, CollectionCategory.MINERALS) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.MINERALS) },
         reward = MilestoneReward(
@@ -114,7 +114,7 @@ enum class Milestone(
         id = "cooking_complete",
         titleKey = "milestone.estherserver.cooking_complete.title",
         descriptionKey = "milestone.estherserver.cooking_complete.desc",
-        color = ChatFormatting.YELLOW,
+        color = ChatFormatting.AQUA,
         check = { data -> isCategoryComplete(data, CollectionCategory.COOKING) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.COOKING) },
         reward = MilestoneReward(
@@ -127,7 +127,7 @@ enum class Milestone(
         id = "blocks_complete",
         titleKey = "milestone.estherserver.blocks_complete.title",
         descriptionKey = "milestone.estherserver.blocks_complete.desc",
-        color = ChatFormatting.WHITE,
+        color = ChatFormatting.DARK_PURPLE,
         check = { data -> isCategoryComplete(data, CollectionCategory.BLOCKS) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.BLOCKS) },
         reward = MilestoneReward(
@@ -143,7 +143,7 @@ enum class Milestone(
         id = "equipment_complete",
         titleKey = "milestone.estherserver.equipment_complete.title",
         descriptionKey = "milestone.estherserver.equipment_complete.desc",
-        color = ChatFormatting.RED,
+        color = ChatFormatting.DARK_PURPLE,
         check = { data -> isCategoryComplete(data, CollectionCategory.EQUIPMENT) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.EQUIPMENT) },
         reward = MilestoneReward(
@@ -159,7 +159,7 @@ enum class Milestone(
         id = "food_complete",
         titleKey = "milestone.estherserver.food_complete.title",
         descriptionKey = "milestone.estherserver.food_complete.desc",
-        color = ChatFormatting.GOLD,
+        color = ChatFormatting.DARK_PURPLE,
         check = { data -> isCategoryComplete(data, CollectionCategory.FOOD) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.FOOD) },
         reward = MilestoneReward(
@@ -191,7 +191,7 @@ enum class Milestone(
         id = "hundred_complete",
         titleKey = "milestone.estherserver.hundred_complete.title",
         descriptionKey = "milestone.estherserver.hundred_complete.desc",
-        color = ChatFormatting.DARK_AQUA,
+        color = ChatFormatting.AQUA,
         check = { data -> data.getCompletedCount() >= 100 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(100) to 100 },
         reward = MilestoneReward(
@@ -204,7 +204,7 @@ enum class Milestone(
         id = "half_complete",
         titleKey = "milestone.estherserver.half_complete.title",
         descriptionKey = "milestone.estherserver.half_complete.desc",
-        color = ChatFormatting.LIGHT_PURPLE,
+        color = ChatFormatting.DARK_PURPLE,
         check = { data -> data.getCompletedCount() >= CollectibleRegistry.getTotalCount() / 2 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(CollectibleRegistry.getTotalCount() / 2) to CollectibleRegistry.getTotalCount() / 2 },
         reward = MilestoneReward(
