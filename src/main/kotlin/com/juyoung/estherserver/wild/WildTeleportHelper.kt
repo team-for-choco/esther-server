@@ -3,6 +3,7 @@ package com.juyoung.estherserver.wild
 import com.juyoung.estherserver.EstherServerMod
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.world.level.block.Block
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -52,21 +53,13 @@ object WildTeleportHelper {
             false
         )
 
-        // 귀환 포탈 3블록 배치 (플레이어 옆에)
-        val portalBase = BlockPos(safePos.x + 1, safePos.y - 1, safePos.z)
-        val returnPortalBlock = com.juyoung.estherserver.EstherServerMod.RETURN_PORTAL.get()
-        val dummyBlock = com.juyoung.estherserver.EstherServerMod.RETURN_PORTAL_DUMMY.get()
-
-        // Base (master)
-        wildLevel.setBlock(portalBase, returnPortalBlock.defaultBlockState(), 3)
-        // Middle (part 0)
-        val middlePos = portalBase.above()
-        wildLevel.setBlock(middlePos, dummyBlock.defaultBlockState().setValue(PortalDummyBlock.PART, 0), 3)
-        (wildLevel.getBlockEntity(middlePos) as? PortalDummyBlockEntity)?.setMasterPos(portalBase)
-        // Top (part 1)
-        val topPos = portalBase.above(2)
-        wildLevel.setBlock(topPos, dummyBlock.defaultBlockState().setValue(PortalDummyBlock.PART, 1), 3)
-        (wildLevel.getBlockEntity(topPos) as? PortalDummyBlockEntity)?.setMasterPos(portalBase)
+        // 귀환 포탈 3블록 배치 (플레이어 주변에서 빈 1x3 공간 탐색)
+        val portalBase = findPortalPlacement(wildLevel, safePos)
+        if (portalBase != null) {
+            placePortalMultiblock(wildLevel, portalBase,
+                EstherServerMod.RETURN_PORTAL.get(),
+                EstherServerMod.RETURN_PORTAL_DUMMY.get())
+        }
 
         player.displayClientMessage(
             Component.translatable("message.estherserver.wild_teleported"), false
@@ -118,6 +111,34 @@ object WildTeleportHelper {
         )
 
         return true
+    }
+
+    private fun findPortalPlacement(level: ServerLevel, playerPos: BlockPos): BlockPos? {
+        // 플레이어 주변 4방향에서 1x3 빈 공간 탐색
+        val offsets = arrayOf(
+            BlockPos(1, -1, 0), BlockPos(-1, -1, 0),
+            BlockPos(0, -1, 1), BlockPos(0, -1, -1)
+        )
+        for (offset in offsets) {
+            val base = playerPos.offset(offset)
+            if (level.getBlockState(base).isAir &&
+                level.getBlockState(base.above()).isAir &&
+                level.getBlockState(base.above(2)).isAir) {
+                return base
+            }
+        }
+        // 빈 공간 없으면 강제 배치 (첫 번째 위치)
+        return playerPos.offset(1, -1, 0)
+    }
+
+    private fun placePortalMultiblock(level: ServerLevel, base: BlockPos, masterBlock: Block, dummyBlock: Block) {
+        level.setBlock(base, masterBlock.defaultBlockState(), 3)
+        val middlePos = base.above()
+        level.setBlock(middlePos, dummyBlock.defaultBlockState().setValue(PortalDummyBlock.PART, 0), 3)
+        (level.getBlockEntity(middlePos) as? PortalDummyBlockEntity)?.setMasterPos(base)
+        val topPos = base.above(2)
+        level.setBlock(topPos, dummyBlock.defaultBlockState().setValue(PortalDummyBlock.PART, 1), 3)
+        (level.getBlockEntity(topPos) as? PortalDummyBlockEntity)?.setMasterPos(base)
     }
 
     fun findSafeLocation(level: ServerLevel): BlockPos? {

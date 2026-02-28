@@ -16,9 +16,38 @@ import net.minecraft.world.phys.BlockHitResult
 
 abstract class AbstractPortalBlock(properties: Properties) : Block(properties) {
 
+    companion object {
+        fun spawnPortalParticles(level: Level, pos: BlockPos, random: RandomSource) {
+            for (i in 0..2) {
+                val x = pos.x + 0.5 + (random.nextDouble() - 0.5) * 0.8
+                val y = pos.y + random.nextDouble() * 1.0
+                val z = pos.z + 0.5 + (random.nextDouble() - 0.5) * 0.8
+                level.addParticle(ParticleTypes.PORTAL, x, y, z, 0.0, 0.5, 0.0)
+            }
+        }
+    }
+
     abstract fun getDummyBlock(): Block
     abstract fun performTeleport(player: ServerPlayer): Boolean
     abstract fun getWrongDimensionMessageKey(): String
+
+    /** PortalDummyBlock에서 호출 가능한 public 텔레포트 핸들러 */
+    fun handleInteraction(level: Level, player: Player): InteractionResult {
+        if (level.isClientSide) return InteractionResult.SUCCESS
+        val serverPlayer = player as? ServerPlayer ?: return InteractionResult.FAIL
+        if (!isCorrectDimension(serverPlayer)) {
+            serverPlayer.displayClientMessage(
+                Component.translatable(getWrongDimensionMessageKey()), true
+            )
+            return InteractionResult.FAIL
+        }
+        if (!performTeleport(serverPlayer)) {
+            serverPlayer.displayClientMessage(
+                Component.translatable("message.estherserver.wild_no_safe_location"), true
+            )
+        }
+        return InteractionResult.SUCCESS
+    }
 
     override fun setPlacedBy(level: Level, pos: BlockPos, state: BlockState, placer: LivingEntity?, stack: ItemStack) {
         if (level.isClientSide) return
@@ -52,24 +81,7 @@ abstract class AbstractPortalBlock(properties: Properties) : Block(properties) {
         player: Player,
         hitResult: BlockHitResult
     ): InteractionResult {
-        if (level.isClientSide) return InteractionResult.SUCCESS
-
-        val serverPlayer = player as? ServerPlayer ?: return InteractionResult.FAIL
-
-        if (!isCorrectDimension(serverPlayer)) {
-            serverPlayer.displayClientMessage(
-                Component.translatable(getWrongDimensionMessageKey()), true
-            )
-            return InteractionResult.FAIL
-        }
-
-        if (!performTeleport(serverPlayer)) {
-            serverPlayer.displayClientMessage(
-                Component.translatable("message.estherserver.wild_no_safe_location"), true
-            )
-        }
-
-        return InteractionResult.SUCCESS
+        return handleInteraction(level, player)
     }
 
     override fun useItemOn(
@@ -100,13 +112,7 @@ abstract class AbstractPortalBlock(properties: Properties) : Block(properties) {
     }
 
     override fun animateTick(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
-        // 포탈 파티클 효과
-        for (i in 0..2) {
-            val x = pos.x + 0.5 + (random.nextDouble() - 0.5) * 0.8
-            val y = pos.y + random.nextDouble() * 1.0
-            val z = pos.z + 0.5 + (random.nextDouble() - 0.5) * 0.8
-            level.addParticle(ParticleTypes.PORTAL, x, y, z, 0.0, 0.5, 0.0)
-        }
+        spawnPortalParticles(level, pos, random)
     }
 
     internal abstract fun isCorrectDimension(player: ServerPlayer): Boolean

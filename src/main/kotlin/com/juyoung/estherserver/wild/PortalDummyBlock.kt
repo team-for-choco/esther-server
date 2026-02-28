@@ -2,8 +2,6 @@ package com.juyoung.estherserver.wild
 
 import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
-import net.minecraft.core.particles.ParticleTypes
-import net.minecraft.server.level.ServerPlayer
 import net.minecraft.util.RandomSource
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
@@ -47,31 +45,15 @@ class PortalDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
         player: Player,
         hitResult: BlockHitResult
     ): InteractionResult {
-        if (level.isClientSide) return InteractionResult.SUCCESS
-
-        val serverPlayer = player as? ServerPlayer ?: return InteractionResult.FAIL
-
-        // masterPos에서 AbstractPortalBlock 찾아 위임
+        // master 블록의 handleInteraction에 위임
         val be = level.getBlockEntity(pos)
         if (be is PortalDummyBlockEntity) {
             val masterPos = be.masterPos
             val masterBlock = level.getBlockState(masterPos).block
             if (masterBlock is AbstractPortalBlock) {
-                if (!masterBlock.isCorrectDimension(serverPlayer)) {
-                    serverPlayer.displayClientMessage(
-                        net.minecraft.network.chat.Component.translatable(masterBlock.getWrongDimensionMessageKey()), true
-                    )
-                    return InteractionResult.FAIL
-                }
-                if (!masterBlock.performTeleport(serverPlayer)) {
-                    serverPlayer.displayClientMessage(
-                        net.minecraft.network.chat.Component.translatable("message.estherserver.wild_no_safe_location"), true
-                    )
-                }
-                return InteractionResult.SUCCESS
+                return masterBlock.handleInteraction(level, player)
             }
         }
-
         return InteractionResult.PASS
     }
 
@@ -115,11 +97,6 @@ class PortalDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
     }
 
     override fun animateTick(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
-        for (i in 0..2) {
-            val x = pos.x + 0.5 + (random.nextDouble() - 0.5) * 0.8
-            val y = pos.y + random.nextDouble() * 1.0
-            val z = pos.z + 0.5 + (random.nextDouble() - 0.5) * 0.8
-            level.addParticle(ParticleTypes.PORTAL, x, y, z, 0.0, 0.5, 0.0)
-        }
+        AbstractPortalBlock.spawnPortalParticles(level, pos, random)
     }
 }

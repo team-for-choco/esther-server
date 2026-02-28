@@ -584,43 +584,33 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         )
 
         // Wild portal blocks
+        private fun wildPortalProperties() = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_PURPLE)
+            .strength(-1.0f, 3600000.0f)
+            .noLootTable()
+            .noOcclusion()
+            .lightLevel { 10 }
+
+        private fun returnPortalProperties() = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_CYAN)
+            .strength(-1.0f, 3600000.0f)
+            .noLootTable()
+            .noOcclusion()
+            .lightLevel { 8 }
+
         val WILD_PORTAL: DeferredBlock<Block> = BLOCKS.registerBlock("wild_portal",
-            ::WildPortalBlock,
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.COLOR_PURPLE)
-                .strength(-1.0f, 3600000.0f)
-                .noLootTable()
-                .noOcclusion()
-                .lightLevel { 10 })
+            ::WildPortalBlock, wildPortalProperties())
         val WILD_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("wild_portal", WILD_PORTAL)
 
         val WILD_PORTAL_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("wild_portal_dummy",
-            ::PortalDummyBlock,
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.COLOR_PURPLE)
-                .strength(-1.0f, 3600000.0f)
-                .noLootTable()
-                .noOcclusion()
-                .lightLevel { 10 })
+            ::PortalDummyBlock, wildPortalProperties())
 
         val RETURN_PORTAL: DeferredBlock<Block> = BLOCKS.registerBlock("return_portal",
-            ::ReturnPortalBlock,
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.COLOR_CYAN)
-                .strength(-1.0f, 3600000.0f)
-                .noLootTable()
-                .noOcclusion()
-                .lightLevel { 8 })
+            ::ReturnPortalBlock, returnPortalProperties())
         val RETURN_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("return_portal", RETURN_PORTAL)
 
         val RETURN_PORTAL_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("return_portal_dummy",
-            ::PortalDummyBlock,
-            BlockBehaviour.Properties.of()
-                .mapColor(MapColor.COLOR_CYAN)
-                .strength(-1.0f, 3600000.0f)
-                .noLootTable()
-                .noOcclusion()
-                .lightLevel { 8 })
+            ::PortalDummyBlock, returnPortalProperties())
 
         // Quest reward food - Hunter's Pot
         val HUNTERS_POT: DeferredItem<Item> = ITEMS.registerSimpleItem("hunters_pot",
