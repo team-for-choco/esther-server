@@ -1,34 +1,63 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "pillar": "minecraft:block/obsidian",
-    "top": "minecraft:block/crying_obsidian",
-    "particle": "minecraft:block/obsidian"
+    "frame": "minecraft:block/obsidian",
+    "energy": "minecraft:block/crying_obsidian",
+    "particle": "minecraft:block/crying_obsidian"
   },
   "elements": [
     {
-      "name": "base_platform",
-      "from": [1, 0, 1],
-      "to": [15, 3, 15],
+      "name": "ground_base",
+      "from": [2, 0, 6],
+      "to": [14, 1, 10],
       "faces": {
-        "north": {"uv": [1, 13, 15, 16], "texture": "#pillar"},
-        "south": {"uv": [1, 13, 15, 16], "texture": "#pillar"},
-        "east": {"uv": [1, 13, 15, 16], "texture": "#pillar"},
-        "west": {"uv": [1, 13, 15, 16], "texture": "#pillar"},
-        "up": {"uv": [1, 1, 15, 15], "texture": "#top"},
-        "down": {"uv": [1, 1, 15, 15], "texture": "#pillar"}
+        "north": {"uv": [2, 15, 14, 16], "texture": "#frame"},
+        "south": {"uv": [2, 15, 14, 16], "texture": "#frame"},
+        "east": {"uv": [6, 15, 10, 16], "texture": "#frame"},
+        "west": {"uv": [6, 15, 10, 16], "texture": "#frame"},
+        "up": {"uv": [2, 6, 14, 10], "texture": "#frame"},
+        "down": {"uv": [2, 6, 14, 10], "texture": "#frame"}
       }
     },
     {
-      "name": "pillar",
-      "from": [4, 3, 4],
-      "to": [12, 16, 12],
+      "name": "bottom_arc",
+      "from": [3, 1, 6],
+      "to": [13, 3, 10],
       "faces": {
-        "north": {"uv": [4, 0, 12, 13], "texture": "#pillar"},
-        "south": {"uv": [4, 0, 12, 13], "texture": "#pillar"},
-        "east": {"uv": [4, 0, 12, 13], "texture": "#pillar"},
-        "west": {"uv": [4, 0, 12, 13], "texture": "#pillar"},
-        "up": {"uv": [4, 4, 12, 12], "texture": "#top"}
+        "north": {"uv": [3, 13, 13, 15], "texture": "#frame"},
+        "south": {"uv": [3, 13, 13, 15], "texture": "#frame"},
+        "east": {"uv": [6, 13, 10, 15], "texture": "#frame"},
+        "west": {"uv": [6, 13, 10, 15], "texture": "#frame"},
+        "up": {"uv": [3, 6, 13, 10], "texture": "#energy"}
+      }
+    },
+    {
+      "name": "frame_left_lower",
+      "from": [2, 3, 6],
+      "to": [4, 16, 10],
+      "faces": {
+        "north": {"uv": [2, 0, 4, 13], "texture": "#frame"},
+        "south": {"uv": [12, 0, 14, 13], "texture": "#frame"},
+        "west": {"uv": [6, 0, 10, 13], "texture": "#frame"}
+      }
+    },
+    {
+      "name": "frame_right_lower",
+      "from": [12, 3, 6],
+      "to": [14, 16, 10],
+      "faces": {
+        "north": {"uv": [12, 0, 14, 13], "texture": "#frame"},
+        "south": {"uv": [2, 0, 4, 13], "texture": "#frame"},
+        "east": {"uv": [6, 0, 10, 13], "texture": "#frame"}
+      }
+    },
+    {
+      "name": "energy_panel",
+      "from": [4, 3, 7],
+      "to": [12, 16, 9],
+      "faces": {
+        "north": {"uv": [4, 0, 12, 13], "texture": "#energy"},
+        "south": {"uv": [4, 0, 12, 13], "texture": "#energy"}
       }
     }
   ]

@@ -7,50 +7,32 @@
   },
   "elements": [
     {
-      "name": "frame_pillar",
-      "from": [4, 0, 4],
-      "to": [12, 16, 12],
+      "name": "frame_left",
+      "from": [1, 0, 6],
+      "to": [3, 16, 10],
       "faces": {
-        "north": {"uv": [4, 0, 12, 16], "texture": "#frame"},
-        "south": {"uv": [4, 0, 12, 16], "texture": "#frame"},
-        "east": {"uv": [4, 0, 12, 16], "texture": "#frame"},
-        "west": {"uv": [4, 0, 12, 16], "texture": "#frame"}
+        "north": {"uv": [1, 0, 3, 16], "texture": "#frame"},
+        "south": {"uv": [13, 0, 15, 16], "texture": "#frame"},
+        "west": {"uv": [6, 0, 10, 16], "texture": "#frame"}
       }
     },
     {
-      "name": "energy_north",
-      "from": [2, 1, 3],
-      "to": [14, 15, 4],
+      "name": "frame_right",
+      "from": [13, 0, 6],
+      "to": [15, 16, 10],
       "faces": {
-        "north": {"uv": [2, 1, 14, 15], "texture": "#energy"},
-        "south": {"uv": [2, 1, 14, 15], "texture": "#energy"}
+        "north": {"uv": [13, 0, 15, 16], "texture": "#frame"},
+        "south": {"uv": [1, 0, 3, 16], "texture": "#frame"},
+        "east": {"uv": [6, 0, 10, 16], "texture": "#frame"}
       }
     },
     {
-      "name": "energy_south",
-      "from": [2, 1, 12],
-      "to": [14, 15, 13],
+      "name": "energy_panel",
+      "from": [3, 0, 7],
+      "to": [13, 16, 9],
       "faces": {
-        "north": {"uv": [2, 1, 14, 15], "texture": "#energy"},
-        "south": {"uv": [2, 1, 14, 15], "texture": "#energy"}
-      }
-    },
-    {
-      "name": "energy_east",
-      "from": [12, 1, 2],
-      "to": [13, 15, 14],
-      "faces": {
-        "east": {"uv": [2, 1, 14, 15], "texture": "#energy"},
-        "west": {"uv": [2, 1, 14, 15], "texture": "#energy"}
-      }
-    },
-    {
-      "name": "energy_west",
-      "from": [3, 1, 2],
-      "to": [4, 15, 14],
-      "faces": {
-        "east": {"uv": [2, 1, 14, 15], "texture": "#energy"},
-        "west": {"uv": [2, 1, 14, 15], "texture": "#energy"}
+        "north": {"uv": [3, 0, 13, 16], "texture": "#energy"},
+        "south": {"uv": [3, 0, 13, 16], "texture": "#energy"}
       }
     }
   ]
