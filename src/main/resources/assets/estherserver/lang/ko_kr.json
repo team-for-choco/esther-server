@@ -45,6 +45,7 @@
   "gui.estherserver.collection.reward.title_prefix": "칭호: ",
   "gui.estherserver.collection.reward.claim": "수령",
   "gui.estherserver.collection.reward.claimed": "수령 완료",
+  "gui.estherserver.collection.reward.currency": "%s 기운",
 
   "gui.estherserver.title.title": "칭호 관리",
   "gui.estherserver.title.empty": "해금된 칭호가 없습니다.",
@@ -55,6 +56,12 @@
 
   "milestone.estherserver.first_discovery.title": "초보 수집가",
   "milestone.estherserver.first_discovery.desc": "1종 수집",
+  "milestone.estherserver.ten_complete.title": "견습 수집가",
+  "milestone.estherserver.ten_complete.desc": "10종 수집",
+  "milestone.estherserver.twentyfive_complete.title": "중급 수집가",
+  "milestone.estherserver.twentyfive_complete.desc": "25종 수집",
+  "milestone.estherserver.fifty_complete.title": "상급 수집가",
+  "milestone.estherserver.fifty_complete.desc": "50종 수집",
   "milestone.estherserver.fish_complete.title": "바다의 주인",
   "milestone.estherserver.fish_complete.desc": "생선 전부 수집",
   "milestone.estherserver.crops_complete.title": "대지의 주인",

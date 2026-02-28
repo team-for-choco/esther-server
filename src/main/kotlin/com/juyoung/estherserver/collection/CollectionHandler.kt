@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.collection
 
+import com.juyoung.estherserver.economy.EconomyHandler
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
@@ -157,6 +158,11 @@ object CollectionHandler {
             if (!player.inventory.add(copy)) {
                 player.drop(copy, false)
             }
+        }
+
+        // 화폐 보상
+        if (reward.currencyReward > 0) {
+            EconomyHandler.addBalance(player, reward.currencyReward)
         }
 
         data.claimedRewards.add(milestoneId)

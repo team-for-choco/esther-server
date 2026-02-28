@@ -311,6 +311,17 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             var rewardX = startX + 4
             val rewardY = rowY + 14
 
+            // 화폐 보상
+            if (reward.currencyReward > 0) {
+                val currencyText = Component.translatable(
+                    "gui.estherserver.collection.reward.currency",
+                    reward.currencyReward
+                )
+                guiGraphics.drawString(font, currencyText, rewardX, rewardY, GuiTheme.TEXT_GOLD)
+                rewardX += font.width(currencyText) + 4
+            }
+
+            // 칭호 보상
             if (reward.titleKey != null) {
                 val titleRewardText = Component.translatable("gui.estherserver.collection.reward.title_prefix")
                     .append(Component.translatable(reward.titleKey))
