@@ -92,13 +92,11 @@ class PortalDummyBlock(properties: Properties) : BaseEntityBlock(properties) {
             val be = level.getBlockEntity(pos)
             if (be is PortalDummyBlockEntity) {
                 val masterPos = be.masterPos
-                val masterState = level.getBlockState(masterPos)
-                if (masterState.block is AbstractPortalBlock) {
-                    // master 파괴 → master의 playerWillDestroy가 나머지 더미도 제거
+                // 형제 더미 블록 직접 제거 (destroyBlock은 playerWillDestroy를 호출하지 않으므로)
+                removeSiblings(level, pos, masterPos)
+                // master 제거
+                if (level.getBlockState(masterPos).block is AbstractPortalBlock) {
                     level.destroyBlock(masterPos, false)
-                } else {
-                    // master가 이미 사라진 경우: 나머지 더미 제거
-                    removeSiblings(level, pos, masterPos)
                 }
             }
         }
