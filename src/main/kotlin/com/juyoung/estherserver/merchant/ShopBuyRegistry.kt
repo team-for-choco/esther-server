@@ -40,61 +40,52 @@ object ShopBuyRegistry {
     }
 
     private fun registerSeeds() {
-        register("minecraft:wheat_seeds", 5, ShopCategory.SEEDS)
-        register("minecraft:pumpkin_seeds", 5, ShopCategory.SEEDS)
-        register("minecraft:melon_seeds", 5, ShopCategory.SEEDS)
-        register("minecraft:beetroot_seeds", 5, ShopCategory.SEEDS)
         // Custom seeds - Common
-        register("estherserver:rice_seeds", 8, ShopCategory.SEEDS)
-        register("estherserver:red_pepper_seeds", 8, ShopCategory.SEEDS)
-        register("estherserver:spinach_seeds", 8, ShopCategory.SEEDS)
-        register("estherserver:green_onion_seeds", 8, ShopCategory.SEEDS)
-        register("estherserver:garlic_seeds", 8, ShopCategory.SEEDS)
-        register("estherserver:cabbage_seeds", 8, ShopCategory.SEEDS)
-        register("estherserver:soybean_seeds", 8, ShopCategory.SEEDS)
-        register("estherserver:sesame_seeds", 8, ShopCategory.SEEDS)
+        register("estherserver:rice_seeds", 10, ShopCategory.SEEDS)
+        register("estherserver:red_pepper_seeds", 10, ShopCategory.SEEDS)
+        register("estherserver:spinach_seeds", 10, ShopCategory.SEEDS)
+        register("estherserver:green_onion_seeds", 10, ShopCategory.SEEDS)
+        register("estherserver:garlic_seeds", 10, ShopCategory.SEEDS)
+        register("estherserver:cabbage_seeds", 10, ShopCategory.SEEDS)
+        register("estherserver:soybean_seeds", 10, ShopCategory.SEEDS)
+        register("estherserver:sesame_seeds", 10, ShopCategory.SEEDS)
         // Custom seeds - Advanced
-        register("estherserver:ginger_seeds", 15, ShopCategory.SEEDS)
-        register("estherserver:perilla_seeds", 15, ShopCategory.SEEDS)
-        register("estherserver:lotus_root_seeds", 15, ShopCategory.SEEDS)
-        register("estherserver:shiitake_seeds", 15, ShopCategory.SEEDS)
-        register("estherserver:bamboo_shoot_seeds", 15, ShopCategory.SEEDS)
-        register("estherserver:wasabi_seeds", 15, ShopCategory.SEEDS)
+        register("estherserver:ginger_seeds", 25, ShopCategory.SEEDS)
+        register("estherserver:perilla_seeds", 25, ShopCategory.SEEDS)
+        register("estherserver:lotus_root_seeds", 25, ShopCategory.SEEDS)
+        register("estherserver:shiitake_seeds", 25, ShopCategory.SEEDS)
+        register("estherserver:bamboo_shoot_seeds", 25, ShopCategory.SEEDS)
+        register("estherserver:wasabi_seeds", 25, ShopCategory.SEEDS)
         // Custom seeds - Rare
-        register("estherserver:ginseng_seeds", 30, ShopCategory.SEEDS)
-        register("estherserver:truffle_seeds", 30, ShopCategory.SEEDS)
-        register("estherserver:saffron_seeds", 30, ShopCategory.SEEDS)
-        register("estherserver:matsutake_seeds", 30, ShopCategory.SEEDS)
-        register("estherserver:yuzu_seeds", 30, ShopCategory.SEEDS)
-        register("estherserver:green_tea_seeds", 30, ShopCategory.SEEDS)
+        register("estherserver:ginseng_seeds", 50, ShopCategory.SEEDS)
+        register("estherserver:truffle_seeds", 50, ShopCategory.SEEDS)
+        register("estherserver:saffron_seeds", 50, ShopCategory.SEEDS)
+        register("estherserver:matsutake_seeds", 50, ShopCategory.SEEDS)
+        register("estherserver:yuzu_seeds", 50, ShopCategory.SEEDS)
+        register("estherserver:green_tea_seeds", 50, ShopCategory.SEEDS)
         register("estherserver:special_farmland", 20, ShopCategory.SEEDS)
         register("estherserver:sprayer", 100, ShopCategory.SEEDS)
+        register("estherserver:watering_can", 500, ShopCategory.SEEDS)
     }
 
     private fun registerFood() {
-        register("minecraft:carrot", 6, ShopCategory.FOOD)
-        register("minecraft:potato", 6, ShopCategory.FOOD)
-        register("minecraft:apple", 8, ShopCategory.FOOD)
-        register("minecraft:sweet_berries", 8, ShopCategory.FOOD)
-        register("minecraft:bread", 10, ShopCategory.FOOD)
-        register("minecraft:sugar_cane", 10, ShopCategory.FOOD)
-        register("minecraft:cooked_cod", 15, ShopCategory.FOOD)
         // Vanilla cooking ingredients
+        register("minecraft:wheat", 5, ShopCategory.FOOD)
+        register("minecraft:carrot", 5, ShopCategory.FOOD)
+        register("minecraft:potato", 5, ShopCategory.FOOD)
+        register("minecraft:sugar_cane", 5, ShopCategory.FOOD)
         register("minecraft:egg", 5, ShopCategory.FOOD)
         register("minecraft:chicken", 8, ShopCategory.FOOD)
-        register("minecraft:wheat", 4, ShopCategory.FOOD)
     }
 
     private fun registerMinerals() {
         register("minecraft:coal", 5, ShopCategory.MINERALS)
         register("minecraft:raw_copper", 8, ShopCategory.MINERALS)
-        register("minecraft:redstone", 8, ShopCategory.MINERALS)
         register("minecraft:lapis_lazuli", 10, ShopCategory.MINERALS)
-        register("minecraft:raw_iron", 12, ShopCategory.MINERALS)
     }
 
     private fun registerSpecial() {
-        register("estherserver:land_deed", 500, ShopCategory.SPECIAL)
+        register("estherserver:draw_ticket_normal", 2000, ShopCategory.SPECIAL)
     }
 
     private fun register(item: String, price: Long, category: ShopCategory) {
@@ -122,6 +113,7 @@ object ShopBuyRegistry {
         entries.find { it.itemId == itemId }
 
     fun handleBuy(player: ServerPlayer, itemIdStr: String, quantity: Int): Boolean {
+        if (quantity <= 0) return false
         val itemId = ResourceLocation.tryParse(itemIdStr) ?: return false
         val entry = getEntry(itemId) ?: return false
 

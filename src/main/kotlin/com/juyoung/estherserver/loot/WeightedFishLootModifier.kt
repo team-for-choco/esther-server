@@ -65,28 +65,28 @@ class WeightedFishLootModifier(
 
     companion object {
         val FISH_WEIGHTS = listOf(
-            // Common (weight: 15 each)
-            WeightedFish(Supplier { EstherServerMod.CRUCIAN_CARP.get() }, 15),
-            WeightedFish(Supplier { EstherServerMod.SWEETFISH.get() }, 15),
-            WeightedFish(Supplier { EstherServerMod.MACKEREL.get() }, 15),
-            WeightedFish(Supplier { EstherServerMod.SQUID_CATCH.get() }, 15),
-            WeightedFish(Supplier { EstherServerMod.ANCHOVY.get() }, 15),
-            WeightedFish(Supplier { EstherServerMod.SHRIMP.get() }, 15),
-            WeightedFish(Supplier { EstherServerMod.CLAM.get() }, 15),
-            // Advanced (weight: 8 each)
-            WeightedFish(Supplier { EstherServerMod.SALMON_CATCH.get() }, 8),
-            WeightedFish(Supplier { EstherServerMod.SEA_BREAM.get() }, 8),
-            WeightedFish(Supplier { EstherServerMod.EEL.get() }, 8),
-            WeightedFish(Supplier { EstherServerMod.OCTOPUS.get() }, 8),
-            WeightedFish(Supplier { EstherServerMod.HAIRTAIL.get() }, 8),
-            WeightedFish(Supplier { EstherServerMod.YELLOWTAIL.get() }, 8),
-            // Rare (weight: 3 each)
+            // Common (price 5 → weight 17, price 7 → weight 12)
+            WeightedFish(Supplier { EstherServerMod.CRUCIAN_CARP.get() }, 17),
+            WeightedFish(Supplier { EstherServerMod.SWEETFISH.get() }, 17),
+            WeightedFish(Supplier { EstherServerMod.MACKEREL.get() }, 12),
+            WeightedFish(Supplier { EstherServerMod.SQUID_CATCH.get() }, 12),
+            WeightedFish(Supplier { EstherServerMod.ANCHOVY.get() }, 17),
+            WeightedFish(Supplier { EstherServerMod.SHRIMP.get() }, 17),
+            WeightedFish(Supplier { EstherServerMod.CLAM.get() }, 17),
+            // Advanced (price 15→10, 16→9, 17→7, 18→6)
+            WeightedFish(Supplier { EstherServerMod.SALMON_CATCH.get() }, 10),
+            WeightedFish(Supplier { EstherServerMod.SEA_BREAM.get() }, 7),
+            WeightedFish(Supplier { EstherServerMod.EEL.get() }, 6),
+            WeightedFish(Supplier { EstherServerMod.OCTOPUS.get() }, 9),
+            WeightedFish(Supplier { EstherServerMod.HAIRTAIL.get() }, 10),
+            WeightedFish(Supplier { EstherServerMod.YELLOWTAIL.get() }, 7),
+            // Rare (price 45→4, 48→3, 50→3, 53→2, 55→2)
             WeightedFish(Supplier { EstherServerMod.BLUEFIN_TUNA.get() }, 3),
-            WeightedFish(Supplier { EstherServerMod.BLOWFISH.get() }, 3),
+            WeightedFish(Supplier { EstherServerMod.BLOWFISH.get() }, 4),
             WeightedFish(Supplier { EstherServerMod.ABALONE.get() }, 3),
-            WeightedFish(Supplier { EstherServerMod.KING_CRAB.get() }, 3),
+            WeightedFish(Supplier { EstherServerMod.KING_CRAB.get() }, 2),
             WeightedFish(Supplier { EstherServerMod.SEA_URCHIN.get() }, 3),
-            WeightedFish(Supplier { EstherServerMod.STURGEON.get() }, 3)
+            WeightedFish(Supplier { EstherServerMod.STURGEON.get() }, 2)
         )
 
         val CODEC: MapCodec<WeightedFishLootModifier> = RecordCodecBuilder.mapCodec { inst ->
