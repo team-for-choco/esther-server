@@ -1,1 +1,60 @@
-{"parent":"minecraft:block/orientable","textures":{"top":"estherserver:block/cooking_station_top","front":"estherserver:block/cooking_station_front","side":"estherserver:block/cooking_station_side"}}
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "top": "estherserver:block/cooking_station_top",
+    "side": "estherserver:block/cooking_station_side",
+    "front": "estherserver:block/cooking_station_front",
+    "particle": "estherserver:block/cooking_station_side"
+  },
+  "elements": [
+    {
+      "name": "cauldron_body",
+      "from": [2, 0, 2],
+      "to": [14, 10, 14],
+      "faces": {
+        "north": {"uv": [2, 6, 14, 16], "texture": "#front"},
+        "south": {"uv": [2, 6, 14, 16], "texture": "#side"},
+        "east": {"uv": [2, 6, 14, 16], "texture": "#side"},
+        "west": {"uv": [2, 6, 14, 16], "texture": "#side"},
+        "down": {"uv": [2, 2, 14, 14], "texture": "#side"}
+      }
+    },
+    {
+      "name": "rim",
+      "from": [1, 10, 1],
+      "to": [15, 12, 15],
+      "faces": {
+        "north": {"uv": [1, 4, 15, 6], "texture": "#front"},
+        "south": {"uv": [1, 4, 15, 6], "texture": "#side"},
+        "east": {"uv": [1, 4, 15, 6], "texture": "#side"},
+        "west": {"uv": [1, 4, 15, 6], "texture": "#side"},
+        "up": {"uv": [1, 1, 15, 15], "texture": "#top"},
+        "down": {"uv": [1, 1, 15, 15], "texture": "#side"}
+      }
+    },
+    {
+      "name": "handle_left",
+      "from": [0, 6, 6],
+      "to": [2, 8, 10],
+      "faces": {
+        "north": {"uv": [0, 8, 2, 10], "texture": "#side"},
+        "south": {"uv": [0, 8, 2, 10], "texture": "#side"},
+        "west": {"uv": [6, 8, 10, 10], "texture": "#side"},
+        "up": {"uv": [0, 6, 2, 10], "texture": "#side"},
+        "down": {"uv": [0, 6, 2, 10], "texture": "#side"}
+      }
+    },
+    {
+      "name": "handle_right",
+      "from": [14, 6, 6],
+      "to": [16, 8, 10],
+      "faces": {
+        "north": {"uv": [14, 8, 16, 10], "texture": "#side"},
+        "south": {"uv": [14, 8, 16, 10], "texture": "#side"},
+        "east": {"uv": [6, 8, 10, 10], "texture": "#side"},
+        "up": {"uv": [14, 6, 16, 10], "texture": "#side"},
+        "down": {"uv": [14, 6, 16, 10], "texture": "#side"}
+      }
+    }
+  ]
+}

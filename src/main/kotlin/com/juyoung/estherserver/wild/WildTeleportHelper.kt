@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.wild
 
+import com.juyoung.estherserver.EstherServerMod
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
@@ -51,10 +52,21 @@ object WildTeleportHelper {
             false
         )
 
-        // 착지 위치 아래에 귀환 포탈 배치 (발밑 블록 교체)
-        val portalPos = BlockPos(safePos.x, safePos.y - 1, safePos.z)
+        // 귀환 포탈 3블록 배치 (플레이어 옆에)
+        val portalBase = BlockPos(safePos.x + 1, safePos.y - 1, safePos.z)
         val returnPortalBlock = com.juyoung.estherserver.EstherServerMod.RETURN_PORTAL.get()
-        wildLevel.setBlock(portalPos, returnPortalBlock.defaultBlockState(), 3)
+        val dummyBlock = com.juyoung.estherserver.EstherServerMod.RETURN_PORTAL_DUMMY.get()
+
+        // Base (master)
+        wildLevel.setBlock(portalBase, returnPortalBlock.defaultBlockState(), 3)
+        // Middle (part 0)
+        val middlePos = portalBase.above()
+        wildLevel.setBlock(middlePos, dummyBlock.defaultBlockState().setValue(PortalDummyBlock.PART, 0), 3)
+        (wildLevel.getBlockEntity(middlePos) as? PortalDummyBlockEntity)?.setMasterPos(portalBase)
+        // Top (part 1)
+        val topPos = portalBase.above(2)
+        wildLevel.setBlock(topPos, dummyBlock.defaultBlockState().setValue(PortalDummyBlock.PART, 1), 3)
+        (wildLevel.getBlockEntity(topPos) as? PortalDummyBlockEntity)?.setMasterPos(portalBase)
 
         player.displayClientMessage(
             Component.translatable("message.estherserver.wild_teleported"), false

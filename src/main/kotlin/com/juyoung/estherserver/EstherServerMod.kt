@@ -143,6 +143,7 @@ import com.juyoung.estherserver.sitting.SitHandler
 import com.juyoung.estherserver.sitting.SitPayload
 import com.juyoung.estherserver.sleep.SleepHandler
 import com.juyoung.estherserver.wild.ModWild
+import com.juyoung.estherserver.wild.PortalDummyBlock
 import com.juyoung.estherserver.wild.ReturnPortalBlock
 import com.juyoung.estherserver.wild.WildCommand
 import com.juyoung.estherserver.wild.WildPortalBlock
@@ -448,6 +449,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 .mapColor(MapColor.WOOD)
                 .strength(-1.0f, 3600000.0f)
                 .noLootTable()
+                .noOcclusion()
         )
         val COOKING_STATION_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("cooking_station", COOKING_STATION)
 
@@ -520,6 +522,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 .mapColor(MapColor.STONE)
                 .strength(-1.0f, 3600000.0f)
                 .noLootTable()
+                .noOcclusion()
         )
         val COLLECTION_PEDESTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("collection_pedestal", COLLECTION_PEDESTAL)
 
@@ -587,8 +590,18 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 .mapColor(MapColor.COLOR_PURPLE)
                 .strength(-1.0f, 3600000.0f)
                 .noLootTable()
+                .noOcclusion()
                 .lightLevel { 10 })
         val WILD_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("wild_portal", WILD_PORTAL)
+
+        val WILD_PORTAL_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("wild_portal_dummy",
+            ::PortalDummyBlock,
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_PURPLE)
+                .strength(-1.0f, 3600000.0f)
+                .noLootTable()
+                .noOcclusion()
+                .lightLevel { 10 })
 
         val RETURN_PORTAL: DeferredBlock<Block> = BLOCKS.registerBlock("return_portal",
             ::ReturnPortalBlock,
@@ -596,8 +609,18 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(-1.0f, 3600000.0f)
                 .noLootTable()
+                .noOcclusion()
                 .lightLevel { 8 })
         val RETURN_PORTAL_ITEM: DeferredItem<BlockItem> = ITEMS.registerSimpleBlockItem("return_portal", RETURN_PORTAL)
+
+        val RETURN_PORTAL_DUMMY: DeferredBlock<Block> = BLOCKS.registerBlock("return_portal_dummy",
+            ::PortalDummyBlock,
+            BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_CYAN)
+                .strength(-1.0f, 3600000.0f)
+                .noLootTable()
+                .noOcclusion()
+                .lightLevel { 8 })
 
         // Quest reward food - Hunter's Pot
         val HUNTERS_POT: DeferredItem<Item> = ITEMS.registerSimpleItem("hunters_pot",
@@ -1013,6 +1036,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModInventory.ATTACHMENT_TYPES.register(modEventBus)
         ModInventory.MENU_TYPES.register(modEventBus)
         ModWild.ATTACHMENT_TYPES.register(modEventBus)
+        ModWild.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModQuest.ATTACHMENT_TYPES.register(modEventBus)
         ModQuest.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModFurniture.BLOCK_ENTITY_TYPES.register(modEventBus)

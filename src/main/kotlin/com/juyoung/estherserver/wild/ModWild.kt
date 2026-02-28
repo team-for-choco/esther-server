@@ -2,7 +2,9 @@ package com.juyoung.estherserver.wild
 
 import com.juyoung.estherserver.EstherServerMod
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.registries.Registries
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.neoforge.attachment.AttachmentType
 import net.neoforged.neoforge.attachment.IAttachmentHolder
 import net.neoforged.neoforge.attachment.IAttachmentSerializer
@@ -14,6 +16,9 @@ import java.util.function.Supplier
 object ModWild {
     val ATTACHMENT_TYPES: DeferredRegister<AttachmentType<*>> =
         DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, EstherServerMod.MODID)
+
+    val BLOCK_ENTITY_TYPES: DeferredRegister<BlockEntityType<*>> =
+        DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, EstherServerMod.MODID)
 
     val RETURN_DATA: DeferredHolder<AttachmentType<*>, AttachmentType<WildReturnData>> =
         ATTACHMENT_TYPES.register("wild_return_data", Supplier {
@@ -32,5 +37,14 @@ object ModWild {
                 })
                 .copyOnDeath()
                 .build()
+        })
+
+    val PORTAL_DUMMY_BE: DeferredHolder<BlockEntityType<*>, BlockEntityType<PortalDummyBlockEntity>> =
+        BLOCK_ENTITY_TYPES.register("portal_dummy", Supplier {
+            BlockEntityType(
+                ::PortalDummyBlockEntity,
+                EstherServerMod.WILD_PORTAL_DUMMY.get(),
+                EstherServerMod.RETURN_PORTAL_DUMMY.get()
+            )
         })
 }

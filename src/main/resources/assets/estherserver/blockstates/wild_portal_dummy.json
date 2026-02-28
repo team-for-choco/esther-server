@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "part=0": {
+      "model": "estherserver:block/wild_portal_middle"
+    },
+    "part=1": {
+      "model": "estherserver:block/wild_portal_top"
+    }
+  }
+}

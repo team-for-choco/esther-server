@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "pillar": "minecraft:block/prismarine_bricks",
+    "cap": "minecraft:block/respawn_anchor_top",
+    "particle": "minecraft:block/prismarine_bricks"
+  },
+  "elements": [
+    {
+      "name": "pillar_top",
+      "from": [4, 0, 4],
+      "to": [12, 6, 12],
+      "faces": {
+        "north": {"uv": [4, 10, 12, 16], "texture": "#pillar"},
+        "south": {"uv": [4, 10, 12, 16], "texture": "#pillar"},
+        "east": {"uv": [4, 10, 12, 16], "texture": "#pillar"},
+        "west": {"uv": [4, 10, 12, 16], "texture": "#pillar"}
+      }
+    },
+    {
+      "name": "cap",
+      "from": [2, 6, 2],
+      "to": [14, 9, 14],
+      "faces": {
+        "north": {"uv": [2, 7, 14, 10], "texture": "#pillar"},
+        "south": {"uv": [2, 7, 14, 10], "texture": "#pillar"},
+        "east": {"uv": [2, 7, 14, 10], "texture": "#pillar"},
+        "west": {"uv": [2, 7, 14, 10], "texture": "#pillar"},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#cap"},
+        "down": {"uv": [2, 2, 14, 14], "texture": "#cap"}
+      }
+    },
+    {
+      "name": "crown",
+      "from": [5, 9, 5],
+      "to": [11, 11, 11],
+      "faces": {
+        "north": {"uv": [5, 5, 11, 7], "texture": "#cap"},
+        "south": {"uv": [5, 5, 11, 7], "texture": "#cap"},
+        "east": {"uv": [5, 5, 11, 7], "texture": "#cap"},
+        "west": {"uv": [5, 5, 11, 7], "texture": "#cap"},
+        "up": {"uv": [5, 5, 11, 11], "texture": "#cap"}
+      }
+    }
+  ]
+}
