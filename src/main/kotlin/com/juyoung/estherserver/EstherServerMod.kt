@@ -1428,6 +1428,20 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     }
 
     @SubscribeEvent
+    fun onPlayerLogout(event: PlayerEvent.PlayerLoggedOutEvent) {
+        val player = event.entity as? net.minecraft.server.level.ServerPlayer ?: return
+        val vehicle = player.vehicle
+        if (vehicle is PetEntity) {
+            val safeX = player.x
+            val safeZ = player.z
+            // 펫의 Y 위치(지면)를 기준으로 안전한 높이 확보
+            val safeY = vehicle.y
+            player.stopRiding() // removePassenger → pet discard
+            player.teleportTo(safeX, safeY, safeZ)
+        }
+    }
+
+    @SubscribeEvent
     fun onCropGrow(event: CropGrowEvent.Pre) {
         val belowState = event.level.getBlockState(event.pos.below())
         if (belowState.block is SpecialFarmlandBlock) {
