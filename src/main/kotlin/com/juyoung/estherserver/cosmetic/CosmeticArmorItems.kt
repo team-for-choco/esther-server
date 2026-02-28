@@ -21,27 +21,44 @@ import java.util.EnumMap
 object CosmeticArmorItems {
 
     // ── Equipment Asset Keys ──
-    val COSMETIC_CAT_KEY: ResourceKey<EquipmentAsset> = ResourceKey.create(
+    val COSMETIC_CAT_KEY: ResourceKey<EquipmentAsset> = createKey("cosmetic_cat")
+    val COSMETIC_DOG_KEY: ResourceKey<EquipmentAsset> = createKey("cosmetic_dog")
+    val COSMETIC_RABBIT_KEY: ResourceKey<EquipmentAsset> = createKey("cosmetic_rabbit")
+    val COSMETIC_FOX_KEY: ResourceKey<EquipmentAsset> = createKey("cosmetic_fox")
+
+    private fun createKey(name: String): ResourceKey<EquipmentAsset> = ResourceKey.create(
         EquipmentAssets.ROOT_ID,
-        ResourceLocation.fromNamespaceAndPath("estherserver", "cosmetic_cat")
+        ResourceLocation.fromNamespaceAndPath("estherserver", name)
     )
 
-    // ── ArmorMaterial (방어력 0) ──
-    val COSMETIC_CAT_MATERIAL = ArmorMaterial(
-        1, // durability (minimal)
+    private fun createMaterial(key: ResourceKey<EquipmentAsset>): ArmorMaterial = ArmorMaterial(
+        1,
         Util.make(EnumMap<ArmorType, Int>(ArmorType::class.java)) { map ->
             map[ArmorType.HELMET] = 0
             map[ArmorType.CHESTPLATE] = 0
             map[ArmorType.LEGGINGS] = 0
             map[ArmorType.BOOTS] = 0
         },
-        1, // enchantmentValue (must be positive in 1.21.4)
+        1,
         SoundEvents.ARMOR_EQUIP_LEATHER,
-        0f, // toughness
-        0f, // knockbackResistance
+        0f,
+        0f,
         ItemTags.REPAIRS_LEATHER_ARMOR,
-        COSMETIC_CAT_KEY
+        key
     )
+
+    // ── ArmorMaterials (방어력 0) ──
+    val COSMETIC_CAT_MATERIAL = createMaterial(COSMETIC_CAT_KEY)
+    val COSMETIC_DOG_MATERIAL = createMaterial(COSMETIC_DOG_KEY)
+    val COSMETIC_RABBIT_MATERIAL = createMaterial(COSMETIC_RABBIT_KEY)
+    val COSMETIC_FOX_MATERIAL = createMaterial(COSMETIC_FOX_KEY)
+
+    // ── setId → (slot → ArmorItem supplier) 테이블 ──
+    private val armorTable = mutableMapOf<String, Map<EquipmentSlot, () -> ArmorItem?>>()
+
+    fun registerArmorSet(setId: String, slotMap: Map<EquipmentSlot, () -> ArmorItem?>) {
+        armorTable[setId] = slotMap
+    }
 
     // ── 치장 ID → ItemStack 캐시 (렌더링용) ──
     private val cachedStacks = mutableMapOf<String, ItemStack>()
@@ -62,15 +79,6 @@ object CosmeticArmorItems {
      * setId + slot으로 등록된 ArmorItem을 찾는다.
      */
     private fun getArmorItemForSlot(setId: String, slot: EquipmentSlot): ArmorItem? {
-        return when (setId) {
-            "cosmetic_cat" -> when (slot) {
-                EquipmentSlot.HEAD -> com.juyoung.estherserver.EstherServerMod.COSMETIC_CAT_HEAD.get() as? ArmorItem
-                EquipmentSlot.CHEST -> com.juyoung.estherserver.EstherServerMod.COSMETIC_CAT_CHEST.get() as? ArmorItem
-                EquipmentSlot.LEGS -> com.juyoung.estherserver.EstherServerMod.COSMETIC_CAT_LEGS.get() as? ArmorItem
-                EquipmentSlot.FEET -> com.juyoung.estherserver.EstherServerMod.COSMETIC_CAT_FEET.get() as? ArmorItem
-                else -> null
-            }
-            else -> null
-        }
+        return armorTable[setId]?.get(slot)?.invoke()
     }
 }

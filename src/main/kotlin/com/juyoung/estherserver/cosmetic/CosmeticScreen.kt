@@ -74,7 +74,8 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
 
     private fun getVisibleCosmetics(): List<CosmeticDef> {
         val slot = currentSlot()
-        return CosmeticRegistry.getBySlot(slot)
+        val unlocked = CosmeticClientHandler.myUnlockedCosmetics
+        return CosmeticRegistry.getBySlot(slot).filter { it.id in unlocked }
     }
 
     override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
@@ -167,7 +168,6 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
 
     private fun renderCosmeticGrid(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
         val cosmetics = getVisibleCosmetics()
-        val unlocked = CosmeticClientHandler.myUnlockedCosmetics
         val equippedId = CosmeticClientHandler.myEquipped[currentSlot()]
 
         val gridX = guiLeft + GRID_LEFT
@@ -210,7 +210,7 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
         // 호버된 셀의 툴팁을 아이템 렌더링 후에 그리기 위해 저장
         var hoveredTooltip: (() -> Unit)? = null
 
-        // Render cosmetic cells (starting from index 1 since 0 is unequip)
+        // Render cosmetic cells (획득한 것만 표시)
         for (i in cosmetics.indices) {
             val cellIndex = i + 1 // offset by 1 for unequip button
             val col = cellIndex % CELLS_PER_ROW
@@ -221,67 +221,51 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
             val cellY = gridY + row * (CELL_SIZE + CELL_GAP)
 
             val def = cosmetics[i]
-            val isOwned = def.id in unlocked
             val isEquipped = def.id == equippedId
             val isHovered = mouseX >= cellX && mouseX < cellX + CELL_SIZE &&
                     mouseY >= cellY && mouseY < cellY + CELL_SIZE
 
             val bg = when {
                 isEquipped -> GuiTheme.ROW_SELECTED
-                !isOwned -> GuiTheme.UNDISCOVERED_BG
                 isHovered -> GuiTheme.CELL_HOVER
                 else -> GuiTheme.CELL_BG
             }
             guiGraphics.fill(cellX, cellY, cellX + CELL_SIZE, cellY + CELL_SIZE, bg)
 
             // Grade border
-            val borderColor = if (isOwned) def.grade.color else GuiTheme.PANEL_BORDER_DARK
             val bw = if (isEquipped) 2 else 1
-            guiGraphics.fill(cellX, cellY, cellX + CELL_SIZE, cellY + bw, borderColor)
-            guiGraphics.fill(cellX, cellY + CELL_SIZE - bw, cellX + CELL_SIZE, cellY + CELL_SIZE, borderColor)
-            guiGraphics.fill(cellX, cellY, cellX + bw, cellY + CELL_SIZE, borderColor)
-            guiGraphics.fill(cellX + CELL_SIZE - bw, cellY, cellX + CELL_SIZE, cellY + CELL_SIZE, borderColor)
+            guiGraphics.fill(cellX, cellY, cellX + CELL_SIZE, cellY + bw, def.grade.color)
+            guiGraphics.fill(cellX, cellY + CELL_SIZE - bw, cellX + CELL_SIZE, cellY + CELL_SIZE, def.grade.color)
+            guiGraphics.fill(cellX, cellY, cellX + bw, cellY + CELL_SIZE, def.grade.color)
+            guiGraphics.fill(cellX + CELL_SIZE - bw, cellY, cellX + CELL_SIZE, cellY + CELL_SIZE, def.grade.color)
 
-            if (isOwned) {
-                // 아이템 아이콘 렌더링 (16x16, 셀 중앙)
-                val stack = getTokenStack(def)
-                val iconX = cellX + (CELL_SIZE - 16) / 2
-                val iconY = cellY + (CELL_SIZE - 16) / 2
-                guiGraphics.renderItem(stack, iconX, iconY)
+            // 아이템 아이콘 렌더링 (16x16, 셀 중앙)
+            val stack = getTokenStack(def)
+            val iconX = cellX + (CELL_SIZE - 16) / 2
+            val iconY = cellY + (CELL_SIZE - 16) / 2
+            guiGraphics.renderItem(stack, iconX, iconY)
 
-                // Equipped indicator (좌상단 금색 마크)
-                if (isEquipped) {
-                    guiGraphics.drawString(
-                        font,
-                        Component.translatable("gui.estherserver.cosmetic.equipped_mark"),
-                        cellX + 2, cellY + 2, GuiTheme.TEXT_GOLD
-                    )
-                }
-            } else {
-                // 미해금: ??? 표시
-                guiGraphics.drawCenteredString(
-                    font, Component.literal("???"),
-                    cellX + CELL_SIZE / 2, cellY + CELL_SIZE / 2 - 4, GuiTheme.TEXT_MUTED
+            // Equipped indicator (좌상단 금색 마크)
+            if (isEquipped) {
+                guiGraphics.drawString(
+                    font,
+                    Component.translatable("gui.estherserver.cosmetic.equipped_mark"),
+                    cellX + 2, cellY + 2, GuiTheme.TEXT_GOLD
                 )
             }
 
-            // Tooltip on hover (마지막에 그려야 다른 셀 위에 표시됨)
+            // Tooltip on hover
             if (isHovered) {
                 hoveredTooltip = {
                     val tooltipLines = mutableListOf<Component>()
-                    if (isOwned) {
-                        tooltipLines.add(Component.translatable(def.displayKey).withStyle { it.withColor(def.grade.color) })
-                        tooltipLines.add(Component.translatable("cosmetic.estherserver.grade_label")
-                            .append(": ")
-                            .append(Component.translatable(def.grade.translationKey)))
-                        if (isEquipped) {
-                            tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_remove"))
-                        } else {
-                            tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_equip"))
-                        }
+                    tooltipLines.add(Component.translatable(def.displayKey).withStyle { it.withColor(def.grade.color) })
+                    tooltipLines.add(Component.translatable("cosmetic.estherserver.grade_label")
+                        .append(": ")
+                        .append(Component.translatable(def.grade.translationKey)))
+                    if (isEquipped) {
+                        tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_remove"))
                     } else {
-                        tooltipLines.add(Component.literal("???").withStyle { it.withColor(GuiTheme.TEXT_MUTED) })
-                        tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.not_unlocked"))
+                        tooltipLines.add(Component.translatable("gui.estherserver.cosmetic.click_to_equip"))
                     }
                     guiGraphics.renderTooltip(font, tooltipLines, java.util.Optional.empty(), mouseX, mouseY)
                 }
@@ -334,9 +318,8 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
             return true
         }
 
-        // Cosmetic cell clicks
+        // Cosmetic cell clicks (획득한 것만 표시되므로 모두 클릭 가능)
         val cosmetics = getVisibleCosmetics()
-        val unlocked = CosmeticClientHandler.myUnlockedCosmetics
 
         for (i in cosmetics.indices) {
             val cellIndex = i + 1
@@ -349,17 +332,13 @@ class CosmeticScreen : Screen(Component.translatable("gui.estherserver.cosmetic.
 
             if (mx >= cellX && mx < cellX + CELL_SIZE && my >= cellY && my < cellY + CELL_SIZE) {
                 val def = cosmetics[i]
-                if (def.id in unlocked) {
-                    val equippedId = CosmeticClientHandler.myEquipped[currentSlot()]
-                    if (def.id == equippedId) {
-                        // 해제
-                        PacketDistributor.sendToServer(EquipCosmeticPayload(currentSlot().name, ""))
-                    } else {
-                        // 장착
-                        PacketDistributor.sendToServer(EquipCosmeticPayload(currentSlot().name, def.id))
-                    }
-                    return true
+                val equippedId = CosmeticClientHandler.myEquipped[currentSlot()]
+                if (def.id == equippedId) {
+                    PacketDistributor.sendToServer(EquipCosmeticPayload(currentSlot().name, ""))
+                } else {
+                    PacketDistributor.sendToServer(EquipCosmeticPayload(currentSlot().name, def.id))
                 }
+                return true
             }
         }
 

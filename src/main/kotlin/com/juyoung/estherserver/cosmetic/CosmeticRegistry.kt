@@ -38,6 +38,24 @@ object CosmeticRegistry {
         register(CosmeticDef("cat_hoodie", EquipmentSlot.CHEST, "cosmetic_cat", "cosmetic.estherserver.cat_hoodie"))
         register(CosmeticDef("cat_pants", EquipmentSlot.LEGS, "cosmetic_cat", "cosmetic.estherserver.cat_pants"))
         register(CosmeticDef("cat_paws", EquipmentSlot.FEET, "cosmetic_cat", "cosmetic.estherserver.cat_paws"))
+
+        // ── 강아지 세트 (Common) ──
+        register(CosmeticDef("dog_ears", EquipmentSlot.HEAD, "cosmetic_dog", "cosmetic.estherserver.dog_ears"))
+        register(CosmeticDef("dog_hoodie", EquipmentSlot.CHEST, "cosmetic_dog", "cosmetic.estherserver.dog_hoodie"))
+        register(CosmeticDef("dog_pants", EquipmentSlot.LEGS, "cosmetic_dog", "cosmetic.estherserver.dog_pants"))
+        register(CosmeticDef("dog_paws", EquipmentSlot.FEET, "cosmetic_dog", "cosmetic.estherserver.dog_paws"))
+
+        // ── 토끼 세트 (Common) ──
+        register(CosmeticDef("rabbit_ears", EquipmentSlot.HEAD, "cosmetic_rabbit", "cosmetic.estherserver.rabbit_ears"))
+        register(CosmeticDef("rabbit_hoodie", EquipmentSlot.CHEST, "cosmetic_rabbit", "cosmetic.estherserver.rabbit_hoodie"))
+        register(CosmeticDef("rabbit_pants", EquipmentSlot.LEGS, "cosmetic_rabbit", "cosmetic.estherserver.rabbit_pants"))
+        register(CosmeticDef("rabbit_paws", EquipmentSlot.FEET, "cosmetic_rabbit", "cosmetic.estherserver.rabbit_paws"))
+
+        // ── 여우 세트 (Common) ──
+        register(CosmeticDef("fox_ears", EquipmentSlot.HEAD, "cosmetic_fox", "cosmetic.estherserver.fox_ears"))
+        register(CosmeticDef("fox_hoodie", EquipmentSlot.CHEST, "cosmetic_fox", "cosmetic.estherserver.fox_hoodie"))
+        register(CosmeticDef("fox_pants", EquipmentSlot.LEGS, "cosmetic_fox", "cosmetic.estherserver.fox_pants"))
+        register(CosmeticDef("fox_paws", EquipmentSlot.FEET, "cosmetic_fox", "cosmetic.estherserver.fox_paws"))
     }
 
     private fun register(def: CosmeticDef) {

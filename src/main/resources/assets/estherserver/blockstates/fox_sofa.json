@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=south": { "model": "estherserver:block/fox_sofa" },
+    "facing=north": { "model": "estherserver:block/fox_sofa", "y": 180 },
+    "facing=east": { "model": "estherserver:block/fox_sofa", "y": 270 },
+    "facing=west": { "model": "estherserver:block/fox_sofa", "y": 90 }
+  }
+}

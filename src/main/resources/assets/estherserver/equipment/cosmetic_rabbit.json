@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "estherserver:cosmetic_rabbit"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "estherserver:cosmetic_rabbit"
+      }
+    ]
+  }
+}
