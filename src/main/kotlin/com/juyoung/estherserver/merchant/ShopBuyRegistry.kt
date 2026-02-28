@@ -40,10 +40,6 @@ object ShopBuyRegistry {
     }
 
     private fun registerSeeds() {
-        register("minecraft:wheat_seeds", 5, ShopCategory.SEEDS)
-        register("minecraft:pumpkin_seeds", 5, ShopCategory.SEEDS)
-        register("minecraft:melon_seeds", 5, ShopCategory.SEEDS)
-        register("minecraft:beetroot_seeds", 5, ShopCategory.SEEDS)
         // Custom seeds - Common
         register("estherserver:rice_seeds", 10, ShopCategory.SEEDS)
         register("estherserver:red_pepper_seeds", 10, ShopCategory.SEEDS)
@@ -69,31 +65,27 @@ object ShopBuyRegistry {
         register("estherserver:green_tea_seeds", 50, ShopCategory.SEEDS)
         register("estherserver:special_farmland", 20, ShopCategory.SEEDS)
         register("estherserver:sprayer", 100, ShopCategory.SEEDS)
+        register("estherserver:watering_can", 500, ShopCategory.SEEDS)
     }
 
     private fun registerFood() {
+        // Vanilla cooking ingredients
+        register("minecraft:wheat", 5, ShopCategory.FOOD)
         register("minecraft:carrot", 5, ShopCategory.FOOD)
         register("minecraft:potato", 5, ShopCategory.FOOD)
-        register("minecraft:apple", 8, ShopCategory.FOOD)
-        register("minecraft:sweet_berries", 5, ShopCategory.FOOD)
-        register("minecraft:bread", 10, ShopCategory.FOOD)
-        register("minecraft:sugar_cane", 8, ShopCategory.FOOD)
-        register("minecraft:cooked_cod", 15, ShopCategory.FOOD)
-        // Vanilla cooking ingredients
+        register("minecraft:sugar_cane", 5, ShopCategory.FOOD)
         register("minecraft:egg", 5, ShopCategory.FOOD)
         register("minecraft:chicken", 8, ShopCategory.FOOD)
-        register("minecraft:wheat", 5, ShopCategory.FOOD)
     }
 
     private fun registerMinerals() {
         register("minecraft:coal", 5, ShopCategory.MINERALS)
         register("minecraft:raw_copper", 8, ShopCategory.MINERALS)
         register("minecraft:lapis_lazuli", 10, ShopCategory.MINERALS)
-        register("minecraft:raw_iron", 12, ShopCategory.MINERALS)
     }
 
     private fun registerSpecial() {
-        register("estherserver:land_deed", 500, ShopCategory.SPECIAL)
+        register("estherserver:draw_ticket_normal", 2000, ShopCategory.SPECIAL)
     }
 
     private fun register(item: String, price: Long, category: ShopCategory) {
