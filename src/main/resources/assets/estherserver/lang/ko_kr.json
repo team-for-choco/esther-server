@@ -408,7 +408,10 @@
   "message.estherserver.redstone_blocked": "이 블록은 설치할 수 없습니다.",
 
   "block.estherserver.wild_portal": "야생 포탈",
+  "block.estherserver.wild_portal_dummy": "야생 포탈",
   "block.estherserver.return_portal": "귀환 포탈",
+  "block.estherserver.return_portal_dummy": "귀환 포탈",
+  "message.estherserver.portal_no_space": "포탈을 설치할 공간이 부족합니다. (1x3 필요)",
   "message.estherserver.wild_teleported": "[야생] 야생 차원으로 이동했습니다! 귀환 포탈이 생성되었습니다.",
   "message.estherserver.wild_returned": "[야생] 오버월드로 돌아왔습니다.",
   "message.estherserver.wild_portal_wrong_dimension": "오버월드에서만 사용할 수 있습니다.",

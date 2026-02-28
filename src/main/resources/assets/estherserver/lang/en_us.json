@@ -401,7 +401,10 @@
   "message.estherserver.redstone_blocked": "This block cannot be placed.",
 
   "block.estherserver.wild_portal": "Wild Portal",
+  "block.estherserver.wild_portal_dummy": "Wild Portal",
   "block.estherserver.return_portal": "Return Portal",
+  "block.estherserver.return_portal_dummy": "Return Portal",
+  "message.estherserver.portal_no_space": "Not enough space for the portal. (1x3 required)",
   "message.estherserver.wild_teleported": "[Wild] Teleported to the wild dimension! A return portal has been created.",
   "message.estherserver.wild_returned": "[Wild] Returned to the overworld.",
   "message.estherserver.wild_portal_wrong_dimension": "Can only be used in the overworld.",

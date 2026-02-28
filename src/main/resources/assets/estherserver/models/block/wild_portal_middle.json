@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "frame": "minecraft:block/obsidian",
+    "energy": "minecraft:block/nether_portal",
+    "particle": "minecraft:block/nether_portal"
+  },
+  "elements": [
+    {
+      "name": "frame_left",
+      "from": [1, 0, 6],
+      "to": [3, 16, 10],
+      "faces": {
+        "north": {"uv": [1, 0, 3, 16], "texture": "#frame"},
+        "south": {"uv": [13, 0, 15, 16], "texture": "#frame"},
+        "west": {"uv": [6, 0, 10, 16], "texture": "#frame"}
+      }
+    },
+    {
+      "name": "frame_right",
+      "from": [13, 0, 6],
+      "to": [15, 16, 10],
+      "faces": {
+        "north": {"uv": [13, 0, 15, 16], "texture": "#frame"},
+        "south": {"uv": [1, 0, 3, 16], "texture": "#frame"},
+        "east": {"uv": [6, 0, 10, 16], "texture": "#frame"}
+      }
+    },
+    {
+      "name": "energy_panel",
+      "from": [3, 0, 7],
+      "to": [13, 16, 9],
+      "faces": {
+        "north": {"uv": [3, 0, 13, 16], "texture": "#energy"},
+        "south": {"uv": [3, 0, 13, 16], "texture": "#energy"}
+      }
+    }
+  ]
+}
