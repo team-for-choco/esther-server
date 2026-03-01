@@ -6,6 +6,7 @@ import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.ClickType
 import net.minecraft.world.inventory.Slot
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import net.minecraft.world.item.ItemStack
@@ -192,6 +193,29 @@ class ProfessionInventoryMenu(
         val profession = getCurrentProfession()
         val expectedItem = EnhancementHandler.EQUIPMENT_MAP[profession]?.get() ?: return false
         return stack.item === expectedItem
+    }
+
+    override fun clicked(slotId: Int, button: Int, clickType: ClickType, player: Player) {
+        // 특수 도구를 창 밖으로 드롭 시도 → 도구 슬롯으로 복원
+        if (slotId == -999) {
+            val carried = carried
+            if (!carried.isEmpty && ProfessionInventoryHandler.isSpecialTool(carried)) {
+                val profession = ProfessionInventoryHandler.getProfessionForSpecialTool(carried)
+                if (profession != null && profession == getCurrentProfession()) {
+                    // 현재 탭과 같은 분야 → toolContainer에 직접 넣기
+                    toolContainer.setItem(0, carried)
+                } else if (profession != null && player is ServerPlayer) {
+                    // 다른 분야 → 데이터에 직접 저장 (현재 탭 저장 시 덮어쓰지 않음)
+                    val data = ProfessionInventoryHandler.getData(player)
+                    data.setTool(profession, carried.copy())
+                    ProfessionInventoryHandler.saveData(player, data)
+                }
+                setCarried(ItemStack.EMPTY)
+                broadcastChanges()
+                return
+            }
+        }
+        super.clicked(slotId, button, clickType, player)
     }
 
     override fun stillValid(player: Player): Boolean = true
