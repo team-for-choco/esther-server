@@ -96,6 +96,7 @@ object ProfessionBonusHelper {
 
     private val fishGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
     private val cropGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
+    private val oreRawGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
     private val recipeGradeMap = mutableMapOf<ResourceLocation, ContentGrade>()
 
     fun initContentGrades() {
@@ -144,6 +145,22 @@ object ProfessionBonusHelper {
         registerCropGrade("estherserver:yuzu", ContentGrade.RARE)
         registerCropGrade("estherserver:green_tea", ContentGrade.RARE)
 
+        // Ore raw grades - Common
+        registerOreRawGrade("estherserver:tin_ore_raw", ContentGrade.COMMON)
+        registerOreRawGrade("estherserver:zinc_ore_raw", ContentGrade.COMMON)
+        registerOreRawGrade("estherserver:jade_raw", ContentGrade.COMMON)
+        // Ore raw grades - Advanced
+        registerOreRawGrade("estherserver:silver_ore_raw", ContentGrade.ADVANCED)
+        registerOreRawGrade("estherserver:ruby_raw", ContentGrade.ADVANCED)
+        registerOreRawGrade("estherserver:sapphire_raw", ContentGrade.ADVANCED)
+        registerOreRawGrade("estherserver:titanium_ore_raw", ContentGrade.ADVANCED)
+        // Ore raw grades - Rare
+        registerOreRawGrade("estherserver:platinum_ore_raw", ContentGrade.RARE)
+        registerOreRawGrade("estherserver:opal_raw", ContentGrade.RARE)
+        registerOreRawGrade("estherserver:tanzanite_raw", ContentGrade.RARE)
+        // Special
+        registerOreRawGrade("estherserver:obsidian_shard", ContentGrade.COMMON)
+
         // Recipe grades - Common
         registerRecipeGrade("estherserver:spinach_bibimbap", ContentGrade.COMMON)
         registerRecipeGrade("estherserver:fish_stew", ContentGrade.COMMON)
@@ -181,17 +198,22 @@ object ProfessionBonusHelper {
         cropGradeMap[ResourceLocation.parse(item)] = grade
     }
 
+    fun registerOreRawGrade(item: String, grade: ContentGrade) {
+        oreRawGradeMap[ResourceLocation.parse(item)] = grade
+    }
+
     fun registerRecipeGrade(item: String, grade: ContentGrade) {
         recipeGradeMap[ResourceLocation.parse(item)] = grade
     }
 
     fun getFishGrade(itemId: ResourceLocation): ContentGrade? = fishGradeMap[itemId]
     fun getCropGrade(itemId: ResourceLocation): ContentGrade? = cropGradeMap[itemId]
+    fun getOreRawGrade(itemId: ResourceLocation): ContentGrade? = oreRawGradeMap[itemId]
     fun getRecipeGrade(itemId: ResourceLocation): ContentGrade? = recipeGradeMap[itemId]
 
-    /** Get the content grade for any custom item (fish, crop, or recipe) */
+    /** Get the content grade for any custom item (fish, crop, ore, or recipe) */
     fun getContentGradeForItem(itemId: ResourceLocation): ContentGrade? =
-        fishGradeMap[itemId] ?: cropGradeMap[itemId] ?: recipeGradeMap[itemId]
+        fishGradeMap[itemId] ?: cropGradeMap[itemId] ?: oreRawGradeMap[itemId] ?: recipeGradeMap[itemId]
 
     /** Get display grade including seeds (seed inherits its crop's grade) */
     fun getDisplayGradeForItem(itemId: ResourceLocation): ContentGrade? {
