@@ -188,6 +188,7 @@ object ItemPriceRegistry {
         register("minecraft:raw_copper", 3, ShopCategory.MINERALS)
         register("minecraft:iron_ingot", 10, ShopCategory.MINERALS)
         register("minecraft:gold_ingot", 15, ShopCategory.MINERALS)
+        register("minecraft:gold_nugget", 2, ShopCategory.MINERALS)
         register("minecraft:copper_ingot", 5, ShopCategory.MINERALS)
         register("minecraft:diamond", 50, ShopCategory.MINERALS)
         register("minecraft:emerald", 30, ShopCategory.MINERALS)
@@ -196,6 +197,7 @@ object ItemPriceRegistry {
         register("minecraft:quartz", 4, ShopCategory.MINERALS)
         register("minecraft:amethyst_shard", 4, ShopCategory.MINERALS)
         register("minecraft:netherite_scrap", 100, ShopCategory.MINERALS)
+        register("minecraft:ancient_debris", 100, ShopCategory.MINERALS)
 
         // Mob drops
         register("minecraft:leather", 3, ShopCategory.SPECIAL)

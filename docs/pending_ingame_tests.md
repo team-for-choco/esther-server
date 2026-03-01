@@ -113,6 +113,14 @@
 - [ ] 요리 판매 시 순이익 발생 확인
 - [ ] 일반 뽑기권 구매 가능 확인
 
+## CHOCO-127 — 커스텀 광물 감지 + 상인 목록 보완
+> 원본: [20260228_ore_detect_merchant_fix.md](20260228_ore_detect_merchant_fix.md)
+
+- [ ] 커스텀 광물 근처에서 Lv5 곡괭이 들고 색상별 파티클 표시 확인
+- [ ] 네더 석영/고대 잔해 근처에서 파티클 표시 확인
+- [ ] 광물 상인에서 gold_nugget 판매 가능 확인
+- [ ] 광물 상인에서 ancient_debris 판매 가능 확인
+
 ## CHOCO-126 — 텍스처 조정 (Phase 11-5)
 > 원본: [20260228_texture_adjustment.md](20260228_texture_adjustment.md)
 

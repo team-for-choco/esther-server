@@ -1,6 +1,7 @@
 package com.juyoung.estherserver.profession
 
 import com.juyoung.estherserver.EstherServerMod
+import com.juyoung.estherserver.EstherServerMod.Companion as Mod
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.DustParticleOptions
@@ -8,10 +9,13 @@ import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.tags.BlockTags
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.Vec3
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.tick.ServerTickEvent
+import net.neoforged.neoforge.registries.DeferredBlock
 
 object OreVeinDetector {
 
@@ -29,6 +33,7 @@ object OreVeinDetector {
 
     // 광물별 파티클 색상 (0xRRGGBB)
     private fun getOreParticle(state: BlockState): DustParticleOptions? = when {
+        // 바닐라 광물
         state.`is`(BlockTags.COAL_ORES) -> dust(0x4D4D4D)
         state.`is`(BlockTags.IRON_ORES) -> dust(0xD9A088)
         state.`is`(BlockTags.COPPER_ORES) -> dust(0xE07850)
@@ -37,8 +42,27 @@ object OreVeinDetector {
         state.`is`(BlockTags.EMERALD_ORES) -> dust(0x33E64D)
         state.`is`(BlockTags.LAPIS_ORES) -> dust(0x334DE6)
         state.`is`(BlockTags.REDSTONE_ORES) -> dust(0xE61A1A)
+        // 네더 광물
+        state.`is`(Blocks.NETHER_QUARTZ_ORE) -> dust(0xF0E0D0)
+        state.`is`(Blocks.ANCIENT_DEBRIS) -> dust(0x6B4226)
+        // 커스텀 광물 — 일반
+        state.isCustomOre(Mod.TIN_ORE, Mod.DEEPSLATE_TIN_ORE) -> dust(0xC0C0C0)
+        state.isCustomOre(Mod.ZINC_ORE, Mod.DEEPSLATE_ZINC_ORE) -> dust(0xA8B0B0)
+        state.isCustomOre(Mod.JADE_ORE, Mod.DEEPSLATE_JADE_ORE) -> dust(0x80C080)
+        // 커스텀 광물 — 고급
+        state.isCustomOre(Mod.SILVER_ORE, Mod.DEEPSLATE_SILVER_ORE) -> dust(0xE8E8F0)
+        state.isCustomOre(Mod.RUBY_ORE, Mod.DEEPSLATE_RUBY_ORE) -> dust(0xFF3040)
+        state.isCustomOre(Mod.SAPPHIRE_ORE, Mod.DEEPSLATE_SAPPHIRE_ORE) -> dust(0x3060FF)
+        state.isCustomOre(Mod.TITANIUM_ORE, Mod.DEEPSLATE_TITANIUM_ORE) -> dust(0x8888AA)
+        // 커스텀 광물 — 희귀
+        state.isCustomOre(Mod.PLATINUM_ORE, Mod.DEEPSLATE_PLATINUM_ORE) -> dust(0xF0F0FF)
+        state.isCustomOre(Mod.OPAL_ORE, Mod.DEEPSLATE_OPAL_ORE) -> dust(0xFF90E0)
+        state.isCustomOre(Mod.TANZANITE_ORE, Mod.DEEPSLATE_TANZANITE_ORE) -> dust(0x8040FF)
         else -> null
     }
+
+    private fun BlockState.isCustomOre(vararg ores: DeferredBlock<Block>): Boolean =
+        ores.any { `is`(it.get()) }
 
     private fun dust(color: Int) = DustParticleOptions(color, 1.5f)
 
