@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.Slot
+import com.juyoung.estherserver.enhancement.EnhancementHandler
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.network.PacketDistributor
 
@@ -17,17 +18,22 @@ class ProfessionInventoryMenu(
 
     companion object {
         const val PROFESSION_SLOT_COUNT = 25
+        const val TOOL_SLOT_INDEX = 25
+        const val TOTAL_PROFESSION_SLOTS = 26 // 25 storage + 1 tool
         const val SLOTS_PER_ROW = 5
         const val ROWS = 5
 
         const val PROFESSION_SLOT_X = 95
         const val PROFESSION_SLOT_Y = 40
+        const val TOOL_SLOT_X = 55
+        const val TOOL_SLOT_Y = 75
         const val PLAYER_INV_X = 59
         const val PLAYER_INV_Y = 142
         const val HOTBAR_Y = 200
     }
 
     val professionContainer = SimpleContainer(PROFESSION_SLOT_COUNT)
+    val toolContainer = SimpleContainer(1)
     private val player: Player = playerInventory.player
 
     var currentTab = 0
@@ -46,6 +52,13 @@ class ProfessionInventoryMenu(
                 ))
             }
         }
+
+        // Tool slot (index 25)
+        addSlot(ProfessionToolSlot(
+            toolContainer, 0,
+            TOOL_SLOT_X, TOOL_SLOT_Y,
+            this
+        ))
 
         // Player inventory (3x9)
         for (row in 0 until 3) {
@@ -101,6 +114,7 @@ class ProfessionInventoryMenu(
         for (i in 0 until PROFESSION_SLOT_COUNT) {
             data.setItem(profession, i, professionContainer.getItem(i))
         }
+        data.setTool(profession, toolContainer.getItem(0))
         ProfessionInventoryHandler.saveData(serverPlayer, data)
     }
 
@@ -114,11 +128,13 @@ class ProfessionInventoryMenu(
             for (i in 0 until PROFESSION_SLOT_COUNT) {
                 professionContainer.setItem(i, data.getItem(profession, i).copy())
             }
+            toolContainer.setItem(0, data.getTool(profession).copy())
         } else {
             unlockedSlots = 0
             for (i in 0 until PROFESSION_SLOT_COUNT) {
                 professionContainer.setItem(i, ItemStack.EMPTY)
             }
+            toolContainer.setItem(0, ItemStack.EMPTY)
         }
     }
 
@@ -129,15 +145,32 @@ class ProfessionInventoryMenu(
         val stack = slot.item
         val original = stack.copy()
 
+        val playerSlotsStart = TOTAL_PROFESSION_SLOTS
+        val playerSlotsEnd = TOTAL_PROFESSION_SLOTS + 36
+
         if (index < PROFESSION_SLOT_COUNT) {
-            // Profession slot -> Player inventory
-            if (!moveItemStackTo(stack, PROFESSION_SLOT_COUNT, PROFESSION_SLOT_COUNT + 36, true)) {
+            // Profession storage slot -> Player inventory
+            if (!moveItemStackTo(stack, playerSlotsStart, playerSlotsEnd, true)) {
+                return ItemStack.EMPTY
+            }
+        } else if (index == TOOL_SLOT_INDEX) {
+            // Tool slot -> Player inventory
+            if (!moveItemStackTo(stack, playerSlotsStart, playerSlotsEnd, true)) {
                 return ItemStack.EMPTY
             }
         } else {
-            // Profession tab: move to profession slots
-            if (!moveItemStackTo(stack, 0, PROFESSION_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY
+            // Player inventory -> try tool slot first for special tools, then profession slots
+            if (isSpecialToolForCurrentTab(stack)) {
+                if (!moveItemStackTo(stack, TOOL_SLOT_INDEX, TOOL_SLOT_INDEX + 1, false)) {
+                    // Tool slot full, try profession slots
+                    if (!moveItemStackTo(stack, 0, PROFESSION_SLOT_COUNT, false)) {
+                        return ItemStack.EMPTY
+                    }
+                }
+            } else {
+                if (!moveItemStackTo(stack, 0, PROFESSION_SLOT_COUNT, false)) {
+                    return ItemStack.EMPTY
+                }
             }
         }
 
@@ -153,6 +186,12 @@ class ProfessionInventoryMenu(
 
         slot.onTake(player, stack)
         return original
+    }
+
+    private fun isSpecialToolForCurrentTab(stack: ItemStack): Boolean {
+        val profession = getCurrentProfession()
+        val expectedItem = EnhancementHandler.EQUIPMENT_MAP[profession]?.get() ?: return false
+        return stack.item === expectedItem
     }
 
     override fun stillValid(player: Player): Boolean = true

@@ -51,8 +51,11 @@ class ProfessionInventoryContainerScreen(
         // Profession slot backgrounds
         renderProfessionSlotBackgrounds(guiGraphics)
 
-        // Player inventory slot backgrounds
-        for (i in ProfessionInventoryMenu.PROFESSION_SLOT_COUNT until menu.slots.size) {
+        // Tool slot
+        renderToolSlot(guiGraphics)
+
+        // Player inventory slot backgrounds (skip tool slot at TOOL_SLOT_INDEX)
+        for (i in ProfessionInventoryMenu.TOTAL_PROFESSION_SLOTS until menu.slots.size) {
             val slot = menu.slots[i]
             guiGraphics.fill(
                 leftPos + slot.x - 1, topPos + slot.y - 1,
@@ -120,6 +123,26 @@ class ProfessionInventoryContainerScreen(
                 }
             }
         }
+    }
+
+    private fun renderToolSlot(guiGraphics: GuiGraphics) {
+        val slot = menu.slots[ProfessionInventoryMenu.TOOL_SLOT_INDEX]
+        val sx = leftPos + slot.x
+        val sy = topPos + slot.y
+
+        // Special border (golden/highlight)
+        guiGraphics.fill(sx - 2, sy - 2, sx + 18, sy + 18, GuiTheme.PANEL_BORDER_LIGHT)
+        guiGraphics.fill(sx - 1, sy - 1, sx + 17, sy + 17, GuiTheme.SLOT_BG)
+        guiGraphics.fill(sx, sy, sx + 16, sy + 16, GuiTheme.SLOT_INNER)
+
+        // Label above
+        val label = Component.translatable("gui.estherserver.tool_slot")
+        guiGraphics.drawString(
+            font, label,
+            sx + 8 - font.width(label) / 2,
+            sy - 12,
+            GuiTheme.TEXT_MUTED
+        )
     }
 
     override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {

@@ -620,5 +620,8 @@
   "item.estherserver.cosmetic_fox_head": "치장 여우 모자 (렌더링용)",
   "item.estherserver.cosmetic_fox_chest": "치장 여우 상의 (렌더링용)",
   "item.estherserver.cosmetic_fox_legs": "치장 여우 하의 (렌더링용)",
-  "item.estherserver.cosmetic_fox_feet": "치장 여우 신발 (렌더링용)"
+  "item.estherserver.cosmetic_fox_feet": "치장 여우 신발 (렌더링용)",
+
+  "message.estherserver.special_tool_no_drop": "특수 도구는 버릴 수 없습니다.",
+  "gui.estherserver.tool_slot": "도구"
 }

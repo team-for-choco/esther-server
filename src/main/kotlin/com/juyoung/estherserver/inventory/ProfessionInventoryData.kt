@@ -9,7 +9,8 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
 
 class ProfessionInventoryData(
-    private val inventories: MutableMap<Profession, MutableList<ItemStack>> = mutableMapOf()
+    private val inventories: MutableMap<Profession, MutableList<ItemStack>> = mutableMapOf(),
+    private val toolSlots: MutableMap<Profession, ItemStack> = mutableMapOf()
 ) {
     companion object {
         const val MAX_SLOTS = 25
@@ -35,6 +36,18 @@ class ProfessionInventoryData(
                     data.inventories[profession] = items
                 }
             }
+            // Tool slots
+            if (tag.contains("Tools")) {
+                val toolsTag = tag.getCompound("Tools")
+                for (profession in Profession.entries) {
+                    if (toolsTag.contains(profession.name)) {
+                        val stack = ItemStack.parse(registries, toolsTag.getCompound(profession.name))
+                        if (stack.isPresent) {
+                            data.toolSlots[profession] = stack.get()
+                        }
+                    }
+                }
+            }
             return data
         }
 
@@ -54,6 +67,13 @@ class ProfessionInventoryData(
                             data.inventories[Profession.entries[ordinal]] = items
                         }
                     }
+                    // Tool slots
+                    for (profession in Profession.entries) {
+                        val toolStack = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf)
+                        if (!toolStack.isEmpty) {
+                            data.toolSlots[profession] = toolStack
+                        }
+                    }
                     return data
                 }
 
@@ -66,6 +86,10 @@ class ProfessionInventoryData(
                         for (stack in items) {
                             ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, stack)
                         }
+                    }
+                    // Tool slots
+                    for (profession in Profession.entries) {
+                        ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, value.getTool(profession))
                     }
                 }
             }
@@ -84,6 +108,16 @@ class ProfessionInventoryData(
             }
             tag.put(profession.name, listTag)
         }
+        // Tool slots
+        if (toolSlots.isNotEmpty()) {
+            val toolsTag = CompoundTag()
+            for ((profession, stack) in toolSlots) {
+                if (!stack.isEmpty) {
+                    toolsTag.put(profession.name, stack.save(registries))
+                }
+            }
+            tag.put("Tools", toolsTag)
+        }
         return tag
     }
 
@@ -101,6 +135,17 @@ class ProfessionInventoryData(
             items.add(ItemStack.EMPTY)
         }
         items[slot] = stack
+    }
+
+    fun getTool(profession: Profession): ItemStack =
+        toolSlots.getOrDefault(profession, ItemStack.EMPTY)
+
+    fun setTool(profession: Profession, stack: ItemStack) {
+        if (stack.isEmpty) {
+            toolSlots.remove(profession)
+        } else {
+            toolSlots[profession] = stack
+        }
     }
 
     fun getUsedSlotCount(profession: Profession): Int =
