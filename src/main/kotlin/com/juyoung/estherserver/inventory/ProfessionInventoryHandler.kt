@@ -20,7 +20,12 @@ object ProfessionInventoryHandler {
 
     fun isSpecialTool(stack: ItemStack): Boolean {
         if (stack.isEmpty) return false
-        return EnhancementHandler.EQUIPMENT_MAP.values.any { it.get() === stack.item }
+        return isSpecialToolItem(stack.item)
+    }
+
+    /** Item 타입으로 특수 도구 판별 (count가 0이어도 동작) */
+    fun isSpecialToolItem(item: net.minecraft.world.item.Item): Boolean {
+        return EnhancementHandler.EQUIPMENT_MAP.values.any { it.get() === item }
     }
 
     fun getProfessionForSpecialTool(stack: ItemStack): Profession? {
@@ -28,11 +33,19 @@ object ProfessionInventoryHandler {
         return EnhancementHandler.EQUIPMENT_MAP.entries.firstOrNull { it.value.get() === stack.item }?.key
     }
 
-    /** 특수 도구를 해당 전문 보관함 도구 슬롯에 저장. 인벤토리에서 제거 후 보관함으로. */
+    /** Item 타입으로 분야 판별 (count가 0이어도 동작) */
+    private fun getProfessionForSpecialToolItem(item: net.minecraft.world.item.Item): Profession? {
+        return EnhancementHandler.EQUIPMENT_MAP.entries.firstOrNull { it.value.get() === item }?.key
+    }
+
+    /** 특수 도구를 해당 전문 보관함 도구 슬롯에 저장 */
     private fun storeToolToSlot(player: ServerPlayer, stack: ItemStack) {
-        val profession = getProfessionForSpecialTool(stack) ?: return
+        // drop() 이후 count=0이 될 수 있으므로 Item 타입으로 분야 판별
+        val profession = getProfessionForSpecialToolItem(stack.item) ?: return
         val data = getData(player)
-        data.setTool(profession, stack.copy())
+        // count가 0이면 copyWithCount(1)로 유효한 스택 생성 (컴포넌트 보존)
+        val validStack = if (stack.count <= 0) stack.copyWithCount(1) else stack.copy()
+        data.setTool(profession, validStack)
         saveData(player, data)
         syncToClient(player)
     }
@@ -52,13 +65,11 @@ object ProfessionInventoryHandler {
     @SubscribeEvent
     fun onItemToss(event: ItemTossEvent) {
         val stack = event.entity.item
-        if (isSpecialTool(stack)) {
+        // drop() 이후 count=0이 될 수 있으므로 Item 타입으로 체크
+        if (isSpecialToolItem(stack.item)) {
             event.isCanceled = true
             val player = event.player
             if (player is ServerPlayer) {
-                // 플레이어 인벤토리에서 해당 도구 제거 (이미 드롭 처리로 빠진 상태)
-                // ItemTossEvent cancel 시 아이템은 월드에 안 떨어지지만 인벤토리에서도 빠진 상태
-                // → 보관함 도구 슬롯으로 직접 저장
                 storeToolToSlot(player, stack)
                 player.sendSystemMessage(
                     Component.translatable("message.estherserver.special_tool_to_storage")
