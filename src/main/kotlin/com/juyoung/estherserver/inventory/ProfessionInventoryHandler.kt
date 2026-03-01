@@ -23,6 +23,20 @@ object ProfessionInventoryHandler {
         return EnhancementHandler.EQUIPMENT_MAP.values.any { it.get() === stack.item }
     }
 
+    fun getProfessionForSpecialTool(stack: ItemStack): Profession? {
+        if (stack.isEmpty) return null
+        return EnhancementHandler.EQUIPMENT_MAP.entries.firstOrNull { it.value.get() === stack.item }?.key
+    }
+
+    /** 특수 도구를 해당 전문 보관함 도구 슬롯에 저장. 인벤토리에서 제거 후 보관함으로. */
+    private fun storeToolToSlot(player: ServerPlayer, stack: ItemStack) {
+        val profession = getProfessionForSpecialTool(stack) ?: return
+        val data = getData(player)
+        data.setTool(profession, stack.copy())
+        saveData(player, data)
+        syncToClient(player)
+    }
+
     @SubscribeEvent
     fun onPlayerLoggedIn(event: PlayerEvent.PlayerLoggedInEvent) {
         val player = event.entity as? ServerPlayer ?: return
@@ -41,13 +55,13 @@ object ProfessionInventoryHandler {
         if (isSpecialTool(stack)) {
             event.isCanceled = true
             val player = event.player
-            if (!player.inventory.add(stack)) {
-                // 인벤토리에 자리가 없으면 원래 슬롯에 강제 복원 시도
-                player.inventory.add(stack)
-            }
             if (player is ServerPlayer) {
+                // 플레이어 인벤토리에서 해당 도구 제거 (이미 드롭 처리로 빠진 상태)
+                // ItemTossEvent cancel 시 아이템은 월드에 안 떨어지지만 인벤토리에서도 빠진 상태
+                // → 보관함 도구 슬롯으로 직접 저장
+                storeToolToSlot(player, stack)
                 player.sendSystemMessage(
-                    Component.translatable("message.estherserver.special_tool_no_drop")
+                    Component.translatable("message.estherserver.special_tool_to_storage")
                 )
             }
         }
@@ -71,26 +85,26 @@ object ProfessionInventoryHandler {
 
         if (original.server.gameRules.getBoolean(GameRules.RULE_KEEPINVENTORY)) return
 
-        // 이전 플레이어 인벤토리에서 특수 도구 수집
-        val toolsToRestore = mutableListOf<ItemStack>()
+        // 새 플레이어의 보관함 데이터 준비
+        val newData = getData(newPlayer)
+
+        // 이전 플레이어 인벤토리에서 특수 도구 수집 → 보관함 도구 슬롯으로
         for (stack in original.inventory.items) {
             if (isSpecialTool(stack)) {
-                toolsToRestore.add(stack.copy())
+                val profession = getProfessionForSpecialTool(stack) ?: continue
+                newData.setTool(profession, stack.copy())
             }
         }
-        // 전문 보관함 도구 슬롯에서도 수집
+        // 이전 보관함 도구 슬롯에서도 수집 → 새 보관함 도구 슬롯으로
         val profData = original.getData(ModInventory.PROFESSION_INVENTORY.get())
         for (profession in Profession.entries) {
             val tool = profData.getTool(profession)
             if (!tool.isEmpty && isSpecialTool(tool)) {
-                toolsToRestore.add(tool.copy())
+                newData.setTool(profession, tool.copy())
             }
         }
 
-        // 새 플레이어에게 복원
-        for (tool in toolsToRestore) {
-            newPlayer.inventory.add(tool)
-        }
+        saveData(newPlayer, newData)
     }
 
     @SubscribeEvent

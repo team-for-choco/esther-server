@@ -616,5 +616,6 @@
   "item.estherserver.cosmetic_fox_feet": "Cosmetic Fox Feet (Render)",
 
   "message.estherserver.special_tool_no_drop": "Special tools cannot be dropped.",
+  "message.estherserver.special_tool_to_storage": "Special tool moved to profession storage.",
   "gui.estherserver.tool_slot": "Tool"
 }
