@@ -1,18 +1,54 @@
 package com.juyoung.estherserver.inventory
 
+import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.juyoung.estherserver.profession.ProfessionHandler
 import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.GameRules
 import net.minecraft.world.item.ItemStack
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent
+import net.neoforged.neoforge.event.entity.item.ItemTossEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.network.PacketDistributor
 
 object ProfessionInventoryHandler {
+
+    fun isSpecialTool(stack: ItemStack): Boolean {
+        if (stack.isEmpty) return false
+        return isSpecialToolItem(stack.item)
+    }
+
+    /** Item 타입으로 특수 도구 판별 (count가 0이어도 동작) */
+    fun isSpecialToolItem(item: net.minecraft.world.item.Item): Boolean {
+        return EnhancementHandler.EQUIPMENT_MAP.values.any { it.get() === item }
+    }
+
+    fun getProfessionForSpecialTool(stack: ItemStack): Profession? {
+        if (stack.isEmpty) return null
+        return EnhancementHandler.EQUIPMENT_MAP.entries.firstOrNull { it.value.get() === stack.item }?.key
+    }
+
+    /** Item 타입으로 분야 판별 (count가 0이어도 동작) */
+    private fun getProfessionForSpecialToolItem(item: net.minecraft.world.item.Item): Profession? {
+        return EnhancementHandler.EQUIPMENT_MAP.entries.firstOrNull { it.value.get() === item }?.key
+    }
+
+    /** 특수 도구를 해당 전문 보관함 도구 슬롯에 저장 */
+    private fun storeToolToSlot(player: ServerPlayer, stack: ItemStack) {
+        // drop() 이후 count=0이 될 수 있으므로 Item 타입으로 분야 판별
+        val profession = getProfessionForSpecialToolItem(stack.item) ?: return
+        val data = getData(player)
+        // count가 0이면 copyWithCount(1)로 유효한 스택 생성 (컴포넌트 보존)
+        val validStack = if (stack.count <= 0) stack.copyWithCount(1) else stack.copy()
+        data.setTool(profession, validStack)
+        saveData(player, data)
+        syncToClient(player)
+    }
 
     @SubscribeEvent
     fun onPlayerLoggedIn(event: PlayerEvent.PlayerLoggedInEvent) {
@@ -24,6 +60,62 @@ object ProfessionInventoryHandler {
     fun onPlayerChangedDimension(event: PlayerEvent.PlayerChangedDimensionEvent) {
         val player = event.entity as? ServerPlayer ?: return
         syncToClient(player)
+    }
+
+    @SubscribeEvent
+    fun onItemToss(event: ItemTossEvent) {
+        val stack = event.entity.item
+        // drop() 이후 count=0이 될 수 있으므로 Item 타입으로 체크
+        if (isSpecialToolItem(stack.item)) {
+            event.isCanceled = true
+            val player = event.player
+            if (player is ServerPlayer) {
+                storeToolToSlot(player, stack)
+                player.sendSystemMessage(
+                    Component.translatable("message.estherserver.special_tool_to_storage")
+                )
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun onLivingDrops(event: LivingDropsEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        if (player.server.gameRules.getBoolean(GameRules.RULE_KEEPINVENTORY)) return
+
+        event.drops.removeIf { itemEntity ->
+            isSpecialTool(itemEntity.item)
+        }
+    }
+
+    @SubscribeEvent
+    fun onPlayerClone(event: PlayerEvent.Clone) {
+        if (!event.isWasDeath) return // 엔드 포탈 등 — 사망 아님
+        val original = event.original as? ServerPlayer ?: return
+        val newPlayer = event.entity as? ServerPlayer ?: return
+
+        if (original.server.gameRules.getBoolean(GameRules.RULE_KEEPINVENTORY)) return
+
+        // 새 플레이어의 보관함 데이터 준비
+        val newData = getData(newPlayer)
+
+        // 이전 플레이어 인벤토리에서 특수 도구 수집 → 보관함 도구 슬롯으로
+        for (stack in original.inventory.items) {
+            if (isSpecialTool(stack)) {
+                val profession = getProfessionForSpecialTool(stack) ?: continue
+                newData.setTool(profession, stack.copy())
+            }
+        }
+        // 이전 보관함 도구 슬롯에서도 수집 → 새 보관함 도구 슬롯으로
+        val profData = original.getData(ModInventory.PROFESSION_INVENTORY.get())
+        for (profession in Profession.entries) {
+            val tool = profData.getTool(profession)
+            if (!tool.isEmpty && isSpecialTool(tool)) {
+                newData.setTool(profession, tool.copy())
+            }
+        }
+
+        saveData(newPlayer, newData)
     }
 
     @SubscribeEvent
@@ -39,8 +131,17 @@ object ProfessionInventoryHandler {
                     player.drop(stack.copy(), true, false)
                 }
             }
+            // 도구 슬롯은 드롭하지 않음 (Clone에서 복원)
         }
-        saveData(player, ProfessionInventoryData())
+        // 전문 보관함 초기화 시 도구 슬롯도 보존
+        val newData = ProfessionInventoryData()
+        for (profession in Profession.entries) {
+            val tool = data.getTool(profession)
+            if (!tool.isEmpty) {
+                newData.setTool(profession, tool.copy())
+            }
+        }
+        saveData(player, newData)
     }
 
     fun getAvailableSlots(player: ServerPlayer, profession: Profession): Int {

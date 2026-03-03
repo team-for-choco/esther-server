@@ -6,7 +6,9 @@
   "mixins": [
     "EstherServerMixin",
     "FishingHookAccessor",
-    "OreFeatureMixin"
+    "OreFeatureMixin",
+    "SpecialToolSlotMixin",
+    "SpecialToolContainerMixin"
   ],
   "server": [],
   "client": [
