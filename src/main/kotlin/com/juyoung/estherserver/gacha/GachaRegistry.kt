@@ -29,7 +29,7 @@ object GachaRegistry {
         // 화폐 + 만년 수프: 70%
         pools[POOL_NORMAL] = GachaRewardPool(POOL_NORMAL)
             .addEntry(GachaRewardEntry(
-                type = RewardType.CURRENCY, weight = 190,
+                type = RewardType.CURRENCY, weight = 170,
                 displayKey = "message.estherserver.gacha_currency_100",
                 displayItemId = "minecraft:gold_ingot",
                 currencyAmount = 100
@@ -130,6 +130,12 @@ object GachaRegistry {
                 displayKey = "item.estherserver.land_deed",
                 displayItemId = "estherserver:land_deed",
                 itemSupplier = Supplier { ItemStack(Mod.LAND_DEED.get()) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 20,
+                displayKey = "item.estherserver.inventory_save_ticket",
+                displayItemId = "estherserver:inventory_save_ticket",
+                itemSupplier = Supplier { ItemStack(Mod.INVENTORY_SAVE_TICKET.get()) }
             ))
 
         // ─── 펫 뽑기권 ───

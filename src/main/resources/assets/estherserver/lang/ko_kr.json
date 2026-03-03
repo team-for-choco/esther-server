@@ -624,5 +624,8 @@
 
   "message.estherserver.special_tool_no_drop": "특수 도구는 버릴 수 없습니다.",
   "message.estherserver.special_tool_to_storage": "특수 도구가 전문 보관함으로 이동했습니다.",
-  "gui.estherserver.tool_slot": "도구"
+  "gui.estherserver.tool_slot": "도구",
+
+  "item.estherserver.inventory_save_ticket": "인벤토리 세이브권",
+  "message.estherserver.inventory_saved": "인벤토리 세이브권이 사용되어 인벤토리가 보존되었습니다!"
 }
