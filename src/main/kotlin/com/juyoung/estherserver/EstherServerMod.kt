@@ -64,6 +64,7 @@ import com.juyoung.estherserver.cooking.ModCooking
 import com.juyoung.estherserver.inventory.ModInventory
 import com.juyoung.estherserver.inventory.ProfessionInventoryClientHandler
 import com.juyoung.estherserver.inventory.ProfessionInventoryContainerScreen
+import com.juyoung.estherserver.inventory.InventorySaveHandler
 import com.juyoung.estherserver.inventory.ProfessionInventoryHandler
 import com.juyoung.estherserver.inventory.ProfessionInventoryMenu
 import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
@@ -1048,7 +1049,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(ClaimProtectionHandler)
         NeoForge.EVENT_BUS.register(EconomyHandler)
         NeoForge.EVENT_BUS.register(ProfessionHandler)
-        NeoForge.EVENT_BUS.register(com.juyoung.estherserver.inventory.InventorySaveHandler)
+        NeoForge.EVENT_BUS.register(InventorySaveHandler)
         NeoForge.EVENT_BUS.register(ProfessionInventoryHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.OreVeinDetector)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.item.AutoFishHandler)
