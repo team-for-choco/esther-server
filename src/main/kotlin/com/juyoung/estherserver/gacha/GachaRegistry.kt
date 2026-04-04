@@ -47,22 +47,28 @@ object GachaRegistry {
                 currencyAmount = 500
             ))
             .addEntry(GachaRewardEntry(
-                type = RewardType.ITEM, weight = 190,
+                type = RewardType.ITEM, weight = 170,
                 displayKey = "item.estherserver.hunters_pot",
                 displayItemId = "estherserver:hunters_pot",
                 itemSupplier = Supplier { ItemStack(Mod.HUNTERS_POT.get(), 10) }
             ))
             .addEntry(GachaRewardEntry(
-                type = RewardType.ITEM, weight = 100,
+                type = RewardType.ITEM, weight = 80,
                 displayKey = "item.estherserver.hunters_pot",
                 displayItemId = "estherserver:hunters_pot",
                 itemSupplier = Supplier { ItemStack(Mod.HUNTERS_POT.get(), 30) }
             ))
             .addEntry(GachaRewardEntry(
-                type = RewardType.ITEM, weight = 40,
+                type = RewardType.ITEM, weight = 20,
                 displayKey = "item.estherserver.hunters_pot",
                 displayItemId = "estherserver:hunters_pot",
                 itemSupplier = Supplier { ItemStack(Mod.HUNTERS_POT.get(), 50) }
+            ))
+            .addEntry(GachaRewardEntry(
+                type = RewardType.ITEM, weight = 60,
+                displayKey = "item.estherserver.town_return_scroll",
+                displayItemId = "estherserver:town_return_scroll",
+                itemSupplier = Supplier { ItemStack(Mod.TOWN_RETURN_SCROLL.get()) }
             ))
             // 기타: 30%
             .addEntry(GachaRewardEntry(
