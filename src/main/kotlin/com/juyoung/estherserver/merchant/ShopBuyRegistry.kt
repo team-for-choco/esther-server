@@ -86,6 +86,7 @@ object ShopBuyRegistry {
 
     private fun registerSpecial() {
         register("estherserver:draw_ticket_normal", 2000, ShopCategory.SPECIAL)
+        register("estherserver:town_return_scroll", 500, ShopCategory.SPECIAL)
     }
 
     private fun register(item: String, price: Long, category: ShopCategory) {
