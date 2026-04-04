@@ -11,7 +11,7 @@ object QuestCommand {
 
     fun register(dispatcher: CommandDispatcher<CommandSourceStack>) {
         dispatcher.register(
-            Commands.literal("quest")
+            Commands.literal("퀘스트")
                 .then(
                     Commands.literal("admin")
                         .requires { it.hasPermission(2) }
@@ -56,7 +56,7 @@ object QuestCommand {
                         )
                 )
                 .then(
-                    Commands.literal("info")
+                    Commands.literal("정보")
                         .executes { context ->
                             showQuestInfo(context.source, context.source.playerOrException)
                         }

@@ -14,42 +14,42 @@ object ClaimCommand {
 
     fun register(dispatcher: CommandDispatcher<CommandSourceStack>) {
         dispatcher.register(
-            Commands.literal("claim")
+            Commands.literal("토지")
                 .then(
-                    Commands.literal("info")
+                    Commands.literal("정보")
                         .executes { context -> info(context) }
                 )
                 .then(
-                    Commands.literal("remove")
+                    Commands.literal("제거")
                         .executes { context -> remove(context) }
                 )
                 .then(
-                    Commands.literal("list")
+                    Commands.literal("목록")
                         .executes { context -> list(context) }
                 )
                 .then(
-                    Commands.literal("settings")
+                    Commands.literal("세팅")
                         .executes { context -> settingsInfo(context) }
                         .then(
-                            Commands.literal("break")
-                                .then(Commands.literal("allow").executes { settingsUpdate(it, "break", true) })
-                                .then(Commands.literal("deny").executes { settingsUpdate(it, "break", false) })
+                            Commands.literal("파괴")
+                                .then(Commands.literal("허용").executes { settingsUpdate(it, "break", true) })
+                                .then(Commands.literal("금지").executes { settingsUpdate(it, "break", false) })
                         )
                         .then(
-                            Commands.literal("place")
-                                .then(Commands.literal("allow").executes { settingsUpdate(it, "place", true) })
-                                .then(Commands.literal("deny").executes { settingsUpdate(it, "place", false) })
+                            Commands.literal("설치")
+                                .then(Commands.literal("허용").executes { settingsUpdate(it, "place", true) })
+                                .then(Commands.literal("금지").executes { settingsUpdate(it, "place", false) })
                         )
                         .then(
-                            Commands.literal("interact")
-                                .then(Commands.literal("allow").executes { settingsUpdate(it, "interact", true) })
-                                .then(Commands.literal("deny").executes { settingsUpdate(it, "interact", false) })
+                            Commands.literal("상호작용")
+                                .then(Commands.literal("허용").executes { settingsUpdate(it, "interact", true) })
+                                .then(Commands.literal("금지").executes { settingsUpdate(it, "interact", false) })
                         )
                 )
                 .then(
-                    Commands.literal("trust")
+                    Commands.literal("플레이어")
                         .then(
-                            Commands.literal("add")
+                            Commands.literal("추가")
                                 .then(
                                     Commands.argument("playerName", StringArgumentType.word())
                                         .suggests { context, builder ->
@@ -64,7 +64,7 @@ object ClaimCommand {
                                 )
                         )
                         .then(
-                            Commands.literal("remove")
+                            Commands.literal("제거")
                                 .then(
                                     Commands.argument("playerName", StringArgumentType.word())
                                         .suggests { context, builder ->
@@ -79,7 +79,7 @@ object ClaimCommand {
                                 )
                         )
                         .then(
-                            Commands.literal("list")
+                            Commands.literal("목록")
                                 .executes { context -> trustList(context) }
                         )
                 )

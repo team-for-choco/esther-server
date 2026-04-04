@@ -15,7 +15,7 @@ object ProfessionCommand {
 
     fun register(dispatcher: CommandDispatcher<CommandSourceStack>) {
         dispatcher.register(
-            Commands.literal("profession")
+            Commands.literal("전문기술")
                 .executes { context -> showStatus(context.source) }
                 .then(
                     Commands.literal("admin")

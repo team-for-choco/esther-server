@@ -12,33 +12,35 @@ import net.minecraft.server.level.ServerPlayer
 object MoneyCommand {
 
     fun register(dispatcher: CommandDispatcher<CommandSourceStack>) {
+        // 일반 사용자: /송금 <플레이어> <금액>
         dispatcher.register(
-            Commands.literal("money")
-                .executes { context -> showBalance(context.source) }
+            Commands.literal("송금")
                 .then(
-                    Commands.literal("pay")
+                    Commands.argument("player", StringArgumentType.word())
+                        .suggests { context, builder ->
+                            SharedSuggestionProvider.suggest(
+                                context.source.server.playerList.players
+                                    .filter { it != context.source.player }
+                                    .map { it.gameProfile.name },
+                                builder
+                            )
+                        }
                         .then(
-                            Commands.argument("player", StringArgumentType.word())
-                                .suggests { context, builder ->
-                                    SharedSuggestionProvider.suggest(
-                                        context.source.server.playerList.players
-                                            .filter { it != context.source.player }
-                                            .map { it.gameProfile.name },
-                                        builder
+                            Commands.argument("amount", LongArgumentType.longArg(1))
+                                .executes { context ->
+                                    pay(
+                                        context.source,
+                                        StringArgumentType.getString(context, "player"),
+                                        LongArgumentType.getLong(context, "amount")
                                     )
                                 }
-                                .then(
-                                    Commands.argument("amount", LongArgumentType.longArg(1))
-                                        .executes { context ->
-                                            pay(
-                                                context.source,
-                                                StringArgumentType.getString(context, "player"),
-                                                LongArgumentType.getLong(context, "amount")
-                                            )
-                                        }
-                                )
                         )
                 )
+        )
+
+        // 관리자: /money admin ...
+        dispatcher.register(
+            Commands.literal("money")
                 .then(
                     Commands.literal("admin")
                         .requires { it.hasPermission(2) }
@@ -110,15 +112,6 @@ object MoneyCommand {
                         )
                 )
         )
-    }
-
-    private fun showBalance(source: CommandSourceStack): Int {
-        val player = source.playerOrException
-        val balance = EconomyHandler.getBalance(player)
-        source.sendSuccess({
-            Component.translatable("message.estherserver.money_balance", balance)
-        }, false)
-        return 1
     }
 
     private fun pay(source: CommandSourceStack, targetName: String, amount: Long): Int {

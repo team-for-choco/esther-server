@@ -14,9 +14,9 @@ object TitleCommand {
 
     fun register(dispatcher: CommandDispatcher<CommandSourceStack>) {
         dispatcher.register(
-            Commands.literal("title")
+            Commands.literal("칭호")
                 .then(
-                    Commands.literal("select")
+                    Commands.literal("선택")
                         .then(
                             Commands.argument("id", StringArgumentType.word())
                                 .suggests { context, builder -> suggestUnlockedMilestones(context, builder) }
@@ -24,11 +24,11 @@ object TitleCommand {
                         )
                 )
                 .then(
-                    Commands.literal("clear")
+                    Commands.literal("해제")
                         .executes { context -> clearTitle(context) }
                 )
                 .then(
-                    Commands.literal("list")
+                    Commands.literal("목록")
                         .executes { context -> listTitles(context) }
                 )
         )
