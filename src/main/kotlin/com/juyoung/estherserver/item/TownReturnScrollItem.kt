@@ -50,7 +50,7 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
         }
 
         // 각 카운트 전환 시점에만 Title 전송 (매 틱 전송 방지)
-        if (remainingUseDuration == USE_DURATION || remainingUseDuration == 40 || remainingUseDuration == 20) {
+        if (remainingUseDuration == USE_DURATION - 1 || remainingUseDuration == 40 || remainingUseDuration == 20) {
             player.sendSystemMessage(
                 Component.translatable("message.estherserver.town_return_countdown", countdown),
                 true // actionbar
@@ -92,15 +92,15 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
             false
         )
 
-        // 효과음
-        level.playSound(
-            null, player.blockPosition(),
+        // 효과음 (도착 차원에서 재생)
+        overworld.playSound(
+            null, spawnPos,
             SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS,
             1.0f, 1.0f
         )
 
-        // 아이템 소모
-        stack.shrink(1)
+        // 아이템 소모 (크리에이티브 제외)
+        if (!player.abilities.instabuild) stack.shrink(1)
 
         player.sendSystemMessage(
             Component.translatable("message.estherserver.town_return_success")
