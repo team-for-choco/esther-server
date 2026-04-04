@@ -589,6 +589,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             "inventory_save_ticket", Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.UNCOMMON)
         )
 
+        // Town return scroll (teleport to overworld spawn)
+        val TOWN_RETURN_SCROLL: DeferredItem<Item> = ITEMS.registerItem("town_return_scroll") { properties ->
+            com.juyoung.estherserver.item.TownReturnScrollItem(properties.stacksTo(64))
+        }
+
         // Wild portal blocks
         private fun wildPortalProperties() = BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_PURPLE)
@@ -986,6 +991,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(SPECIAL_COOKING_TOOL.get())
                         output.accept(ENHANCEMENT_STONE.get())
                         output.accept(INVENTORY_SAVE_TICKET.get())
+                        output.accept(TOWN_RETURN_SCROLL.get())
                         output.accept(SPECIAL_FARMLAND.get())
                         output.accept(SPRAYER.get())
                         output.accept(WATERING_CAN.get())
@@ -1058,6 +1064,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.wild.OverworldProtectionHandler)
         NeoForge.EVENT_BUS.register(QuestHandler)
         NeoForge.EVENT_BUS.register(CosmeticHandler)
+        NeoForge.EVENT_BUS.register(com.juyoung.estherserver.item.TownReturnScrollItem)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)

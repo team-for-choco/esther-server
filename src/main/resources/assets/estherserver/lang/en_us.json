@@ -620,5 +620,10 @@
   "gui.estherserver.tool_slot": "Tool",
 
   "item.estherserver.inventory_save_ticket": "Inventory Save Ticket",
-  "message.estherserver.inventory_saved": "Inventory Save Ticket used! Your inventory has been preserved!"
+  "message.estherserver.inventory_saved": "Inventory Save Ticket used! Your inventory has been preserved!",
+
+  "item.estherserver.town_return_scroll": "Town Return Scroll",
+  "message.estherserver.town_return_countdown": "Returning in %s...",
+  "message.estherserver.town_return_success": "Returned to town!",
+  "message.estherserver.town_return_failed": "Failed to return."
 }

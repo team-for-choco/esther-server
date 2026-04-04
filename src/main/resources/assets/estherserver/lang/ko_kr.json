@@ -627,5 +627,10 @@
   "gui.estherserver.tool_slot": "도구",
 
   "item.estherserver.inventory_save_ticket": "인벤토리 세이브권",
-  "message.estherserver.inventory_saved": "인벤토리 세이브권이 사용되어 인벤토리가 보존되었습니다!"
+  "message.estherserver.inventory_saved": "인벤토리 세이브권이 사용되어 인벤토리가 보존되었습니다!",
+
+  "item.estherserver.town_return_scroll": "마을 귀환서",
+  "message.estherserver.town_return_countdown": "귀환까지 %s초...",
+  "message.estherserver.town_return_success": "마을로 귀환했습니다!",
+  "message.estherserver.town_return_failed": "귀환에 실패했습니다."
 }
