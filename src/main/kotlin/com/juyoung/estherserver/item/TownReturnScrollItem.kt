@@ -29,10 +29,6 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
     override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int = USE_DURATION
 
     override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResult {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS
-        }
-
         player.startUsingItem(usedHand)
         return InteractionResult.CONSUME
     }
