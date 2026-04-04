@@ -617,5 +617,8 @@
 
   "message.estherserver.special_tool_no_drop": "Special tools cannot be dropped.",
   "message.estherserver.special_tool_to_storage": "Special tool moved to profession storage.",
-  "gui.estherserver.tool_slot": "Tool"
+  "gui.estherserver.tool_slot": "Tool",
+
+  "item.estherserver.inventory_save_ticket": "Inventory Save Ticket",
+  "message.estherserver.inventory_saved": "Inventory Save Ticket used! Your inventory has been preserved!"
 }

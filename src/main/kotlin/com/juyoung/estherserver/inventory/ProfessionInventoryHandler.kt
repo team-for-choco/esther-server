@@ -122,6 +122,7 @@ object ProfessionInventoryHandler {
     fun onPlayerDeath(event: LivingDeathEvent) {
         val player = event.entity as? ServerPlayer ?: return
         if (player.server.gameRules.getBoolean(GameRules.RULE_KEEPINVENTORY)) return
+        if (InventorySaveHandler.isSaved(player)) return
 
         val data = getData(player)
         for (profession in Profession.entries) {

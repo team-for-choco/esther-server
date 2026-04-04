@@ -64,6 +64,7 @@ import com.juyoung.estherserver.cooking.ModCooking
 import com.juyoung.estherserver.inventory.ModInventory
 import com.juyoung.estherserver.inventory.ProfessionInventoryClientHandler
 import com.juyoung.estherserver.inventory.ProfessionInventoryContainerScreen
+import com.juyoung.estherserver.inventory.InventorySaveHandler
 import com.juyoung.estherserver.inventory.ProfessionInventoryHandler
 import com.juyoung.estherserver.inventory.ProfessionInventoryMenu
 import com.juyoung.estherserver.inventory.ProfessionInventoryPayload
@@ -583,6 +584,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             "enhancement_stone", Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)
         )
 
+        // Inventory save ticket (preserves inventory on death)
+        val INVENTORY_SAVE_TICKET: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "inventory_save_ticket", Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.UNCOMMON)
+        )
+
         // Wild portal blocks
         private fun wildPortalProperties() = BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_PURPLE)
@@ -979,6 +985,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(SPECIAL_PICKAXE.get())
                         output.accept(SPECIAL_COOKING_TOOL.get())
                         output.accept(ENHANCEMENT_STONE.get())
+                        output.accept(INVENTORY_SAVE_TICKET.get())
                         output.accept(SPECIAL_FARMLAND.get())
                         output.accept(SPRAYER.get())
                         output.accept(WATERING_CAN.get())
@@ -1042,6 +1049,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(ClaimProtectionHandler)
         NeoForge.EVENT_BUS.register(EconomyHandler)
         NeoForge.EVENT_BUS.register(ProfessionHandler)
+        NeoForge.EVENT_BUS.register(InventorySaveHandler)
         NeoForge.EVENT_BUS.register(ProfessionInventoryHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.profession.OreVeinDetector)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.item.AutoFishHandler)
