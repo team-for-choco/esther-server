@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.commands.SharedSuggestionProvider
+import net.minecraft.commands.arguments.EntityArgument
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 
@@ -16,21 +17,14 @@ object MoneyCommand {
         dispatcher.register(
             Commands.literal("송금")
                 .then(
-                    Commands.argument("player", StringArgumentType.word())
-                        .suggests { context, builder ->
-                            SharedSuggestionProvider.suggest(
-                                context.source.server.playerList.players
-                                    .filter { it != context.source.player }
-                                    .map { it.gameProfile.name },
-                                builder
-                            )
-                        }
+                    Commands.argument("player", EntityArgument.player())
                         .then(
                             Commands.argument("amount", LongArgumentType.longArg(1))
                                 .executes { context ->
+                                    val target = EntityArgument.getPlayer(context, "player")
                                     pay(
                                         context.source,
-                                        StringArgumentType.getString(context, "player"),
+                                        target,
                                         LongArgumentType.getLong(context, "amount")
                                     )
                                 }
@@ -114,13 +108,8 @@ object MoneyCommand {
         )
     }
 
-    private fun pay(source: CommandSourceStack, targetName: String, amount: Long): Int {
+    private fun pay(source: CommandSourceStack, target: ServerPlayer, amount: Long): Int {
         val sender = source.playerOrException
-        val target = source.server.playerList.getPlayerByName(targetName)
-        if (target == null) {
-            source.sendFailure(Component.translatable("message.estherserver.money_player_not_found", targetName))
-            return 0
-        }
         if (target == sender) {
             source.sendFailure(Component.translatable("message.estherserver.money_pay_self"))
             return 0
