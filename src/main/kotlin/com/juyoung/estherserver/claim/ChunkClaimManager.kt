@@ -91,29 +91,26 @@ object ChunkClaimManager {
         return ChunkClaimData.get(level).getTrustedPlayerName(playerUUID)
     }
 
-    enum class UpdatePermResult {
+    enum class UpdateAllPermResult {
         SUCCESS,
-        NOT_CLAIMED,
-        NOT_OWNER
+        NO_CLAIMS
     }
 
-    fun updatePermissions(player: ServerPlayer, chunkPos: ChunkPos, type: String, allow: Boolean): UpdatePermResult {
+    fun updateAllPermissions(player: ServerPlayer, type: String, allow: Boolean): Pair<UpdateAllPermResult, Int> {
         val data = ChunkClaimData.get(player.serverLevel())
-        val existing = data.getClaim(chunkPos) ?: return UpdatePermResult.NOT_CLAIMED
+        val claims = data.getClaimsByOwner(player.uuid)
+        if (claims.isEmpty()) return Pair(UpdateAllPermResult.NO_CLAIMS, 0)
 
-        if (existing.ownerUUID != player.uuid) {
-            return UpdatePermResult.NOT_OWNER
+        val updatePerms: (ClaimPermissions) -> ClaimPermissions = when (type) {
+            "break" -> { p -> p.copy(allowBreak = allow) }
+            "place" -> { p -> p.copy(allowPlace = allow) }
+            "interact" -> { p -> p.copy(allowInteract = allow) }
+            else -> { p -> p }
         }
-
-        val newPermissions = when (type) {
-            "break" -> existing.permissions.copy(allowBreak = allow)
-            "place" -> existing.permissions.copy(allowPlace = allow)
-            "interact" -> existing.permissions.copy(allowInteract = allow)
-            else -> existing.permissions
+        for ((chunkPos, existing) in claims) {
+            data.setClaim(chunkPos, existing.copy(permissions = updatePerms(existing.permissions)))
         }
-
-        data.setClaim(chunkPos, existing.copy(permissions = newPermissions))
-        return UpdatePermResult.SUCCESS
+        return Pair(UpdateAllPermResult.SUCCESS, claims.size)
     }
 
     fun getClaimInfo(level: ServerLevel, chunkPos: ChunkPos): ChunkClaimEntry? {

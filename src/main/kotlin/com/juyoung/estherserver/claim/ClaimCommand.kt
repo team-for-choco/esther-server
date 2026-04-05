@@ -181,28 +181,17 @@ object ClaimCommand {
 
     private fun settingsInfo(context: CommandContext<CommandSourceStack>): Int {
         val player = context.source.playerOrException
-        val chunkPos = ChunkPos(player.blockPosition())
-        val claim = ChunkClaimManager.getClaimInfo(player.serverLevel(), chunkPos)
+        val claims = ChunkClaimManager.getPlayerClaims(player.serverLevel(), player.uuid)
 
-        if (claim == null) {
+        if (claims.isEmpty()) {
             player.displayClientMessage(
-                Component.translatable("message.estherserver.claim_not_claimed"), true
-            )
-            return 0
-        }
-        if (claim.ownerUUID != player.uuid) {
-            player.displayClientMessage(
-                Component.translatable("message.estherserver.claim_not_owner"), true
+                Component.translatable("message.estherserver.claim_list_empty"), true
             )
             return 0
         }
 
-        val perms = claim.permissions
-        val message = Component.translatable(
-            "message.estherserver.claim_settings_header",
-            chunkPos.x.toString(),
-            chunkPos.z.toString()
-        )
+        val perms = claims.first().second.permissions
+        val message = Component.translatable("message.estherserver.claim_settings_header_all", claims.size.toString())
         message.append(Component.literal("\n")).append(
             Component.translatable("message.estherserver.claim_settings_break", permissionStatusText(perms.allowBreak))
         )
@@ -218,28 +207,23 @@ object ClaimCommand {
 
     private fun settingsUpdate(context: CommandContext<CommandSourceStack>, type: String, allow: Boolean): Int {
         val player = context.source.playerOrException
-        val chunkPos = ChunkPos(player.blockPosition())
 
-        val result = ChunkClaimManager.updatePermissions(player, chunkPos, type, allow)
+        val (result, count) = ChunkClaimManager.updateAllPermissions(player, type, allow)
         when (result) {
-            ChunkClaimManager.UpdatePermResult.SUCCESS -> {
+            ChunkClaimManager.UpdateAllPermResult.SUCCESS -> {
                 val typeKey = "message.estherserver.claim_perm_type_$type"
                 player.displayClientMessage(
                     Component.translatable(
-                        "message.estherserver.claim_settings_updated",
+                        "message.estherserver.claim_settings_updated_all",
                         Component.translatable(typeKey),
-                        permissionStatusText(allow)
+                        permissionStatusText(allow),
+                        count.toString()
                     ), false
                 )
             }
-            ChunkClaimManager.UpdatePermResult.NOT_CLAIMED -> {
+            ChunkClaimManager.UpdateAllPermResult.NO_CLAIMS -> {
                 player.displayClientMessage(
-                    Component.translatable("message.estherserver.claim_not_claimed"), true
-                )
-            }
-            ChunkClaimManager.UpdatePermResult.NOT_OWNER -> {
-                player.displayClientMessage(
-                    Component.translatable("message.estherserver.claim_not_owner"), true
+                    Component.translatable("message.estherserver.claim_list_empty"), true
                 )
             }
         }
