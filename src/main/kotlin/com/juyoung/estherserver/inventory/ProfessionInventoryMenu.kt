@@ -223,6 +223,7 @@ class ProfessionInventoryMenu(
     override fun removed(player: Player) {
         if (player is ServerPlayer) {
             saveCurrentTabToData()
+            ProfessionInventoryHandler.syncToClient(player)
         }
         super.removed(player)
     }
