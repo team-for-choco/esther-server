@@ -142,6 +142,16 @@ object ProfessionInventoryHandler {
                 newData.setTool(profession, tool.copy())
             }
         }
+        // 일반 인벤토리/오프핸드에 있는 특수 도구도 보존
+        // (onPlayerClone 시점에는 인벤토리가 이미 비워지므로 여기서 캡처해야 함)
+        for (stack in player.inventory.items + player.inventory.offhand) {
+            if (!stack.isEmpty && isSpecialTool(stack)) {
+                val profession = getProfessionForSpecialTool(stack) ?: continue
+                if (newData.getTool(profession).isEmpty) {
+                    newData.setTool(profession, stack.copy())
+                }
+            }
+        }
         saveData(player, newData)
     }
 
