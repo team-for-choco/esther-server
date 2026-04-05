@@ -310,6 +310,7 @@ object ClaimCommand {
         val center = ChunkPos(player.blockPosition())
         val data = ChunkClaimData.get(player.serverLevel())
         val gameTime = player.serverLevel().gameTime
+        val fakeUUID = UUID.randomUUID()
 
         var claimed = 0
         var skipped = 0
@@ -321,7 +322,7 @@ object ClaimCommand {
                     continue
                 }
                 data.setClaim(chunkPos, ChunkClaimEntry(
-                    ownerUUID = UUID.randomUUID(),
+                    ownerUUID = fakeUUID,
                     ownerName = ClaimProtectionHandler.FAKE_PLAYER_NAME,
                     claimedAt = gameTime
                 ))
@@ -341,32 +342,44 @@ object ClaimCommand {
         val cz1 = IntegerArgumentType.getInteger(context, "cz1")
         val cx2 = IntegerArgumentType.getInteger(context, "cx2")
         val cz2 = IntegerArgumentType.getInteger(context, "cz2")
+
+        val xMin = minOf(cx1, cx2)
+        val xMax = maxOf(cx1, cx2)
+        val zMin = minOf(cz1, cz2)
+        val zMax = maxOf(cz1, cz2)
+        val total = (xMax - xMin + 1) * (zMax - zMin + 1)
+
+        if (total > 10_000) {
+            player.displayClientMessage(
+                Component.literal("[Admin] 범위가 너무 큽니다. (${total}개 > 최대 10,000개) 범위를 줄여주세요."),
+                true
+            )
+            return 0
+        }
+
         val data = ChunkClaimData.get(player.serverLevel())
         val gameTime = player.serverLevel().gameTime
-
-        val xRange = minOf(cx1, cx2)..maxOf(cx1, cx2)
-        val zRange = minOf(cz1, cz2)..maxOf(cz1, cz2)
+        val fakeUUID = UUID.randomUUID()
 
         var claimed = 0
         var skipped = 0
-        for (cx in xRange) {
-            for (cz in zRange) {
+        for (cx in xMin..xMax) {
+            for (cz in zMin..zMax) {
                 val chunkPos = ChunkPos(cx, cz)
                 if (data.getClaim(chunkPos) != null) {
                     skipped++
                     continue
                 }
                 data.setClaim(chunkPos, ChunkClaimEntry(
-                    ownerUUID = UUID.randomUUID(),
+                    ownerUUID = fakeUUID,
                     ownerName = ClaimProtectionHandler.FAKE_PLAYER_NAME,
                     claimedAt = gameTime
                 ))
                 claimed++
             }
         }
-        val total = xRange.count() * zRange.count()
         player.displayClientMessage(
-            Component.literal("[Admin] 청크 (${xRange.first},${zRange.first})~(${xRange.last},${zRange.last}) fakeclaim 완료: ${claimed}개 처리, ${skipped}개 이미 점유 (전체 ${total}개)"),
+            Component.literal("[Admin] 청크 (${xMin},${zMin})~(${xMax},${zMax}) fakeclaim 완료: ${claimed}개 처리, ${skipped}개 이미 점유 (전체 ${total}개)"),
             false
         )
         return 1
