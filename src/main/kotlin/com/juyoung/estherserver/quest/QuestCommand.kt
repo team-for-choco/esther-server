@@ -87,8 +87,10 @@ object QuestCommand {
                 else -> "[진행중]"
             }
             val target = template?.targetCount ?: 0
-            val type = template?.trackingType?.name ?: "?"
-            source.sendSuccess({ Component.literal("  ${i + 1}. ${quest.templateId} ($type) ${quest.progress}/$target $status") }, false)
+            val nameComponent = template?.let { Component.translatable(it.translationKey) } ?: Component.literal(quest.templateId)
+            source.sendSuccess({
+                Component.literal("  ${i + 1}. ").append(nameComponent).append(Component.literal("  ${quest.progress}/$target $status"))
+            }, false)
         }
 
         source.sendSuccess({ Component.literal("=== 주간 퀘스트 (${data.getWeeklyClaimedCount()}/3 수령) ===") }, false)
@@ -100,8 +102,10 @@ object QuestCommand {
                 else -> "[진행중]"
             }
             val target = template?.targetCount ?: 0
-            val type = template?.trackingType?.name ?: "?"
-            source.sendSuccess({ Component.literal("  ${i + 1}. ${quest.templateId} ($type) ${quest.progress}/$target $status") }, false)
+            val nameComponent = template?.let { Component.translatable(it.translationKey) } ?: Component.literal(quest.templateId)
+            source.sendSuccess({
+                Component.literal("  ${i + 1}. ").append(nameComponent).append(Component.literal("  ${quest.progress}/$target $status"))
+            }, false)
         }
 
         return 1
