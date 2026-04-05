@@ -1,6 +1,9 @@
 package com.juyoung.estherserver.loot
 
 import com.juyoung.estherserver.EstherServerMod
+import com.juyoung.estherserver.enhancement.EnhancementHandler
+import com.juyoung.estherserver.profession.Profession
+import com.juyoung.estherserver.profession.ProfessionBonusHelper
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
@@ -26,12 +29,11 @@ class WeightedFishLootModifier(
         val entity = context.getOptionalParameter(LootContextParams.THIS_ENTITY)
         if (entity !is FishingHook) return generatedLoot
 
-        entity.playerOwner as? ServerPlayer ?: return generatedLoot
+        val player = entity.playerOwner as? ServerPlayer ?: return generatedLoot
 
         val tool = context.getOptionalParameter(LootContextParams.TOOL)
         if (tool == null || tool.item !== EstherServerMod.SPECIAL_FISHING_ROD.get()) return generatedLoot
 
-        // Replace vanilla fish with weighted custom fish
         val vanillaFishIds = setOf(
             "minecraft:cod", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:pufferfish"
         )
@@ -44,21 +46,33 @@ class WeightedFishLootModifier(
             generatedLoot.removeIf {
                 BuiltInRegistries.ITEM.getKey(it.item).toString() in vanillaFishIds
             }
-            val fish = selectRandomFish(context.random)
-            generatedLoot.add(ItemStack(fish))
+
+            val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FISHING)
+            if (ProfessionBonusHelper.canCatchCustomFish(equipLevel)) {
+                val maxGrade = ProfessionBonusHelper.getMaxFishGrade(equipLevel)
+                val eligiblePool = FISH_WEIGHTS.filter { entry ->
+                    val itemId = BuiltInRegistries.ITEM.getKey(entry.item.get())
+                    val grade = ProfessionBonusHelper.getFishGrade(itemId)
+                    grade != null && grade <= maxGrade
+                }
+                val fish = selectRandomFish(context.random, eligiblePool)
+                if (fish != null) generatedLoot.add(ItemStack(fish))
+            }
+            // equipLevel == 0: 커스텀 어종 해금 전 — 바닐라 물고기만 제거하고 아무것도 추가하지 않음
         }
 
         return generatedLoot
     }
 
-    private fun selectRandomFish(random: net.minecraft.util.RandomSource): Item {
-        val totalWeight = FISH_WEIGHTS.sumOf { it.weight }
+    private fun selectRandomFish(random: net.minecraft.util.RandomSource, pool: List<WeightedFish> = FISH_WEIGHTS): Item? {
+        if (pool.isEmpty()) return null
+        val totalWeight = pool.sumOf { it.weight }
         var roll = random.nextInt(totalWeight)
-        for (entry in FISH_WEIGHTS) {
+        for (entry in pool) {
             roll -= entry.weight
             if (roll < 0) return entry.item.get()
         }
-        return FISH_WEIGHTS.last().item.get()
+        return pool.last().item.get()
     }
 
     override fun codec(): MapCodec<out IGlobalLootModifier> = CODEC

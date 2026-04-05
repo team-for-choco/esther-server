@@ -2,6 +2,7 @@ package com.juyoung.estherserver.enhancement
 
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyHandler
+import com.juyoung.estherserver.inventory.ModInventory
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.core.component.DataComponents
@@ -50,7 +51,18 @@ object EnhancementHandler {
     }
 
     fun findEquipmentInInventory(player: ServerPlayer, item: Item): ItemStack? {
-        return player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }
+        // 일반 인벤토리 검색
+        player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
+
+        // 전문 보관함 검색 (도구 슬롯 + 일반 슬롯)
+        val profInvData = player.getData(ModInventory.PROFESSION_INVENTORY.get())
+        for (profession in Profession.entries) {
+            val toolSlot = profInvData.getTool(profession)
+            if (!toolSlot.isEmpty && toolSlot.item === item) return toolSlot
+            profInvData.getItems(profession).firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
+        }
+
+        return null
     }
 
     fun handleBuyEquipment(player: ServerPlayer, professionName: String): Boolean {

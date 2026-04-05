@@ -122,10 +122,12 @@
   "message.estherserver.claim_perm_type_interact": "상호작용",
   "message.estherserver.claim_info_perms": "  설정: 파괴=%s / 설치=%s / 상호작용=%s",
   "message.estherserver.claim_settings_header": "[토지] 청크 (%s, %s) 설정:",
+  "message.estherserver.claim_settings_header_all": "[토지] 내 클레임 설정 (총 %s개 청크 공통 적용):",
   "message.estherserver.claim_settings_break": "  블록 파괴: %s",
   "message.estherserver.claim_settings_place": "  블록 설치: %s",
   "message.estherserver.claim_settings_interact": "  상호작용: %s",
   "message.estherserver.claim_settings_updated": "[토지] %s을(를) %s(으)로 변경했습니다.",
+  "message.estherserver.claim_settings_updated_all": "[토지] %s을(를) %s(으)로 변경했습니다. (내 클레임 %s개 청크 전체 적용)",
 
   "message.estherserver.trust_added": "[토지] %s님을 신뢰 목록에 추가했습니다. 모든 클레임 청크에 접근 가능합니다.",
   "message.estherserver.trust_added_notify": "[토지] %s님이 당신을 신뢰 목록에 추가했습니다!",

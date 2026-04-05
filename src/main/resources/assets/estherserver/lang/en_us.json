@@ -115,10 +115,12 @@
   "message.estherserver.claim_perm_type_interact": "Interaction",
   "message.estherserver.claim_info_perms": "  Settings: Break=%s / Place=%s / Interact=%s",
   "message.estherserver.claim_settings_header": "[Land] Chunk (%s, %s) Settings:",
+  "message.estherserver.claim_settings_header_all": "[Land] My Claim Settings (applied to all %s chunks):",
   "message.estherserver.claim_settings_break": "  Block Breaking: %s",
   "message.estherserver.claim_settings_place": "  Block Placing: %s",
   "message.estherserver.claim_settings_interact": "  Interaction: %s",
   "message.estherserver.claim_settings_updated": "[Land] %s set to %s.",
+  "message.estherserver.claim_settings_updated_all": "[Land] %s set to %s. (applied to all %s claimed chunks)",
 
   "message.estherserver.trust_added": "[Land] Added %s to trust list. They can access all your claimed chunks.",
   "message.estherserver.trust_added_notify": "[Land] %s added you to their trust list!",
