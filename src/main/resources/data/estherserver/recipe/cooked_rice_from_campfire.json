@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": "estherserver:rice",
+  "result": {
+    "id": "estherserver:cooked_rice"
+  },
+  "experience": 0.35,
+  "cookingtime": 600
+}
