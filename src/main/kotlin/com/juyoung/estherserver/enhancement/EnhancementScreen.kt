@@ -3,6 +3,7 @@ package com.juyoung.estherserver.enhancement
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyClientHandler
 import com.juyoung.estherserver.gui.GuiTheme
+import com.juyoung.estherserver.inventory.ProfessionInventoryClientHandler
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.Minecraft
@@ -54,8 +55,22 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
             Profession.COOKING to EstherServerMod.SPECIAL_COOKING_TOOL.get()
         )
 
+        val profInvData = ProfessionInventoryClientHandler.cachedData
+
         for ((profession, item) in equipmentMap) {
-            val found = player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }
+            // 일반 인벤토리 + 오프핸드 검색
+            var found = player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }
+                ?: player.inventory.offhand.firstOrNull { !it.isEmpty && it.item === item }
+
+            // 전문 보관함 검색 (도구 슬롯 + 일반 슬롯)
+            if (found == null) {
+                for (prof in Profession.entries) {
+                    val toolSlot = profInvData.getTool(prof)
+                    if (!toolSlot.isEmpty && toolSlot.item === item) { found = toolSlot; break }
+                    val inItems = profInvData.getItems(prof).firstOrNull { !it.isEmpty && it.item === item }
+                    if (inItems != null) { found = inItems; break }
+                }
+            }
 
             val level = found?.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0) ?: -1
             result.add(EquipmentSlot(profession, item, found, level))
