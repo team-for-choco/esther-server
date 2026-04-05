@@ -88,6 +88,14 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
                 return
             }
 
+            // 아이템 소모를 텔레포트 전에 처리 (차원 이동 후 플레이어 객체 교체 시 참조 무효화 방지)
+            if (!player.abilities.instabuild) {
+                val stack = player.getItemInHand(hand)
+                if (!stack.isEmpty && stack.item is TownReturnScrollItem) {
+                    stack.shrink(1)
+                }
+            }
+
             val spawnPos = overworld.sharedSpawnPos
 
             player.teleportTo(
@@ -106,14 +114,6 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
                 SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS,
                 1.0f, 1.0f
             )
-
-            // 아이템 소모 (크리에이티브 제외)
-            if (!player.abilities.instabuild) {
-                val stack = player.getItemInHand(hand)
-                if (!stack.isEmpty && stack.item is TownReturnScrollItem) {
-                    stack.shrink(1)
-                }
-            }
 
             player.sendSystemMessage(
                 Component.translatable("message.estherserver.town_return_success")

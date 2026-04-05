@@ -94,20 +94,19 @@ object ProfessionInventoryHandler {
         val original = event.original as? ServerPlayer ?: return
         val newPlayer = event.entity as? ServerPlayer ?: return
 
-        if (original.server.gameRules.getBoolean(GameRules.RULE_KEEPINVENTORY)) return
+        val keepInventory = original.server.gameRules.getBoolean(GameRules.RULE_KEEPINVENTORY)
+        val profData = original.getData(ModInventory.PROFESSION_INVENTORY.get())
 
-        // 새 플레이어의 보관함 데이터 준비
+        if (keepInventory) {
+            // keepInventory=ON: NeoForge는 attachment를 자동 복사하지 않으므로 전체 복사
+            saveData(newPlayer, profData)
+            return
+        }
+
+        // keepInventory=OFF: onPlayerDeath에서 도구 슬롯만 보존 처리 완료 → 복원
         val newData = getData(newPlayer)
 
-        // 이전 플레이어 인벤토리에서 특수 도구 수집 → 보관함 도구 슬롯으로
-        for (stack in original.inventory.items) {
-            if (isSpecialTool(stack)) {
-                val profession = getProfessionForSpecialTool(stack) ?: continue
-                newData.setTool(profession, stack.copy())
-            }
-        }
-        // 이전 보관함 도구 슬롯에서도 수집 → 새 보관함 도구 슬롯으로
-        val profData = original.getData(ModInventory.PROFESSION_INVENTORY.get())
+        // 이전 보관함 도구 슬롯 복원 (onPlayerDeath에서 보존한 데이터)
         for (profession in Profession.entries) {
             val tool = profData.getTool(profession)
             if (!tool.isEmpty && isSpecialTool(tool)) {
@@ -140,6 +139,16 @@ object ProfessionInventoryHandler {
             val tool = data.getTool(profession)
             if (!tool.isEmpty) {
                 newData.setTool(profession, tool.copy())
+            }
+        }
+        // 일반 인벤토리/오프핸드에 있는 특수 도구도 보존
+        // (onPlayerClone 시점에는 인벤토리가 이미 비워지므로 여기서 캡처해야 함)
+        for (stack in player.inventory.items + player.inventory.offhand) {
+            if (!stack.isEmpty && isSpecialTool(stack)) {
+                val profession = getProfessionForSpecialTool(stack) ?: continue
+                if (newData.getTool(profession).isEmpty) {
+                    newData.setTool(profession, stack.copy())
+                }
             }
         }
         saveData(player, newData)
