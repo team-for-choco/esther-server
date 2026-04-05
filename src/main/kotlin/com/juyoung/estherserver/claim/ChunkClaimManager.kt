@@ -101,14 +101,14 @@ object ChunkClaimManager {
         val claims = data.getClaimsByOwner(player.uuid)
         if (claims.isEmpty()) return Pair(UpdateAllPermResult.NO_CLAIMS, 0)
 
+        val updatePerms: (ClaimPermissions) -> ClaimPermissions = when (type) {
+            "break" -> { p -> p.copy(allowBreak = allow) }
+            "place" -> { p -> p.copy(allowPlace = allow) }
+            "interact" -> { p -> p.copy(allowInteract = allow) }
+            else -> { p -> p }
+        }
         for ((chunkPos, existing) in claims) {
-            val newPermissions = when (type) {
-                "break" -> existing.permissions.copy(allowBreak = allow)
-                "place" -> existing.permissions.copy(allowPlace = allow)
-                "interact" -> existing.permissions.copy(allowInteract = allow)
-                else -> existing.permissions
-            }
-            data.setClaim(chunkPos, existing.copy(permissions = newPermissions))
+            data.setClaim(chunkPos, existing.copy(permissions = updatePerms(existing.permissions)))
         }
         return Pair(UpdateAllPermResult.SUCCESS, claims.size)
     }

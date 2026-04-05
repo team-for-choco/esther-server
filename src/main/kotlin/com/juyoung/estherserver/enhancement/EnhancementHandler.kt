@@ -51,8 +51,9 @@ object EnhancementHandler {
     }
 
     fun findEquipmentInInventory(player: ServerPlayer, item: Item): ItemStack? {
-        // 일반 인벤토리 검색
+        // 일반 인벤토리 + 오프핸드 검색
         player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
+        player.inventory.offhand.firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
 
         // 전문 보관함 검색 (도구 슬롯 + 일반 슬롯)
         val profInvData = player.getData(ModInventory.PROFESSION_INVENTORY.get())
