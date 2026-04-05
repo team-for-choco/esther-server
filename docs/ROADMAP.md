@@ -299,6 +299,10 @@
   - /money pay → /송금, /money(잔액) 제거
   - /claim → /토지 (서브커맨드 전체 한글화)
   - /profession → /전문기술, /title → /칭호, /quest info → /퀘스트 정보
+- [x] ~~**fakeClaim 범위 일괄 처리**~~ (CHOCO-134)
+  - `/토지 admin fakeclaim range <반경>`: 현재 위치 기준 반경 N 청크 일괄 fakeclaim
+  - `/토지 admin fakeclaim area <cx1> <cz1> <cx2> <cz2>`: 청크 좌표 범위 직접 지정
+  - 10,000청크 상한선, 이미 점유된 청크 스킵
 
 ---
 

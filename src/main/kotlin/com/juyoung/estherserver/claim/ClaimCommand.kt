@@ -1,6 +1,7 @@
 package com.juyoung.estherserver.claim
 
 import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.commands.CommandSourceStack
@@ -89,6 +90,29 @@ object ClaimCommand {
                         .then(
                             Commands.literal("fakeclaim")
                                 .executes { context -> fakeClaim(context) }
+                                .then(
+                                    Commands.literal("range")
+                                        .then(
+                                            Commands.argument("반경", IntegerArgumentType.integer(1, 50))
+                                                .executes { context -> fakeClaimRange(context) }
+                                        )
+                                )
+                                .then(
+                                    Commands.literal("area")
+                                        .then(
+                                            Commands.argument("cx1", IntegerArgumentType.integer())
+                                                .then(
+                                                    Commands.argument("cz1", IntegerArgumentType.integer())
+                                                        .then(
+                                                            Commands.argument("cx2", IntegerArgumentType.integer())
+                                                                .then(
+                                                                    Commands.argument("cz2", IntegerArgumentType.integer())
+                                                                        .executes { context -> fakeClaimArea(context) }
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
                         )
                         .then(
                             Commands.literal("forceremove")
@@ -275,6 +299,87 @@ object ClaimCommand {
         ))
         player.displayClientMessage(
             Component.literal("[Admin] 청크 (${chunkPos.x}, ${chunkPos.z})를 FakePlayer 소유로 설정했습니다."),
+            false
+        )
+        return 1
+    }
+
+    private fun fakeClaimRange(context: CommandContext<CommandSourceStack>): Int {
+        val player = context.source.playerOrException
+        val radius = IntegerArgumentType.getInteger(context, "반경")
+        val center = ChunkPos(player.blockPosition())
+        val data = ChunkClaimData.get(player.serverLevel())
+        val gameTime = player.serverLevel().gameTime
+        val fakeUUID = UUID.randomUUID()
+
+        var claimed = 0
+        var skipped = 0
+        for (dx in -radius..radius) {
+            for (dz in -radius..radius) {
+                val chunkPos = ChunkPos(center.x + dx, center.z + dz)
+                if (data.getClaim(chunkPos) != null) {
+                    skipped++
+                    continue
+                }
+                data.setClaim(chunkPos, ChunkClaimEntry(
+                    ownerUUID = fakeUUID,
+                    ownerName = ClaimProtectionHandler.FAKE_PLAYER_NAME,
+                    claimedAt = gameTime
+                ))
+                claimed++
+            }
+        }
+        player.displayClientMessage(
+            Component.literal("[Admin] 반경 $radius 청크 범위 fakeclaim 완료: ${claimed}개 처리, ${skipped}개 이미 점유"),
+            false
+        )
+        return 1
+    }
+
+    private fun fakeClaimArea(context: CommandContext<CommandSourceStack>): Int {
+        val player = context.source.playerOrException
+        val cx1 = IntegerArgumentType.getInteger(context, "cx1")
+        val cz1 = IntegerArgumentType.getInteger(context, "cz1")
+        val cx2 = IntegerArgumentType.getInteger(context, "cx2")
+        val cz2 = IntegerArgumentType.getInteger(context, "cz2")
+
+        val xMin = minOf(cx1, cx2)
+        val xMax = maxOf(cx1, cx2)
+        val zMin = minOf(cz1, cz2)
+        val zMax = maxOf(cz1, cz2)
+        val total = (xMax - xMin + 1) * (zMax - zMin + 1)
+
+        if (total > 10_000) {
+            player.displayClientMessage(
+                Component.literal("[Admin] 범위가 너무 큽니다. (${total}개 > 최대 10,000개) 범위를 줄여주세요."),
+                true
+            )
+            return 0
+        }
+
+        val data = ChunkClaimData.get(player.serverLevel())
+        val gameTime = player.serverLevel().gameTime
+        val fakeUUID = UUID.randomUUID()
+
+        var claimed = 0
+        var skipped = 0
+        for (cx in xMin..xMax) {
+            for (cz in zMin..zMax) {
+                val chunkPos = ChunkPos(cx, cz)
+                if (data.getClaim(chunkPos) != null) {
+                    skipped++
+                    continue
+                }
+                data.setClaim(chunkPos, ChunkClaimEntry(
+                    ownerUUID = fakeUUID,
+                    ownerName = ClaimProtectionHandler.FAKE_PLAYER_NAME,
+                    claimedAt = gameTime
+                ))
+                claimed++
+            }
+        }
+        player.displayClientMessage(
+            Component.literal("[Admin] 청크 (${xMin},${zMin})~(${xMax},${zMax}) fakeclaim 완료: ${claimed}개 처리, ${skipped}개 이미 점유 (전체 ${total}개)"),
             false
         )
         return 1
