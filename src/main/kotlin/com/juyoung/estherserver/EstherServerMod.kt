@@ -1552,8 +1552,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         if (hasStoredEnchants || hasEnchants) {
             event.isCanceled = true
-            (event.player as? net.minecraft.server.level.ServerPlayer)?.sendSystemMessage(
-                net.minecraft.network.chat.Component.translatable("message.estherserver.enchant_npc_only")
+            (event.player as? net.minecraft.server.level.ServerPlayer)?.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.estherserver.enchant_npc_only"),
+                true
             )
         }
     }
