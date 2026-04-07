@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import java.util.EnumSet
 import java.util.UUID
@@ -32,8 +31,7 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
         private val countdowns = ConcurrentHashMap<UUID, CountdownData>()
 
         data class CountdownData(
-            val startTick: Int,
-            val hand: InteractionHand
+            val startTick: Int
         )
 
         /** 서버 틱 이벤트 핸들러 — EstherServerMod에서 등록 */
@@ -55,7 +53,7 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
                 if (remaining <= 0) {
                     // 카운트다운 완료 → 텔레포트
                     iterator.remove()
-                    executeTeleport(player, data.hand)
+                    executeTeleport(player)
                     continue
                 }
 
@@ -78,7 +76,7 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
             }
         }
 
-        private fun executeTeleport(player: ServerPlayer, hand: InteractionHand) {
+        private fun executeTeleport(player: ServerPlayer) {
             val server = player.server
             val overworld = server.getLevel(Level.OVERWORLD)
             if (overworld == null) {
@@ -89,11 +87,11 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
             }
 
             // 아이템 소모를 텔레포트 전에 처리 (차원 이동 후 플레이어 객체 교체 시 참조 무효화 방지)
+            // 카운트다운 중 손에 든 아이템이 바뀔 수 있으므로 인벤토리 전체에서 귀환서를 검색
             if (!player.abilities.instabuild) {
-                val stack = player.getItemInHand(hand)
-                if (!stack.isEmpty && stack.item is TownReturnScrollItem) {
-                    stack.shrink(1)
-                }
+                val scrollStack = player.inventory.items.firstOrNull { !it.isEmpty && it.item is TownReturnScrollItem }
+                    ?: player.inventory.offhand.firstOrNull { !it.isEmpty && it.item is TownReturnScrollItem }
+                scrollStack?.shrink(1)
             }
 
             val spawnPos = overworld.sharedSpawnPos
@@ -137,8 +135,7 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
 
         // 카운트다운 시작
         countdowns[player.uuid] = CountdownData(
-            startTick = serverPlayer.server.tickCount,
-            hand = usedHand
+            startTick = serverPlayer.server.tickCount
         )
 
         return InteractionResult.SUCCESS
