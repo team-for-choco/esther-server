@@ -3,6 +3,7 @@ package com.juyoung.estherserver.enhancement
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyHandler
 import com.juyoung.estherserver.inventory.ModInventory
+import com.juyoung.estherserver.inventory.ProfessionInventoryHandler
 import com.juyoung.estherserver.profession.Profession
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.core.component.DataComponents
@@ -169,6 +170,7 @@ object EnhancementHandler {
             val newLevel = currentLevel + 1
             stack.set(ModDataComponents.ENHANCEMENT_LEVEL.get(), newLevel)
             syncCustomModelData(stack, newLevel)
+            ProfessionInventoryHandler.syncToClient(player)
             player.sendSystemMessage(
                 Component.translatable(
                     "message.estherserver.enhance_success",
