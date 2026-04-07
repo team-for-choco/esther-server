@@ -15,4 +15,11 @@ object EnchantMerchantClientHandler {
             screen.onPreviewReceived()
         }
     }
+
+    fun handleDone() {
+        val screen = Minecraft.getInstance().screen
+        if (screen is EnchantMerchantScreen) {
+            screen.onDone()
+        }
+    }
 }

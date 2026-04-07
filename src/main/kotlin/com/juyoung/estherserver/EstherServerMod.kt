@@ -93,6 +93,7 @@ import com.juyoung.estherserver.merchant.ShopBuyRegistry
 import com.juyoung.estherserver.merchant.ShopClientHandler
 import com.juyoung.estherserver.merchant.ShopCommand
 import com.juyoung.estherserver.enchant.EnchantConfirmPayload
+import com.juyoung.estherserver.enchant.EnchantDonePayload
 import com.juyoung.estherserver.enchant.EnchantMerchantClientHandler
 import com.juyoung.estherserver.enchant.EnchantMerchantCommand
 import com.juyoung.estherserver.enchant.EnchantMerchantEntity
@@ -1283,6 +1284,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 context.enqueueWork {
                     val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
                     EnchantMerchantHandler.handleConfirm(player, payload.accept)
+                }
+            }
+            .playToClient(EnchantDonePayload.TYPE, EnchantDonePayload.STREAM_CODEC) { _, context ->
+                context.enqueueWork {
+                    EnchantMerchantClientHandler.handleDone()
                 }
             }
     }

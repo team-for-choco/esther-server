@@ -69,6 +69,22 @@ class EnchantPreviewPayload(val enchants: List<Pair<String, Int>>) : CustomPacke
     }
 }
 
+class EnchantDonePayload : CustomPacketPayload {
+    override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
+
+    companion object {
+        val TYPE = CustomPacketPayload.Type<EnchantDonePayload>(
+            ResourceLocation.fromNamespaceAndPath("estherserver", "enchant_done")
+        )
+
+        val STREAM_CODEC: StreamCodec<FriendlyByteBuf, EnchantDonePayload> =
+            object : StreamCodec<FriendlyByteBuf, EnchantDonePayload> {
+                override fun decode(buf: FriendlyByteBuf) = EnchantDonePayload()
+                override fun encode(buf: FriendlyByteBuf, value: EnchantDonePayload) {}
+            }
+    }
+}
+
 class EnchantConfirmPayload(val accept: Boolean) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 

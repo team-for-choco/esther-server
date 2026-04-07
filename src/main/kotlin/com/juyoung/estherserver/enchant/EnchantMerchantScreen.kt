@@ -41,6 +41,10 @@ class EnchantMerchantScreen : Screen(Component.translatable("gui.estherserver.en
         state = ScreenState.PREVIEW
     }
 
+    fun onDone() {
+        state = ScreenState.IDLE
+    }
+
     override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
         super.render(guiGraphics, mouseX, mouseY, partialTick)
 

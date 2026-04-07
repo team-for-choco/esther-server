@@ -34,15 +34,14 @@ object EnchantMerchantHandler {
                 val slotCount = (item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY).size()
                 if (slotCount == 0) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.enchant_no_slots"))
-                    return
-                }
-                if (!EconomyHandler.removeBalance(player, OVERWRITE_COST)) {
+                } else if (!EconomyHandler.removeBalance(player, OVERWRITE_COST)) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.shop_insufficient"))
-                    return
+                } else {
+                    val picks = pickDistinctEnchantments(player, slotCount)
+                    applyAll(player, picks)
+                    player.sendSystemMessage(Component.translatable("message.estherserver.enchant_success"))
                 }
-                val picks = pickDistinctEnchantments(player, slotCount)
-                applyAll(player, picks)
-                player.sendSystemMessage(Component.translatable("message.estherserver.enchant_success"))
+                PacketDistributor.sendToPlayer(player, EnchantDonePayload())
             }
 
             EnchantMode.CHOOSE -> {
