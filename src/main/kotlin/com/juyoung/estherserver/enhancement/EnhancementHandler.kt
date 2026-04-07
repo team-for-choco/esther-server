@@ -191,16 +191,18 @@ object EnhancementHandler {
     }
 
     private fun countEnhancementStones(player: ServerPlayer): Int {
-        return player.inventory.items.sumOf { stack ->
-            if (!stack.isEmpty && stack.item === EstherServerMod.ENHANCEMENT_STONE.get()) stack.count else 0
+        val stoneItem = EstherServerMod.ENHANCEMENT_STONE.get()
+        return (player.inventory.items + player.inventory.offhand).sumOf { stack ->
+            if (!stack.isEmpty && stack.item === stoneItem) stack.count else 0
         }
     }
 
     private fun consumeEnhancementStones(player: ServerPlayer, count: Int) {
+        val stoneItem = EstherServerMod.ENHANCEMENT_STONE.get()
         var remaining = count
-        for (stack in player.inventory.items) {
+        for (stack in player.inventory.items + player.inventory.offhand) {
             if (remaining <= 0) break
-            if (!stack.isEmpty && stack.item === EstherServerMod.ENHANCEMENT_STONE.get()) {
+            if (!stack.isEmpty && stack.item === stoneItem) {
                 val consume = minOf(remaining, stack.count)
                 stack.shrink(consume)
                 remaining -= consume

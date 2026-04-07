@@ -104,16 +104,16 @@ class ProfessionLootModifier(
             if (Profession.FISHING in relevantProfessions) {
                 val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FISHING)
                 if (equipLevel >= 3 && context.random.nextFloat() < 0.05f) {
-                    var doubled = false
+                    var bonusXp = 0
                     for (stack in generatedLoot) {
                         if (ProfessionHandler.getProfessionForItem(stack) == Profession.FISHING) {
                             extraDrops.add(stack.copy())
                             val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
-                            ProfessionHandler.addExperience(player, Profession.FISHING, ProfessionBonusHelper.getGradeXp(itemId))
-                            doubled = true
+                            bonusXp += ProfessionBonusHelper.getGradeXp(itemId)
                         }
                     }
-                    if (doubled) {
+                    if (bonusXp > 0) {
+                        ProfessionHandler.addExperience(player, Profession.FISHING, bonusXp)
                         player.displayClientMessage(
                             Component.translatable("message.estherserver.double_fish"), false
                         )
