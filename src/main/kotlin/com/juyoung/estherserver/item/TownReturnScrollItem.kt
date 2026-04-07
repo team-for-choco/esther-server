@@ -91,7 +91,13 @@ class TownReturnScrollItem(properties: Properties) : Item(properties) {
             if (!player.abilities.instabuild) {
                 val scrollStack = player.inventory.items.firstOrNull { !it.isEmpty && it.item is TownReturnScrollItem }
                     ?: player.inventory.offhand.firstOrNull { !it.isEmpty && it.item is TownReturnScrollItem }
-                scrollStack?.shrink(1)
+                if (scrollStack == null) {
+                    player.sendSystemMessage(
+                        Component.translatable("message.estherserver.town_return_failed")
+                    )
+                    return
+                }
+                scrollStack.shrink(1)
             }
 
             val spawnPos = overworld.sharedSpawnPos
