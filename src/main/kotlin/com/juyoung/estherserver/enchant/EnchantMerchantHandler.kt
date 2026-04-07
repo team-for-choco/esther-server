@@ -17,6 +17,7 @@ object EnchantMerchantHandler {
     const val OVERWRITE_COST = 500L
     const val CHOOSE_COST = 1500L
     const val UNLOCK_COST = 5000L
+    const val MAX_SLOTS = 4
 
     // Pending CHOOSE offers: player UUID → list of (holder, level) to apply
     private val pendingOffers = mutableMapOf<UUID, List<Pair<Holder<Enchantment>, Int>>>()
@@ -63,11 +64,15 @@ object EnchantMerchantHandler {
             }
 
             "UNLOCK" -> {
+                val existing = item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY
+                if (existing.size() >= MAX_SLOTS) {
+                    player.sendSystemMessage(Component.translatable("message.estherserver.enchant_max_slots", MAX_SLOTS))
+                    return
+                }
                 if (!EconomyHandler.removeBalance(player, UNLOCK_COST)) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.shop_insufficient"))
                     return
                 }
-                val existing = item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY
                 val existingTypes = existing.entrySet().map { it.key }.toSet()
                 val newPick = pickEnchantmentExcluding(player, existingTypes)
                 if (newPick == null) {

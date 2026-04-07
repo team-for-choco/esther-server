@@ -218,6 +218,7 @@
   "gui.estherserver.enchant_merchant.accept_btn": "교체",
   "message.estherserver.enchant_no_slots": "인챈트 슬롯이 없습니다. 슬롯을 먼저 추가하세요.",
   "message.estherserver.enchant_slot_unlocked": "인챈트 슬롯이 추가되었습니다.",
+  "message.estherserver.enchant_max_slots": "인챈트 슬롯이 최대(%s개)입니다.",
   "gui.estherserver.enchant_merchant.decline_btn": "유지",
   "gui.estherserver.enchant_merchant.waiting": "처리 중...",
   "message.estherserver.enchant_no_item": "손에 아이템을 들고 사용하세요.",

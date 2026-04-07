@@ -149,11 +149,14 @@ class EnchantMerchantScreen : Screen(Component.translatable("gui.estherserver.en
         // 하단 행: 슬롯 추가 (중앙)
         val row2Y = row1Y + BTN_HEIGHT + 4
         val unlockX = guiLeft + GUI_WIDTH / 2 - BTN_WIDTH / 2
+        val canUnlock = state == ScreenState.IDLE &&
+            !(Minecraft.getInstance().player?.mainHandItem?.isEmpty ?: true) &&
+            (Minecraft.getInstance().player?.mainHandItem?.enchantments?.size() ?: 0) < EnchantMerchantHandler.MAX_SLOTS
         renderBtn(guiGraphics, mouseX, mouseY,
             unlockX, row2Y, BTN_WIDTH, BTN_HEIGHT,
             Component.translatable("gui.estherserver.enchant_merchant.unlock_btn", EnchantMerchantHandler.UNLOCK_COST),
             canAfford = balance >= EnchantMerchantHandler.UNLOCK_COST,
-            enabled = state == ScreenState.IDLE && !(Minecraft.getInstance().player?.mainHandItem?.isEmpty ?: true)
+            enabled = canUnlock
         )
 
         if (state == ScreenState.WAITING) {
