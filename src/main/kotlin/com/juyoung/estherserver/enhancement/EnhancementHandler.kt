@@ -18,21 +18,23 @@ import net.neoforged.neoforge.registries.DeferredItem
 object EnhancementHandler {
 
     const val MAX_LEVEL = 5
-    const val EQUIPMENT_BUY_PRICE = 5_000L
+    const val EQUIPMENT_BUY_PRICE = 1_000L
     const val ENHANCEMENT_STONE_DROP_RATE = 0.02f // 2%
 
     data class EnhancementCost(
         val cost: Long,
         val successRate: Double,
-        val requiresStone: Boolean
-    )
+        val stoneCount: Int = 0
+    ) {
+        val requiresStone get() = stoneCount > 0
+    }
 
     val ENHANCEMENT_TABLE = mapOf(
-        0 to EnhancementCost(1_500L, 1.0, false),
-        1 to EnhancementCost(4_500L, 0.8, false),
-        2 to EnhancementCost(10_500L, 0.6, false),
-        3 to EnhancementCost(22_500L, 0.4, false),
-        4 to EnhancementCost(45_000L, 0.15, true)
+        0 to EnhancementCost(500L, 1.0),
+        1 to EnhancementCost(1_500L, 0.8),
+        2 to EnhancementCost(4_500L, 0.6),
+        3 to EnhancementCost(22_500L, 0.4),
+        4 to EnhancementCost(31_500L, 0.15, stoneCount = 5)
     )
 
     val EQUIPMENT_MAP: Map<Profession, DeferredItem<Item>> by lazy {
@@ -138,12 +140,14 @@ object EnhancementHandler {
         val cost = ENHANCEMENT_TABLE[currentLevel] ?: return false
 
         // Check enhancement stone
-        val stoneSlot = if (cost.requiresStone) findEnhancementStone(player) else -1
-        if (cost.requiresStone && stoneSlot < 0) {
-            player.sendSystemMessage(
-                Component.translatable("message.estherserver.enhance_need_stone")
-            )
-            return false
+        if (cost.requiresStone) {
+            val stoneCount = countEnhancementStones(player)
+            if (stoneCount < cost.stoneCount) {
+                player.sendSystemMessage(
+                    Component.translatable("message.estherserver.enhance_need_stone")
+                )
+                return false
+            }
         }
 
         // Check balance
@@ -154,9 +158,9 @@ object EnhancementHandler {
             return false
         }
 
-        // Consume enhancement stone (before roll, consumed on attempt)
+        // Consume enhancement stones (before roll, consumed on attempt)
         if (cost.requiresStone) {
-            player.inventory.getItem(stoneSlot).shrink(1)
+            consumeEnhancementStones(player, cost.stoneCount)
         }
 
         // Roll for success
@@ -186,14 +190,22 @@ object EnhancementHandler {
         return true
     }
 
-    private fun findEnhancementStone(player: ServerPlayer): Int {
-        for (i in 0 until player.inventory.items.size) {
-            val stack = player.inventory.items[i]
+    private fun countEnhancementStones(player: ServerPlayer): Int {
+        return player.inventory.items.sumOf { stack ->
+            if (!stack.isEmpty && stack.item === EstherServerMod.ENHANCEMENT_STONE.get()) stack.count else 0
+        }
+    }
+
+    private fun consumeEnhancementStones(player: ServerPlayer, count: Int) {
+        var remaining = count
+        for (stack in player.inventory.items) {
+            if (remaining <= 0) break
             if (!stack.isEmpty && stack.item === EstherServerMod.ENHANCEMENT_STONE.get()) {
-                return i
+                val consume = minOf(remaining, stack.count)
+                stack.shrink(consume)
+                remaining -= consume
             }
         }
-        return -1
     }
 
     private fun syncCustomModelData(stack: ItemStack, enhancementLevel: Int) {
