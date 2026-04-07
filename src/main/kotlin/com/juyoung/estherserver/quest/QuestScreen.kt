@@ -132,7 +132,7 @@ class QuestScreen : Screen(Component.translatable("gui.estherserver.quest.title"
         guiGraphics.drawString(font, bonusLabel, x + 6, y + 4, GuiTheme.TEXT_BODY, false)
 
         // Bonus reward info
-        val currency = if (selectedTab == 1) 7500 else 1500
+        val currency = if (selectedTab == 1) 7500 else 3000
         val soupCount = if (selectedTab == 1) 100 else 20
         val ticketCount = if (selectedTab == 1) 3 else 1
         val rewardInfo = Component.translatable("gui.estherserver.quest.bonus_reward", currency, soupCount, ticketCount)
