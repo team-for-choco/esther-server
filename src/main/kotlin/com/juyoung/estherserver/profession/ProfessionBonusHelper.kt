@@ -85,8 +85,12 @@ object ProfessionBonusHelper {
 
     fun getOreGrade(itemId: ResourceLocation): OreGrade? = oreGradeMap[itemId]
 
-    // --- Fishing Enhancement Stone Drop Rate ---
-    const val FISHING_ENHANCEMENT_STONE_DROP_RATE = 0.01f  // 1%
+    // --- Fishing Enhancement Stone Drop Rate (grade-based) ---
+    fun getFishingStoneDropRate(grade: ContentGrade): Float = when (grade) {
+        ContentGrade.COMMON   -> 0.01f  // 1%
+        ContentGrade.ADVANCED -> 0.02f  // 2%
+        ContentGrade.RARE     -> 0.03f  // 3%
+    }
 
     // --- Recipe / Fish / Crop Grade ---
 
@@ -236,6 +240,7 @@ object ProfessionBonusHelper {
 
     /** Max fish grade the fishing rod can catch based on enhancement level */
     fun getMaxFishGrade(equipLevel: Int): ContentGrade = when {
+        equipLevel >= 5 -> ContentGrade.RARE
         equipLevel >= 2 -> ContentGrade.ADVANCED
         equipLevel >= 1 -> ContentGrade.COMMON
         else -> ContentGrade.COMMON  // Lv0 = no custom fish

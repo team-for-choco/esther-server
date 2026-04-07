@@ -100,7 +100,7 @@ class ProfessionLootModifier(
                 }
             }
 
-            // Fishing rod Lv3: 5% double fish
+            // Fishing rod Lv3: 5% double fish (+ bonus XP for each doubled fish)
             if (Profession.FISHING in relevantProfessions) {
                 val equipLevel = EnhancementHandler.getEquipmentLevel(player, Profession.FISHING)
                 if (equipLevel >= 3 && context.random.nextFloat() < 0.05f) {
@@ -108,6 +108,8 @@ class ProfessionLootModifier(
                     for (stack in generatedLoot) {
                         if (ProfessionHandler.getProfessionForItem(stack) == Profession.FISHING) {
                             extraDrops.add(stack.copy())
+                            val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
+                            ProfessionHandler.addExperience(player, Profession.FISHING, ProfessionBonusHelper.getGradeXp(itemId))
                             doubled = true
                         }
                     }
@@ -118,9 +120,19 @@ class ProfessionLootModifier(
                     }
                 }
 
-                // Fishing rod Lv4: 1% enhancement stone drop
-                if (equipLevel >= 4 && context.random.nextFloat() < ProfessionBonusHelper.FISHING_ENHANCEMENT_STONE_DROP_RATE) {
-                    extraDrops.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
+                // Fishing rod Lv4: enhancement stone drop (grade-based: common 1%, advanced 2%, rare 3%)
+                if (equipLevel >= 4) {
+                    for (stack in generatedLoot) {
+                        if (ProfessionHandler.getProfessionForItem(stack) == Profession.FISHING) {
+                            val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
+                            val grade = ProfessionBonusHelper.getContentGradeForItem(itemId) ?: ProfessionBonusHelper.ContentGrade.COMMON
+                            val rate = ProfessionBonusHelper.getFishingStoneDropRate(grade)
+                            if (context.random.nextFloat() < rate) {
+                                extraDrops.add(ItemStack(EstherServerMod.ENHANCEMENT_STONE.get()))
+                                break
+                            }
+                        }
+                    }
                 }
             }
 
