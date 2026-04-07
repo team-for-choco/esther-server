@@ -1477,7 +1477,21 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 else -> 0
             }
             val profBonus = ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
-            event.newSpeed = tierSpeed * (1.0f + profBonus)
+
+            // Efficiency enchantment bonus: level^2 + 1 (vanilla formula)
+            val enchantments = stack.get(net.minecraft.core.component.DataComponents.ENCHANTMENTS)
+                ?: net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY
+            var effLevel = 0
+            for (entry in enchantments.entrySet()) {
+                val loc = entry.key.unwrapKey().map { it.location() }.orElse(null)
+                if (loc?.namespace == "minecraft" && loc.path == "efficiency") {
+                    effLevel = entry.intValue
+                    break
+                }
+            }
+            val effBonus = if (effLevel > 0) effLevel * effLevel + 1 else 0
+
+            event.newSpeed = (tierSpeed + effBonus) * (1.0f + profBonus)
         }
     }
 
