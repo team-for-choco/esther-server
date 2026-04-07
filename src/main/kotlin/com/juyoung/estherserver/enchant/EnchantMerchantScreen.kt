@@ -211,7 +211,7 @@ class EnchantMerchantScreen : Screen(Component.translatable("gui.estherserver.en
             if (acceptHovered) 0xCC2D6A2D.toInt() else 0xCC1D4A1D.toInt())
         guiGraphics.drawCenteredString(
             font,
-            Component.translatable("gui.estherserver.enchant_merchant.accept_btn", CHOOSE_COST),
+            Component.translatable("gui.estherserver.enchant_merchant.accept_btn"),
             acceptX + smallBtnW / 2, btnY + 5, GuiTheme.TEXT_WHITE
         )
 

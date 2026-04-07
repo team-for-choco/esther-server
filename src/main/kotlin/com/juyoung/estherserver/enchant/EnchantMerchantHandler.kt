@@ -51,6 +51,10 @@ object EnchantMerchantHandler {
                 )
             }
             "CHOOSE" -> {
+                if (!EconomyHandler.removeBalance(player, CHOOSE_COST)) {
+                    player.sendSystemMessage(Component.translatable("message.estherserver.shop_insufficient"))
+                    return
+                }
                 pendingOffers[player.uuid] = Triple(enchantId, level, holder)
                 PacketDistributor.sendToPlayer(
                     player,
@@ -71,11 +75,6 @@ object EnchantMerchantHandler {
         val item = player.mainHandItem
         if (item.isEmpty) {
             player.sendSystemMessage(Component.translatable("message.estherserver.enchant_no_item"))
-            return
-        }
-
-        if (!EconomyHandler.removeBalance(player, CHOOSE_COST)) {
-            player.sendSystemMessage(Component.translatable("message.estherserver.shop_insufficient"))
             return
         }
 

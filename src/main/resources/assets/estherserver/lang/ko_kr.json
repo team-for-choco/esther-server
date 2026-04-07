@@ -213,7 +213,7 @@
   "gui.estherserver.enchant_merchant.overwrite_btn": "즉시 부여 (%s 기운)",
   "gui.estherserver.enchant_merchant.choose_btn": "선택 부여 (%s 기운)",
   "gui.estherserver.enchant_merchant.preview_title": "새 인챈트:",
-  "gui.estherserver.enchant_merchant.accept_btn": "교체 (%s 기운)",
+  "gui.estherserver.enchant_merchant.accept_btn": "교체",
   "gui.estherserver.enchant_merchant.decline_btn": "유지",
   "gui.estherserver.enchant_merchant.waiting": "처리 중...",
   "message.estherserver.enchant_no_item": "손에 아이템을 들고 사용하세요.",
