@@ -228,6 +228,7 @@
   "message.estherserver.enchant_merchant_summoned": "인챈트 상인을 소환했습니다.",
   "message.estherserver.enchant_merchant_not_found": "근처에 인챈트 상인이 없습니다.",
   "message.estherserver.enchant_merchant_removed": "인챈트 상인을 제거했습니다.",
+  "message.estherserver.enchant_npc_only": "인챈트는 인챈트 상인 NPC를 통해서만 가능합니다.",
 
   "gui.estherserver.enhancement.title": "대장장이",
   "gui.estherserver.enhancement.level": "강화 Lv%s",
