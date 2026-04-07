@@ -1536,6 +1536,29 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
     }
 
     @SubscribeEvent
+    fun onEnchantmentLevelSet(event: net.neoforged.neoforge.event.enchanting.EnchantmentLevelSetEvent) {
+        event.enchantLevel = 0
+    }
+
+    @SubscribeEvent
+    fun onAnvilUpdate(event: net.neoforged.neoforge.event.AnvilUpdateEvent) {
+        val right = event.right
+        if (right.isEmpty) return
+
+        val hasStoredEnchants = right.get(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS)
+            ?.let { !it.isEmpty } ?: false
+        val hasEnchants = right.get(net.minecraft.core.component.DataComponents.ENCHANTMENTS)
+            ?.let { it.size() > 0 } ?: false
+
+        if (hasStoredEnchants || hasEnchants) {
+            event.isCanceled = true
+            (event.player as? net.minecraft.server.level.ServerPlayer)?.sendSystemMessage(
+                net.minecraft.network.chat.Component.translatable("message.estherserver.enchant_npc_only")
+            )
+        }
+    }
+
+    @SubscribeEvent
     fun onCropGrow(event: CropGrowEvent.Pre) {
         val belowState = event.level.getBlockState(event.pos.below())
         if (belowState.block is SpecialFarmlandBlock) {
