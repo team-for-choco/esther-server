@@ -92,6 +92,15 @@ import com.juyoung.estherserver.merchant.OpenShopPayload
 import com.juyoung.estherserver.merchant.ShopBuyRegistry
 import com.juyoung.estherserver.merchant.ShopClientHandler
 import com.juyoung.estherserver.merchant.ShopCommand
+import com.juyoung.estherserver.enchant.EnchantConfirmPayload
+import com.juyoung.estherserver.enchant.EnchantMerchantClientHandler
+import com.juyoung.estherserver.enchant.EnchantMerchantCommand
+import com.juyoung.estherserver.enchant.EnchantMerchantEntity
+import com.juyoung.estherserver.enchant.EnchantMerchantEntityRenderer
+import com.juyoung.estherserver.enchant.EnchantMerchantHandler
+import com.juyoung.estherserver.enchant.EnchantPreviewPayload
+import com.juyoung.estherserver.enchant.EnchantRequestPayload
+import com.juyoung.estherserver.enchant.OpenEnchantMerchantPayload
 import com.juyoung.estherserver.furniture.CatSofaBlock
 import com.juyoung.estherserver.furniture.CatSofaDummyBlock
 import com.juyoung.estherserver.furniture.DogSofaBlock
@@ -186,6 +195,14 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val MERCHANT_ENTITY: DeferredHolder<EntityType<*>, EntityType<MerchantEntity>> =
             ENTITY_TYPES.register("merchant", java.util.function.Function { registryName ->
                 EntityType.Builder.of(::MerchantEntity, MobCategory.MISC)
+                    .sized(0.6f, 1.8f)
+                    .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
+            })
+
+        // Enchant merchant NPC entity
+        val ENCHANT_MERCHANT_ENTITY: DeferredHolder<EntityType<*>, EntityType<EnchantMerchantEntity>> =
+            ENTITY_TYPES.register("enchant_merchant", java.util.function.Function { registryName ->
+                EntityType.Builder.of(::EnchantMerchantEntity, MobCategory.MISC)
                     .sized(0.6f, 1.8f)
                     .build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, registryName))
             })
@@ -1246,10 +1263,33 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                     CosmeticClientHandler.handleBroadcast(payload)
                 }
             }
+            .playToClient(OpenEnchantMerchantPayload.TYPE, OpenEnchantMerchantPayload.STREAM_CODEC) { _, context ->
+                context.enqueueWork {
+                    EnchantMerchantClientHandler.handleOpen()
+                }
+            }
+            .playToServer(EnchantRequestPayload.TYPE, EnchantRequestPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    EnchantMerchantHandler.handleRequest(player, payload.mode)
+                }
+            }
+            .playToClient(EnchantPreviewPayload.TYPE, EnchantPreviewPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    EnchantMerchantClientHandler.handlePreview(payload)
+                }
+            }
+            .playToServer(EnchantConfirmPayload.TYPE, EnchantConfirmPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    val player = context.player() as? net.minecraft.server.level.ServerPlayer ?: return@enqueueWork
+                    EnchantMerchantHandler.handleConfirm(player, payload.accept)
+                }
+            }
     }
 
     private fun registerEntityAttributes(event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent) {
         event.put(MERCHANT_ENTITY.get(), MerchantEntity.createAttributes().build())
+        event.put(ENCHANT_MERCHANT_ENTITY.get(), EnchantMerchantEntity.createAttributes().build())
         event.put(PET_ENTITY.get(), PetEntity.createAttributes().build())
     }
 
@@ -1307,6 +1347,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ClaimCommand.register(event.dispatcher)
         MoneyCommand.register(event.dispatcher)
         ShopCommand.register(event.dispatcher)
+        EnchantMerchantCommand.register(event.dispatcher)
         ProfessionCommand.register(event.dispatcher)
         WildCommand.register(event.dispatcher)
         QuestCommand.register(event.dispatcher)
@@ -1356,6 +1397,9 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
             event.registerEntityRenderer(MERCHANT_ENTITY.get()) { context ->
                 MerchantEntityRenderer(context)
+            }
+            event.registerEntityRenderer(ENCHANT_MERCHANT_ENTITY.get()) { context ->
+                EnchantMerchantEntityRenderer(context)
             }
             event.registerEntityRenderer(PET_ENTITY.get()) { context ->
                 PetEntityRenderer(context)
@@ -1429,7 +1473,21 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                 else -> 0
             }
             val profBonus = ProfessionBonusHelper.getMiningSpeedBonus(profLevel)
-            event.newSpeed = tierSpeed * (1.0f + profBonus)
+
+            // Efficiency enchantment bonus: level^2 + 1 (vanilla formula)
+            val enchantments = stack.get(net.minecraft.core.component.DataComponents.ENCHANTMENTS)
+                ?: net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY
+            var effLevel = 0
+            for (entry in enchantments.entrySet()) {
+                val loc = entry.key.unwrapKey().map { it.location() }.orElse(null)
+                if (loc?.namespace == "minecraft" && loc.path == "efficiency") {
+                    effLevel = entry.intValue
+                    break
+                }
+            }
+            val effBonus = if (effLevel > 0) effLevel * effLevel + 1 else 0
+
+            event.newSpeed = (tierSpeed + effBonus) * (1.0f + profBonus)
         }
     }
 
@@ -1468,6 +1526,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             player.stopRiding() // removePassenger → pet discard
             player.teleportTo(safeX, safeY, safeZ)
         }
+        EnchantMerchantHandler.clearPendingOffer(player.uuid)
     }
 
     @SubscribeEvent
