@@ -28,7 +28,7 @@ object QuestHandler {
     private const val MAX_CLAIMS = 3
 
     private object Rewards {
-        const val DAILY_BONUS_CURRENCY = 1500
+        const val DAILY_BONUS_CURRENCY = 3000
         const val DAILY_BONUS_SOUP = 20
         const val DAILY_BONUS_TICKET = 1
         const val WEEKLY_BONUS_CURRENCY = 7500
