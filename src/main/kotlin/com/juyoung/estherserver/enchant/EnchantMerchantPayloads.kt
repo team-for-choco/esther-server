@@ -21,7 +21,9 @@ class OpenEnchantMerchantPayload : CustomPacketPayload {
     }
 }
 
-class EnchantRequestPayload(val mode: String) : CustomPacketPayload {
+enum class EnchantMode { OVERWRITE, CHOOSE, UNLOCK }
+
+class EnchantRequestPayload(val mode: EnchantMode) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -31,9 +33,10 @@ class EnchantRequestPayload(val mode: String) : CustomPacketPayload {
 
         val STREAM_CODEC: StreamCodec<FriendlyByteBuf, EnchantRequestPayload> =
             object : StreamCodec<FriendlyByteBuf, EnchantRequestPayload> {
-                override fun decode(buf: FriendlyByteBuf) = EnchantRequestPayload(buf.readUtf())
+                override fun decode(buf: FriendlyByteBuf) =
+                    EnchantRequestPayload(buf.readEnum(EnchantMode::class.java))
                 override fun encode(buf: FriendlyByteBuf, value: EnchantRequestPayload) {
-                    buf.writeUtf(value.mode)
+                    buf.writeEnum(value.mode)
                 }
             }
     }

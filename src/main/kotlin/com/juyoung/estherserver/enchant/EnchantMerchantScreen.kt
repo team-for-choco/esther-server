@@ -287,7 +287,7 @@ class EnchantMerchantScreen : Screen(Component.translatable("gui.estherserver.en
             mouseX.toInt() in leftX until leftX + BTN_WIDTH &&
             mouseY.toInt() in row1Y until row1Y + BTN_HEIGHT
         ) {
-            PacketDistributor.sendToServer(EnchantRequestPayload("OVERWRITE"))
+            PacketDistributor.sendToServer(EnchantRequestPayload(EnchantMode.OVERWRITE))
             state = ScreenState.WAITING
             return true
         }
@@ -297,7 +297,7 @@ class EnchantMerchantScreen : Screen(Component.translatable("gui.estherserver.en
             mouseX.toInt() in rightX until rightX + BTN_WIDTH &&
             mouseY.toInt() in row1Y until row1Y + BTN_HEIGHT
         ) {
-            PacketDistributor.sendToServer(EnchantRequestPayload("CHOOSE"))
+            PacketDistributor.sendToServer(EnchantRequestPayload(EnchantMode.CHOOSE))
             state = ScreenState.WAITING
             return true
         }
@@ -306,7 +306,7 @@ class EnchantMerchantScreen : Screen(Component.translatable("gui.estherserver.en
         if (mouseX.toInt() in unlockX until unlockX + BTN_WIDTH &&
             mouseY.toInt() in row2Y until row2Y + BTN_HEIGHT
         ) {
-            PacketDistributor.sendToServer(EnchantRequestPayload("UNLOCK"))
+            PacketDistributor.sendToServer(EnchantRequestPayload(EnchantMode.UNLOCK))
             return true
         }
 
@@ -314,6 +314,11 @@ class EnchantMerchantScreen : Screen(Component.translatable("gui.estherserver.en
     }
 
     override fun isPauseScreen(): Boolean = false
+
+    override fun onClose() {
+        super.onClose()
+        pendingPreview = null
+    }
 
     private fun getEnchantDisplayName(enchantId: String, level: Int): Component {
         val rl = ResourceLocation.tryParse(enchantId) ?: return Component.literal(enchantId)

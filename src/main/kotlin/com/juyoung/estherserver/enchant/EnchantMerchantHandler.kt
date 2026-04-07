@@ -22,7 +22,7 @@ object EnchantMerchantHandler {
     // Pending CHOOSE offers: player UUID → list of (holder, level) to apply
     private val pendingOffers = mutableMapOf<UUID, List<Pair<Holder<Enchantment>, Int>>>()
 
-    fun handleRequest(player: ServerPlayer, mode: String) {
+    fun handleRequest(player: ServerPlayer, mode: EnchantMode) {
         val item = player.mainHandItem
         if (item.isEmpty) {
             player.sendSystemMessage(Component.translatable("message.estherserver.enchant_no_item"))
@@ -30,7 +30,7 @@ object EnchantMerchantHandler {
         }
 
         when (mode) {
-            "OVERWRITE" -> {
+            EnchantMode.OVERWRITE -> {
                 val slotCount = (item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY).size()
                 if (slotCount == 0) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.enchant_no_slots"))
@@ -45,7 +45,7 @@ object EnchantMerchantHandler {
                 player.sendSystemMessage(Component.translatable("message.estherserver.enchant_success"))
             }
 
-            "CHOOSE" -> {
+            EnchantMode.CHOOSE -> {
                 val slotCount = (item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY).size()
                 if (slotCount == 0) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.enchant_no_slots"))
@@ -63,7 +63,7 @@ object EnchantMerchantHandler {
                 PacketDistributor.sendToPlayer(player, EnchantPreviewPayload(previewList))
             }
 
-            "UNLOCK" -> {
+            EnchantMode.UNLOCK -> {
                 val existing = item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY
                 if (existing.size() >= MAX_SLOTS) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.enchant_max_slots", MAX_SLOTS))

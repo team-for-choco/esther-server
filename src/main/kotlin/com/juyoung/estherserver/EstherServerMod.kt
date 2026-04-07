@@ -93,11 +93,11 @@ import com.juyoung.estherserver.merchant.ShopBuyRegistry
 import com.juyoung.estherserver.merchant.ShopClientHandler
 import com.juyoung.estherserver.merchant.ShopCommand
 import com.juyoung.estherserver.enchant.EnchantConfirmPayload
+import com.juyoung.estherserver.enchant.EnchantMerchantClientHandler
 import com.juyoung.estherserver.enchant.EnchantMerchantCommand
 import com.juyoung.estherserver.enchant.EnchantMerchantEntity
 import com.juyoung.estherserver.enchant.EnchantMerchantEntityRenderer
 import com.juyoung.estherserver.enchant.EnchantMerchantHandler
-import com.juyoung.estherserver.enchant.EnchantMerchantScreen
 import com.juyoung.estherserver.enchant.EnchantPreviewPayload
 import com.juyoung.estherserver.enchant.EnchantRequestPayload
 import com.juyoung.estherserver.enchant.OpenEnchantMerchantPayload
@@ -1265,7 +1265,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
             .playToClient(OpenEnchantMerchantPayload.TYPE, OpenEnchantMerchantPayload.STREAM_CODEC) { _, context ->
                 context.enqueueWork {
-                    Minecraft.getInstance().setScreen(EnchantMerchantScreen())
+                    EnchantMerchantClientHandler.handleOpen()
                 }
             }
             .playToServer(EnchantRequestPayload.TYPE, EnchantRequestPayload.STREAM_CODEC) { payload, context ->
@@ -1276,11 +1276,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
             .playToClient(EnchantPreviewPayload.TYPE, EnchantPreviewPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
-                    EnchantMerchantScreen.pendingPreview = payload.enchants
-                    val screen = Minecraft.getInstance().screen
-                    if (screen is EnchantMerchantScreen) {
-                        screen.onPreviewReceived()
-                    }
+                    EnchantMerchantClientHandler.handlePreview(payload)
                 }
             }
             .playToServer(EnchantConfirmPayload.TYPE, EnchantConfirmPayload.STREAM_CODEC) { payload, context ->
@@ -1530,6 +1526,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             player.stopRiding() // removePassenger → pet discard
             player.teleportTo(safeX, safeY, safeZ)
         }
+        EnchantMerchantHandler.clearPendingOffer(player.uuid)
     }
 
     @SubscribeEvent
