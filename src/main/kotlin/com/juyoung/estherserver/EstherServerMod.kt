@@ -1276,7 +1276,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             }
             .playToClient(EnchantPreviewPayload.TYPE, EnchantPreviewPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
-                    EnchantMerchantScreen.pendingPreview = Pair(payload.enchantId, payload.level)
+                    EnchantMerchantScreen.pendingPreview = payload.enchants
                     val screen = Minecraft.getInstance().screen
                     if (screen is EnchantMerchantScreen) {
                         screen.onPreviewReceived()

@@ -1,12 +1,10 @@
 package com.juyoung.estherserver.enchant
 
-import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.economy.EconomyHandler
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.enchantment.Enchantment
@@ -18,9 +16,10 @@ object EnchantMerchantHandler {
 
     const val OVERWRITE_COST = 500L
     const val CHOOSE_COST = 1500L
+    const val UNLOCK_COST = 5000L
 
-    // Pending choose offers: player UUID → (enchantId, level, holder)
-    private val pendingOffers = mutableMapOf<UUID, Triple<ResourceLocation, Int, Holder<Enchantment>>>()
+    // Pending CHOOSE offers: player UUID → list of (holder, level) to apply
+    private val pendingOffers = mutableMapOf<UUID, List<Pair<Holder<Enchantment>, Int>>>()
 
     fun handleRequest(player: ServerPlayer, mode: String) {
         val item = player.mainHandItem
@@ -29,37 +28,57 @@ object EnchantMerchantHandler {
             return
         }
 
-        val pick = pickRandomEnchantment(player) ?: run {
-            player.sendSystemMessage(Component.translatable("message.estherserver.enchant_failed"))
-            return
-        }
-        val (holder, level) = pick
-        val enchantId = holder.unwrapKey().map { it.location() }.orElse(null) ?: run {
-            player.sendSystemMessage(Component.translatable("message.estherserver.enchant_failed"))
-            return
-        }
-
         when (mode) {
             "OVERWRITE" -> {
+                val slotCount = (item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY).size()
+                if (slotCount == 0) {
+                    player.sendSystemMessage(Component.translatable("message.estherserver.enchant_no_slots"))
+                    return
+                }
                 if (!EconomyHandler.removeBalance(player, OVERWRITE_COST)) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.shop_insufficient"))
                     return
                 }
-                applyEnchantment(player, holder, level)
-                player.sendSystemMessage(
-                    Component.translatable("message.estherserver.enchant_success")
-                )
+                val picks = pickDistinctEnchantments(player, slotCount)
+                applyAll(player, picks)
+                player.sendSystemMessage(Component.translatable("message.estherserver.enchant_success"))
             }
+
             "CHOOSE" -> {
+                val slotCount = (item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY).size()
+                if (slotCount == 0) {
+                    player.sendSystemMessage(Component.translatable("message.estherserver.enchant_no_slots"))
+                    return
+                }
                 if (!EconomyHandler.removeBalance(player, CHOOSE_COST)) {
                     player.sendSystemMessage(Component.translatable("message.estherserver.shop_insufficient"))
                     return
                 }
-                pendingOffers[player.uuid] = Triple(enchantId, level, holder)
-                PacketDistributor.sendToPlayer(
-                    player,
-                    EnchantPreviewPayload(enchantId.toString(), level)
-                )
+                val picks = pickDistinctEnchantments(player, slotCount)
+                pendingOffers[player.uuid] = picks
+                val previewList = picks.map { (holder, level) ->
+                    Pair(holder.unwrapKey().map { it.location().toString() }.orElse("?"), level)
+                }
+                PacketDistributor.sendToPlayer(player, EnchantPreviewPayload(previewList))
+            }
+
+            "UNLOCK" -> {
+                if (!EconomyHandler.removeBalance(player, UNLOCK_COST)) {
+                    player.sendSystemMessage(Component.translatable("message.estherserver.shop_insufficient"))
+                    return
+                }
+                val existing = item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY
+                val existingTypes = existing.entrySet().map { it.key }.toSet()
+                val newPick = pickEnchantmentExcluding(player, existingTypes)
+                if (newPick == null) {
+                    player.sendSystemMessage(Component.translatable("message.estherserver.enchant_failed"))
+                    EconomyHandler.addBalance(player, UNLOCK_COST) // 환불
+                    return
+                }
+                val mutable = ItemEnchantments.Mutable(existing)
+                mutable.set(newPick.first, newPick.second)
+                item.set(DataComponents.ENCHANTMENTS, mutable.toImmutable())
+                player.sendSystemMessage(Component.translatable("message.estherserver.enchant_slot_unlocked"))
             }
         }
     }
@@ -78,7 +97,7 @@ object EnchantMerchantHandler {
             return
         }
 
-        applyEnchantment(player, offer.third, offer.second)
+        applyAll(player, offer)
         player.sendSystemMessage(Component.translatable("message.estherserver.enchant_success"))
     }
 
@@ -86,20 +105,46 @@ object EnchantMerchantHandler {
         pendingOffers.remove(playerUuid)
     }
 
-    private fun applyEnchantment(player: ServerPlayer, enchantHolder: Holder<Enchantment>, level: Int) {
+    private fun applyAll(player: ServerPlayer, picks: List<Pair<Holder<Enchantment>, Int>>) {
         val item = player.mainHandItem
-        val enchantments = item.get(DataComponents.ENCHANTMENTS) ?: ItemEnchantments.EMPTY
-        val mutable = ItemEnchantments.Mutable(enchantments)
-        mutable.set(enchantHolder, level)
+        val mutable = ItemEnchantments.Mutable(ItemEnchantments.EMPTY)
+        for ((holder, level) in picks) {
+            mutable.set(holder, level)
+        }
         item.set(DataComponents.ENCHANTMENTS, mutable.toImmutable())
     }
 
-    private fun pickRandomEnchantment(player: ServerPlayer): Pair<Holder<Enchantment>, Int>? {
+    // 현재 슬롯 수만큼 겹치지 않는 인챈트를 랜덤 선택
+    private fun pickDistinctEnchantments(player: ServerPlayer, count: Int): List<Pair<Holder<Enchantment>, Int>> {
         val registry = player.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT)
         val allHolders = registry.listElements().toList()
-        if (allHolders.isEmpty()) return null
+        val picked = mutableSetOf<Int>()
+        val result = mutableListOf<Pair<Holder<Enchantment>, Int>>()
+        val max = count.coerceAtMost(allHolders.size)
+        while (result.size < max) {
+            val idx = player.random.nextInt(allHolders.size)
+            if (picked.add(idx)) {
+                val holder = allHolders[idx]
+                val maxLevel = holder.value().maxLevel
+                val level = player.random.nextInt(maxLevel) + 1
+                result.add(Pair(holder, level))
+            }
+        }
+        return result
+    }
 
-        val holder = allHolders[player.random.nextInt(allHolders.size)]
+    // 기존 타입을 제외하고 인챈트 1개 선택 (UNLOCK용)
+    private fun pickEnchantmentExcluding(
+        player: ServerPlayer,
+        exclude: Set<Holder<Enchantment>>
+    ): Pair<Holder<Enchantment>, Int>? {
+        val registry = player.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT)
+        val excludeKeys = exclude.mapNotNull { it.unwrapKey().orElse(null) }.toSet()
+        val candidates = registry.listElements().toList().filter { holder ->
+            holder.unwrapKey().orElse(null) !in excludeKeys
+        }
+        if (candidates.isEmpty()) return null
+        val holder = candidates[player.random.nextInt(candidates.size)]
         val maxLevel = holder.value().maxLevel
         val level = player.random.nextInt(maxLevel) + 1
         return Pair(holder, level)

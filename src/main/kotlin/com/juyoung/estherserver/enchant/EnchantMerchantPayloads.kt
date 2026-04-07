@@ -39,7 +39,7 @@ class EnchantRequestPayload(val mode: String) : CustomPacketPayload {
     }
 }
 
-class EnchantPreviewPayload(val enchantId: String, val level: Int) : CustomPacketPayload {
+class EnchantPreviewPayload(val enchants: List<Pair<String, Int>>) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -49,10 +49,18 @@ class EnchantPreviewPayload(val enchantId: String, val level: Int) : CustomPacke
 
         val STREAM_CODEC: StreamCodec<FriendlyByteBuf, EnchantPreviewPayload> =
             object : StreamCodec<FriendlyByteBuf, EnchantPreviewPayload> {
-                override fun decode(buf: FriendlyByteBuf) = EnchantPreviewPayload(buf.readUtf(), buf.readVarInt())
+                override fun decode(buf: FriendlyByteBuf): EnchantPreviewPayload {
+                    val size = buf.readVarInt()
+                    val enchants = (0 until size).map { Pair(buf.readUtf(), buf.readVarInt()) }
+                    return EnchantPreviewPayload(enchants)
+                }
+
                 override fun encode(buf: FriendlyByteBuf, value: EnchantPreviewPayload) {
-                    buf.writeUtf(value.enchantId)
-                    buf.writeVarInt(value.level)
+                    buf.writeVarInt(value.enchants.size)
+                    for ((id, level) in value.enchants) {
+                        buf.writeUtf(id)
+                        buf.writeVarInt(level)
+                    }
                 }
             }
     }
