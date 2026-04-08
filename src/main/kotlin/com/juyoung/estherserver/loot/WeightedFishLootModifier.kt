@@ -45,7 +45,9 @@ class WeightedFishLootModifier(
                 generatedLoot.removeIf {
                     BuiltInRegistries.ITEM.getKey(it.item).toString() in VANILLA_FISH_IDS
                 }
-                val fish = selectRandomFish(context.random, ELIGIBLE_POOLS[equipLevel.coerceAtMost(ELIGIBLE_POOLS.size - 1)])
+                val luck = context.luck
+                val pool = ELIGIBLE_POOLS[equipLevel.coerceAtMost(ELIGIBLE_POOLS.size - 1)]
+                val fish = selectRandomFish(context.random, pool, luck)
                 if (fish != null) generatedLoot.add(ItemStack(fish))
             }
             // equipLevel == 0: 커스텀 어종 해금 전 — 바닐라 물고기 유지
@@ -54,12 +56,23 @@ class WeightedFishLootModifier(
         return generatedLoot
     }
 
-    private fun selectRandomFish(random: net.minecraft.util.RandomSource, pool: List<WeightedFish>): Item? {
+    private fun selectRandomFish(random: net.minecraft.util.RandomSource, pool: List<WeightedFish>, luck: Float): Item? {
         if (pool.isEmpty()) return null
-        val totalWeight = pool.sumOf { it.weight }
+        // 바다의 행운 인챈트 레벨에 따라 등급별 가중치 보너스 적용
+        // COMMON: 변동 없음, ADVANCED: ×(1 + luck×0.5), RARE: ×(1 + luck×1.0)
+        val effectiveWeights = pool.map { entry ->
+            val grade = ProfessionBonusHelper.getFishGrade(BuiltInRegistries.ITEM.getKey(entry.item.get()))
+            val multiplier = when (grade) {
+                ProfessionBonusHelper.ContentGrade.ADVANCED -> 1.0f + luck * 0.5f
+                ProfessionBonusHelper.ContentGrade.RARE     -> 1.0f + luck * 1.0f
+                else -> 1.0f
+            }
+            (entry.weight * multiplier).toInt().coerceAtLeast(1)
+        }
+        val totalWeight = effectiveWeights.sum()
         var roll = random.nextInt(totalWeight)
-        for (entry in pool) {
-            roll -= entry.weight
+        for ((entry, weight) in pool.zip(effectiveWeights)) {
+            roll -= weight
             if (roll < 0) return entry.item.get()
         }
         return pool.last().item.get()
