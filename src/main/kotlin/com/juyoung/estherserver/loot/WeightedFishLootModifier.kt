@@ -60,20 +60,24 @@ class WeightedFishLootModifier(
         if (pool.isEmpty()) return null
         // 바다의 행운 인챈트 레벨에 따라 등급별 가중치 보너스 적용
         // COMMON: 변동 없음, ADVANCED: ×(1 + luck×0.5), RARE: ×(1 + luck×1.0)
-        val effectiveWeights = pool.map { entry ->
+        val effectiveWeights = IntArray(pool.size)
+        var totalWeight = 0
+        for (i in pool.indices) {
+            val entry = pool[i]
             val grade = ProfessionBonusHelper.getFishGrade(BuiltInRegistries.ITEM.getKey(entry.item.get()))
             val multiplier = when (grade) {
                 ProfessionBonusHelper.ContentGrade.ADVANCED -> 1.0f + luck * 0.5f
                 ProfessionBonusHelper.ContentGrade.RARE     -> 1.0f + luck * 1.0f
                 else -> 1.0f
             }
-            (entry.weight * multiplier).toInt().coerceAtLeast(1)
+            val weight = (entry.weight * multiplier).toInt().coerceAtLeast(1)
+            effectiveWeights[i] = weight
+            totalWeight += weight
         }
-        val totalWeight = effectiveWeights.sum()
         var roll = random.nextInt(totalWeight)
-        for ((entry, weight) in pool.zip(effectiveWeights)) {
-            roll -= weight
-            if (roll < 0) return entry.item.get()
+        for (i in pool.indices) {
+            roll -= effectiveWeights[i]
+            if (roll < 0) return pool[i].item.get()
         }
         return pool.last().item.get()
     }
