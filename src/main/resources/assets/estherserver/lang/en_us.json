@@ -211,7 +211,7 @@
   "gui.estherserver.enhancement.enhance_info": "Lv%s → Lv%s",
   "gui.estherserver.enhancement.cost": "Cost: %s Essence",
   "gui.estherserver.enhancement.rate": "Success: %s%%",
-  "gui.estherserver.enhancement.requires_stone": "Enhancement Stone x1 required",
+  "gui.estherserver.enhancement.requires_stone": "Enhancement Stone x%s required",
   "gui.estherserver.enhancement.profession_label": "Profession: %s",
 
   "enhancement.estherserver.grade.common": "Common",

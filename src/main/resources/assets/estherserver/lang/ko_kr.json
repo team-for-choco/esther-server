@@ -242,7 +242,7 @@
   "gui.estherserver.enhancement.enhance_info": "Lv%s → Lv%s",
   "gui.estherserver.enhancement.cost": "비용: %s 기운",
   "gui.estherserver.enhancement.rate": "확률: %s%%",
-  "gui.estherserver.enhancement.requires_stone": "강화석 x1 필요",
+  "gui.estherserver.enhancement.requires_stone": "강화석 x%s 필요",
   "gui.estherserver.enhancement.profession_label": "분야: %s",
 
   "enhancement.estherserver.grade.common": "일반",
