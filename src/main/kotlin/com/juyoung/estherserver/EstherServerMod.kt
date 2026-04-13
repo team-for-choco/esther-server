@@ -1064,6 +1064,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         ModFurniture.BLOCK_ENTITY_TYPES.register(modEventBus)
         ModPets.ATTACHMENT_TYPES.register(modEventBus)
         ModCosmetics.ATTACHMENT_TYPES.register(modEventBus)
+        com.juyoung.estherserver.enhancement.ModEnhancement.ATTACHMENT_TYPES.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(this)
         NeoForge.EVENT_BUS.register(SleepHandler)
@@ -1123,6 +1124,11 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
             .playToClient(BalanceSyncPayload.TYPE, BalanceSyncPayload.STREAM_CODEC) { payload, context ->
                 context.enqueueWork {
                     EconomyClientHandler.handleSync(payload)
+                }
+            }
+            .playToClient(com.juyoung.estherserver.enhancement.EnhancementPitySyncPayload.TYPE, com.juyoung.estherserver.enhancement.EnhancementPitySyncPayload.STREAM_CODEC) { payload, context ->
+                context.enqueueWork {
+                    com.juyoung.estherserver.enhancement.EnhancementClientHandler.handlePitySync(payload)
                 }
             }
             .playToClient(ProfessionSyncPayload.TYPE, ProfessionSyncPayload.STREAM_CODEC) { payload, context ->

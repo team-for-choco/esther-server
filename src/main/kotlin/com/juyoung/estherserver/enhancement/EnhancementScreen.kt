@@ -19,7 +19,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
 
     companion object {
         private const val GUI_WIDTH = 240
-        private const val GUI_HEIGHT = 250
+        private const val GUI_HEIGHT = 270
         private const val ROW_HEIGHT = 30
         private const val PADDING = 10
     }
@@ -250,18 +250,43 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 GuiTheme.TEXT_BODY
             )
 
+            // 장인의 기운 게이지 (0→1 구간은 100%라 표시하지 않음)
+            var nextLineY = detailY + 40
+            if (cost.pityRate > 0.0) {
+                val pity = EnhancementClientHandler.getPity(slot.profession)
+                val pityPercent = (pity * 100).toInt()
+                val pityBarWidth = detailWidth - 12
+                val pityBarX = detailX + 6
+                val pityColor = if (pityPercent >= 100) GuiTheme.GRADE_RARE else GuiTheme.TEXT_GOLD
+
+                guiGraphics.drawString(
+                    font,
+                    Component.translatable("gui.estherserver.enhancement.pity", pityPercent),
+                    pityBarX, nextLineY,
+                    pityColor
+                )
+                // 게이지 바
+                val barY = nextLineY + 11
+                guiGraphics.fill(pityBarX, barY, pityBarX + pityBarWidth, barY + 4, GuiTheme.BAR_BG)
+                val fillWidth = ((pity * pityBarWidth).toInt()).coerceIn(0, pityBarWidth)
+                if (fillWidth > 0) {
+                    guiGraphics.fill(pityBarX, barY, pityBarX + fillWidth, barY + 4, pityColor)
+                }
+                nextLineY = barY + 8
+            }
+
             val stoneCount = if (cost.requiresStone) countEnhancementStones() else 0
-            var buttonY = detailY + 42
+            var buttonY = nextLineY + 2
             if (cost.requiresStone) {
                 val hasEnough = stoneCount >= cost.stoneCount
                 val stoneColor = if (hasEnough) GuiTheme.GRADE_FINE else GuiTheme.TEXT_INSUFFICIENT
                 guiGraphics.drawString(
                     font,
                     Component.translatable("gui.estherserver.enhancement.requires_stone", cost.stoneCount),
-                    detailX + 6, detailY + 40,
+                    detailX + 6, nextLineY,
                     stoneColor
                 )
-                buttonY = detailY + 54
+                buttonY = nextLineY + 14
             }
 
             val canAfford = balance >= cost.cost
@@ -377,8 +402,10 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                     }
                 } else if (slot.level < EnhancementHandler.MAX_LEVEL) {
                     val cost = EnhancementHandler.ENHANCEMENT_TABLE[slot.level] ?: return true
-                    var buttonY = detailY + 42
-                    if (cost.requiresStone) buttonY = detailY + 54
+                    var nextLineY = detailY + 40
+                    if (cost.pityRate > 0.0) nextLineY = detailY + 40 + 11 + 8
+                    var buttonY = nextLineY + 2
+                    if (cost.requiresStone) buttonY = nextLineY + 14
 
                     if (mouseX >= buttonX && mouseX < buttonX + buttonW &&
                         mouseY >= buttonY && mouseY < buttonY + buttonH
