@@ -254,7 +254,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
             var nextLineY = detailY + 40
             if (cost.pityRate > 0) {
                 val pityPercent = EnhancementClientHandler.getPityPercent(slot.profession)
-                val pity = pityPercent.toDouble() / 100.0
+                val pity = EnhancementClientHandler.getPity(slot.profession)
                 val pityBarWidth = detailWidth - 12
                 val pityBarX = detailX + 6
                 val pityColor = if (pityPercent >= 100) GuiTheme.GRADE_RARE else GuiTheme.TEXT_GOLD
@@ -404,8 +404,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                     val cost = EnhancementHandler.ENHANCEMENT_TABLE[slot.level] ?: return true
                     var nextLineY = detailY + 40
                     if (cost.pityRate > 0) nextLineY += 19
-                    var buttonY = nextLineY + 2
-                    if (cost.requiresStone) buttonY = nextLineY + 14
+                    val buttonY = nextLineY + (if (cost.requiresStone) 14 else 2)
 
                     if (mouseX >= buttonX && mouseX < buttonX + buttonW &&
                         mouseY >= buttonY && mouseY < buttonY + buttonH

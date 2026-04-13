@@ -33,10 +33,10 @@ object EnhancementHandler {
 
     val ENHANCEMENT_TABLE = mapOf(
         0 to EnhancementCost(500L, 1.0),
-        1 to EnhancementCost(1_500L, 0.8, pityRate = 25),
-        2 to EnhancementCost(4_500L, 0.6, pityRate = 17),
-        3 to EnhancementCost(22_500L, 0.4, pityRate = 12),
-        4 to EnhancementCost(31_500L, 0.15, stoneCount = 5, pityRate = 6)
+        1 to EnhancementCost(1_500L, 0.8, pityRate = 20),
+        2 to EnhancementCost(4_500L, 0.6, pityRate = 15),
+        3 to EnhancementCost(22_500L, 0.4, pityRate = 10),
+        4 to EnhancementCost(31_500L, 0.15, stoneCount = 5, pityRate = 5)
     )
 
     val EQUIPMENT_MAP: Map<Profession, DeferredItem<Item>> by lazy {
