@@ -168,8 +168,7 @@ object EnhancementHandler {
         // Roll for success (장인의 기운 100%면 무조건 성공)
         val pityData = player.getData(ModEnhancement.PITY_DATA.get())
         val guaranteed = pityData.isGuaranteed(profession)
-        val roll = player.random.nextDouble()
-        val success = guaranteed || roll < cost.successRate
+        val success = guaranteed || player.random.nextDouble() < cost.successRate
 
         if (success) {
             val newLevel = currentLevel + 1

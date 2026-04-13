@@ -8,9 +8,9 @@ import net.minecraft.network.codec.StreamCodec
 class EnhancementPityData(
     private val pityMap: MutableMap<Profession, Int> = mutableMapOf()
 ) {
-    fun getPity(profession: Profession): Double = pityMap.getOrDefault(profession, 0).toDouble() / 100.0
-
     fun getPityPercent(profession: Profession): Int = pityMap.getOrDefault(profession, 0)
+
+    fun getPity(profession: Profession): Double = getPityPercent(profession).toDouble() / 100.0
 
     fun addPity(profession: Profession, amount: Int) {
         val current = pityMap.getOrDefault(profession, 0)
@@ -21,7 +21,7 @@ class EnhancementPityData(
         pityMap.remove(profession)
     }
 
-    fun isGuaranteed(profession: Profession): Boolean = pityMap.getOrDefault(profession, 0) >= 100
+    fun isGuaranteed(profession: Profession): Boolean = getPityPercent(profession) >= 100
 
     fun toNBT(): CompoundTag {
         val tag = CompoundTag()
