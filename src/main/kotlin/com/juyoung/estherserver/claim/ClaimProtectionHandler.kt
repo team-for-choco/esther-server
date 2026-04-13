@@ -9,6 +9,7 @@ import com.juyoung.estherserver.wild.ReturnPortalBlock
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ChunkPos
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent
@@ -64,7 +65,7 @@ object ClaimProtectionHandler {
             val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos)
             if (claim == null || claim.ownerUUID != serverPlayer.uuid) {
                 event.isCanceled = true
-                serverPlayer.inventoryMenu.sendAllDataToRemote()
+                restorePlacedItem(serverPlayer, event)
                 serverPlayer.displayClientMessage(
                     Component.translatable("message.estherserver.farming_own_claim_only"), true
                 )
@@ -80,10 +81,22 @@ object ClaimProtectionHandler {
         if (claim.permissions.allowPlace) return
 
         event.isCanceled = true
-        serverPlayer.inventoryMenu.sendAllDataToRemote()
+        restorePlacedItem(serverPlayer, event)
         serverPlayer.displayClientMessage(
             Component.translatable("message.estherserver.claim_protected_place"), true
         )
+    }
+
+    /**
+     * EntityPlaceEvent 취소 시 이미 소비된 아이템을 수동 복원한다.
+     * NeoForge는 블록 상태만 되돌리고 아이템은 복원하지 않기 때문.
+     */
+    private fun restorePlacedItem(player: ServerPlayer, event: BlockEvent.EntityPlaceEvent) {
+        val blockItem = event.placedBlock.block.asItem()
+        if (blockItem !== net.minecraft.world.item.Items.AIR) {
+            player.inventory.add(ItemStack(blockItem))
+        }
+        player.inventoryMenu.sendAllDataToRemote()
     }
 
     @SubscribeEvent
