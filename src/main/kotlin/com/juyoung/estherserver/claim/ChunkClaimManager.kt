@@ -25,10 +25,15 @@ object ChunkClaimManager {
             }
         }
 
+        // 기존 클레임이 있으면 권한을 상속
+        val existingClaims = data.getClaimsByOwner(player.uuid)
+        val permissions = existingClaims.firstOrNull()?.second?.permissions ?: ClaimPermissions()
+
         data.setClaim(chunkPos, ChunkClaimEntry(
             ownerUUID = player.uuid,
             ownerName = player.gameProfile.name,
-            claimedAt = player.serverLevel().gameTime
+            claimedAt = player.serverLevel().gameTime,
+            permissions = permissions
         ))
         return ClaimResult.SUCCESS
     }
