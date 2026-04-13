@@ -64,7 +64,7 @@ object ClaimProtectionHandler {
             val claim = ChunkClaimManager.getClaimInfo(serverLevel, chunkPos)
             if (claim == null || claim.ownerUUID != serverPlayer.uuid) {
                 event.isCanceled = true
-                serverPlayer.inventoryMenu.sendAllDataToRemote()
+                restorePlacedItem(serverPlayer, event)
                 serverPlayer.displayClientMessage(
                     Component.translatable("message.estherserver.farming_own_claim_only"), true
                 )
@@ -80,10 +80,20 @@ object ClaimProtectionHandler {
         if (claim.permissions.allowPlace) return
 
         event.isCanceled = true
-        serverPlayer.inventoryMenu.sendAllDataToRemote()
+        restorePlacedItem(serverPlayer, event)
         serverPlayer.displayClientMessage(
             Component.translatable("message.estherserver.claim_protected_place"), true
         )
+    }
+
+    /**
+     * EntityPlaceEvent 취소 시 클라이언트 인벤토리를 서버와 동기화한다.
+     * NeoForge는 이벤트 취소 시 블록 상태와 아이템을 서버 측에서 복원하지만,
+     * 클라이언트에는 반영되지 않아 재접속 전까지 아이템이 사라진 것처럼 보인다.
+     */
+    private fun restorePlacedItem(player: ServerPlayer, event: BlockEvent.EntityPlaceEvent) {
+        player.containerMenu.broadcastChanges()
+        player.inventoryMenu.sendAllDataToRemote()
     }
 
     @SubscribeEvent

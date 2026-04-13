@@ -4,22 +4,21 @@ object QuestPool {
 
     private val dailyPool = mutableListOf<QuestTemplate>()
     private val weeklyPool = mutableListOf<QuestTemplate>()
+    private val legacyTemplates = mutableListOf<QuestTemplate>()
     private lateinit var templateMap: Map<String, QuestTemplate>
 
     init {
         registerDailyQuests()
         registerWeeklyQuests()
-        templateMap = (dailyPool + weeklyPool).associateBy { it.id }
+        registerLegacyTemplates()
+        templateMap = (dailyPool + weeklyPool + legacyTemplates).associateBy { it.id }
     }
 
     private fun registerDailyQuests() {
-        // Fishing — 7 templates (specific fish, 3 each)
+        // Fishing — 4 templates (Common grade only, 3 each)
         dailyPool.add(QuestTemplate("daily_submit_crucian_carp", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:crucian_carp", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_anchovy", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:anchovy", currencyReward = 2000, huntersPotReward = 30))
-        dailyPool.add(QuestTemplate("daily_submit_salmon_catch", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:salmon_catch", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_mackerel", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:mackerel", currencyReward = 2000, huntersPotReward = 30))
-        dailyPool.add(QuestTemplate("daily_submit_hairtail", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:hairtail", currencyReward = 2000, huntersPotReward = 30))
-        dailyPool.add(QuestTemplate("daily_submit_sea_bream", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:sea_bream", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_clam", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:clam", currencyReward = 2000, huntersPotReward = 30))
 
         // Farming — 8 templates (specific crop, 3 each)
@@ -37,20 +36,27 @@ object QuestPool {
         dailyPool.add(QuestTemplate("daily_submit_zinc_ore_raw", QuestTrackingType.SUBMIT_ITEM, QuestCategory.MINING, 3, "estherserver:zinc_ore_raw", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_jade_raw", QuestTrackingType.SUBMIT_ITEM, QuestCategory.MINING, 3, "estherserver:jade_raw", currencyReward = 2000, huntersPotReward = 30))
 
-        // Cooking — 8 templates (specific dish, 3 each)
+        // Cooking — 6 templates (Common grade only, 3 each)
         dailyPool.add(QuestTemplate("daily_submit_spinach_bibimbap", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:spinach_bibimbap", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_kimchi", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:kimchi", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_miso_soup", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:miso_soup", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_fish_stew", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:fish_stew", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_gimbap", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:gimbap", currencyReward = 2000, huntersPotReward = 30))
-        dailyPool.add(QuestTemplate("daily_submit_dumpling", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:dumpling", currencyReward = 2000, huntersPotReward = 30))
-        dailyPool.add(QuestTemplate("daily_submit_ramen", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:ramen", currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_submit_egg_rice", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:egg_rice", currencyReward = 2000, huntersPotReward = 30))
 
         // General — 3 templates (kill monsters)
         dailyPool.add(QuestTemplate("daily_kill_zombie", QuestTrackingType.KILL_MONSTER, QuestCategory.GENERAL, 15, targetEntityTypes = listOf("minecraft:zombie"), currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_kill_skeleton", QuestTrackingType.KILL_MONSTER, QuestCategory.GENERAL, 10, targetEntityTypes = listOf("minecraft:skeleton"), currencyReward = 2000, huntersPotReward = 30))
         dailyPool.add(QuestTemplate("daily_kill_creeper", QuestTrackingType.KILL_MONSTER, QuestCategory.GENERAL, 5, targetEntityTypes = listOf("minecraft:creeper"), currencyReward = 2000, huntersPotReward = 30))
+    }
+
+    /** 선택 풀에서 제거되었지만 기존 플레이어 데이터 호환을 위해 templateMap에 유지 */
+    private fun registerLegacyTemplates() {
+        legacyTemplates.add(QuestTemplate("daily_submit_salmon_catch", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:salmon_catch", currencyReward = 2000, huntersPotReward = 30))
+        legacyTemplates.add(QuestTemplate("daily_submit_hairtail", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:hairtail", currencyReward = 2000, huntersPotReward = 30))
+        legacyTemplates.add(QuestTemplate("daily_submit_sea_bream", QuestTrackingType.SUBMIT_ITEM, QuestCategory.FISHING, 3, "estherserver:sea_bream", currencyReward = 2000, huntersPotReward = 30))
+        legacyTemplates.add(QuestTemplate("daily_submit_dumpling", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:dumpling", currencyReward = 2000, huntersPotReward = 30))
+        legacyTemplates.add(QuestTemplate("daily_submit_ramen", QuestTrackingType.SUBMIT_ITEM, QuestCategory.COOKING, 3, "estherserver:ramen", currencyReward = 2000, huntersPotReward = 30))
     }
 
     private fun registerWeeklyQuests() {

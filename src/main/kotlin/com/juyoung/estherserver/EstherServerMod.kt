@@ -38,6 +38,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.server.ServerStartingEvent
+import net.neoforged.neoforge.event.server.ServerStoppingEvent
 import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredItem
@@ -1365,6 +1366,13 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
 
         val server = event.server
         server.gameRules.getRule(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE).set(0, server)
+
+        com.juyoung.estherserver.wild.WildResetScheduler.start(server)
+    }
+
+    @SubscribeEvent
+    fun onServerStopping(event: ServerStoppingEvent) {
+        com.juyoung.estherserver.wild.WildResetScheduler.shutdown()
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = [Dist.CLIENT])
