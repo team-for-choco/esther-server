@@ -151,6 +151,19 @@ object ItemPriceRegistry {
         register(Mod.SAFFRON_RICE, 140, ShopCategory.FOOD)
         register(Mod.ABALONE_PORRIDGE, 170, ShopCategory.FOOD)  // 🐟 전복(희귀) (110→170)
         register(Mod.KING_CRAB_STEW, 200, ShopCategory.FOOD)    // 🐟 킹크랩(희귀) (139→200)
+        // New dishes — Common
+        register(Mod.SWEETFISH_STEW, 55, ShopCategory.FOOD)
+        register(Mod.GRILLED_CLAM, 50, ShopCategory.FOOD)
+        // New dishes — Advanced
+        register(Mod.OCTOPUS_SUKHOE, 130, ShopCategory.FOOD)
+        register(Mod.HAIRTAIL_JORIM, 120, ShopCategory.FOOD)
+        register(Mod.YELLOWTAIL_SASHIMI, 135, ShopCategory.FOOD)
+        // New dishes — Rare
+        register(Mod.TUNA_RICE_BOWL, 200, ShopCategory.FOOD)
+        register(Mod.SEA_URCHIN_RICE, 210, ShopCategory.FOOD)
+        register(Mod.STURGEON_CAVIAR, 230, ShopCategory.FOOD)
+        register(Mod.YUZU_TEA, 160, ShopCategory.FOOD)
+        register(Mod.GREEN_TEA_MOCHI, 150, ShopCategory.FOOD)
     }
 
     private fun registerVanillaItemPrices() {

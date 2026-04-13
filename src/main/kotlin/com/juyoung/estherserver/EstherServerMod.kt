@@ -535,6 +535,30 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val KING_CRAB_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
             "king_crab_stew", Item.Properties().food(cookingFood()))
 
+        // New dishes — Common
+        val SWEETFISH_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sweetfish_stew", Item.Properties().food(cookingFood()))
+        val GRILLED_CLAM: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "grilled_clam", Item.Properties().food(cookingFood()))
+        // New dishes — Advanced
+        val OCTOPUS_SUKHOE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "octopus_sukhoe", Item.Properties().food(cookingFood()))
+        val HAIRTAIL_JORIM: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "hairtail_jorim", Item.Properties().food(cookingFood()))
+        val YELLOWTAIL_SASHIMI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "yellowtail_sashimi", Item.Properties().food(cookingFood()))
+        // New dishes — Rare
+        val TUNA_RICE_BOWL: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "tuna_rice_bowl", Item.Properties().food(cookingFood()))
+        val SEA_URCHIN_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sea_urchin_rice", Item.Properties().food(cookingFood()))
+        val STURGEON_CAVIAR: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sturgeon_caviar", Item.Properties().food(cookingFood()))
+        val YUZU_TEA: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "yuzu_tea", Item.Properties().food(cookingFood()))
+        val GREEN_TEA_MOCHI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "green_tea_mochi", Item.Properties().food(cookingFood()))
+
         // Collection pedestal
         val COLLECTION_PEDESTAL: DeferredBlock<Block> = BLOCKS.registerBlock("collection_pedestal",
             { properties -> CollectionPedestalBlock(properties) },

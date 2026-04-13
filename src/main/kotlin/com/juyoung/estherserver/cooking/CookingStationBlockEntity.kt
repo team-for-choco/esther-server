@@ -84,11 +84,13 @@ class CookingStationBlockEntity(
                     itemEntity.setDefaultPickUpDelay()
                     level.addFreshEntity(itemEntity)
 
-                    // Grant cooking profession XP on completion (fixed 1 XP)
+                    // Grant cooking profession XP on completion (grade-based: common=1, advanced=3, rare=5)
                     val player = serverLevel.server.playerList.getPlayer(uuid)
                     if (player is ServerPlayer) {
+                        val resultItemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(task.resultStack.item)
+                        val xp = com.juyoung.estherserver.profession.ProfessionBonusHelper.getGradeXp(resultItemId)
                         com.juyoung.estherserver.profession.ProfessionHandler.addExperience(
-                            player, com.juyoung.estherserver.profession.Profession.COOKING, 1
+                            player, com.juyoung.estherserver.profession.Profession.COOKING, xp
                         )
                     }
 

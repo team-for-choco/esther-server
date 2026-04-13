@@ -168,6 +168,17 @@ object CollectibleRegistry {
         register(Mod.SAFFRON_RICE, CollectionCategory.COOKING)
         register(Mod.ABALONE_PORRIDGE, CollectionCategory.COOKING)
         register(Mod.KING_CRAB_STEW, CollectionCategory.COOKING)
+        // New dishes
+        register(Mod.SWEETFISH_STEW, CollectionCategory.COOKING)
+        register(Mod.GRILLED_CLAM, CollectionCategory.COOKING)
+        register(Mod.OCTOPUS_SUKHOE, CollectionCategory.COOKING)
+        register(Mod.HAIRTAIL_JORIM, CollectionCategory.COOKING)
+        register(Mod.YELLOWTAIL_SASHIMI, CollectionCategory.COOKING)
+        register(Mod.TUNA_RICE_BOWL, CollectionCategory.COOKING)
+        register(Mod.SEA_URCHIN_RICE, CollectionCategory.COOKING)
+        register(Mod.STURGEON_CAVIAR, CollectionCategory.COOKING)
+        register(Mod.YUZU_TEA, CollectionCategory.COOKING)
+        register(Mod.GREEN_TEA_MOCHI, CollectionCategory.COOKING)
     }
 
     // ─── Phase B: 바닐라+커스텀 아이템 자동 분류 ───
