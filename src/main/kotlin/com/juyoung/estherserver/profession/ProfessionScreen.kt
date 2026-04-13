@@ -4,6 +4,7 @@ import com.juyoung.estherserver.sitting.ModKeyBindings
 import com.juyoung.estherserver.EstherServerMod
 import com.juyoung.estherserver.enhancement.EnhancementHandler
 import com.juyoung.estherserver.gui.GuiTheme
+import com.juyoung.estherserver.inventory.ProfessionInventoryClientHandler
 import com.juyoung.estherserver.quality.ModDataComponents
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -147,11 +148,16 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
     override fun isPauseScreen(): Boolean = false
 
     private fun findEquipment(player: net.minecraft.world.entity.player.Player, item: Item): ItemStack? {
-        for (i in 0 until player.inventory.items.size) {
-            val stack = player.inventory.items[i]
-            if (!stack.isEmpty && stack.item === item) {
-                return stack
-            }
+        // 일반 인벤토리
+        player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
+        // 오프핸드
+        player.inventory.offhand.firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
+        // 전문 보관함 (도구 슬롯 + 일반 슬롯)
+        val profInvData = ProfessionInventoryClientHandler.cachedData
+        for (profession in Profession.entries) {
+            val toolSlot = profInvData.getTool(profession)
+            if (!toolSlot.isEmpty && toolSlot.item === item) return toolSlot
+            profInvData.getItems(profession).firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
         }
         return null
     }
