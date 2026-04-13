@@ -1025,6 +1025,17 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(SAFFRON_RICE.get())
                         output.accept(ABALONE_PORRIDGE.get())
                         output.accept(KING_CRAB_STEW.get())
+                        // New dishes
+                        output.accept(SWEETFISH_STEW.get())
+                        output.accept(GRILLED_CLAM.get())
+                        output.accept(OCTOPUS_SUKHOE.get())
+                        output.accept(HAIRTAIL_JORIM.get())
+                        output.accept(YELLOWTAIL_SASHIMI.get())
+                        output.accept(TUNA_RICE_BOWL.get())
+                        output.accept(SEA_URCHIN_RICE.get())
+                        output.accept(STURGEON_CAVIAR.get())
+                        output.accept(YUZU_TEA.get())
+                        output.accept(GREEN_TEA_MOCHI.get())
                         // Utility
                         output.accept(COLLECTION_PEDESTAL.get())
                         output.accept(LAND_DEED.get())
