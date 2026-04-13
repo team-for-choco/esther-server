@@ -39,15 +39,17 @@ object WildCommand {
         // 야생 차원에 있는 플레이어를 모두 오버월드로 대피
         evacuatedCount += evacuatePlayers(wildLevel, overworld)
 
-        // 네더에 있는 플레이어 대피
+        // 네더에 있는 플레이어 대피 + 저장 방지
         val netherLevel = server.getLevel(Level.NETHER)
         if (netherLevel != null) {
+            netherLevel.noSave = true
             evacuatedCount += evacuatePlayers(netherLevel, overworld)
         }
 
-        // 엔드에 있는 플레이어 대피
+        // 엔드에 있는 플레이어 대피 + 저장 방지
         val endLevel = server.getLevel(Level.END)
         if (endLevel != null) {
+            endLevel.noSave = true
             evacuatedCount += evacuatePlayers(endLevel, overworld)
         }
 
@@ -61,20 +63,23 @@ object WildCommand {
 
             // 야생 차원
             val wildDimDir = worldDir.resolve("dimensions").resolve("estherserver").resolve("wild").toFile()
-            if (wildDimDir.exists()) {
-                wildDimDir.deleteRecursively()
+            if (wildDimDir.exists() && !wildDimDir.deleteRecursively()) {
+                source.sendFailure(Component.translatable("message.estherserver.wild_reset_error"))
+                return 0
             }
 
             // 네더 (DIM-1)
             val netherDir = worldDir.resolve("DIM-1").toFile()
-            if (netherDir.exists()) {
-                netherDir.deleteRecursively()
+            if (netherDir.exists() && !netherDir.deleteRecursively()) {
+                source.sendFailure(Component.translatable("message.estherserver.wild_reset_error"))
+                return 0
             }
 
             // 엔드 (DIM1)
             val endDir = worldDir.resolve("DIM1").toFile()
-            if (endDir.exists()) {
-                endDir.deleteRecursively()
+            if (endDir.exists() && !endDir.deleteRecursively()) {
+                source.sendFailure(Component.translatable("message.estherserver.wild_reset_error"))
+                return 0
             }
         } catch (e: Exception) {
             source.sendFailure(Component.translatable("message.estherserver.wild_reset_error"))
