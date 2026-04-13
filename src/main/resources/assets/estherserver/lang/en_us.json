@@ -75,6 +75,8 @@
   "milestone.estherserver.hundred_complete.desc": "Collect 100+ items",
   "milestone.estherserver.half_complete.title": "Veteran Collector",
   "milestone.estherserver.half_complete.desc": "Collect half of all items",
+  "milestone.estherserver.threequarter_complete.title": "Grand Collector",
+  "milestone.estherserver.threequarter_complete.desc": "Collect 75% of all items",
   "milestone.estherserver.all_complete.title": "Polymath",
   "milestone.estherserver.all_complete.desc": "Collect everything",
 
