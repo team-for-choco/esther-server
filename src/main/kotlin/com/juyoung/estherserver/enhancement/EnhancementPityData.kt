@@ -6,35 +6,36 @@ import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 
 class EnhancementPityData(
-    private val pityMap: MutableMap<Profession, Double> = mutableMapOf()
+    private val pityMap: MutableMap<Profession, Int> = mutableMapOf()
 ) {
-    fun getPity(profession: Profession): Double = pityMap.getOrDefault(profession, 0.0)
+    fun getPity(profession: Profession): Double = pityMap.getOrDefault(profession, 0).toDouble() / 100.0
 
     fun addPity(profession: Profession, amount: Double) {
-        val current = getPity(profession)
-        pityMap[profession] = (current + amount).coerceAtMost(1.0)
+        val current = pityMap.getOrDefault(profession, 0)
+        val toAdd = (amount * 100).toInt()
+        pityMap[profession] = (current + toAdd).coerceAtMost(100)
     }
 
     fun resetPity(profession: Profession) {
         pityMap.remove(profession)
     }
 
-    fun isGuaranteed(profession: Profession): Boolean = getPity(profession) >= 1.0
+    fun isGuaranteed(profession: Profession): Boolean = pityMap.getOrDefault(profession, 0) >= 100
 
     fun toNBT(): CompoundTag {
         val tag = CompoundTag()
         for ((profession, value) in pityMap) {
-            tag.putDouble(profession.name, value)
+            tag.putInt(profession.name, value)
         }
         return tag
     }
 
     companion object {
         fun fromNBT(tag: CompoundTag): EnhancementPityData {
-            val map = mutableMapOf<Profession, Double>()
+            val map = mutableMapOf<Profession, Int>()
             for (profession in Profession.entries) {
                 if (tag.contains(profession.name)) {
-                    map[profession] = tag.getDouble(profession.name)
+                    map[profession] = tag.getInt(profession.name)
                 }
             }
             return EnhancementPityData(map)
@@ -43,11 +44,11 @@ class EnhancementPityData(
         val STREAM_CODEC: StreamCodec<FriendlyByteBuf, EnhancementPityData> =
             object : StreamCodec<FriendlyByteBuf, EnhancementPityData> {
                 override fun decode(buf: FriendlyByteBuf): EnhancementPityData {
-                    val map = mutableMapOf<Profession, Double>()
+                    val map = mutableMapOf<Profession, Int>()
                     val size = buf.readInt()
                     repeat(size) {
-                        val profession = Profession.entries[buf.readInt()]
-                        val value = buf.readDouble()
+                        val profession = buf.readEnum(Profession::class.java)
+                        val value = buf.readInt()
                         map[profession] = value
                     }
                     return EnhancementPityData(map)
@@ -56,8 +57,8 @@ class EnhancementPityData(
                 override fun encode(buf: FriendlyByteBuf, value: EnhancementPityData) {
                     buf.writeInt(value.pityMap.size)
                     for ((profession, pity) in value.pityMap) {
-                        buf.writeInt(profession.ordinal)
-                        buf.writeDouble(pity)
+                        buf.writeEnum(profession)
+                        buf.writeInt(pity)
                     }
                 }
             }

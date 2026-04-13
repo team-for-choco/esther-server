@@ -176,6 +176,7 @@ object EnhancementHandler {
             stack.set(ModDataComponents.ENHANCEMENT_LEVEL.get(), newLevel)
             syncCustomModelData(stack, newLevel)
             pityData.resetPity(profession)
+            player.setData(ModEnhancement.PITY_DATA.get(), pityData)
             ProfessionInventoryHandler.syncToClient(player)
             syncPityToClient(player)
             player.sendSystemMessage(
@@ -189,6 +190,7 @@ object EnhancementHandler {
         } else {
             if (cost.pityRate > 0.0) {
                 pityData.addPity(profession, cost.pityRate)
+                player.setData(ModEnhancement.PITY_DATA.get(), pityData)
                 syncPityToClient(player)
             }
             player.sendSystemMessage(
@@ -208,6 +210,24 @@ object EnhancementHandler {
         net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(
             player, EnhancementPitySyncPayload(pityData)
         )
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    fun onPlayerLoggedIn(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncPityToClient(player)
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    fun onPlayerRespawn(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncPityToClient(player)
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    fun onPlayerChangedDimension(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncPityToClient(player)
     }
 
     private fun countEnhancementStones(player: ServerPlayer): Int {

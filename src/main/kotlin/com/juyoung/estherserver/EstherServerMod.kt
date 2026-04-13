@@ -1085,6 +1085,7 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         NeoForge.EVENT_BUS.register(QuestHandler)
         NeoForge.EVENT_BUS.register(CosmeticHandler)
         NeoForge.EVENT_BUS.register(com.juyoung.estherserver.item.TownReturnScrollItem)
+        NeoForge.EVENT_BUS.register(EnhancementHandler)
         if (FMLEnvironment.dist == Dist.CLIENT) {
             NeoForge.EVENT_BUS.addListener(::onItemTooltip)
             NeoForge.EVENT_BUS.register(ModKeyBindings)
