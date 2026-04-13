@@ -56,32 +56,32 @@ object WildResetScheduler {
     }
 
     fun executeReset(server: MinecraftServer) {
-        val wildLevel = server.getLevel(WildDimensionKeys.WILD_LEVEL)
-        if (wildLevel == null) {
-            LOGGER.warn("야생 자동 리셋 실패: 야생 차원을 찾을 수 없음")
-            return
-        }
-
         val overworld = server.getLevel(Level.OVERWORLD) ?: return
 
-        // 야생 차원 플레이어 대피
-        val playersInWild = wildLevel.players().toList()
-        for (player in playersInWild) {
-            if (player is ServerPlayer) {
-                evacuatePlayer(player, overworld)
+        // 야생 차원이 로드되어 있으면 플레이어 대피 + 저장 방지
+        val wildLevel = server.getLevel(WildDimensionKeys.WILD_LEVEL)
+        if (wildLevel != null) {
+            val playersInWild = wildLevel.players().toList()
+            for (player in playersInWild) {
+                if (player is ServerPlayer) {
+                    evacuatePlayer(player, overworld)
+                }
             }
+            wildLevel.noSave = true
         }
 
-        // 스폰 초기화
+        // 스폰 초기화 (오버월드 데이터이므로 차원 로드 여부와 무관)
         WildSpawnData.get(server).clearSpawn()
 
         // 야생 차원 파일 삭제
         try {
-            wildLevel.noSave = true
             val worldDir = server.getWorldPath(LevelResource.ROOT)
             val wildDimDir = worldDir.resolve("dimensions").resolve("estherserver").resolve("wild").toFile()
             if (wildDimDir.exists()) {
-                wildDimDir.deleteRecursively()
+                if (!wildDimDir.deleteRecursively()) {
+                    LOGGER.error("야생 자동 리셋 실패: 폴더 삭제에 실패했습니다 (파일이 사용 중일 수 있음)")
+                    return
+                }
             }
         } catch (e: Exception) {
             LOGGER.error("야생 자동 리셋 파일 삭제 실패", e)
