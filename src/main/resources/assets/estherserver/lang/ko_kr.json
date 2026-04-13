@@ -82,6 +82,8 @@
   "milestone.estherserver.hundred_complete.desc": "100종 이상 수집",
   "milestone.estherserver.half_complete.title": "숙련 수집가",
   "milestone.estherserver.half_complete.desc": "전체의 절반 이상 수집",
+  "milestone.estherserver.threequarter_complete.title": "대수집가",
+  "milestone.estherserver.threequarter_complete.desc": "전체의 75%% 이상 수집",
   "milestone.estherserver.all_complete.title": "만물박사",
   "milestone.estherserver.all_complete.desc": "전체 수집 완료",
 
