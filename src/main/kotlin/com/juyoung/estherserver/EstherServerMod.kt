@@ -535,6 +535,30 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
         val KING_CRAB_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
             "king_crab_stew", Item.Properties().food(cookingFood()))
 
+        // New dishes — Common
+        val SWEETFISH_STEW: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sweetfish_stew", Item.Properties().food(cookingFood()))
+        val GRILLED_CLAM: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "grilled_clam", Item.Properties().food(cookingFood()))
+        // New dishes — Advanced
+        val OCTOPUS_SUKHOE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "octopus_sukhoe", Item.Properties().food(cookingFood()))
+        val HAIRTAIL_JORIM: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "hairtail_jorim", Item.Properties().food(cookingFood()))
+        val YELLOWTAIL_SASHIMI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "yellowtail_sashimi", Item.Properties().food(cookingFood()))
+        // New dishes — Rare
+        val TUNA_RICE_BOWL: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "tuna_rice_bowl", Item.Properties().food(cookingFood()))
+        val SEA_URCHIN_RICE: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sea_urchin_rice", Item.Properties().food(cookingFood()))
+        val STURGEON_CAVIAR: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "sturgeon_caviar", Item.Properties().food(cookingFood()))
+        val YUZU_TEA: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "yuzu_tea", Item.Properties().food(cookingFood()))
+        val GREEN_TEA_MOCHI: DeferredItem<Item> = ITEMS.registerSimpleItem(
+            "green_tea_mochi", Item.Properties().food(cookingFood()))
+
         // Collection pedestal
         val COLLECTION_PEDESTAL: DeferredBlock<Block> = BLOCKS.registerBlock("collection_pedestal",
             { properties -> CollectionPedestalBlock(properties) },
@@ -1001,6 +1025,17 @@ class EstherServerMod(modEventBus: IEventBus, modContainer: ModContainer) {
                         output.accept(SAFFRON_RICE.get())
                         output.accept(ABALONE_PORRIDGE.get())
                         output.accept(KING_CRAB_STEW.get())
+                        // New dishes
+                        output.accept(SWEETFISH_STEW.get())
+                        output.accept(GRILLED_CLAM.get())
+                        output.accept(OCTOPUS_SUKHOE.get())
+                        output.accept(HAIRTAIL_JORIM.get())
+                        output.accept(YELLOWTAIL_SASHIMI.get())
+                        output.accept(TUNA_RICE_BOWL.get())
+                        output.accept(SEA_URCHIN_RICE.get())
+                        output.accept(STURGEON_CAVIAR.get())
+                        output.accept(YUZU_TEA.get())
+                        output.accept(GREEN_TEA_MOCHI.get())
                         // Utility
                         output.accept(COLLECTION_PEDESTAL.get())
                         output.accept(LAND_DEED.get())
