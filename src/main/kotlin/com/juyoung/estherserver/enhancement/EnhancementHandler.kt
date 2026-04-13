@@ -25,17 +25,18 @@ object EnhancementHandler {
     data class EnhancementCost(
         val cost: Long,
         val successRate: Double,
-        val stoneCount: Int = 0
+        val stoneCount: Int = 0,
+        val pityRate: Int = 0
     ) {
         val requiresStone get() = stoneCount > 0
     }
 
     val ENHANCEMENT_TABLE = mapOf(
         0 to EnhancementCost(500L, 1.0),
-        1 to EnhancementCost(1_500L, 0.8),
-        2 to EnhancementCost(4_500L, 0.6),
-        3 to EnhancementCost(22_500L, 0.4),
-        4 to EnhancementCost(31_500L, 0.15, stoneCount = 5)
+        1 to EnhancementCost(1_500L, 0.8, pityRate = 20),
+        2 to EnhancementCost(4_500L, 0.6, pityRate = 15),
+        3 to EnhancementCost(22_500L, 0.4, pityRate = 10),
+        4 to EnhancementCost(31_500L, 0.15, stoneCount = 5, pityRate = 5)
     )
 
     val EQUIPMENT_MAP: Map<Profession, DeferredItem<Item>> by lazy {
@@ -164,13 +165,19 @@ object EnhancementHandler {
             consumeEnhancementStones(player, cost.stoneCount)
         }
 
-        // Roll for success
-        val roll = player.random.nextDouble()
-        if (roll < cost.successRate) {
+        // Roll for success (장인의 기운 100%면 무조건 성공)
+        val pityData = player.getData(ModEnhancement.PITY_DATA.get())
+        val guaranteed = pityData.isGuaranteed(profession)
+        val success = guaranteed || player.random.nextDouble() < cost.successRate
+
+        if (success) {
             val newLevel = currentLevel + 1
             stack.set(ModDataComponents.ENHANCEMENT_LEVEL.get(), newLevel)
             syncCustomModelData(stack, newLevel)
+            pityData.resetPity(profession)
+            player.setData(ModEnhancement.PITY_DATA.get(), pityData)
             ProfessionInventoryHandler.syncToClient(player)
+            syncPityToClient(player)
             player.sendSystemMessage(
                 Component.translatable(
                     "message.estherserver.enhance_success",
@@ -180,6 +187,11 @@ object EnhancementHandler {
             )
             player.playNotifySound(SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 1.0f, 1.0f)
         } else {
+            if (cost.pityRate > 0) {
+                pityData.addPity(profession, cost.pityRate)
+                player.setData(ModEnhancement.PITY_DATA.get(), pityData)
+                syncPityToClient(player)
+            }
             player.sendSystemMessage(
                 Component.translatable(
                     "message.estherserver.enhance_fail",
@@ -190,6 +202,31 @@ object EnhancementHandler {
         }
 
         return true
+    }
+
+    fun syncPityToClient(player: ServerPlayer) {
+        val pityData = player.getData(ModEnhancement.PITY_DATA.get())
+        net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(
+            player, EnhancementPitySyncPayload(pityData)
+        )
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    fun onPlayerLoggedIn(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncPityToClient(player)
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    fun onPlayerRespawn(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncPityToClient(player)
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    fun onPlayerChangedDimension(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent) {
+        val player = event.entity as? ServerPlayer ?: return
+        syncPityToClient(player)
     }
 
     private fun countEnhancementStones(player: ServerPlayer): Int {
