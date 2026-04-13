@@ -75,3 +75,10 @@
 | 2026-04-07 | [20260407_enchant_merchant.md](20260407_enchant_merchant.md) | CHOCO-143 | 인챈트 상인 NPC 구현 | 완료 |
 | 2026-04-07 | [20260407_enchant_table_block.md](20260407_enchant_table_block.md) | CHOCO-144 | 인챈트 테이블/모루 차단 | 완료 |
 | 2026-04-08 | [20260408_fix_ore_loot_silk_touch.md](20260408_fix_ore_loot_silk_touch.md) | CHOCO-145 | 특수 광물 루트 테이블 실크터치 조건 포맷 수정 (1.21.4 대응) | 완료 |
+| 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-147 | 타인 토지 블록 설치 취소 시 아이템 미반환 수정 | 완료 |
+| 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-148 | 가구(소파) 파괴 시 아이템 미드롭 수정 | 완료 |
+| 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-149 | 4→5 강화 시 강화석 요구량 표시 오류 수정 | 완료 |
+| 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-150 | 일일 퀘스트 재료를 일반(Common) 등급으로 제한 | 완료 |
+| 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-151 | 월요일 00시 야생 자동 리셋 스케줄러 구현 | 완료 |
+| 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-152 | /wild reset 시 네더/엔더 동시 초기화 | 완료 |
+| 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-153 | 토지 새 청크 권한 미상속 수정 | 완료 |
