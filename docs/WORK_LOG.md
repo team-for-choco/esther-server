@@ -82,3 +82,4 @@
 | 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-151 | 월요일 00시 야생 자동 리셋 스케줄러 구현 | 완료 |
 | 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-152 | /wild reset 시 네더/엔더 동시 초기화 | 완료 |
 | 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-153 | 토지 새 청크 권한 미상속 수정 | 완료 |
+| 2026-04-13 | - | CHOCO-154 | 전문 분야 현황 GUI에서 전문 보관함 도구 미인식 수정 | 완료 |
