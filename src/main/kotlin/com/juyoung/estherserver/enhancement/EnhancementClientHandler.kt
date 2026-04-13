@@ -11,4 +11,6 @@ object EnhancementClientHandler {
     }
 
     fun getPity(profession: Profession): Double = cachedPityData.getPity(profession)
+
+    fun getPityPercent(profession: Profession): Int = cachedPityData.getPityPercent(profession)
 }

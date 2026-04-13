@@ -26,17 +26,17 @@ object EnhancementHandler {
         val cost: Long,
         val successRate: Double,
         val stoneCount: Int = 0,
-        val pityRate: Double = 0.0
+        val pityRate: Int = 0
     ) {
         val requiresStone get() = stoneCount > 0
     }
 
     val ENHANCEMENT_TABLE = mapOf(
         0 to EnhancementCost(500L, 1.0),
-        1 to EnhancementCost(1_500L, 0.8, pityRate = 0.20),
-        2 to EnhancementCost(4_500L, 0.6, pityRate = 0.15),
-        3 to EnhancementCost(22_500L, 0.4, pityRate = 0.10),
-        4 to EnhancementCost(31_500L, 0.15, stoneCount = 5, pityRate = 0.05)
+        1 to EnhancementCost(1_500L, 0.8, pityRate = 25),
+        2 to EnhancementCost(4_500L, 0.6, pityRate = 17),
+        3 to EnhancementCost(22_500L, 0.4, pityRate = 12),
+        4 to EnhancementCost(31_500L, 0.15, stoneCount = 5, pityRate = 6)
     )
 
     val EQUIPMENT_MAP: Map<Profession, DeferredItem<Item>> by lazy {
@@ -188,7 +188,7 @@ object EnhancementHandler {
             )
             player.playNotifySound(SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 1.0f, 1.0f)
         } else {
-            if (cost.pityRate > 0.0) {
+            if (cost.pityRate > 0) {
                 pityData.addPity(profession, cost.pityRate)
                 player.setData(ModEnhancement.PITY_DATA.get(), pityData)
                 syncPityToClient(player)

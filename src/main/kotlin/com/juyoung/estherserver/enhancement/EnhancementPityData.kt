@@ -10,10 +10,11 @@ class EnhancementPityData(
 ) {
     fun getPity(profession: Profession): Double = pityMap.getOrDefault(profession, 0).toDouble() / 100.0
 
-    fun addPity(profession: Profession, amount: Double) {
+    fun getPityPercent(profession: Profession): Int = pityMap.getOrDefault(profession, 0)
+
+    fun addPity(profession: Profession, amount: Int) {
         val current = pityMap.getOrDefault(profession, 0)
-        val toAdd = (amount * 100).toInt()
-        pityMap[profession] = (current + toAdd).coerceAtMost(100)
+        pityMap[profession] = (current + amount).coerceAtMost(100)
     }
 
     fun resetPity(profession: Profession) {

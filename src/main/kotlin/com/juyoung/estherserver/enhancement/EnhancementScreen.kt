@@ -252,9 +252,9 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
 
             // 장인의 기운 게이지 (0→1 구간은 100%라 표시하지 않음)
             var nextLineY = detailY + 40
-            if (cost.pityRate > 0.0) {
-                val pity = EnhancementClientHandler.getPity(slot.profession)
-                val pityPercent = (pity * 100).toInt()
+            if (cost.pityRate > 0) {
+                val pityPercent = EnhancementClientHandler.getPityPercent(slot.profession)
+                val pity = pityPercent.toDouble() / 100.0
                 val pityBarWidth = detailWidth - 12
                 val pityBarX = detailX + 6
                 val pityColor = if (pityPercent >= 100) GuiTheme.GRADE_RARE else GuiTheme.TEXT_GOLD
@@ -403,7 +403,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 } else if (slot.level < EnhancementHandler.MAX_LEVEL) {
                     val cost = EnhancementHandler.ENHANCEMENT_TABLE[slot.level] ?: return true
                     var nextLineY = detailY + 40
-                    if (cost.pityRate > 0.0) nextLineY = detailY + 40 + 11 + 8
+                    if (cost.pityRate > 0) nextLineY += 19
                     var buttonY = nextLineY + 2
                     if (cost.requiresStone) buttonY = nextLineY + 14
 
