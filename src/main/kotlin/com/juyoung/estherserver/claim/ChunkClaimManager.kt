@@ -26,8 +26,7 @@ object ChunkClaimManager {
         }
 
         // 기존 클레임이 있으면 권한을 상속
-        val existingClaims = data.getClaimsByOwner(player.uuid)
-        val permissions = existingClaims.firstOrNull()?.second?.permissions ?: ClaimPermissions()
+        val permissions = data.claims.values.find { it.ownerUUID == player.uuid }?.permissions ?: ClaimPermissions()
 
         data.setClaim(chunkPos, ChunkClaimEntry(
             ownerUUID = player.uuid,
