@@ -9,7 +9,6 @@ import com.juyoung.estherserver.wild.ReturnPortalBlock
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ChunkPos
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent
@@ -88,14 +87,12 @@ object ClaimProtectionHandler {
     }
 
     /**
-     * EntityPlaceEvent 취소 시 이미 소비된 아이템을 수동 복원한다.
-     * NeoForge는 블록 상태만 되돌리고 아이템은 복원하지 않기 때문.
+     * EntityPlaceEvent 취소 시 클라이언트 인벤토리를 서버와 동기화한다.
+     * NeoForge는 이벤트 취소 시 블록 상태와 아이템을 서버 측에서 복원하지만,
+     * 클라이언트에는 반영되지 않아 재접속 전까지 아이템이 사라진 것처럼 보인다.
      */
     private fun restorePlacedItem(player: ServerPlayer, event: BlockEvent.EntityPlaceEvent) {
-        val blockItem = event.placedBlock.block.asItem()
-        if (blockItem !== net.minecraft.world.item.Items.AIR) {
-            player.inventory.add(ItemStack(blockItem))
-        }
+        player.containerMenu.broadcastChanges()
         player.inventoryMenu.sendAllDataToRemote()
     }
 
