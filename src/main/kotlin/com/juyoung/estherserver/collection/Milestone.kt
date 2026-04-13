@@ -75,7 +75,7 @@ enum class Milestone(
         id = "fish_complete",
         titleKey = "milestone.estherserver.fish_complete.title",
         descriptionKey = "milestone.estherserver.fish_complete.desc",
-        color = ChatFormatting.GREEN,
+        color = ChatFormatting.AQUA,
         check = { data -> isCategoryComplete(data, CollectionCategory.FISH) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.FISH) },
         reward = MilestoneReward(
@@ -101,7 +101,7 @@ enum class Milestone(
         id = "minerals_complete",
         titleKey = "milestone.estherserver.minerals_complete.title",
         descriptionKey = "milestone.estherserver.minerals_complete.desc",
-        color = ChatFormatting.GREEN,
+        color = ChatFormatting.AQUA,
         check = { data -> isCategoryComplete(data, CollectionCategory.MINERALS) },
         progressProvider = { data -> categoryProgress(data, CollectionCategory.MINERALS) },
         reward = MilestoneReward(
@@ -204,7 +204,7 @@ enum class Milestone(
         id = "half_complete",
         titleKey = "milestone.estherserver.half_complete.title",
         descriptionKey = "milestone.estherserver.half_complete.desc",
-        color = ChatFormatting.DARK_PURPLE,
+        color = ChatFormatting.GOLD,
         check = { data -> data.getCompletedCount() >= CollectibleRegistry.getTotalCount() / 2 },
         progressProvider = { data -> data.getCompletedCount().coerceAtMost(CollectibleRegistry.getTotalCount() / 2) to CollectibleRegistry.getTotalCount() / 2 },
         reward = MilestoneReward(
@@ -216,11 +216,28 @@ enum class Milestone(
             currencyReward = 5000
         )
     ),
+    THREEQUARTER_COMPLETE(
+        id = "threequarter_complete",
+        titleKey = "milestone.estherserver.threequarter_complete.title",
+        descriptionKey = "milestone.estherserver.threequarter_complete.desc",
+        color = ChatFormatting.LIGHT_PURPLE,
+        check = { data -> data.getCompletedCount() >= CollectibleRegistry.getTotalCount() * 3 / 4 },
+        progressProvider = { data -> data.getCompletedCount().coerceAtMost(CollectibleRegistry.getTotalCount() * 3 / 4) to CollectibleRegistry.getTotalCount() * 3 / 4 },
+        reward = MilestoneReward(
+            titleKey = "milestone.estherserver.threequarter_complete.title",
+            items = listOf(
+                ItemStack(EstherServerMod.LAND_DEED.get(), 3),
+                ItemStack(EstherServerMod.DRAW_TICKET_NORMAL.get(), 5),
+                ItemStack(EstherServerMod.ENHANCEMENT_STONE.get(), 2)
+            ),
+            currencyReward = 10000
+        )
+    ),
     ALL_COMPLETE(
         id = "all_complete",
         titleKey = "milestone.estherserver.all_complete.title",
         descriptionKey = "milestone.estherserver.all_complete.desc",
-        color = ChatFormatting.GOLD,
+        color = ChatFormatting.WHITE,
         check = { data -> data.getCompletedCount() >= CollectibleRegistry.getTotalCount() },
         progressProvider = { data -> data.getCompletedCount() to CollectibleRegistry.getTotalCount() },
         reward = MilestoneReward(

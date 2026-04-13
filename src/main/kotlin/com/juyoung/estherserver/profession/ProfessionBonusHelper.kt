@@ -174,6 +174,8 @@ object ProfessionBonusHelper {
         registerRecipeGrade("estherserver:miso_soup", ContentGrade.COMMON)
         registerRecipeGrade("estherserver:grilled_mackerel", ContentGrade.COMMON)
         registerRecipeGrade("estherserver:egg_rice", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:sweetfish_stew", ContentGrade.COMMON)
+        registerRecipeGrade("estherserver:grilled_clam", ContentGrade.COMMON)
         // Recipe grades - Advanced
         registerRecipeGrade("estherserver:sashimi_platter", ContentGrade.ADVANCED)
         registerRecipeGrade("estherserver:eel_rice", ContentGrade.ADVANCED)
@@ -183,6 +185,9 @@ object ProfessionBonusHelper {
         registerRecipeGrade("estherserver:mapo_tofu", ContentGrade.ADVANCED)
         registerRecipeGrade("estherserver:seafood_pancake", ContentGrade.ADVANCED)
         registerRecipeGrade("estherserver:lotus_salad", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:octopus_sukhoe", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:hairtail_jorim", ContentGrade.ADVANCED)
+        registerRecipeGrade("estherserver:yellowtail_sashimi", ContentGrade.ADVANCED)
         // Recipe grades - Rare
         registerRecipeGrade("estherserver:ginseng_chicken", ContentGrade.RARE)
         registerRecipeGrade("estherserver:truffle_risotto", ContentGrade.RARE)
@@ -192,6 +197,11 @@ object ProfessionBonusHelper {
         registerRecipeGrade("estherserver:saffron_rice", ContentGrade.RARE)
         registerRecipeGrade("estherserver:abalone_porridge", ContentGrade.RARE)
         registerRecipeGrade("estherserver:king_crab_stew", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:tuna_rice_bowl", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:sea_urchin_rice", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:sturgeon_caviar", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:yuzu_tea", ContentGrade.RARE)
+        registerRecipeGrade("estherserver:green_tea_mochi", ContentGrade.RARE)
     }
 
     fun registerFishGrade(item: String, grade: ContentGrade) {

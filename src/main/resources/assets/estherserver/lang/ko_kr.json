@@ -82,6 +82,8 @@
   "milestone.estherserver.hundred_complete.desc": "100종 이상 수집",
   "milestone.estherserver.half_complete.title": "숙련 수집가",
   "milestone.estherserver.half_complete.desc": "전체의 절반 이상 수집",
+  "milestone.estherserver.threequarter_complete.title": "대수집가",
+  "milestone.estherserver.threequarter_complete.desc": "전체의 75% 이상 수집",
   "milestone.estherserver.all_complete.title": "만물박사",
   "milestone.estherserver.all_complete.desc": "전체 수집 완료",
 
@@ -242,6 +244,7 @@
   "gui.estherserver.enhancement.enhance_info": "Lv%s → Lv%s",
   "gui.estherserver.enhancement.cost": "비용: %s 기운",
   "gui.estherserver.enhancement.rate": "확률: %s%%",
+  "gui.estherserver.enhancement.pity": "장인의 기운: %s%%",
   "gui.estherserver.enhancement.requires_stone": "강화석 x%s 필요",
   "gui.estherserver.enhancement.profession_label": "분야: %s",
 
@@ -431,6 +434,16 @@
   "item.estherserver.saffron_rice": "사프란밥",
   "item.estherserver.abalone_porridge": "전복죽",
   "item.estherserver.king_crab_stew": "대게찜",
+  "item.estherserver.sweetfish_stew": "은어탕",
+  "item.estherserver.grilled_clam": "조개구이",
+  "item.estherserver.octopus_sukhoe": "문어숙회",
+  "item.estherserver.hairtail_jorim": "갈치조림",
+  "item.estherserver.yellowtail_sashimi": "방어회",
+  "item.estherserver.tuna_rice_bowl": "참치덮밥",
+  "item.estherserver.sea_urchin_rice": "성게알밥",
+  "item.estherserver.sturgeon_caviar": "철갑상어 캐비어",
+  "item.estherserver.yuzu_tea": "유자차",
+  "item.estherserver.green_tea_mochi": "녹차떡",
   "message.estherserver.redstone_blocked": "이 블록은 설치할 수 없습니다.",
 
   "block.estherserver.wild_portal": "야생 포탈",
