@@ -110,7 +110,7 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
             val equipY = rowY + 34
 
             if (player != null && equipItem != null) {
-                val equipStack = findEquipment(player, equipItem)
+                val equipStack = findEquipment(player, equipItem, profession)
                 if (equipStack != null) {
                     val enhanceLevel = equipStack.getOrDefault(ModDataComponents.ENHANCEMENT_LEVEL.get(), 0)
                     val gradeColor = getGradeColor(enhanceLevel)
@@ -147,18 +147,16 @@ class ProfessionScreen : Screen(Component.translatable("gui.estherserver.profess
 
     override fun isPauseScreen(): Boolean = false
 
-    private fun findEquipment(player: net.minecraft.world.entity.player.Player, item: Item): ItemStack? {
+    private fun findEquipment(player: net.minecraft.world.entity.player.Player, item: Item, profession: Profession): ItemStack? {
         // 일반 인벤토리
         player.inventory.items.firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
         // 오프핸드
         player.inventory.offhand.firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
-        // 전문 보관함 (도구 슬롯 + 일반 슬롯)
+        // 전문 보관함 (해당 분야의 도구 슬롯 우선 검색)
         val profInvData = ProfessionInventoryClientHandler.cachedData
-        for (profession in Profession.entries) {
-            val toolSlot = profInvData.getTool(profession)
-            if (!toolSlot.isEmpty && toolSlot.item === item) return toolSlot
-            profInvData.getItems(profession).firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
-        }
+        val toolSlot = profInvData.getTool(profession)
+        if (!toolSlot.isEmpty && toolSlot.item === item) return toolSlot
+        profInvData.getItems(profession).firstOrNull { !it.isEmpty && it.item === item }?.let { return it }
         return null
     }
 
