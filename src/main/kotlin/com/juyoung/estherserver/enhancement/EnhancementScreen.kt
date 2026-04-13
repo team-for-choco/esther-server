@@ -250,9 +250,9 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
                 GuiTheme.TEXT_BODY
             )
 
+            val stoneCount = if (cost.requiresStone) countEnhancementStones() else 0
             var buttonY = detailY + 42
             if (cost.requiresStone) {
-                val stoneCount = countEnhancementStones()
                 val hasEnough = stoneCount >= cost.stoneCount
                 val stoneColor = if (hasEnough) GuiTheme.GRADE_FINE else GuiTheme.TEXT_INSUFFICIENT
                 guiGraphics.drawString(
@@ -265,7 +265,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
             }
 
             val canAfford = balance >= cost.cost
-            val hasStone = !cost.requiresStone || countEnhancementStones() >= cost.stoneCount
+            val hasStone = !cost.requiresStone || stoneCount >= cost.stoneCount
             renderActionButton(
                 guiGraphics, mouseX, mouseY,
                 detailX + detailWidth / 2 - 35, buttonY, 70, 16,
@@ -405,7 +405,7 @@ class EnhancementScreen : Screen(Component.translatable("gui.estherserver.enhanc
     private fun countEnhancementStones(): Int {
         val player = Minecraft.getInstance().player ?: return 0
         val stoneItem = EstherServerMod.ENHANCEMENT_STONE.get()
-        return player.inventory.items.sumOf { stack ->
+        return (player.inventory.items + player.inventory.offhand).sumOf { stack ->
             if (!stack.isEmpty && stack.item === stoneItem) stack.count else 0
         }
     }
