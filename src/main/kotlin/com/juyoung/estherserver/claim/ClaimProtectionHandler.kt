@@ -95,12 +95,18 @@ object ClaimProtectionHandler {
      */
     private fun restorePlacedItem(player: ServerPlayer, event: BlockEvent.EntityPlaceEvent) {
         val placedItem = event.placedBlock.block.asItem()
+        if (ItemStack(placedItem).isEmpty) {
+            player.containerMenu.broadcastChanges()
+            player.inventoryMenu.sendAllDataToRemote()
+            return
+        }
+
         val mainHand = player.mainHandItem
         val offHand = player.offhandItem
 
         when {
-            mainHand.item == placedItem -> mainHand.grow(1)
-            offHand.item == placedItem -> offHand.grow(1)
+            mainHand.`is`(placedItem) && mainHand.count < mainHand.maxStackSize -> mainHand.grow(1)
+            offHand.`is`(placedItem) && offHand.count < offHand.maxStackSize -> offHand.grow(1)
             mainHand.isEmpty -> player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack(placedItem, 1))
             offHand.isEmpty -> player.setItemInHand(InteractionHand.OFF_HAND, ItemStack(placedItem, 1))
             else -> {
