@@ -46,6 +46,7 @@
     "estherserver:kimchi",
     "minecraft:egg",
     "minecraft:chicken",
-    "minecraft:wheat"
+    "minecraft:wheat",
+    "minecraft:honey_bottle"
   ]
 }

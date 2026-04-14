@@ -84,3 +84,4 @@
 | 2026-04-13 | [20260413_bugfix_and_improvements.md](20260413_bugfix_and_improvements.md) | CHOCO-153 | 토지 새 청크 권한 미상속 수정 | 완료 |
 | 2026-04-13 | - | CHOCO-154 | 전문 분야 현황 GUI에서 전문 보관함 도구 미인식 수정 | 완료 |
 | 2026-04-14 | [20260414_fix_offhand_item_restore.md](20260414_fix_offhand_item_restore.md) | CHOCO-166 | 타인 토지 블록 설치 취소 시 보조 손 아이템 미반환 수정 | 완료 |
+| 2026-04-14 | [20260414_cooking_hint.md](20260414_cooking_hint.md) | CHOCO-169 | 도감 요리 아이템 툴팁에 재료 개수 힌트 표시 | 완료 |

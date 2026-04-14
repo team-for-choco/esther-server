@@ -46,6 +46,7 @@
   "gui.estherserver.collection.reward.claim": "수령",
   "gui.estherserver.collection.reward.claimed": "수령 완료",
   "gui.estherserver.collection.reward.currency": "%s 기운",
+  "gui.estherserver.collection.cooking_hint": "재료 %s개",
 
   "gui.estherserver.title.title": "칭호 관리",
   "gui.estherserver.title.empty": "해금된 칭호가 없습니다.",

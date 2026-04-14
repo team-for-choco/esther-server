@@ -1,6 +1,8 @@
 package com.juyoung.estherserver.collection
 
+import com.juyoung.estherserver.cooking.CookingStationRecipe
 import com.juyoung.estherserver.gui.GuiTheme
+import net.minecraft.ChatFormatting
 import net.minecraft.client.gui.GuiGraphics
 import com.juyoung.estherserver.sitting.ModKeyBindings
 import net.minecraft.client.gui.screens.Screen
@@ -257,7 +259,22 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
             ) {
                 val stack = itemCache[def.key]
                 if (stack != null) {
-                    guiGraphics.renderTooltip(font, listOf(stack.hoverName), Optional.empty(), mouseX, mouseY)
+                    val lines = mutableListOf(stack.hoverName)
+
+                    // 요리 카테고리 미등록 아이템에 재료 개수 힌트 표시
+                    if (def.category == CollectionCategory.COOKING) {
+                        if (!data.isComplete(def.key)) {
+                            val count = CookingStationRecipe.getIngredientCount(stack.item)
+                            if (count != null) {
+                                lines.add(
+                                    Component.translatable("gui.estherserver.collection.cooking_hint", count)
+                                        .withStyle(ChatFormatting.GRAY)
+                                )
+                            }
+                        }
+                    }
+
+                    guiGraphics.renderTooltip(font, lines, Optional.empty(), mouseX, mouseY)
                 }
                 break
             }
