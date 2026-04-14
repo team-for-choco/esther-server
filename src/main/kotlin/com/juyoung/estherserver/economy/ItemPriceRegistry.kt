@@ -183,6 +183,7 @@ object ItemPriceRegistry {
 
         // Crops
         register("minecraft:wheat", 2, ShopCategory.FOOD)
+        register("minecraft:honey_bottle", 5, ShopCategory.FOOD)
         register("minecraft:potato", 2, ShopCategory.FOOD)
         register("minecraft:carrot", 2, ShopCategory.FOOD)
         register("minecraft:beetroot", 2, ShopCategory.FOOD)
