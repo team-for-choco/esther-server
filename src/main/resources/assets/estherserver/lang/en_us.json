@@ -45,6 +45,7 @@
   "gui.estherserver.collection.reward.title_prefix": "Title: ",
   "gui.estherserver.collection.reward.claim": "Claim",
   "gui.estherserver.collection.reward.claimed": "Claimed",
+  "gui.estherserver.collection.cooking_hint": "Ingredients: %s",
 
   "gui.estherserver.title.title": "Title Management",
   "gui.estherserver.title.empty": "No titles unlocked.",

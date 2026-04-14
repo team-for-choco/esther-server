@@ -1,5 +1,6 @@
 package com.juyoung.estherserver.cooking
 
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.PlacementInfo
@@ -13,6 +14,17 @@ class CookingStationRecipe(
     val orderedIngredients: List<Ingredient>,
     val result: ItemStack
 ) : Recipe<CookingStationRecipeInput> {
+
+    companion object {
+        /** 요리 결과 아이템 → 재료 개수 캐시 (클라이언트/서버 양쪽에서 레시피 로드 시 자동 등록) */
+        private val ingredientCountCache = mutableMapOf<Item, Int>()
+
+        fun getIngredientCount(item: Item): Int? = ingredientCountCache[item]
+    }
+
+    init {
+        ingredientCountCache[result.item] = orderedIngredients.size
+    }
 
     override fun matches(input: CookingStationRecipeInput, level: Level): Boolean {
         val inputItems = input.items
