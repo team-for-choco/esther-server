@@ -263,7 +263,6 @@ class CollectionScreen : Screen(Component.translatable("gui.estherserver.collect
 
                     // 요리 카테고리 미등록 아이템에 재료 개수 힌트 표시
                     if (def.category == CollectionCategory.COOKING) {
-                        val data = CollectionClientHandler.cachedData
                         if (!data.isComplete(def.key)) {
                             val count = CookingStationRecipe.getIngredientCount(stack.item)
                             if (count != null) {
