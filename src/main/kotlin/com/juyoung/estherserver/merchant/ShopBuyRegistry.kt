@@ -76,6 +76,9 @@ object ShopBuyRegistry {
         register("minecraft:sugar_cane", 5, ShopCategory.FOOD)
         register("minecraft:egg", 5, ShopCategory.FOOD)
         register("minecraft:chicken", 8, ShopCategory.FOOD)
+        register("minecraft:honey_bottle", 15, ShopCategory.FOOD)
+        register("estherserver:seaweed", 10, ShopCategory.FOOD)
+        register("estherserver:noodles", 10, ShopCategory.FOOD)
     }
 
     private fun registerMinerals() {
