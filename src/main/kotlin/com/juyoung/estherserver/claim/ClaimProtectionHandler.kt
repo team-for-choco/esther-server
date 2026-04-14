@@ -9,6 +9,8 @@ import com.juyoung.estherserver.wild.ReturnPortalBlock
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ChunkPos
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent
@@ -87,11 +89,34 @@ object ClaimProtectionHandler {
     }
 
     /**
-     * EntityPlaceEvent 취소 시 클라이언트 인벤토리를 서버와 동기화한다.
-     * NeoForge는 이벤트 취소 시 블록 상태와 아이템을 서버 측에서 복원하지만,
-     * 클라이언트에는 반영되지 않아 재접속 전까지 아이템이 사라진 것처럼 보인다.
+     * EntityPlaceEvent 취소 시 서버 측에서 아이템 수량을 직접 복원한 뒤 클라이언트에 동기화한다.
+     * NeoForge는 이벤트 취소 시 블록 상태는 복구하지만, 이미 소비된 아이템은 복원하지 않으므로
+     * 주 손/보조 손 모두 확인하여 수동으로 아이템을 돌려줘야 한다.
      */
     private fun restorePlacedItem(player: ServerPlayer, event: BlockEvent.EntityPlaceEvent) {
+        val placedItem = event.placedBlock.block.asItem()
+        if (ItemStack(placedItem).isEmpty) {
+            player.containerMenu.broadcastChanges()
+            player.inventoryMenu.sendAllDataToRemote()
+            return
+        }
+
+        val mainHand = player.mainHandItem
+        val offHand = player.offhandItem
+
+        when {
+            mainHand.`is`(placedItem) && mainHand.count < mainHand.maxStackSize -> mainHand.grow(1)
+            offHand.`is`(placedItem) && offHand.count < offHand.maxStackSize -> offHand.grow(1)
+            mainHand.isEmpty -> player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack(placedItem, 1))
+            offHand.isEmpty -> player.setItemInHand(InteractionHand.OFF_HAND, ItemStack(placedItem, 1))
+            else -> {
+                val restored = ItemStack(placedItem, 1)
+                if (!player.inventory.add(restored)) {
+                    player.drop(restored, false)
+                }
+            }
+        }
+
         player.containerMenu.broadcastChanges()
         player.inventoryMenu.sendAllDataToRemote()
     }
